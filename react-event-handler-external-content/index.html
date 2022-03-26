@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React, click handler on async loaded button</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script
+      src="https://unpkg.com/history@5/umd/history.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-router@6/umd/react-router.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-router-dom@6/umd/react-router-dom.development.js"
+      crossorigin
+    ></script>
+    <script>
+      console.clear()
+
+      function asynchronouslyAddExternalContent() {
+        const externalContentRoot = document.querySelector(
+          '#external-content-root'
+        )
+
+        const h2 = document.createElement('h2')
+        h2.innerText = 'Asynchronously loaded external content'
+
+        const button = document.createElement('button')
+        button.innerText = 'Click me'
+        button.classList.toggle('external-button')
+        button.addEventListener('click', function () {
+          console.log('external click event handler')
+        })
+
+        const content = document.createElement('div')
+        content.appendChild(h2)
+        content.appendChild(button)
+
+        setTimeout(() => externalContentRoot.appendChild(content), 4000)
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        asynchronouslyAddExternalContent()
+      })
+
+      const e = React.createElement
+
+      function onClick() {
+        console.log('internal click event handler')
+      }
+
+      /**
+       * Attaches a click handler to the button.
+       * 
+       * @param {MutationRecord[]} mutations array of mutations
+       */
+      function onMutation(mutations) {
+        let mutation = null
+
+        for (mutation of mutations) {
+          if (mutation.type === 'childList') {
+            const externalButton =
+              mutation.target.querySelector('.external-button')
+
+            externalButton.removeEventListener('click', onClick)
+            externalButton.addEventListener('click', onClick)
+          }
+        }
+      }
+
+      /**
+       * Renders div#external-content-root on which external content is loaded.
+       * Attaches click event handler to button inside external content.
+       */
+      function App() {
+        const externalContentRoot = React.useRef(null)
+
+        React.useEffect(() => {
+          const externalContentRootNode = externalContentRoot.current
+          const observerOptions = {
+            childList: true,
+            subtree: true,
+          }
+
+          // when external content is added callback is called
+          const observer = new MutationObserver(onMutation)
+
+          // check spec for info which mutations on which node are observed
+          // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe
+          observer.observe(externalContentRootNode, observerOptions)
+
+          return () => observer.disconnect()
+        })
+
+        return e(
+          'div',
+          null,
+          e('h1', null, 'React, click handler on async loaded button'),
+          e(
+            'p',
+            null,
+            'Open console and click button to' +
+              ' see attached event handler in action'
+          ),
+          e(
+            'div',
+            { id: 'external-content-root', ref: externalContentRoot },
+            null
+          )
+        )
+      }
+
+      const root = document.querySelector('#root')
+      ReactDOM.render(e(App), root)
+    </script>
+  </body>
+</html>
