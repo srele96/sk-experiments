@@ -1,13 +1,21 @@
-# I will add random experiments I do occasionally
+# My personal experiments
 
-Collection of experiments I do will be placed here to have them all on one place
+This repository is collection of random experiments.
 
 ## Motivation for this repository
 
-My local folder was growing bigger, so much that it got out of hand and I don't know what I've done so far.
+Three years ago I started building habit to experiment random ideas. Sometimes I get urge to try something, but it just gets lost. The solution was to have a repository that will contain these small samples.
 
-A lot of my experiments are not complete project, I realized I can have collection of ideas bundled together.
+On a side note, a lot of my work is abandoned and never completed. A lot of useful ideas I tried are lost. I have really big folder on computer, over 3gb (thank you node modules).
 
-## Navigating around
+However, this folder has tens of ideas on which I've spent months working.
 
-Experiments will be placed in directories each with `README` file to explain what it is about.
+And lastly, this repository is also motivation to publish every sample of interesting work I do.
+
+## Navigation instructions
+
+Each sample is placed in its own directory.
+
+Each of them has `README` file explaining what is it about and what does it do.
+
+It probably also contains reason I decided to try it out.
