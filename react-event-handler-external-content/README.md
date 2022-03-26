@@ -1,4 +1,4 @@
-# React, add click handler to third party added button
+# React, click handler on async loaded button
 
 Example solution of observing node for externally added content and reacting to mutations caused by it.
 
