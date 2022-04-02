@@ -81,7 +81,7 @@ Presets used:
   `;
 
   const result = babel.transformSync(code, {
-    presets: ['@babel/preset-env', ['@babel/preset-react']],
+    presets: ['@babel/preset-env', '@babel/preset-react'],
   });
   console.log(result.code);
 }
