@@ -1,5 +1,6 @@
 # List of potential topics for research
 
+- Prettier plugins - Format imports alphabetically and group by type
 - JavaScript "asynchronous" nature - How does it really work?
 - HTML script tag attributes - How does browser handle script tags?
 - Currying with practical use cases
@@ -25,3 +26,13 @@
 ## Develop APIs on RapidAPI
 
 Do it.
+
+## More about this list
+
+In this file can be found list of topics I am interested in.
+
+This list may and will change, some topics will just get removed.
+
+This file is most likely going to have more topics that I can ever cover, some may be delayed.
+
+As I get new interesting ideas, they will be added here.
