@@ -1,0 +1,25 @@
+{
+  "version": "0.0.1",
+  "name": "babel-transpilation",
+  "description": "Sample code showcasing babel transpilation with presets.",
+  "author": "Kostic Srecko",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "nodemon": "^2.0.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "license": "ISC"
+}
