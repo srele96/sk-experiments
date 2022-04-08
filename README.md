@@ -2,6 +2,14 @@
 
 This repository is collection of research I find interesting
 
+## Migration to monorepo
+
+Migration to monorepo allowed me to share one configuration for every project in `yes-module` directory.
+
+Another advantage is having one node_modules in the root so I don't have to navigate around to run `npm install`.
+
+Another breaking change is migration to yarn 3 because it provides improved support for workspaces.
+
 ## Motivation for this repository
 
 Three years ago I started working on habit to continuously learn. Over the time amount of time spent learning increased, amount of personal projects grew proportionally. Before decision to create this repository, I realized I had a lot of work locally, disorganized.
