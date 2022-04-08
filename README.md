@@ -1,6 +1,6 @@
-# My personal experiments
+# Collection of research
 
-This repository is collection of research I find interesting
+This repository is collection of topics I have researched because I found them interesting.
 
 ## Migration to monorepo
 
