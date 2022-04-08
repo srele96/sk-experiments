@@ -1,4 +1,4 @@
-# Collection of research
+# Personal collection
 
 This repository is collection of topics I have researched because I found them interesting.
 
@@ -42,4 +42,4 @@ Here are workspaces, these projects require work with package manager, node_modu
 
 ## TODO
 
-- ~~- Turn this repo to [monorepo](https://dev.to/alexeagleson/how-to-create-a-node-and-react-monorepo-with-git-submodules-2g83)~~ DONE
+- ~~- Turn this repo to [monorepo](https://dev.to/alexeagleson/how-to-create-a-node-and-react-monorepo-with-git-submodules-2g83)~~ **DONE**
