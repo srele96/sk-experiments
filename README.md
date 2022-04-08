@@ -1,21 +1,37 @@
 # My personal experiments
 
-This repository is collection of random experiments.
+This repository is collection of research I find interesting
 
 ## Motivation for this repository
 
-Three years ago I started building habit to experiment random ideas. Sometimes I get urge to try something, but it just gets lost. The solution was to have a repository that will contain these small samples.
+Three years ago I started working on habit to continuously learn. Over the time amount of time spent learning increased, amount of personal projects grew proportionally. Before decision to create this repository, I realized I had a lot of work locally, disorganized.
 
-On a side note, a lot of my work is abandoned and never completed. A lot of useful ideas I tried are lost. I have really big folder on computer, over 3gb (thank you node modules).
+I decided to start one repository and stash all the work. Here I publish work and ideas regularly.
 
-However, this folder has tens of ideas on which I've spent months working.
+This repository started small, grew untill it had a couple of projects and each of them had node_modules or some weird setup. Afterwards I learned about concept of monorepos and after some time I learned how to do it.
 
-And lastly, this repository is also motivation to publish every sample of interesting work I do.
+Since creation of this repository, majority of my work is located here.
 
 ## Navigation instructions
 
-Each sample is placed in its own directory.
+There are three important directories:
 
-Each of them has `README` file explaining what is it about and what does it do.
+- archive
+- no-module
+- yes-module
 
-It probably also contains reason I decided to try it out.
+### Archive
+
+This directory contains archived work which I can look back on and reflect on how much I have improved.
+
+### no-module
+
+This directory contains work that doesn't require node_modules, it doesn't make sense to make it a workspace.
+
+### yes-module
+
+Here are workspaces, these projects require work with package manager, node_modules or configuration.
+
+## TODO
+
+- ~~- Turn this repo to [monorepo](https://dev.to/alexeagleson/how-to-create-a-node-and-react-monorepo-with-git-submodules-2g83)~~ DONE
