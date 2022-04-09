@@ -1,4 +1,5 @@
-// print input to check execution order of inner functions
+// print arguments for each function respectively
+// to see when each function is called
 async function a(a) {
   console.log({ a });
   return async function b(b) {
@@ -9,11 +10,11 @@ async function a(a) {
   };
 }
 
-/**
- * Asynchronous JavaScript execution order
- */
+// The two following IIFE are used to check
+// in which order promises are resolved
+
 (async function () {
-  // check if execution below is blocked
+  // Used to check if execution below is blocked
   await (
     await (
       await a(1)
@@ -32,11 +33,8 @@ async function a(a) {
 
   a(4)
     .then((b) => {
-      // return a promise to be resolved by next one
-      // no return should throw an error
-
-      // return used to be explicit that value must be returned
-      // not immediately visible in arrow functions
+      // use explicit return statement so it is immediately
+      // clear for reader that result must be returned
       return b(5);
     })
     .then((c) => {
@@ -45,7 +43,8 @@ async function a(a) {
 })();
 
 (async function () {
-  // check how does this execute paired with await above
+  // check when does this get executed compared to
+  // first invocation in previous IIFE
   await (
     await (
       await a(7)
