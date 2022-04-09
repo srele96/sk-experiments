@@ -65,7 +65,7 @@ Another way to call curried functions:
 ```js
 var b = a(1)
 var c = b(2)
-c()
+c(3)
 ```
 
 ### Currying of asynchronous functions
@@ -87,7 +87,7 @@ async function a(a) {
 Asynchrnous functions are promises, one way to call promise is:
 
 ```js
-a(1).then(/*...*/).catch()
+a(1).then(/*...*/).catch(/*...*/)
 ```
 
 **But I want to call curried asynchronous functions like regular ones.**
