@@ -67,7 +67,7 @@ async function a(a) {
 
 let start = new Date().getSeconds();
 let now = null;
-// block call stack for 1 second
+// block javascript execution for 1 second
 while (true) {
   now = new Date().getSeconds();
   if (now > start + 1) break;
