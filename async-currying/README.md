@@ -4,7 +4,7 @@ Covered cases:
 
 - Currying, regular and asynchronous functions.
 - Promises execution order.
-- Promises execution order with blocked stack.
+- Blocking JavaScript execution.
 - How does async, await syntax block execution?
 
 ## Note
@@ -16,29 +16,16 @@ Examples below assume readers familiarity with following topics:
 - Async and Await
 - Currying
 
-Examples below use following syntax, that eases up `console.log` debugging.
+Printing output like this may ease up debugging, which is what I used:
 
 ```js
-const a = 'value A'
-console.log({ a })
+const a = 5;
+console.log({ a });
 ```
 
-This provides following output:
+## Currying of regular and asynchronous functions
 
-```js
-{ a: 'value A' }
-```
-
-This helps us avoid writing the following:
-
-```js
-const a = 'value A'
-console.log('a>>', a)
-```
-
-## Currying, regular and asynchronous functions
-
-Curried functions are functions that return functions, which means result can be invoked.
+Curried functions are functions that return functions, which means result may be invoked.
 
 ### Currying of regular functions
 
@@ -54,7 +41,7 @@ function a(a) {
 }
 ```
 
-Regular currying, is called like following:
+Regular curried functions are called like following:
 
 ```js
 a(1)(2)(3)
@@ -82,7 +69,7 @@ async function a(a) {
 }
 ```
 
-**Question: How do you invoke this?**
+How do I call this?
 
 Asynchrnous functions are promises, one way to call promise is:
 
@@ -90,7 +77,7 @@ Asynchrnous functions are promises, one way to call promise is:
 a(1).then(/*...*/).catch(/*...*/)
 ```
 
-**But I want to call curried asynchronous functions like regular ones.**
+*But I want to call curried asynchronous functions like regular ones.*
 
 What about await?
 
@@ -100,17 +87,9 @@ What about await?
 })();
 ```
 
-This works, but what do you think will be printed? It will print:
-
-```js
-{ a: 1 }
-```
-
-This is called inside first returned function, but what will previous code print? A function.
-
-```js
-[AsyncFunction: b]
-```
+This does the job, but it prints two things:
+- Value of parameter
+- Returned function name
 
 This made me realize, if `await a(1)` returns a function, i can await again.
 
@@ -120,7 +99,7 @@ This made me realize, if `await a(1)` returns a function, i can await again.
 })();
 ```
 
-Then I can await again:
+And again:
 
 ```js
 (async function() {
@@ -130,9 +109,9 @@ Then I can await again:
 
 ## Promises execution order
 
-JavaScript goes through the code, puts promises and async function calls aside, finishes with regular blocking JavaScript code, then executes promises.
+JavaScript goes through the code, puts promises and async functions on microtask stack, finishes with regular blocking JavaScript code, then executes promises.
 
-Promise is enqueued, then executed and enqueues promises inside of it.
+Promises are placed on microtask stack, any promise called inside is placed after previous one calls it.
 
 Check the following code:
 
@@ -147,9 +126,6 @@ async function a(a) {
   };
 }
 
-/**
- * Asynchronous JavaScript execution order
- */
 (async function () {
   await (await (await a(1))(2))(3);
 
@@ -168,6 +144,8 @@ async function a(a) {
 ```
 
 ### Order of execution
+
+*These are terms I came up with*
 
 1. Enqueue
 2. Execute & Enqueue
@@ -198,7 +176,7 @@ The order of execution:
 
 ### Disruptions in promise execution
 
-- await blocks code execution below
+- await blocks code execution below (inside async function)
 - chained promises don't block execution
 - unknown execution time may cause promise to execute last
 
@@ -211,7 +189,7 @@ The following code will block execution for 1 second:
 ```js
 let start = new Date().getSeconds();
 let now = null;
-// block call stack for 1 second
+// block javascript execution for 1 second
 while (true) {
   now = new Date().getSeconds();
   if (now > start + 1) break;
