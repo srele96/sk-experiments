@@ -1,0 +1,31 @@
+{
+  "version": "0.0.1",
+  "name": "webpack-bundling-process",
+  "description": "Dig in webpack module bundling process.",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "license": "ISC",
+  "scripts": {
+    "build:development": "webpack --mode=development",
+    "build:production": "webpack --mode=production",
+    "build": "yarn build:development && yarn build:production"
+  },
+  "dependencies": {
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^8.2.4",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2"
+  }
+}

@@ -1,0 +1,6 @@
+# https://github.com/browserslist/browserslist
+
+# defaults is suggested by browserslist, provides
+# target compilation for babbel and webpack
+
+defaults
