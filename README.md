@@ -10,6 +10,8 @@ Another advantage is having one node_modules in the root so I don't have to navi
 
 Another breaking change is migration to yarn 3 because it provides improved support for workspaces.
 
+## Check out TOPICS.md
+
 ## Motivation for this repository
 
 Three years ago I started working on habit to continuously learn. Over the time amount of time spent learning increased, amount of personal projects grew proportionally. Before decision to create this repository, I realized I had a lot of work locally, disorganized.
