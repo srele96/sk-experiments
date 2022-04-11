@@ -1,0 +1,24 @@
+{
+  "version": "0.0.1",
+  "name": "nodejs-express-middleware",
+  "description": "Sample code showcasing middleware usage in express.",
+  "author": "Kostic Srecko",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "license": "ISC"
+}
