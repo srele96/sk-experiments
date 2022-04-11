@@ -2,6 +2,8 @@
 
 This repository is collection of random experiments.
 
+## Check out TOPICS.md
+
 ## Motivation for this repository
 
 Three years ago I started building habit to experiment random ideas. Sometimes I get urge to try something, but it just gets lost. The solution was to have a repository that will contain these small samples.
