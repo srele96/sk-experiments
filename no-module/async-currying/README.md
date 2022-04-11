@@ -31,28 +31,28 @@ Curried functions are functions that return functions, which means result may be
 
 ```js
 function a(a) {
-  console.log({ a })
+  console.log({ a });
   return function b(b) {
-    console.log({ a, b })
+    console.log({ a, b });
     return function c(c) {
-      console.log({ a, b, c })
-    }
-  }
+      console.log({ a, b, c });
+    };
+  };
 }
 ```
 
 Regular curried functions are called like following:
 
 ```js
-a(1)(2)(3)
+a(1)(2)(3);
 ```
 
 Another way to call curried functions:
 
 ```js
-var b = a(1)
-var c = b(2)
-c(3)
+var b = a(1);
+var c = b(2);
+c(3);
 ```
 
 ### Currying of asynchronous functions
@@ -74,36 +74,37 @@ How do I call this?
 Asynchrnous functions are promises, one way to call promise is:
 
 ```js
-a(1).then(/*...*/).catch(/*...*/)
+a(1).then(/*...*/).catch(/*...*/);
 ```
 
-*But I want to call curried asynchronous functions like regular ones.*
+_But I want to call curried asynchronous functions like regular ones._
 
 What about await?
 
 ```js
-(async function() {
-  console.log(await a(1))
+(async function () {
+  console.log(await a(1));
 })();
 ```
 
 This does the job, but it prints two things:
+
 - Value of parameter
 - Returned function name
 
 This made me realize, if `await a(1)` returns a function, i can await again.
 
 ```js
-(async function() {
-  console.log(await (await a(1))(2))
+(async function () {
+  console.log(await (await a(1))(2));
 })();
 ```
 
 And again:
 
 ```js
-(async function() {
-  console.log(await (await (await a(1))(2))(3))
+(async function () {
+  console.log(await (await (await a(1))(2))(3));
 })();
 ```
 
@@ -127,7 +128,11 @@ async function a(a) {
 }
 
 (async function () {
-  await (await (await a(1))(2))(3);
+  await (
+    await (
+      await a(1)
+    )(2)
+  )(3);
 
   a(1)
     .then((b) => b(2))
@@ -145,14 +150,14 @@ async function a(a) {
 
 ### Order of execution
 
-*These are terms I came up with*
+_These are terms I came up with_
 
 1. Enqueue
 2. Execute & Enqueue
 3. Execute & Enqueue
 4. ...
 
-After execution, every called promise *on the same level* is enqueued.
+After execution, every called promise _on the same level_ is enqueued.
 
 The order of execution:
 
@@ -198,11 +203,11 @@ while (true) {
 
 However, if we run the file, there are two function calls before loop and they will be executed.
 
-*Every time call stack is empty, enqueued tasks will execute.*
+_Every time call stack is empty, enqueued tasks will execute._
 
-*I am not sure if I got this correctly.*
+_I am not sure if I got this correctly._
 
-##  How does async, await syntax block execution?
+## How does async, await syntax block execution?
 
 Inside `IIFE`, first calls use `await` syntax. These will block execution below, code below won't be picked up and enqueued.
 
