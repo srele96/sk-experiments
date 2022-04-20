@@ -7,9 +7,11 @@
     "yes-module/*"
   ],
   "devDependencies": {
+    "html-webpack-plugin": "^5.5.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.7",
-    "prettier": "^2.6.2"
+    "prettier": "^2.6.2",
+    "webpack-dev-server": "^4.8.1"
   },
   "scripts": {
     "format": "prettier --write .",
