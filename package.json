@@ -4,7 +4,7 @@
   "description": "Collection of research I find interesting.",
   "private": true,
   "workspaces": [
-    "yes-module/*"
+    "experiments/*"
   ],
   "devDependencies": {
     "html-webpack-plugin": "^5.5.0",

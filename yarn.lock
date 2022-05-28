@@ -2067,6 +2067,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"async-currying@workspace:experiments/async-currying":
+  version: 0.0.0-use.local
+  resolution: "async-currying@workspace:experiments/async-currying"
+  languageName: unknown
+  linkType: soft
+
 "async@npm:^2.6.2":
   version: 2.6.4
   resolution: "async@npm:2.6.4"
@@ -2136,9 +2142,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-transpilation@workspace:yes-module/babel-transpilation":
+"babel-transpilation@workspace:experiments/babel-transpilation":
   version: 0.0.0-use.local
-  resolution: "babel-transpilation@workspace:yes-module/babel-transpilation"
+  resolution: "babel-transpilation@workspace:experiments/babel-transpilation"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/preset-env": ^7.16.11
@@ -4019,9 +4025,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-features@workspace:yes-module/js-features":
+"js-features@workspace:experiments/js-features":
   version: 0.0.0-use.local
-  resolution: "js-features@workspace:yes-module/js-features"
+  resolution: "js-features@workspace:experiments/js-features"
   dependencies:
     "@babel/core": ^7.17.9
     "@babel/preset-env": ^7.16.11
@@ -4589,12 +4595,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodejs-express-middleware@workspace:yes-module/nodejs-express-middleware":
+"nodejs-express-middleware@workspace:experiments/nodejs-express-middleware":
   version: 0.0.0-use.local
-  resolution: "nodejs-express-middleware@workspace:yes-module/nodejs-express-middleware"
+  resolution: "nodejs-express-middleware@workspace:experiments/nodejs-express-middleware"
   dependencies:
     express: ^4.17.3
     nodemon: ^2.0.15
+  languageName: unknown
+  linkType: soft
+
+"nodejs-modules@workspace:experiments/nodejs-modules":
+  version: 0.0.0-use.local
+  resolution: "nodejs-modules@workspace:experiments/nodejs-modules"
   languageName: unknown
   linkType: soft
 
@@ -6189,9 +6201,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-bundling-process@workspace:yes-module/webpack-bundling-process":
+"webpack-bundling-process@workspace:experiments/webpack-bundling-process":
   version: 0.0.0-use.local
-  resolution: "webpack-bundling-process@workspace:yes-module/webpack-bundling-process"
+  resolution: "webpack-bundling-process@workspace:experiments/webpack-bundling-process"
   dependencies:
     "@babel/core": ^7.17.9
     "@babel/preset-env": ^7.16.11
