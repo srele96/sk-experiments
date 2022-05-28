@@ -4,7 +4,7 @@
   "description": "Collection of research I find interesting.",
   "private": true,
   "workspaces": [
-    "yes-module/*"
+    "experiments/*"
   ],
   "devDependencies": {
     "husky": "^7.0.4",
