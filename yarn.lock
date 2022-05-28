@@ -3874,6 +3874,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"nodejs-modules@workspace:experiments/nodejs-modules":
+  version: 0.0.0-use.local
+  resolution: "nodejs-modules@workspace:experiments/nodejs-modules"
+  languageName: unknown
+  linkType: soft
+
 "nodemon@npm:^2.0.15":
   version: 2.0.15
   resolution: "nodemon@npm:2.0.15"
