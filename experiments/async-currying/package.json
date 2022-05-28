@@ -1,0 +1,18 @@
+{
+  "version": "0.1.0",
+  "name": "async-currying",
+  "description": "Currying, Async Await, Promises and JavaScript execution order.",
+  "author": "Kostic Srecko",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "license": "ISC"
+}

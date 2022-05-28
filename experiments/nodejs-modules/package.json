@@ -1,0 +1,18 @@
+{
+  "version": "0.1.0",
+  "name": "nodejs-modules",
+  "description": "NodeJS modules research. Their behavior and properties.",
+  "author": "Kostic Srecko",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "license": "ISC"
+}
