@@ -23,6 +23,49 @@
 - CSS CSSOM parsing
 - How does browser parse web pages?
 
+## Additional problems
+
+- Monorepo usage of installed npm packages
+
+  - Package `math` with `package.json` that has content:
+
+  ```json
+  {
+    "dependencies": {
+      "lodash": "lodash-version-etc"
+    }
+  }
+  ```
+
+  - Package `cube` with `package.json` that has content:
+
+  ```json
+  {
+    "dependencies": {}
+  }
+  ```
+
+  - Why can package `cube` do this and it will work?
+
+  ```js
+  const lodash = require('lodash');
+  ```
+
+  - TODO:
+
+    - Find out why does this work.
+    - Does it work because it is in node modules?
+    - Does it mean I need to declare installed packages in root package.json?
+    - Does it mean I need to manually keep each package:
+      - Dependencies
+      - Peer dependencies
+      - Dev dependencies
+    - Clean up dependencies and remove redundant ones
+
+      Manually up to date with root ones?
+
+    This problem has been bugging me for a while because I'm using monorepo.
+
 ## Develop APIs on RapidAPI
 
 Do it.
