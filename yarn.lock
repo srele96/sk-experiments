@@ -4032,10 +4032,12 @@ __metadata:
     "@babel/core": ^7.17.9
     "@babel/preset-env": ^7.16.11
     babel-loader: ^8.2.4
+    html-webpack-plugin: ^5.5.0
     react: 18.0.0
     react-dom: 18.0.0
     webpack: ^5.72.0
     webpack-cli: ^4.9.2
+    webpack-dev-server: ^4.8.1
   languageName: unknown
   linkType: soft
 
@@ -5608,11 +5610,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sk-experiments@workspace:."
   dependencies:
-    html-webpack-plugin: ^5.5.0
     husky: ^7.0.4
     lint-staged: ^12.3.7
     prettier: ^2.6.2
-    webpack-dev-server: ^4.8.1
   languageName: unknown
   linkType: soft
 

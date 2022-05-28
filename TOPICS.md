@@ -66,6 +66,34 @@
 
     This problem has been bugging me for a while because I'm using monorepo.
 
+### The answers to the 'Additional problems'
+
+Q: Why can package `cube` do require module that isn't in its `package.json`?
+
+A: NodeJS package resolution algorithm.
+
+---
+
+Q: Find out why does this work.
+
+A: The package json is configuration for the package manager and the NodeJS. NodeJS doesn't need package.json to require a package.
+
+---
+
+Q: Does it mean I need to declare installed packages in root package.json?
+
+A: The package JSON should be shipped when publishing packages. The package JSON tells the users what npm needs to install to allow our package to work.
+
+---
+
+Q: Does it mean I need to manually keep each package:
+
+- Dependencies
+- Peer dependencies
+- Dev dependencies
+
+A: We can manually modify package names and versions in the package JSON. Each dependency type has a use case. The package developer should decide what dependency type he needs.
+
 ## Develop APIs on RapidAPI
 
 Do it.
