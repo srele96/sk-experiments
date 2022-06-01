@@ -16,3 +16,7 @@ yarn-error.log
 **/.idea/shelf
 **/.idea/*.iml
 **/.idea/modules.xml
+
+env
+# prettier doesn't support python
+.py
