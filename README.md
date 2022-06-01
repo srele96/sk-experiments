@@ -1,23 +1,27 @@
-# Personal collection
+# My work
 
-This repository is collection of topics I have researched because I found them interesting.
+The motivation for this repository is that I wanted to put the majority of my research in one place. I have ideas that I would like to research, but setting up a new repository takes too much time.
 
-## Migration to monorepo
+## Monorepo
 
-Migration to monorepo allowed me to share one configuration for every project in `yes-module` directory.
+After I created this repository, I learned the mono repository concept and yarn workspaces. I read an article about the experience of big companies with different types of repositories.
 
-Another advantage is having one node_modules in the root so I don't have to navigate around to run `npm install`.
+I started by placing each project in a dedicated directory in one repository, but it didn't work. I needed to install packages manually. I figured I needed a mono repository to solve that.
 
-Another breaking change is migration to yarn 3 because it provides improved support for workspaces.
+Soon after going through the mono repository path, I learned that duplicated dependencies with the same version collide. I was confused. I didn't know how the subdirectory gitignore files work.
 
-## Check out TOPICS.md
+I talked to a friend about the mono repository concept. I asked him how it works in CPP. He was confused as to why I asked him that. I told him about the yarn workspaces. He said that a mono repo is a concept made by a build system.
 
-## Motivation for this repository
+I am in the process of wrapping my mind around the concept of repository types.
 
-Three years ago I started working on habit to continuously learn. Over the time amount of time spent learning increased, amount of personal projects grew proportionally. Before decision to create this repository, I realized I had a lot of work locally, disorganized.
+## Motivation
 
-I decided to start one repository and stash all the work. Here I publish work and ideas regularly.
+I started around three years ago to work on different topics. I did all the work in a directory on my pc, but it became unmanageable. The idea of doing something cool every day drove me. I realized I didn't share anything, and most of it is useless, forgotten, or abandoned. That is sad because I love some of those projects.
 
-This repository started small, grew untill it had a couple of projects and each of them had node_modules or some weird setup. Afterwards I learned about concept of monorepos and after some time I learned how to do it.
+This repository started small and grew until it had a couple of projects, and each of them had node_modules or some weird setup.
 
-Since creation of this repository, majority of my work is located here.
+## Lessons
+
+Technical debt is inevitable, but that is fine. The good behavior of computer scientists is tackling the technical debt.
+
+We get sick, but we don't ignore our health. We visit the doctor. The same applies to technical debt. We should work to correct it to provide a valuable product. The code is useless when no one uses it.
