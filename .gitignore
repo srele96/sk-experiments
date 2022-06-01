@@ -16,3 +16,5 @@ yarn-error.log
 **/.idea/shelf
 **/.idea/*.iml
 **/.idea/modules.xml
+
+env
