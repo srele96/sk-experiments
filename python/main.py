@@ -40,8 +40,8 @@
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loop invariants:
-#   - store has the left characters and current amount.
-#   - the c must be either right or left character.
+#   - Opened has the opening brackets and current amount.
+#   - The c must be either opening or closing bracket.
 #   - The opening bracket increases the opened brackets count.
 #   - The closing bracket decreases the pairing opened bracket count.
 #   - Opened brackets value below 0 terminates the loop by returning False.
