@@ -124,3 +124,4 @@ a += 1;
 a += 1;
 
 console.log({ 'first.js': a });
+var possibly_non_declared_variable = 'global value first.js';
