@@ -21,7 +21,7 @@ function App() {
     <ul>
       {images.map((image) => (
         <li key={image}>
-          <img src={image} />
+          <img src={image} alt={image} />
         </li>
       ))}
     </ul>
