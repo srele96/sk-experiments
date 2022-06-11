@@ -29,6 +29,11 @@ const Article = styled.article`
   max-width: 1080px;
 `;
 
+const Title = styled.h1`
+  margin-bottom: 16px;
+  text-align: center;
+`;
+
 /**
  * Container for all images.
  */
@@ -97,7 +102,7 @@ const ControlBtn = styled.button`
   height: 16px;
   cursor: pointer;
   transition: background-color 0.5s ease-in;
-  background-color: ${({ isVisible }) => (isVisible ? '#94d2bd' : '#0a9396')};
+  background-color: ${({ isVisible }) => (isVisible ? '#e5eeeb' : '#0a9396')};
   :focus {
     outline: 2px solid #e9d8a6;
     box-shadow: 0 0 10px #e9d8a6;
@@ -186,6 +191,7 @@ function App() {
 
   return (
     <Article>
+      <Title>Attack on Titan</Title>
       <AlbumItems>{albumItems}</AlbumItems>
       <Controls>{controls}</Controls>
     </Article>
