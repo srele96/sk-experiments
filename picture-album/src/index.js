@@ -129,7 +129,7 @@ function App() {
   images.forEach((image, index) => {
     albumItems.push(
       <AlbumItem key={index} isVisible={index === visibleIndex}>
-        <AlbumImage src={image} />
+        <AlbumImage src={image} alt={image} />
       </AlbumItem>
     );
 
