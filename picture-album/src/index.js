@@ -10,11 +10,11 @@ import images from './images';
  * A picture album.
  *
  * - Pictures are on top of each other.
- * - Below the pictures are dots that we can use to set active picture.
- * - The picture that shows fades in.
- * - The saved picture file name is visible.
+ * - Below the pictures are buttons that we can use to set active picture.
+ * - Newly visible picture has fade-in effect.
+ * - The saved index is index of the currently visible picture.
  *   The images are array of file names.
- * - The default visible image is first picture.
+ * - The first image is the default active image.
  * - The active image is on top of the others.
  *
  * - Get the design.
