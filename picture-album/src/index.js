@@ -26,7 +26,7 @@ const Article = styled.article`
   max-width: 768px;
 `;
 
-const Ul = styled.ul`
+const AlbumItems = styled.ul`
   background-color: #005f73;
   position: relative;
   display: flex;
@@ -37,7 +37,7 @@ const Ul = styled.ul`
   }
 `;
 
-const Li = styled.li`
+const AlbumItem = styled.li`
   height: 100%;
   width: 100%;
   position: absolute;
@@ -47,7 +47,7 @@ const Li = styled.li`
   z-index: ${({ isVisible }) => (isVisible ? 1 : 0)};
 `;
 
-const Img = styled.img`
+const AlbumImage = styled.img`
   display: block;
   position: absolute;
   width: 100%;
@@ -122,15 +122,15 @@ function App() {
     );
   }
 
-  let album = [];
+  let albumItems = [];
   let controls = [];
 
   // render album and controls in one go
   images.forEach((image, index) => {
-    album.push(
-      <Li key={index} isVisible={index === visibleIndex}>
-        <Img src={image} />
-      </Li>
+    albumItems.push(
+      <AlbumItem key={index} isVisible={index === visibleIndex}>
+        <AlbumImage src={image} />
+      </AlbumItem>
     );
 
     const label = `open image ${index + 1}`;
@@ -153,7 +153,7 @@ function App() {
 
   return (
     <Article>
-      <Ul>{album}</Ul>
+      <AlbumItems>{albumItems}</AlbumItems>
       <Controls>{controls}</Controls>
     </Article>
   );
