@@ -17,7 +17,7 @@ import images from './images';
  * - The first image is the default active image.
  * - The active image is on top of the others.
  *
- * - Get the design.
+ * - The picture container is a rectangle with darker background than page.
  */
 
 const Article = styled.article`
