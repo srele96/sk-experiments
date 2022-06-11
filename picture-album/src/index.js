@@ -38,7 +38,7 @@ const Title = styled.h1`
  * Container for all images.
  */
 const AlbumItems = styled.ul`
-  background-color: #001219;
+  background-color: var(--level-1);
   position: relative;
   display: flex;
   ::after {
@@ -102,10 +102,11 @@ const ControlBtn = styled.button`
   height: 16px;
   cursor: pointer;
   transition: background-color 0.5s ease-in;
-  background-color: ${({ isVisible }) => (isVisible ? '#e5eeeb' : '#0a9396')};
+  background-color: ${({ isVisible }) =>
+    `var(--level-${isVisible ? '4' : '3'})`};
   :focus {
-    outline: 2px solid #e9d8a6;
-    box-shadow: 0 0 10px #e9d8a6;
+    outline: 2px solid var(--level-4);
+    box-shadow: 0 0 10px var(--level-4);
   }
 `;
 
@@ -169,7 +170,7 @@ function App() {
       </AlbumItem>
     );
 
-    const label = `open image ${index + 1}`;
+    const label = `image ${index + 1}`;
 
     // We hide the text of the control for nicer appearance
     // I used label and title to make the button accessible
