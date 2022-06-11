@@ -21,19 +21,19 @@ import images from './images';
  */
 
 const Article = styled.article`
-  margin: 16px auto 0;
+  margin: 0 auto;
   width: 100%;
-  max-width: 768px;
+  max-width: 1080px;
 `;
 
 const AlbumItems = styled.ul`
-  background-color: #005f73;
+  background-color: #001219;
   position: relative;
   display: flex;
   ::after {
     content: '';
     display: block;
-    padding-top: 100%;
+    padding-top: 65%;
   }
 `;
 
@@ -41,9 +41,9 @@ const AlbumItem = styled.li`
   height: 100%;
   width: 100%;
   position: absolute;
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   list-style: none;
   transition: opacity 0.5s ease-in;
+  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   z-index: ${({ isVisible }) => (isVisible ? 1 : 0)};
 `;
 
@@ -56,7 +56,7 @@ const AlbumImage = styled.img`
 `;
 
 const Controls = styled.ul`
-  margin-top: 16px;
+  margin-top: 6px;
   display: flex;
   justify-content: center;
 `;
@@ -64,7 +64,7 @@ const Controls = styled.ul`
 const Control = styled.li`
   list-style: none;
   :not(:last-child) {
-    margin-right: 16px;
+    margin-right: 8px;
   }
 `;
 
@@ -72,13 +72,14 @@ const ControlBtn = styled.button`
   display: block;
   border-style: none;
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: 16px;
+  height: 16px;
   cursor: pointer;
-  background-color: ${({ isVisible }) => (isVisible ? '#3e3e3e' : '')};
+  transition: background-color 0.5s ease-in;
+  background-color: ${({ isVisible }) => (isVisible ? '#94d2bd' : '#0a9396')};
   :focus {
-    outline: 2px solid #1645ff;
-    box-shadow: 0 0 10px #1645ff;
+    outline: 2px solid #e9d8a6;
+    box-shadow: 0 0 10px #e9d8a6;
   }
 `;
 
