@@ -20,12 +20,18 @@ import images from './images';
  * - The picture container is a rectangle with darker background than page.
  */
 
+/**
+ * A page container.
+ */
 const Article = styled.article`
   margin: 0 auto;
   width: 100%;
   max-width: 1080px;
 `;
 
+/**
+ * Container for all images.
+ */
 const AlbumItems = styled.ul`
   background-color: #001219;
   position: relative;
@@ -37,6 +43,9 @@ const AlbumItems = styled.ul`
   }
 `;
 
+/**
+ * Container for an image with controllable opacity and z-index.
+ */
 const AlbumItem = styled.li`
   height: 100%;
   width: 100%;
@@ -47,6 +56,9 @@ const AlbumItem = styled.li`
   z-index: ${({ isVisible }) => (isVisible ? 1 : 0)};
 `;
 
+/**
+ * Responsive image. Scales to fit a container. The whole image is visible.
+ */
 const AlbumImage = styled.img`
   display: block;
   position: absolute;
@@ -55,12 +67,18 @@ const AlbumImage = styled.img`
   object-fit: scale-down;
 `;
 
+/**
+ * Controls container.
+ */
 const Controls = styled.ul`
   margin-top: 6px;
   display: flex;
   justify-content: center;
 `;
 
+/**
+ * An image control container.
+ */
 const Control = styled.li`
   list-style: none;
   :not(:last-child) {
@@ -68,6 +86,9 @@ const Control = styled.li`
   }
 `;
 
+/**
+ * A control button with controllable background-color.
+ */
 const ControlBtn = styled.button`
   display: block;
   border-style: none;
@@ -83,14 +104,23 @@ const ControlBtn = styled.button`
   }
 `;
 
-// prevents focus styling on mouse action, preserves keyboard focus styling
-// https://css-tricks.com/keyboard-only-focus-styles/#comment-1653279
+/**
+ * Prevents focus styling on mouse action, preserves keyboard focus styling.
+ *
+ * Pass a prop tabIndex="-1" to prevent mouse actions activating outline on the
+ * parent.
+ *
+ * [keyboard-only-focus-styles](https://css-tricks.com/keyboard-only-focus-styles/#comment-1653279)
+ */
 const PreventMouseFocus = styled.span`
   display: block;
   width: 100%;
   height: 100%;
 `;
 
+/**
+ * The text is hidden but accessible.
+ */
 const ControlLabel = styled.span`
   display: block;
   width: 1px;
@@ -136,6 +166,8 @@ function App() {
 
     const label = `open image ${index + 1}`;
 
+    // We hide the text of the control for nicer appearance
+    // I used label and title to make the button accessible
     controls.push(
       <Control key={index}>
         <ControlBtn
