@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 
-/* Colors go from the darkest to the least dark starting from level 1. */
 :root {
   --level-1: #03045e;
   --level-2: #023e8a;
