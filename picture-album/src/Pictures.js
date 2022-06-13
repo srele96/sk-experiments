@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledPictures = styled.ul`
-  background-color: var(--level-1);
+  background-color: var(--blue-level-1);
   position: relative;
   display: flex;
 
