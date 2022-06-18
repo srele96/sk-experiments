@@ -10,7 +10,7 @@ const StyledNavigation = styled.li`
 
 const Navigate = styled.button`
   background-color: ${({ isVisible }) =>
-    `var(--level-${isVisible ? '4' : '3'})`};
+    `var(--blue-level-${isVisible ? '4' : '3'})`};
   display: block;
   width: 16px;
   height: 16px;
@@ -20,8 +20,8 @@ const Navigate = styled.button`
   transition: background-color 0.5s ease-in;
 
   :focus {
-    outline: 2px solid var(--level-4);
-    box-shadow: 0 0 10px var(--level-4);
+    outline: 2px solid var(--blue-level-4);
+    box-shadow: 0 0 10px var(--blue-level-4);
   }
 `;
 

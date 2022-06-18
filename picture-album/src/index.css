@@ -5,14 +5,14 @@
 }
 
 :root {
-  --level-1: #03045e;
-  --level-2: #023e8a;
-  --level-3: #0096c7;
-  --level-4: #caf0f8;
+  --blue-level-1: #03045e;
+  --blue-level-2: #023e8a;
+  --blue-level-3: #0096c7;
+  --blue-level-4: #caf0f8;
 }
 
 body {
-  background-color: var(--level-2);
+  background-color: var(--blue-level-2);
   padding: 16px;
-  color: var(--level-4);
+  color: var(--blue-level-4);
 }
