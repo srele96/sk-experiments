@@ -1,0 +1,22 @@
+{
+  "version": "0.1.0",
+  "name": "streams",
+  "description": "an attempt to understand how streaming works",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "license": "ISC",
+  "packageManager": "yarn@3.2.0",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
