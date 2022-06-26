@@ -16,7 +16,8 @@
   "scripts": {
     "start:understand-request-response-streams": "nodemon understand-request-response-streams.js",
     "start:how-streams-transfer-data": "nodemon how-streams-transfer-data.js",
-    "start:one-source-multiple-destinations": "nodemon one-source-multiple-destinations.js"
+    "start:one-source-multiple-destinations": "nodemon one-source-multiple-destinations.js",
+    "start:how-streams-transform-data": "nodemon how-streams-transform-data.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
