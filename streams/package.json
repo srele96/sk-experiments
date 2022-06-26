@@ -14,7 +14,9 @@
   "license": "ISC",
   "packageManager": "yarn@3.2.0",
   "scripts": {
-    "start:understand-request-response-streams": "nodemon understand-request-response-streams.js"
+    "start:understand-request-response-streams": "nodemon understand-request-response-streams.js",
+    "start:how-streams-transfer-data": "nodemon how-streams-transfer-data.js",
+    "start:one-source-multiple-destinations": "nodemon one-source-multiple-destinations.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
