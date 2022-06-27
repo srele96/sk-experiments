@@ -13,7 +13,7 @@
   "scripts": {
     "start:serve-data": "nodemon serve-data.js",
     "start:serve-client": "nodemon serve-client.js",
-    "start:watching-tcp-traffic": "sudo tcpdump -v -i any port 3005"
+    "start:watching-tcp-traffic": "sudo tcpdump -v -i any port 3000"
   },
   "dependencies": {
     "express": "^4.18.1"
