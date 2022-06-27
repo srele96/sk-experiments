@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --blue-level-1: #03045e;
+  --blue-level-2: #023e8a;
+  --blue-level-3: #0096c7;
+  --blue-level-4: #caf0f8;
+}
+
+body {
+  background-color: var(--blue-level-2);
+  padding: 16px;
+  color: var(--blue-level-4);
+}
