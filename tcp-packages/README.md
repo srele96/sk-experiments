@@ -7,12 +7,12 @@ code features a way to monitor TCP traffic on a port.
 ## Important notes
 
 - Doesn't work on Windows. If you are using Windows, you need WSL.
-- Run everything from WSL, otherwise won't work.
+- Run everything from WSL. Otherwise won't work.
 
 ## What units does this sample have?
 
 - Server on http://localhost:3000
-- Server that serves client that sends request to http://localhost:3000
+- Server that serves a client that sends a request to http://localhost:3000
 - UNIX script that listens to TCP traffic on the port 3000
 
 ## How does it work?
@@ -33,7 +33,7 @@ code features a way to monitor TCP traffic on a port.
 
 1. Start the server to serve data
 2. Start the script to monitor TCP traffic
-3. Start the server to serve client to send request
+3. Start the server to serve the client to send a request
 
 Alternatively, start all three at the same time. After that, refresh the client
 and the traffic should be visible.
