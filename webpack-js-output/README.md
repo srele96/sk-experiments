@@ -17,7 +17,18 @@ I actually read about this in some ReactJS blog post.
 - Create as many js output files as possible.
 - Code splitting, external dependencies, main bundle, etc...
 - Get their file names and paths.
-- Create a template component that receives rendered react app.
+- ~~Create a template component that receives rendered react app.~~
+
+## Outcome
+
+My code is not compatible with SSR setup. I started with intention to inspect
+the files from compilation object. Because I started with that intention, the
+code only does that.
+
+I realized that my code is not compatible when I started thinking what do I
+need for proper webpack ssr & csr setup. Oops.
+
+Define your requirements well :)
 
 ## References
 
