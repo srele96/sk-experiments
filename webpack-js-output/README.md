@@ -1,4 +1,4 @@
-# How to read JavaScript files from Webpack build while they are in memory
+# How to read Webpack build JS files for React SSR
 
 I found out I can get stats from the webpack build object. This is an attempt
 to see how it works.

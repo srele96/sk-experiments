@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "name": "webpack-js-output",
+  "description": "How to read Webpack build JS files for React SSR",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  }
+}
