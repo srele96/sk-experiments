@@ -3,6 +3,15 @@
 I found out I can get stats from the webpack build object. This is an attempt
 to see how it works.
 
+## What problems does this solve?
+
+SSR requires an HTML template that references the file names. Webpack dev server
+serves those files from the memory. One way to get them is to get the dev server
+to write output to disk. However, writing to disk is slow. Alternative solution
+and probably better is to read the files from webpack stats.
+
+I actually read about this in some ReactJS blog post.
+
 ## Goals:
 
 - Create as many js output files as possible.
