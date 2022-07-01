@@ -10,6 +10,9 @@
   "bugs": {
     "url": "https://github.com/srele96/sk-experiments/issues"
   },
+  "scripts": {
+    "start:print-webpack-build-output": "nodemon printWebpackBuildOutput.ts"
+  },
   "dependencies": {
     "@types/node": "^18.0.0",
     "@types/webpack": "^5.28.0",
