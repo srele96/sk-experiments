@@ -11,7 +11,7 @@
     "url": "https://github.com/srele96/sk-experiments/issues"
   },
   "scripts": {
-    "start:print-webpack-build-output": "nodemon printWebpackBuildOutput.ts"
+    "start:print-webpack-build-output": "nodemon printWebpackBuildOutput.ts -i *.json"
   },
   "dependencies": {
     "@types/node": "^18.0.0",

@@ -1,5 +1,6 @@
 import webpack, { Configuration } from 'webpack';
 import { join } from 'path';
+import { writeFile } from 'fs';
 
 const config: Configuration = {
   mode: 'development',
@@ -32,5 +33,17 @@ webpack(config, (error, stats) => {
     // here we can read js output files and create our own html template
     const compiledFileNames = Object.keys(stats.compilation.assets);
     console.log('Webpack compilation completed', compiledFileNames);
+    writeFile(
+      join(__dirname, 'assets.json'),
+      JSON.stringify(compiledFileNames),
+      (err) => {
+        if (err) console.log('Error writing assets.json', err);
+        else
+          console.log(
+            'assets.json written with the following content:',
+            compiledFileNames
+          );
+      }
+    );
   }
 });
