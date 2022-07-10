@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Count images in directory</title>
+  </head>
+  <body>
+    <script>
+      // Count the images from the 'images' directory.
+      // Add an image url to the image html element
+      // If the image is successfully loaded, we attempt to fetch another
+      // We repeat the process, until it fails
+      // Once the process fails, we have the image count
+      // The conditions:
+      //   - Image name must be in form of `${number}.png`
+      //   - Onload must be set in sequential order
+      //   - Starts with 1
+      //   - The picture in directory must follow name pattern used in code -
+      //     <number>.png
+      //
+      // I will attempt to fetch one correct and one incorrect picture
+      // That gives us the idea of how success and fail gets handled
+      // Afterwards, we can set up the chain of calls
+
+      const body = document.getElementsByTagName('body')[0];
+
+      const getImageCount = new Promise((resolve) => {
+        let img = null;
+        let pictureNumber = null;
+
+        function next(number = 0) {
+          img = document.createElement('img');
+          // On successfully fetched picture increment the count
+          // Initially, we have 0 found pictures, so initial value should be 0
+          // However, initial picture is number 1
+          // Therefore we should threat them separately
+          // Count starts from 0
+          // But pictures start from 1
+          // Which means that we have a counter that starts at 0
+          // And current picture number is counter + 1
+          pictureNumber = number + 1;
+          img.src = 'images/' + pictureNumber + '.png';
+
+          img.addEventListener('load', () => {
+            body.removeChild(img);
+            next(number + 1);
+          });
+
+          img.addEventListener('error', () => {
+            body.removeChild(img);
+            resolve(number);
+          });
+
+          body.appendChild(img);
+        }
+
+        next();
+      });
+
+      getImageCount.then((count) => {
+        console.log('Available images', count);
+      });
+    </script>
+  </body>
+</html>
