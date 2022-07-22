@@ -1,0 +1,30 @@
+{
+  "version": "0.1.0",
+  "name": "eslint-custom-rules",
+  "description": "I'm curious how do eslint custom rules work.",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "scripts": {
+    "lint": "eslint app.js"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0 || ^8.2.0"
+  },
+  "eslintConfig": {
+    "rules": {
+      "no-restricted-globals": [
+        "error",
+        {
+          "name": "myRestrictedGlobal",
+          "message": "because i said so"
+        }
+      ]
+    }
+  }
+}
