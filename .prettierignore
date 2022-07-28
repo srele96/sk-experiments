@@ -2,21 +2,16 @@ node_modules
 
 yarn-error.log
 
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+**/.pnp.*
+**/.yarn/*
+!**/.yarn/patches
+!**/.yarn/plugins
+!**/.yarn/releases
+!**/.yarn/sdks
+!**/.yarn/versions
 
-# https://intellij-support.jetbrains.com/hc/en-us/articles/206544839-How-to-manage-projects-under-Version-Control-Systems
-**/.idea/workspace.xml
-**/.idea/usage.statistics.xml
-**/.idea/shelf
-**/.idea/*.iml
-**/.idea/modules.xml
-
+**/.idea
 env
+
 # prettier doesn't support python
 .py
