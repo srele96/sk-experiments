@@ -15,7 +15,6 @@
 - NodeJS express error handling
 - ReactJS fetch before component is mounted
 - ReactJS forms state management
-- Webpack code bundling - How does webpack code output realy look like?
 - How does webpack optimize bundles?
 - Git files - gitignore, gitattributes, ...
 - How do callbacks in JavaScript realy work?
