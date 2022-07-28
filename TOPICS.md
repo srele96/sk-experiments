@@ -17,7 +17,6 @@
 - ReactJS forms state management
 - Webpack code bundling - How does webpack code output realy look like?
 - How does webpack optimize bundles?
-- Webpack bundle sizes
 - Git files - gitignore, gitattributes, ...
 - How do callbacks in JavaScript realy work?
 - JavaScript type checking - typeof, print constructor
