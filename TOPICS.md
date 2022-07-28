@@ -1,5 +1,10 @@
 # List of potential topics for research
 
+## Topics
+
+- Create semantic and accessible website using **_ONLY_**
+  - **_content from my blogs_**
+  - **_HTML_**
 - Prettier plugins - Format imports alphabetically and group by type
 - JavaScript "asynchronous" nature - How does it really work?
 - HTML script tag attributes - How does browser handle script tags?
@@ -22,6 +27,55 @@
 - HTML DOM parsing
 - CSS CSSOM parsing
 - How does browser parse web pages?
+
+## Frontend cheat-sheet
+
+### Web Knowledge
+
+1. Caching
+2. HTTP/2
+3. Security
+
+### Web Performance
+
+1. Critical Rendering Path
+2. Reflow
+3. preload, pre-connect, prefetch, prerender
+4. Rendering Performance
+5. Workers
+6. Image Optimization
+
+### DOM
+
+1. Elements
+2. Manipulation
+3. Document Fragment
+4. Event delegation and bubbling
+
+### HTML
+
+1. Semantic Elements
+2. Accessibility
+3. Responsive web
+
+### Javascript
+
+1. this
+2. Closure
+3. Inheritance
+4. Asynchronous Javascript
+5. Hoisting
+6. Currying
+7. Higher-order functions
+
+### Design patterns
+
+1. Mixin
+2. Factory
+3. Singleton
+4. Facade
+5. MVC, MVVM
+6. Server vs Client-Side Rendering
 
 ## Additional problems
 
