@@ -1,0 +1,14 @@
+{
+  "version": "0.1.0",
+  "name": "{name}",
+  "description": "{description}",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme"
+}

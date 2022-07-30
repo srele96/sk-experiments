@@ -1,0 +1,9 @@
+{
+  "name": "new",
+  "version": "0.1.0",
+  "description": "creates new directory from template",
+  "bin": "./index.js",
+  "dependencies": {
+    "commander": "9.4.0"
+  }
+}
