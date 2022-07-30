@@ -9,6 +9,15 @@ const { name, description, version } = require('./package.json');
 
 program.name(name).description(description).version(version);
 
+function getTemplate(fileName) {
+  if (typeof fileName !== 'string')
+    throw new Error('fileName must be string, received ' + typeof fileName);
+  if (fileName === '') throw new Error("fileName can't be empty string");
+
+  // we use __dirname because templates live in the package
+  return readFile(join(__dirname, fileName), 'utf-8');
+}
+
 program
   .argument('<directory>', 'new directory for an experiment')
   .option('-d, --description <description>', 'experiment description', '')
@@ -24,8 +33,7 @@ program
         if (typeof createdDirectoryPath === 'string') {
           console.log('Created ' + baseDirname);
 
-          // read package.json template
-          readFile(join(__dirname, 'template-package.json'), 'utf-8')
+          getTemplate('template-package.json')
             .then((packageJson) => {
               // replace placeholders with user input
               const namePlaceholder = '{name}';
