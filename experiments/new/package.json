@@ -2,6 +2,15 @@
   "name": "new",
   "version": "0.1.0",
   "description": "creates new directory from template",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
   "bin": "./index.js",
   "dependencies": {
     "commander": "9.4.0"
