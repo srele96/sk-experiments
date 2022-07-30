@@ -28,3 +28,18 @@ Create a new directory with one-word description:
 ```
 new my-awesome-experiment -d description
 ```
+
+Create nested directory:
+
+```
+new my-dir
+new my-dir/nested
+new my-dir/nested/also-nested
+```
+
+Error, directory already exists:
+
+```
+new mydir
+new mydir
+```
