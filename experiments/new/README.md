@@ -1,6 +1,7 @@
 # new
 
 Create new experiment directory consistently from one template.
+Creates package.json and yarn.lock.
 
 ## Docs
 
