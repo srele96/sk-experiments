@@ -9,13 +9,13 @@ const { name, description, version } = require('./package.json');
 
 program.name(name).description(description).version(version);
 
-function getTemplate(fileName) {
-  if (typeof fileName !== 'string')
-    throw new Error('fileName must be string, received ' + typeof fileName);
-  if (fileName === '') throw new Error("fileName can't be empty string");
-
+/**
+ * @param {string} path
+ * @return {Promise<string>}
+ */
+function getTemplate(path) {
   // we use __dirname because templates live in the package
-  return readFile(join(__dirname, fileName), 'utf-8');
+  return readFile(join(__dirname, path), 'utf-8');
 }
 
 program
