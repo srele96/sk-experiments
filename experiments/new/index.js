@@ -18,50 +18,55 @@ program
     const baseDirname = basename(directory);
 
     // create directory
-    mkdir(directory)
-      .then(() => {
-        console.log('Created ' + baseDirname);
+    mkdir(directory, { recursive: true })
+      .then((createdDirectoryPath) => {
+        // directory successfully created
+        if (typeof createdDirectoryPath === 'string') {
+          console.log('Created ' + baseDirname);
 
-        // read package.json template
-        readFile(join(__dirname, 'template-package.json'), 'utf-8')
-          .then((packageJson) => {
-            // replace placeholders with user input
-            const namePlaceholder = '{name}';
-            const descriptionPlaceholder = '{description}';
+          // read package.json template
+          readFile(join(__dirname, 'template-package.json'), 'utf-8')
+            .then((packageJson) => {
+              // replace placeholders with user input
+              const namePlaceholder = '{name}';
+              const descriptionPlaceholder = '{description}';
 
-            return packageJson
-              .replace(namePlaceholder, baseDirname)
-              .replace(descriptionPlaceholder, description);
-          })
-          .then((packageJson) => {
-            // write package.json to created directory
-            return writeFile(
-              join(directory, 'package.json'),
-              packageJson,
-              'utf-8'
-            );
-          })
-          .then(() => {
-            console.log('Created ' + join(baseDirname, 'package.json'));
-          })
-          .catch((error) => {
-            console.log(
-              'Error creating ' + join(baseDirname, 'package.json'),
-              error
-            );
-          });
+              return packageJson
+                .replace(namePlaceholder, baseDirname)
+                .replace(descriptionPlaceholder, description);
+            })
+            .then((packageJson) => {
+              // write package.json to created directory
+              return writeFile(
+                join(directory, 'package.json'),
+                packageJson,
+                'utf-8'
+              );
+            })
+            .then(() => {
+              console.log('Created ' + join(baseDirname, 'package.json'));
+            })
+            .catch((error) => {
+              console.log(
+                'Error creating ' + join(baseDirname, 'package.json'),
+                error
+              );
+            });
 
-        // write empty yarn.lock to created directory
-        writeFile(join(directory, 'yarn.lock'), '', 'utf-8')
-          .then(() => {
-            console.log('Created ' + join(baseDirname, 'yarn.lock'));
-          })
-          .catch((error) => {
-            console.error(
-              'Error creating ' + join(baseDirname, 'yarn.lock'),
-              error
-            );
-          });
+          // write empty yarn.lock to created directory
+          writeFile(join(directory, 'yarn.lock'), '', 'utf-8')
+            .then(() => {
+              console.log('Created ' + join(baseDirname, 'yarn.lock'));
+            })
+            .catch((error) => {
+              console.error(
+                'Error creating ' + join(baseDirname, 'yarn.lock'),
+                error
+              );
+            });
+        } else {
+          throw new Error('Directory already exists!');
+        }
       })
       .catch((error) => {
         console.error('Error creating ' + baseDirname, error);
