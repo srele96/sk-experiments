@@ -2,7 +2,6 @@ const { createWriteStream, createReadStream } = require('fs');
 const { Readable } = require('stream');
 const { join } = require('path');
 
-// Ideally read function has its own scope, here I used closure to achieve that.
 const rs = new Readable({
   read: (function () {
     let alphabetChar = 97;
@@ -14,26 +13,6 @@ const rs = new Readable({
     };
   })(),
 });
-
-// Or alternatively...
-//
-// let alphabetChar = 97;
-// const rs = new Readable();
-// rs._read = function () {
-//   if (alphabetChar > 'z'.charCodeAt(0)) rs.push(null);
-//   else rs.push(String.fromCharCode(alphabetChar));
-//   alphabetChar += 1;
-// };
-
-// Or alternatively...
-// let alphabetChar = 97;
-// const rs = new Readable({
-//   read: function () {
-//     if (alphabetChar > 'z'.charCodeAt(0)) rs.push(null);
-//     else rs.push(String.fromCharCode(alphabetChar));
-//     alphabetChar += 1;
-//   },
-// });
 
 function getPath(fileName) {
   if (typeof fileName !== 'string') {
