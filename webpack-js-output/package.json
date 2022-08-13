@@ -1,6 +1,6 @@
 {
-  "version": "0.1.0",
   "name": "webpack-js-output",
+  "version": "0.1.0",
   "description": "How to read Webpack build JS files for React SSR",
   "author": "Kostic Srecko",
   "repository": {
