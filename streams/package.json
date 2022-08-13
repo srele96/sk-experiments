@@ -1,6 +1,6 @@
 {
-  "version": "0.1.0",
   "name": "streams",
+  "version": "0.1.0",
   "description": "an attempt to understand how streaming works",
   "author": "Kostic Srecko",
   "repository": {
