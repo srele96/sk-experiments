@@ -1,4 +1,4 @@
-# I tried pipe chaining, but I needed teeing.
+# I tried to chain pipes, but I needed to use teeing.
 
 I wanted to create two copies of a file. My implementation created two read streams, but I wanted to use one. Because a read stream can be read once, I thought I should chain pipes. However, I was wrong. I tried to use the transformation technique, but I needed teeing. So, how did I figure it out?
 
