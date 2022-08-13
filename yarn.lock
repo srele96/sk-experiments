@@ -2546,6 +2546,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:9.4.0":
+  version: 9.4.0
+  resolution: "commander@npm:9.4.0"
+  checksum: a322de584a6ccd1ea83c24f6a660e52d16ffbe2613fcfbb8d2cc68bc9dec637492456d754fe8bb5b039ad843ed8e04fb0b107e581a75f62cde9e1a0ab1546e09
+  languageName: node
+  linkType: hard
+
 "commander@npm:^2.20.0":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
@@ -4552,6 +4559,16 @@ __metadata:
   checksum: deac9f8d00eda7b2e5cd1b2549e26e10a0faa70adaa6fdadca701cc55f49ee9018e427f424bac0c790b7c7e2d3068db97f3093f1093975f2acb8f8818b936ed9
   languageName: node
   linkType: hard
+
+"new@workspace:experiments/new":
+  version: 0.0.0-use.local
+  resolution: "new@workspace:experiments/new"
+  dependencies:
+    commander: 9.4.0
+  bin:
+    new: ./index.js
+  languageName: unknown
+  linkType: soft
 
 "no-case@npm:^3.0.4":
   version: 3.0.4

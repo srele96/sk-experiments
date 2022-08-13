@@ -1,7 +1,7 @@
 {
   "version": "0.0.1",
   "name": "sk-experiments",
-  "description": "Collection of research I find interesting.",
+  "description": "❤️ collection of topics that I research, learn, and experiment with.",
   "private": true,
   "workspaces": [
     "experiments/*"
