@@ -23,20 +23,6 @@ Input goes from 5 to 1 (both included).
 This transformation is probably incorrect. If received numbers
 were from a file, the whole output would be mutated.
 
-Input file content:
-
-```txt
-12
-```
-
-Output file content:
-
-```txt
-{"transformedChunk":1,"data":"5"}{"transformedChunk":2,"data":"4"}
-```
-
-## More thoughts
-
 I wanted to count received chunks and return them to the client. I guess I used
 the wrong method to implement that requirement. A good transform stream usage
 is encryption or decryption, compression, and more.
