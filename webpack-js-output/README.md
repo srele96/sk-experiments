@@ -17,7 +17,6 @@ I actually read about this in some ReactJS blog post.
 - Create as many js output files as possible.
 - Code splitting, external dependencies, main bundle, etc...
 - Get their file names and paths.
-- ~~Create a template component that receives rendered react app.~~
 
 ## Outcome
 
