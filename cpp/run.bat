@@ -1,5 +1,5 @@
 @REM do not print text in this bat file
-ECHO OFF
+@ECHO OFF
 
 @REM use suggested strict flags for compilation
 @REM https://github.com/cpp-best-practices/cppbestpractices/blob/master/02-Use_the_Tools_Available.md#gcc--clang
