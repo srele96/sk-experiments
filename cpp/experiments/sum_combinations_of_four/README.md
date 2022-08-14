@@ -20,9 +20,9 @@ The inner-most loop contains combination, which means it creates an array pushes
 
 One benefit is that if we observe r as constant, where r=4 that reduces the algorithm runtime. However it still kind of depends on it's value.
 
-The formula: n! / (r! \_ (n - r)!)
+The formula: n! / (r! \* (n - r)!)
 
-Becomes: n! / (4! \_ (n - 4)!)
+Becomes: n! / (4! \* (n - 4)!)
 
 That is good for us because in big O notation we "cancel" constants because they are "small" and "irelevant" compared to variable input size.
 
