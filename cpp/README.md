@@ -1,3 +1,3 @@
-# C++ experiments
+# C++
 
-The collection of experiments using programming language C++.
+The root directory for C++ experiments.
