@@ -1,3 +1,3 @@
-# CPP experiments
+# C++ experiments
 
-A collection of experiments using programming language C++.
+The collection of experiments using programming language C++.
