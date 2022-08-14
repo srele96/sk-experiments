@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdexcept>
 #include <vector>
 
 std::vector<std::vector<int>> get_combinations_of_four_that_match_sum(
