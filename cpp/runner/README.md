@@ -5,6 +5,11 @@ Save and run one or series of commands.
 You don't have to remember them any more, only aliases. Or list commands if you
 forgot.
 
+## Problems
+
+I terminate work on the runner. I have to use a library, but don't know how.
+CMake appears to solve it, but I don't know how to use it.
+
 ## Specs
 
 - add configuration
