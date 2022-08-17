@@ -1,20 +1,20 @@
-# Building with CMake
+# Build with CMake
 
-Building a basic project structure using CMakeLists.txt.
+Build a basic project structure using CMakeLists.txt.
 
 ## Description
 
 Using base structure:
 
 ```txt
-building-with-cmake/
-building-with-cmake/.gitignore
-building-with-cmake/README.md
+build-with-cmake/
+build-with-cmake/.gitignore
+build-with-cmake/README.md
 
-building-with-cmake/CMakeLists.txt
-building-with-cmake/source
-building-with-cmake/source/CMakeLists.txt
-building-with-cmake/source/main.cpp
+build-with-cmake/CMakeLists.txt
+build-with-cmake/source
+build-with-cmake/source/CMakeLists.txt
+build-with-cmake/source/main.cpp
 ```
 
 ## Goals
@@ -45,7 +45,7 @@ cmake ..
 cmake --build .
 
 @REM run the program
-Debug\building-with-cmake
+Debug\build-with-cmake
 ```
 
 ### After we create the build directory
@@ -57,7 +57,7 @@ Run the following:
 cmake --build .
 
 @REM run the program
-Debug\building-with-cmake
+Debug\build-with-cmake
 ```
 
 Alternatively, we may have to run one more step. Probably if we
@@ -71,5 +71,5 @@ cmake ..
 cmake --build .
 
 @REM run the program
-Debug\building-with-cmake
+Debug\build-with-cmake
 ```
