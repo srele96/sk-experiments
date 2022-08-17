@@ -4,7 +4,7 @@ Building a basic project structure using CMakeLists.txt.
 
 ## Description
 
-Using structure:
+Using base structure:
 
 ```txt
 building-with-cmake/
