@@ -21,3 +21,7 @@ ar rvs Point.lib Point.o
 @REM link library and compile program
 clang++ main.cpp Point.lib -o main
 ```
+
+## Reference
+
+[stackoverflow - how to create a static library](https://stackoverflow.com/questions/5947067/how-to-create-a-static-library-with-g)
