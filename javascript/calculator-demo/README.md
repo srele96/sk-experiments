@@ -22,3 +22,40 @@ We will build a calculator app that has four operations:
 We are building a calculator. We split logic to the four packages.
 
 Our calculator will use four packages. We use webpack to build our calculator package.
+
+## Build package
+
+Development
+
+```terminal
+yarn build:prod
+```
+
+Production
+
+```terminal
+yarn build:dev
+```
+
+Development and production
+
+```terminal
+yarn build
+```
+
+## Run tests
+
+First build the package.
+
+To test in browser:
+
+1. Go to `__tests__` directory
+2. Open `useDevBuild.html` in browser
+3. Open `useProdBuild.html` in browser
+4. Open the developer console and verify that output is there
+
+To test in nodejs run:
+
+```terminal
+yarn test
+```
