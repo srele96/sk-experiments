@@ -18,6 +18,8 @@ function createDevOrProdBuild(_, args) {
           name: 'calculator',
           type: 'umd',
         },
+        // https://stackoverflow.com/questions/64639839/typescript-webpack-library-generates-referenceerror-self-is-not-defined
+        globalObject: 'this'
       },
     };
   else

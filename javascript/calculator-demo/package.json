@@ -12,6 +12,9 @@
   "scripts": {
     "build:prod": "webpack --mode=production",
     "build:dev": "webpack --mode=development",
-    "build": "yarn build:prod & yarn build:dev"
+    "build": "yarn build:prod & yarn build:dev",
+    "test:node-dev": "node __tests__/useDevBuild.js",
+    "test:node-prod": "node __tests__/useProdBuild.js",
+    "test": "yarn test:node-dev & yarn test:node-prod"
   }
 }
