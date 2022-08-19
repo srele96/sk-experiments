@@ -1,0 +1,8 @@
+{
+  "name": "calculator-demo",
+  "version": "0.1.0",
+  "description": "An app that demonstrates building packages using JavaScript and monorepo.",
+  "workspaces": [
+    "packages/*"
+  ]
+}
