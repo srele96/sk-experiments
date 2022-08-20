@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Use prod build</title>
+  </head>
+  <body>
+    <h1>Open in browser to test prod build</h1>
+
+    <script src="../dist/calculator.production.js"></script>
+
+    <script>
+      function ifConsolePrintsCorrectResultsItWorks() {
+        console.log('1 + 1 = ' + calculator.add(1, 1));
+        console.log('5 - 3 = ' + calculator.subtract(5, 3));
+        console.log('5 * 3 = ' + calculator.multiply(5, 3));
+        console.log('10 / 5 = ' + calculator.divide(10, 5));
+      }
+
+      ifConsolePrintsCorrectResultsItWorks();
+    </script>
+  </body>
+</html>
