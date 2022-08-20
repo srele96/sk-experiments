@@ -33,18 +33,6 @@ yarn
 
 ## Build package
 
-Development
-
-```terminal
-yarn build:prod
-```
-
-Production
-
-```terminal
-yarn build:dev
-```
-
 Development and production
 
 ```terminal
