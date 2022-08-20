@@ -59,3 +59,7 @@ To test in nodejs run:
 ```terminal
 yarn test
 ```
+
+## References
+
+- Read about [Yarn workspaces](https://yarnpkg.com/features/workspaces).
