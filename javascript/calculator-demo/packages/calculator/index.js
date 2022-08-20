@@ -1,3 +1,5 @@
+// nodejs looks up absolute imports in node_modules
+// we can import these because each package gets installed in root node_modules
 import { add } from 'add';
 import { subtract } from 'subtract';
 import { multiply } from 'multiply';
