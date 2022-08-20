@@ -23,6 +23,14 @@ We are building a calculator. We split logic to the four packages.
 
 Our calculator will use four packages. We use webpack to build our calculator package.
 
+## Initiate repository
+
+Run _(The following command is a shorthand for `yarn install`)_:
+
+```terminal
+yarn
+```
+
 ## Build package
 
 Development

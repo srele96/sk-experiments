@@ -10,9 +10,7 @@
     "webpack-cli": "^4.10.0"
   },
   "scripts": {
-    "build:prod": "webpack --mode=production",
-    "build:dev": "webpack --mode=development",
-    "build": "yarn build:prod & yarn build:dev",
+    "build": "webpack --mode=production & webpack --mode=development",
     "test": "node __tests__/useDevBuild.js & node __tests__/useProdBuild.js"
   }
 }
