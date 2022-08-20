@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include "MemoryLeak.h"
 
@@ -42,9 +43,16 @@ void use_new_and_delete() {
   cout << "use_new_and_delete - end" << endl;
 }
 
+void use_smart_pointer() {
+  cout << "use_smart_pointer - start" << endl;
+  unique_ptr<MemoryLeak>(new MemoryLeak());
+  cout << "use_smart_pointer - start" << endl;
+}
+
 int main() {
   use_new_dont_delete();
   dont_use_new_dont_delete();
   use_new_and_delete();
+  use_smart_pointer();
   return 0;
 }
