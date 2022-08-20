@@ -35,8 +35,16 @@ void dont_use_new_dont_delete() {
   cout << "dont_use_new_dont_delete - end" << endl;
 }
 
+void use_new_and_delete() {
+  cout << "use_new_and_delete - start" << endl;
+  auto leak = new MemoryLeak();
+  delete leak;
+  cout << "use_new_and_delete - end" << endl;
+}
+
 int main() {
   use_new_dont_delete();
   dont_use_new_dont_delete();
+  use_new_and_delete();
   return 0;
 }
