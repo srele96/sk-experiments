@@ -1,5 +1,7 @@
-#include <MemoryLeak.h>
 #include <iostream>
+
+#include "MemoryLeak.h"
+
 using namespace std;
 
 // Specs:
@@ -18,6 +20,8 @@ using namespace std;
 // ----
 // 4.
 // Observe the output and note the results.
+//
+// Print the function name at start and end of it's body.
 
 void use_new_dont_delete() {
   cout << "use_new_dont_delete - start" << endl;
@@ -25,7 +29,14 @@ void use_new_dont_delete() {
   cout << "use_new_dont_delete - end" << endl;
 }
 
+void dont_use_new_dont_delete() {
+  cout << "dont_use_new_dont_delete - start" << endl;
+  MemoryLeak leak;
+  cout << "dont_use_new_dont_delete - end" << endl;
+}
+
 int main() {
   use_new_dont_delete();
+  dont_use_new_dont_delete();
   return 0;
 }
