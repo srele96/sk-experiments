@@ -1,3 +1,4 @@
+#include <MemoryLeak.h>
 #include <iostream>
 using namespace std;
 
@@ -17,7 +18,14 @@ using namespace std;
 // ----
 // 4.
 // Observe the output and note the results.
+
+void use_new_dont_delete() {
+  cout << "use_new_dont_delete - start" << endl;
+  auto do_i_leak_out_of_scope = new MemoryLeak();
+  cout << "use_new_dont_delete - end" << endl;
+}
+
 int main() {
-  cout << "Print something for the sake of it.";
+  use_new_dont_delete();
   return 0;
 }
