@@ -75,8 +75,8 @@ yarn test
 ## Outcome
 
 Using yarn workspaces every package will be installed in the root `node_modules`
-directory. That allows us multiple teams to work on each individual package. Or
-one team to work on modular packages. It is easier to migrate from monorepo to
+directory. That allows multiple teams to work on each individual package. Or
+one team to work on each package. It is easier to migrate from monorepo to
 multirepo than the other way around. Look this up on the internet, don't take
 my word for it.
 
