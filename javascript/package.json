@@ -6,8 +6,5 @@
   "workspaces": [
     "packages/*"
   ],
-  "devDependencies": {
-    "prettier": "^2.6.2"
-  },
   "packageManager": "yarn@3.2.0"
 }
