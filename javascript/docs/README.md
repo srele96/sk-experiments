@@ -1,3 +1,3 @@
-# docs
+# JavaScript documentation
 
-A collection of documentation files as a result of my research.
+The collection of research results, findings, and more...
