@@ -1,0 +1,19 @@
+try to support JSON, YAML, TOML configuration files
+
+add configuration
+how to add configuration? how does the command look like?
+
+create configuration file for the user with his project directory path
+run commands from the configuration file
+
+runner config add <path>
+
+runner config add ./config_file
+runner config add ./path/to/config_file
+runner config add ../config_file
+runner config add config_file
+runner config add C:/Users/John/config_file
+
+what does the runner do with the config?
+does it save path?
+does it read config from the path and save it locally?
