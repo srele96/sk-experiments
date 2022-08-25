@@ -1,6 +1,6 @@
-# My work
+# Srecko Kostic - Experiments
 
-The motivation for this repository is that I wanted to put the majority of my research in one place. I have ideas that I would like to research, but setting up a new repository takes too much time.
+The collection of Srecko Kostic's experiments. My habit is to read and I have new exciting ideas every day. This repository puts it all together. I start to like this repository. It servers as history and a tool to reflect back. I can see how much I've improved.
 
 ## Monorepo
 
