@@ -12,15 +12,21 @@ CMake appears to solve it, but I don't know how to use it.
 
 ## Specs
 
+Configuration:
+
 - add configuration
 - read configuration
 - delete configuration
 - edit configuration
 
+Singular command:
+
 - add command
 - read command
 - delete command
 - edit command
+
+Multiple commands:
 
 - add commands
 - read commands
@@ -29,5 +35,5 @@ CMake appears to solve it, but I don't know how to use it.
 
 ## Tools
 
-- Configuration file https://github.com/boostorg/property_tree.
-- CLI arguments parser https://github.com/boostorg/program_options.
+- [Configuration file library](https://github.com/boostorg/property_tree).
+- [CLI arguments parser library](https://github.com/boostorg/program_options).
