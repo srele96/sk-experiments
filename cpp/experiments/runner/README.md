@@ -1,9 +1,8 @@
 # runner
 
-Save and run one or series of commands.
+Runner is a command line interface to help you save and run one or series of commands.
 
-You don't have to remember them any more, only aliases. Or list commands if you
-forgot.
+You don't have to remember them any more, only aliases. Or list commands if you forgot.
 
 ## Refine specification
 
