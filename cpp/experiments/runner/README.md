@@ -37,10 +37,3 @@ Multiple commands:
 
 - [Configuration file library](https://github.com/boostorg/property_tree).
 - [CLI arguments parser library](https://github.com/boostorg/program_options).
-
-## Informations
-
-Answer question - Why is different config file type important?
-
-- Check discussion [cosmiconfig - add support for TOML](https://github.com/davidtheclark/cosmiconfig/issues/150)
-- Read [why json isn't a good configuration language](https://www.lucidchart.com/techblog/2018/07/16/why-json-isnt-a-good-configuration-language/) _(There are some valid points)_.
