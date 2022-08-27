@@ -5,10 +5,9 @@ Save and run one or series of commands.
 You don't have to remember them any more, only aliases. Or list commands if you
 forgot.
 
-## Refine specifications without considering implementation details
+## Refine specification
 
-Don't consider technical obstacles. Clearly specify implementation specifications
-and their solutions.
+Refine specification without considering implementation details. Technical details are often obstacles. Clearly specify implementation specifications and their solutions.
 
 ## Tools
 
