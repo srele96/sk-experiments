@@ -10,5 +10,8 @@
   "bugs": {
     "url": "https://github.com/srele96/sk-experiments/issues"
   },
-  "homepage": "https://github.com/srele96/sk-experiments#readme"
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "devDependencies": {
+    "terser": "^5.15.0"
+  }
 }
