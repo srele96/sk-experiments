@@ -26,5 +26,5 @@ See [terser on GitHub](https://github.com/terser/terser).
 - Use scripts in package json to simplify:
   - Minification process.
   - Verification that minified code runs.
-- Created minified file for each mode to compare them simultaneously.
+- Create minified file for each mode to compare them simultaneously.
 - Commit minified code to see difference on github. Minified code is small so it is fine. Usually build output isn't commited to version control.
