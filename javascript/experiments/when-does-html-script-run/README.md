@@ -1,4 +1,4 @@
-# When does the HTML script load?
+# When does HTML script run?
 
 ## Regular script tags with src
 
