@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Client</title>
+  </head>
+  <body>
+    <h1>Client sends request</h1>
+    <p id="notification">Sending HTTP request to http://localhost:3000</p>
+    <script>
+      const notification = document.getElementById('notification');
+      fetch('http://localhost:3000')
+        .then((res) => res.json())
+        .then((json) => {
+          notification.innerText = 'Received ' + JSON.stringify(json);
+        })
+        .catch((err) => {
+          notification.innerText = 'Error ' + JSON.stringify(err);
+        });
+    </script>
+  </body>
+</html>

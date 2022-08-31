@@ -1,0 +1,12 @@
+Checks: '
+  bugprone-*,
+  cppcoreguidelines-*,
+  clang-analyzer-*,
+  concurrency-*,
+  cert-*,
+  google-*,
+  portability-*,
+  performance-*,
+  readability-*,
+  '
+WarningsAsErrors: '*'
