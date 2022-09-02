@@ -4,7 +4,9 @@ async function a(a) {
   console.log({ a });
   return async function b(b) {
     console.log({ a, b });
-    return async function c(c) {console.log({ a, b, c });};
+    return async function c(c) {
+      console.log({ a, b, c });
+    };
   };
 }
 
