@@ -9,6 +9,4 @@ jobs:
         with:
           # Match local and CI version. I use version 16 because it's LTS.
           node-version: '16'
-      - run: cd javascript
-      - run: yarn install
-      - run: yarn ci:format
+      - run: cd ./javascript && yarn && yarn ci:format
