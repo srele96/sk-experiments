@@ -1,0 +1,6 @@
+# Define your configuration.
+# Prettier recommends using config file https://prettier.io/docs/en/cli.html.
+# The sample configuration.
+semi: true
+tabWidth: 2
+printWidth: 80
