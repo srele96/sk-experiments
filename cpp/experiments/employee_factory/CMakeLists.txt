@@ -12,4 +12,5 @@ set(CMAKE_CXX_STANDARD 17)
 # set desired output location of our executable
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
+add_compile_options(-Wall -Wextra -Werror -Wshadow -Weffc++ -Wnon-virtual-dtor -pedantic)
 add_subdirectory(./source)
