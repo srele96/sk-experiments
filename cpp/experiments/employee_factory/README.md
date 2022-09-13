@@ -1,69 +1,51 @@
 # Employee Factory
 
-Design document for the Employee Factory project. _[How to Write a Design Document](https://people.eecs.berkeley.edu/~kubitron/courses/cs162-F06/design.html)_
+Implementation of Design Factory from [Employee Factory Design Document](./DESIGN_DOCUMENT.md)
 
-## The problem
+## Build steps
 
-The factory employs many employees. Employees have one of these roles: cleaning, checking product quality and testing samples, maintaining equipment, operating forklifts, and aligning workpieces. Each employee has different job responsibilities, but they all work during work hours.
+Steps to build the project.
 
-## Solution
+### Step 1
 
-We will implement the Factory facility. Such a facility will hold all employees and start work hours once everyone is ready.
+Make sure you are in root directory `employee_factory`.
 
-The facility doesn't need to know about the Employee's role. Every employee at the facility is expected to work. What he does is defined by his role. The facility may have many janitors with different names. They have different names but they do the same work.
+### Step 2
 
-Employee declares employees' properties and general interface for roles. Each role is responsible to define what it does.
-
-## Pseudo code
+Create build directory
 
 ```txt
-The class factory serves as a facility where employees are working. When
-working hours start, we expect all employees to work.
+mkdir build
+```
 
-Factory
-  Accept(employee)
-  StartWorkHours()
-    foreach employee in employees
-      employee.work()
+### Step 3
 
- private:
-  // check google naming conventions
-  employees_
+Go to build directory.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```txt
+cd build
+```
 
-The class Employee is an interface that defines employees' properties and
-enforces Employee to define the way he works.
+### Step 4
 
-Employee:
- protected:
-   name_
-   last_name_
- public:
-  virtual Work() = 0
+Generate whatever CMake needs.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```txt
+cmake ..
+```
 
-The inheritance model is as follows:
+### Step 5
 
-Janitor     : Employee
-Tester      : Employee
-Maintenance : Employee
-Operator    : Employee
+Build the project with CMake.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```txt
+cmake --build .
+```
 
-Definitions of how each employee role works:
+### Step 6
 
-Janitor::Work()
-  print(name + last_name_ + "Sweeps, mops, polishes, and vacuums floors.")
+Run the executable.
 
-Tester::Work()
-  print(name_ + last_name_+ "Ensures quality of manufactured goods.")
-
-Maintenance::Work()
-  print(name_ + last_name + "Installs, repairs, and maintains machinery and mechanical equipment by completing preventive maintenance.")
-
-Operator::Work()
-  print(name_ + last_name + "Installs, fixes and operates various types of machinery.")
+```txt
+./employee_factory
 ```
