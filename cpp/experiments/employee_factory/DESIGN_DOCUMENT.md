@@ -29,7 +29,7 @@ Factory
   Accept(employee)
   StartWorkHours()
     foreach employee in employees
-      employee.work()
+      print(employee.work())
 
  private:
   // check google naming conventions
@@ -67,14 +67,14 @@ Operator    : Person, Employee
 Definitions of how each employee role works:
 
 Janitor::Work()
-  print(name + last_name_ + "Sweeps, mops, polishes, and vacuums floors.")
+  return name + " " + last_name_ + " Sweeps, mops, polishes, and vacuums floors."
 
 Tester::Work()
-  print(name_ + last_name_+ "Ensures quality of manufactured goods.")
+  return name_ + " " + last_name_+ " Ensures quality of manufactured goods."
 
 Maintenance::Work()
-  print(name_ + last_name + "Installs, repairs, and maintains machinery and mechanical equipment by completing preventive maintenance.")
+  return name_ + " " + last_name + " Installs, repairs, and maintains machinery and mechanical equipment by completing preventive maintenance."
 
 Operator::Work()
-  print(name_ + last_name + "Installs, fixes and operates various types of machinery.")
+  return name_ + " " + last_name + " Installs, fixes and operates various types of machinery."
 ```
