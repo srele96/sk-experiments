@@ -5,4 +5,6 @@ add_executable(
   person.h
   person.cc
   employee.h
+  janitor.h
+  janitor.cc
 )
