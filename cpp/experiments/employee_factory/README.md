@@ -11,6 +11,8 @@ This sample attempts to achieve a few goals:
 - Use design document to define solution that we are going to implement. Well defined solution using english description eases the implementation.
 - Use solution that is as semantic as possible. Mistakes are inevitable and I am just starting out. I am trying to mitigate beginner mistakes by doing proportional amount of research.
 
+If we consider all goals and look at implementation we can conclude that the whole sample is overengineered. However, I did it on purpose.
+
 ## Build steps
 
 Steps to build the project.
