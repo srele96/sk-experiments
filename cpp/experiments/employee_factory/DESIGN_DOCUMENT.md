@@ -12,7 +12,11 @@ We will implement the Factory facility. Such a facility will hold all employees 
 
 The facility doesn't need to know about the Employee's role. Every employee at the facility is expected to work. What he does is defined by his role. The facility may have many janitors with different names. They have different names but they do the same work.
 
-Employee declares employees' properties and general interface for roles. Each role is responsible to define what it does.
+Class Person declares shared data for all Employees. Their name and last name.
+
+Class Employee is an interface that declares what employee does.
+
+Classes Janitor, Tester, Maintenance and Operator define Employees behavior. They are essentially People, therefore they share those properties through inheritance.
 
 ## Pseudo code
 
@@ -21,6 +25,7 @@ The class factory serves as a facility where employees are working. When
 working hours start, we expect all employees to work.
 
 Factory
+ public:
   Accept(employee)
   StartWorkHours()
     foreach employee in employees
@@ -32,13 +37,19 @@ Factory
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The class Employee is an interface that defines employees' properties and
-enforces Employee to define the way he works.
+The class Person is root class that defines properties every person should have.
+
+class Person:
+ protected:
+  name_
+  last_name_
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The class Employee is an interface that enforces Employee to define the way he
+works.
 
 Employee:
- protected:
-   name_
-   last_name_
  public:
   virtual Work() = 0
 
@@ -46,10 +57,10 @@ Employee:
 
 The inheritance model is as follows:
 
-Janitor     : Employee
-Tester      : Employee
-Maintenance : Employee
-Operator    : Employee
+Janitor     : Person, Employee
+Tester      : Person, Employee
+Maintenance : Person, Employee
+Operator    : Person, Employee
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
