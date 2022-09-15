@@ -7,4 +7,6 @@ add_executable(
   employee.h
   janitor.h
   janitor.cc
+  tester.h
+  tester.cc
 )
