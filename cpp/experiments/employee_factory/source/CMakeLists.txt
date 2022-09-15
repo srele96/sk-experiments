@@ -11,4 +11,6 @@ add_executable(
   tester.cc
   maintenance.h
   maintenance.cc
+  operator.h
+  operator.cc
 )
