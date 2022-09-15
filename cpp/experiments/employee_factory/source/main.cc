@@ -11,11 +11,11 @@ int main() {
   Maintenance chris{"Chris", "Crimson"};
   Operator jane{"Jane", "Doe"};
 
-  std::cout << "---------------------------------------\n";
-  std::cout << "Verify that employee roles are working.\n";
-  std::cout << "---------------------------------------\n";
-  std::cout << john.Work() << "\n";
-  std::cout << rob.Work() << "\n";
-  std::cout << chris.Work() << "\n";
-  std::cout << jane.Work() << "\n";
+  std::cout << "---------------------------------------\n"
+            << "Verify that employee roles are working.\n"
+            << "---------------------------------------\n"
+            << john.Work() << "\n"
+            << rob.Work() << "\n"
+            << chris.Work() << "\n"
+            << jane.Work() << "\n";
 }
