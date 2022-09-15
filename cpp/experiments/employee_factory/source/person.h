@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EMPLOYEE_FACTORY_PERSON_H
+#define EMPLOYEE_FACTORY_PERSON_H
 
 #include <string>
 
@@ -13,3 +14,5 @@ class Person {
   std::string last_name() const;
   virtual ~Person() = default;
 };
+
+#endif
