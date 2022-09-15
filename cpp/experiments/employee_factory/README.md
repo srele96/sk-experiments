@@ -1,6 +1,6 @@
 # Employee Factory
 
-Implementation of Design Factory from [Employee Factory Design Document](./DESIGN_DOCUMENT.md)
+Implementation of Employee Factory from [Employee Factory Design Document](./DESIGN_DOCUMENT.md)
 
 ## My goals with this sample
 
