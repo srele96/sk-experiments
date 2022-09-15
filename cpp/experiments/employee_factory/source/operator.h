@@ -10,4 +10,4 @@ class Operator : public Person, public Emplyee {
   std::string Work();
 };
 
-#endif EMPLOYEE_FACTORY_OPERATOR_H
+#endif
