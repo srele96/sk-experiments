@@ -4,7 +4,7 @@
 #include "employee.h"
 #include "person.h"
 
-class Tester : public Person, public Emplyee {
+class Tester : public Person, public Employee {
  public:
   Tester(const std::string& name, const std::string& last_name);
   std::string Work();

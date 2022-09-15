@@ -3,10 +3,10 @@
 
 #include <string>
 
-class Emplyee {
+class Employee {
  public:
   virtual std::string Work() = 0;
-  virtual ~Emplyee() = default;
+  virtual ~Employee() = default;
 };
 
 #endif
