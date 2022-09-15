@@ -6,6 +6,7 @@ Implementation of Design Factory from [Employee Factory Design Document](./DESIG
 
 This sample attempts to achieve a few goals:
 
+- Use as many best practises as possible to implement sample real life scenario.
 - Simulate somewhat real sample of building C++ projects. We achieve that using CMake build system.
 - Split program using multiple files. Build system provides us to split program in modular way.
 - Use design document to define solution that we are going to implement. Well defined solution using english description eases the implementation.
