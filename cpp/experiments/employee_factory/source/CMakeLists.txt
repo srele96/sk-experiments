@@ -1,16 +1,16 @@
 add_executable(
   employee_factory
 
-  main.cc
+  main.cpp
   person.h
-  person.cc
+  person.cpp
   employee.h
   janitor.h
-  janitor.cc
+  janitor.cpp
   tester.h
-  tester.cc
+  tester.cpp
   maintenance.h
-  maintenance.cc
+  maintenance.cpp
   operator.h
-  operator.cc
+  operator.cpp
 )
