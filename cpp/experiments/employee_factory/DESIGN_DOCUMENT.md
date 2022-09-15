@@ -10,13 +10,13 @@ The factory employs many employees. Employees have one of these roles: cleaning,
 
 We will implement the Factory facility. Such a facility will hold all employees and start work hours once everyone is ready.
 
-The facility doesn't need to know about the Employee's role. Every employee at the facility is expected to work. What he does is defined by his role. The facility may have many janitors with different names. They have different names but they do the same work.
+The facility doesn't need to know about the Employee's role. Every employee at the facility is expected to work. What he does is defined by his role. The facility may have many janitors with different names. They have different property values but they do the same work.
 
-Class Person declares shared data for all Employees. Their name and last name.
+Class Person declares shared data for all Employees: their name and last name.
 
-Class Employee is an interface that declares what employee does.
+Class Employee is an interface that declares what an employee does.
 
-Classes Janitor, Tester, Maintenance and Operator define Employees behavior. They are essentially People, therefore they share those properties through inheritance.
+Classes Janitor, Tester, Maintenance, and Operator define Employee's behavior. They are essentially People, therefore they share those properties through inheritance.
 
 ## Pseudo code
 
