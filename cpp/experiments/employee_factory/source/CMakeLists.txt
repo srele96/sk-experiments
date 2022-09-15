@@ -9,4 +9,6 @@ add_executable(
   janitor.cc
   tester.h
   tester.cc
+  maintenance.h
+  maintenance.cc
 )
