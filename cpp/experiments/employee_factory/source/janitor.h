@@ -1,6 +1,8 @@
 #ifndef EMPLOYEE_FACTORY_JANITOR_H
 #define EMPLOYEE_FACTORY_JANITOR_H
 
+#include <string>
+
 #include "employee.h"
 #include "person.h"
 

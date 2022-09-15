@@ -1,6 +1,8 @@
 #ifndef EMPLOYEE_FACTORY_TESTER_H
 #define EMPLOYEE_FACTORY_TESTER_H
 
+#include <string>
+
 #include "employee.h"
 #include "person.h"
 

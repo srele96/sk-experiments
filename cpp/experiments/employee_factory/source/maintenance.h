@@ -1,6 +1,8 @@
 #ifndef EMPLOYEE_FACTORY_MAINTENANCE_H
 #define EMPLOYEE_FACTORY_MAINTENANCE_H
 
+#include <string>
+
 #include "employee.h"
 #include "person.h"
 
