@@ -12,11 +12,9 @@ We will implement the Factory facility. Such a facility will hold all employees 
 
 The facility doesn't need to know about the Employee's role. Every employee at the facility is expected to work. What he does is defined by his role. The facility may have many janitors with different names. They have different property values but they do the same work.
 
-Class Person declares shared data for all Employees: their name and last name.
-
 Class Employee is an interface that declares what an employee does.
 
-Classes Janitor, Tester, Maintenance, and Operator define Employee's behavior. They are essentially People, therefore they share those properties through inheritance.
+Classes Janitor, Tester, Maintenance, and Operator define Employee's behavior.
 
 ## Pseudo code
 
@@ -29,20 +27,10 @@ Factory
   Accept(employee)
   StartWorkHours()
     foreach employee in employees
-      print(employee.work())
+      print(employee.Work())
 
  private:
-  // check google naming conventions
   employees_
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The class Person is root class that defines properties every person should have.
-
-class Person:
- protected:
-  name_
-  last_name_
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -55,26 +43,49 @@ Employee:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The inheritance model is as follows:
+Janitor : Employee
+  public:
+    Work():
+      return name + " " + last_name_ +
+        " Sweeps, mops, polishes, and vacuums floors."
 
-Janitor     : Person, Employee
-Tester      : Person, Employee
-Maintenance : Person, Employee
-Operator    : Person, Employee
+  private:
+    name_
+    last_name_
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Definitions of how each employee role works:
+Tester : Employee
+  public:
+    Work():
+      return name_ + " " + last_name_+
+        " Ensures quality of manufactured goods."
 
-Janitor::Work()
-  return name + " " + last_name_ + " Sweeps, mops, polishes, and vacuums floors."
+  private:
+    name_
+    last_name_
 
-Tester::Work()
-  return name_ + " " + last_name_+ " Ensures quality of manufactured goods."
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Maintenance::Work()
-  return name_ + " " + last_name + " Installs, repairs, and maintains machinery and mechanical equipment by completing preventive maintenance."
+Maintenance : Employee
+  public:
+    Work():
+      return name_ + " " + last_name +
+        " Installs, repairs, and maintains machinery and mechanical " +
+        "equipment by completing preventive maintenance."
 
-Operator::Work()
-  return name_ + " " + last_name + " Installs, fixes and operates various types of machinery."
+  private:
+    name_
+    last_name_
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Operator : Employee
+  public:
+    return name_ + " " + last_name +
+      " Installs, fixes and operates various types of machinery."
+
+  private:
+    name_
+    last_name_
 ```
