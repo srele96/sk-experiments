@@ -82,8 +82,9 @@ Maintenance : Employee
 
 Operator : Employee
   public:
-    return name_ + " " + last_name +
-      " Installs, fixes and operates various types of machinery."
+    Work()
+      return name_ + " " + last_name +
+        " Installs, fixes and operates various types of machinery."
 
   private:
     name_
