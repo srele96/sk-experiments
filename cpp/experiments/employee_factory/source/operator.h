@@ -1,5 +1,4 @@
-#ifndef EMPLOYEE_FACTORY_OPERATOR_H
-#define EMPLOYEE_FACTORY_OPERATOR_H
+#pragma once
 
 #include <string>
 
@@ -11,5 +10,3 @@ class Operator : public Person, public Employee {
   Operator(const std::string& name, const std::string& last_name);
   std::string Work();
 };
-
-#endif

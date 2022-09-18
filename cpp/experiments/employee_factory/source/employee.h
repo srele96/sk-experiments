@@ -1,5 +1,4 @@
-#ifndef EMPLOYEE_FACTORY_EMPLOYEE_H
-#define EMPLOYEE_FACTORY_EMPLOYEE_H
+#pragma once
 
 #include <string>
 
@@ -8,5 +7,3 @@ class Employee {
   virtual std::string Work() = 0;
   virtual ~Employee() = default;
 };
-
-#endif

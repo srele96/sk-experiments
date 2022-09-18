@@ -1,5 +1,4 @@
-#ifndef EMPLOYEE_FACTORY_MAINTENANCE_H
-#define EMPLOYEE_FACTORY_MAINTENANCE_H
+#pragma once
 
 #include <string>
 
@@ -11,5 +10,3 @@ class Maintenance : public Person, public Employee {
   Maintenance(const std::string& name, const std::string& last_name);
   std::string Work();
 };
-
-#endif

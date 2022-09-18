@@ -1,5 +1,4 @@
-#ifndef EMPLOYEE_FACTORY_TESTER_H
-#define EMPLOYEE_FACTORY_TESTER_H
+#pragma once
 
 #include <string>
 
@@ -11,5 +10,3 @@ class Tester : public Person, public Employee {
   Tester(const std::string& name, const std::string& last_name);
   std::string Work();
 };
-
-#endif
