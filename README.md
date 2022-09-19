@@ -1,6 +1,8 @@
 # Srecko Kostic - Experiments
 
-The collection of Srecko Kostic's experiments. My habit is to read and I have new exciting ideas every day. This repository puts it all together. I start to like this repository. It servers as history and a tool to reflect back. I can see how much I've improved.
+Srecko Kostic's collection of experiments and reading topic wishlist in form of issues. This repository puts it all together.
+
+I start to like this repository. It servers as history and a tool to reflect back. I can see how much I've improved.
 
 ## Motivation
 
