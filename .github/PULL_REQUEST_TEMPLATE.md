@@ -7,7 +7,7 @@
 ## Checklist
 
 - [ ] Write a well-written and structured commit message with high-quality context
-- [ ] If you created an experiment, add a link to it in `README.md`
+- [ ] If you created an experiment, add a link to it in `README.md`. Like `sk-experiments/README.md`, `sk-experiments/cpp/README.md`, etc.
 
 ## Commit
 
