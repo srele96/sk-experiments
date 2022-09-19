@@ -6,9 +6,9 @@ I start to like this repository. It servers as history and a tool to reflect bac
 
 ## Experiments
 
-- [JavaScript](./javascript)
-- [C++](./cpp)
-- [Python](./python)
+- [JavaScript](./javascript#experiments)
+- [C++](./cpp#experiments)
+- [Python](./python#experiments)
 
 ## Motivation
 
