@@ -12,3 +12,9 @@
 ## Commit
 
 _When done, edit the pull request and add the commit content here._
+
+```txt
+chore: add example title
+
+I don't want to leave empty content so I have to add some example here.
+```
