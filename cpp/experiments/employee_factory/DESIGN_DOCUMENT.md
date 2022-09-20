@@ -16,6 +16,23 @@ Class Employee is an interface that declares what an employee does.
 
 Classes Janitor, Tester, Maintenance, and Operator define Employee's behavior.
 
+## Solution architecture
+
+A line ending with forward slash `/` is a directory. Otherwise, it is implementation file.
+
+```txt
+main
+facility/
+  factory
+role/
+  interface/
+    employee
+  janitor
+  tester
+  maintenance
+  operator
+```
+
 ## Pseudo code
 
 ```txt
