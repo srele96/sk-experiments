@@ -2,8 +2,6 @@ add_executable(
   employee_factory
 
   main.cpp
-  person.h
-  person.cpp
   employee.h
   janitor.h
   janitor.cpp

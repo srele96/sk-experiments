@@ -3,9 +3,12 @@
 #include <string>
 
 #include "employee.h"
-#include "person.h"
 
-class Tester : public Person, public Employee {
+class Tester : public Employee {
+ private:
+  std::string name_;
+  std::string last_name_;
+
  public:
   Tester(const std::string& name, const std::string& last_name);
   std::string Work();
