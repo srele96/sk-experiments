@@ -1,7 +1,9 @@
 #include "operator.h"
 
-Operator::Operator(const std::string& name, const std::string& last_name)
-    : name_{name}, last_name_{last_name} {}
+#include <utility>
+
+Operator::Operator(std::string name, std::string last_name)
+    : name_{std::move(name)}, last_name_{std::move(last_name)} {}
 
 std::string Operator::Work() {
   return name_ + " " + last_name_ +

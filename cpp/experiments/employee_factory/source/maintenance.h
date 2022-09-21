@@ -10,6 +10,6 @@ class Maintenance : public Employee {
   std::string last_name_;
 
  public:
-  Maintenance(const std::string& name, const std::string& last_name);
+  Maintenance(std::string name, std::string last_name);
   std::string Work();
 };

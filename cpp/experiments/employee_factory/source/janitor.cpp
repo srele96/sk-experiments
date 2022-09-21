@@ -1,7 +1,9 @@
 #include "janitor.h"
 
-Janitor::Janitor(const std::string& name, const std::string& last_name)
-    : name_{name}, last_name_{last_name} {}
+#include <utility>
+
+Janitor::Janitor(std::string name, std::string last_name)
+    : name_{std::move(name)}, last_name_{std::move(last_name)} {}
 
 std::string Janitor::Work() {
   return name_ + " " + last_name_ +

@@ -1,7 +1,9 @@
 #include "maintenance.h"
 
-Maintenance::Maintenance(const std::string& name, const std::string& last_name)
-    : name_{name}, last_name_{last_name} {}
+#include <utility>
+
+Maintenance::Maintenance(std::string name, std::string last_name)
+    : name_{std::move(name)}, last_name_{std::move(last_name)} {}
 
 std::string Maintenance::Work() {
   return name_ + " " + last_name_ +

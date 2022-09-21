@@ -10,6 +10,6 @@ class Operator : public Employee {
   std::string last_name_;
 
  public:
-  Operator(const std::string& name, const std::string& last_name);
+  Operator(std::string name, std::string last_name);
   std::string Work();
 };

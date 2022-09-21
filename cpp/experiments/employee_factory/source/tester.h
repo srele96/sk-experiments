@@ -10,6 +10,6 @@ class Tester : public Employee {
   std::string last_name_;
 
  public:
-  Tester(const std::string& name, const std::string& last_name);
+  Tester(std::string name, std::string last_name);
   std::string Work();
 };
