@@ -2,15 +2,19 @@ add_executable(
   employee_factory
 
   main.cpp
-  employee.h
-  janitor.h
-  janitor.cpp
-  tester.h
-  tester.cpp
-  maintenance.h
-  maintenance.cpp
-  operator.h
-  operator.cpp
+
+  role/interface.h
+  role/interface/employee.h
+
+  role.h
+  role/janitor.h
+  role/janitor.cpp
+  role/tester.h
+  role/tester.cpp
+  role/maintenance.h
+  role/maintenance.cpp
+  role/operator.h
+  role/operator.cpp
 )
 
 #[[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

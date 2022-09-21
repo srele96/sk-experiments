@@ -1,15 +1,12 @@
 #include <iostream>
 
-#include "janitor.h"
-#include "maintenance.h"
-#include "operator.h"
-#include "tester.h"
+#include "role.h"
 
 int main() {
-  Janitor john{"John", "Doe"};
-  Tester rob{"Rob", "Robinson"};
-  Maintenance chris{"Chris", "Crimson"};
-  Operator jane{"Jane", "Doe"};
+  role::Janitor john{"John", "Doe"};
+  role::Tester rob{"Rob", "Robinson"};
+  role::Maintenance chris{"Chris", "Crimson"};
+  role::Operator jane{"Jane", "Doe"};
 
   std::cout << "---------------------------------------\n"
             << "Verify that employee roles are working.\n"

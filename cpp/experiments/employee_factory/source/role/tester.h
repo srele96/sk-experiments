@@ -2,9 +2,11 @@
 
 #include <string>
 
-#include "employee.h"
+#include "interface.h"
 
-class Tester : public Employee {
+namespace role {
+
+class Tester : public interface::Employee {
  private:
   std::string name_;
   std::string last_name_;
@@ -13,3 +15,5 @@ class Tester : public Employee {
   Tester(std::string name, std::string last_name);
   std::string Work();
 };
+
+}  // namespace role
