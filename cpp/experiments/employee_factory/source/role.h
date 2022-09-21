@@ -1,6 +1,6 @@
 #pragma once
 
-#include "role/interface.h"
+#include "role/employee.h"
 #include "role/janitor.h"
 #include "role/maintenance.h"
 #include "role/operator.h"

@@ -3,7 +3,6 @@
 #include <string>
 
 namespace role {
-namespace interface {
 
 class Employee {
  public:
@@ -11,5 +10,4 @@ class Employee {
   virtual ~Employee() = default;
 };
 
-}  // namespace interface
 }  // namespace role

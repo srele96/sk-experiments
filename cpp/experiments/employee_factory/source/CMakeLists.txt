@@ -3,18 +3,18 @@ add_executable(
 
   main.cpp
 
-  role/interface.h
-  role/interface/employee.h
-
   role.h
+
+  role/employee.h
   role/janitor.h
-  role/janitor.cpp
   role/tester.h
-  role/tester.cpp
   role/maintenance.h
-  role/maintenance.cpp
   role/operator.h
-  role/operator.cpp
+
+  role/impl/janitor.cpp
+  role/impl/tester.cpp
+  role/impl/maintenance.cpp
+  role/impl/operator.cpp
 )
 
 #[[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
