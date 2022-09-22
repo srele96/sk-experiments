@@ -8,3 +8,4 @@ The root directory for C++ experiments.
 - [Build with CMake](./experiments/build-with-cmake/)
 - [runner](./experiments/runner/)
 - [Combinations of four that matches sum](./experiments/sum_combinations_of_four/)
+- [Employee Factory](./experiments/employee_factory/)
