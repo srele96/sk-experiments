@@ -24,7 +24,7 @@ add_executable(
 
   facility/factory.h
 
-  facility/factory.cpp
+  facility/impl/factory.cpp
 )
 
 #[[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
