@@ -47,7 +47,7 @@ Factory
       print(employee.Work())
 
  private:
-  employees_
+  employees
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

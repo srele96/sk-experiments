@@ -3,6 +3,8 @@ add_executable(
 
   main.cpp
 
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   role.h
 
   role/employee.h
@@ -15,6 +17,14 @@ add_executable(
   role/impl/tester.cpp
   role/impl/maintenance.cpp
   role/impl/operator.cpp
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  facility.h
+
+  facility/factory.h
+
+  facility/factory.cpp
 )
 
 #[[~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
