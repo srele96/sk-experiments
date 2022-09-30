@@ -1,0 +1,35 @@
+Coordinate
+  private
+    k
+    j
+
+    Up():
+      --k
+    Down():
+      ++k
+    Left():
+      --j
+    Right():
+      ++j
+
+    UpRight():
+      Up()
+      Right()
+    DownLeft():
+      Down()
+      Left()
+
+  public:
+    Step(Direction direction):
+      direction.UP:
+        Up()
+      direction.DOWN:
+        Down()
+      direction.LEFT:
+        Left()
+      direction.RIGHT:
+        Right()
+      direction.UP_RIGHT:
+        UpRight()
+      direction.DOWN_LEFT:
+        DownLeft()
