@@ -1,0 +1,27 @@
+Dimension
+  private:
+    symbol
+
+    Direction2D(axis, number):
+      switch axis:
+        case AXIS.X:
+          number < 0 ? Direction.LEFT : Direction.RIGHT
+        case AXIS.Y:
+          number < 0 ? Direction.DOWN : Direction.UP
+
+    Direction3D(axis, number):
+      switch axis:
+        case AXIS.X:
+          number < 0 ? Direction.DOWN_LEFT : Direction.UP_RIGHT
+        case AXIS.Y:
+          number < 0 ? Direction.LEFT : Direction.RIGHT
+        case AXIS.Z:
+          number < 0 ? Direction.DOWN : Direction.UP
+
+  public:
+    Direction(Symbol symbol, axis, number):
+      switch symbol:
+        case Symbol.2D:
+          Direction2D(axis, number)
+        case Symbol.3D:
+          Direction3D(axis, number)
