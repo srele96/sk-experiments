@@ -1,7 +1,0 @@
-direction
-  UP
-  DOWN
-  LEFT
-  RIGHT
-  UP_RIGHT
-  DOWN_LEFT
