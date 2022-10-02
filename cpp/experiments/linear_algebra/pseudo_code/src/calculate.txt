@@ -1,0 +1,14 @@
+calculate {
+
+  get_distance(begin, end):
+    // the distance value tells us two things
+    // positive distance means we move in positive direction
+    // negative distance means we move in negative direction
+    return end - begin
+
+  get_steps(distance):
+    // absolute value of distance is the amount of steps to move from 0 to -5
+    // we have -5 -0 = -5 that means 5 steps in the negative direction
+    return absolute(distance)
+
+} // calculate
