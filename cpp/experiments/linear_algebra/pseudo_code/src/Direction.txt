@@ -1,4 +1,4 @@
-Direction
+direction
   UP
   DOWN
   LEFT
