@@ -1,0 +1,24 @@
+control {
+
+  dimension
+  coordinate
+
+  step_along(begin, end, axis):
+    [direction, steps] = dimension.get_direction_and_steps(begin, end, axis)
+
+    for (i=steps; i>0; --i):
+      coordinate.step(direction)
+
+  // I have the coordiante and i want to move it along the axis.
+  // For each pair i take begin, end and their axis.
+  // I step along that axis until i reach the end.
+  // I repeat that process for each pair.
+  step_along_all(size, begin_components, end_components, axes):
+    for i=0 to size:
+      begin_value = begin_components.at(i)
+      end_value = end_components.at(i)
+      axis = axes.at(i)
+
+      step_along(begin_value, end_value, axis)
+
+} // move
