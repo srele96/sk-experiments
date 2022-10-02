@@ -1,8 +1,8 @@
-Dimension
+dimension
   private:
     symbol
 
-    GetDirection2D(distance, axis):
+    get_direction_2D(distance, axis):
       if axis == AXIS.X:
         return distance < 0 ? Direction.LEFT : Direction.RIGHT
       if axis == AXIS.Y:
@@ -10,7 +10,7 @@ Dimension
 
       // we should never fall down here if we use typed enum AXIS
 
-    GetDirection3D(distance, axis):
+    get_direction_3D(distance, axis):
       if axis == AXIS.X:
         return distance < 0 ? Direction.DOWN_LEFT : Direction.UP_RIGHT
       if axis == AXIS.Y:
@@ -20,18 +20,19 @@ Dimension
 
       // we should never fall down here if we use typed enum AXIS
 
-    GetDirection(distance, axis):
+    get_direction(distance, axis):
       if symbol == Symbol.2D:
-        return Direction2D(distance, axis)
+        return get_direction_2D(distance, axis)
       if symbol == Symbol.3D:
-        return Direction3D(distance, axis)
+        return get_direction_3D(distance, axis)
 
       // we should never fall down here if we use typed enum AXIS
 
   public:
-    GetDirectionAndSteps(begin, end, axis):
-      distance = calculate::GetDistance(begin, end)
-      direction = calculate::GetDirection(distance, axis)
-      steps = GetSteps(distance)
+    get_direction_and_steps(begin, end, axis):
+      distance = calculate::get_distance(begin, end)
+      steps = calculate::get_steps(distance)
+
+      direction = get_direction(distance, axis)
 
       return [direction, steps]

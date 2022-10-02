@@ -1,5 +1,5 @@
-Coordinate
-  private
+coordinate:
+  private:
     k
     j
 
@@ -20,7 +20,7 @@ Coordinate
       Left()
 
   public:
-    Step(Direction direction):
+    step(Direction direction):
       direction.UP:
         Up()
       direction.DOWN:
