@@ -2,26 +2,36 @@ Dimension
   private:
     symbol
 
-    Direction2D(axis, number):
-      switch axis:
-        case AXIS.X:
-          number < 0 ? Direction.LEFT : Direction.RIGHT
-        case AXIS.Y:
-          number < 0 ? Direction.DOWN : Direction.UP
+    GetDirection2D(distance, axis):
+      if axis == AXIS.X:
+        return distance < 0 ? Direction.LEFT : Direction.RIGHT
+      if axis == AXIS.Y:
+        return distance < 0 ? Direction.DOWN : Direction.UP
 
-    Direction3D(axis, number):
-      switch axis:
-        case AXIS.X:
-          number < 0 ? Direction.DOWN_LEFT : Direction.UP_RIGHT
-        case AXIS.Y:
-          number < 0 ? Direction.LEFT : Direction.RIGHT
-        case AXIS.Z:
-          number < 0 ? Direction.DOWN : Direction.UP
+      // we should never fall down here if we use typed enum AXIS
+
+    GetDirection3D(distance, axis):
+      if axis == AXIS.X:
+        return distance < 0 ? Direction.DOWN_LEFT : Direction.UP_RIGHT
+      if axis == AXIS.Y:
+        return distance < 0 ? Direction.LEFT : Direction.RIGHT
+      if axis == AXIS.Z:
+        return distance < 0 ? Direction.DOWN : Direction.UP
+
+      // we should never fall down here if we use typed enum AXIS
+
+    GetDirection(distance, axis):
+      if symbol == Symbol.2D:
+        return Direction2D(distance, axis)
+      if symbol == Symbol.3D:
+        return Direction3D(distance, axis)
+
+      // we should never fall down here if we use typed enum AXIS
 
   public:
-    Direction(Symbol symbol, axis, number):
-      switch symbol:
-        case Symbol.2D:
-          Direction2D(axis, number)
-        case Symbol.3D:
-          Direction3D(axis, number)
+    GetDirectionAndSteps(begin, end, axis):
+      distance = calculate::GetDistance(begin, end)
+      direction = calculate::GetDirection(distance, axis)
+      steps = GetSteps(distance)
+
+      return [direction, steps]
