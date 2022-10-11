@@ -1,6 +1,6 @@
 # Pseudo Code
 
-The Pseudo Code implementation for vector movement.
+The Pseudo Code implementation to display vectors in terminal.
 
 ## Finish the implementation
 

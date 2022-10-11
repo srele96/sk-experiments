@@ -1,0 +1,8 @@
+emulate_gui terminal_1D{screen.1D, [pixel{'v', [1]}, pixel{'w', [-2]}]}
+terminal_1D.render()
+
+emulate_gui terminal_2D{screen.2D, [pixel{'v', [1, -2]}, pixel{'w', [-2, 2]}]}
+terminal_2D.render()
+
+emulate_gui terminal_3D{screen.3D, [pixel{'v', [1, -2, 2]}, pixel{'w', [-2, 2, -1]}]}
+terminal_3D.render();
