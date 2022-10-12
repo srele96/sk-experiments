@@ -22,3 +22,4 @@ The root directory for JavaScript experiments.
 - [Webpack bundling process](./experiments/webpack-bundling-process/)
 - [How to read Webpack build JS files for React SSR](./experiments/webpack-js-output/)
 - [When does HTML script run?](./experiments/when-does-html-script-run/)
+- [Render Isomorphic React App](./experiments/render-isomorphic-react-app/)
