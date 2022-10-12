@@ -25,8 +25,7 @@ main
 facility/
   factory
 role/
-  interface/
-    employee
+  employee
   janitor
   tester
   maintenance
