@@ -56,12 +56,12 @@ function Chrome({ children, code, title }) {
       React.createElement('div', { id: '__root' }, children),
       // provide react to the client
       React.createElement('script', {
-        crossOrigin: "true",
+        crossOrigin: 'true',
         src: 'https://unpkg.com/react@18/umd/react.development.js',
       }),
       // provide react-dom to the client
       React.createElement('script', {
-        crossOrigin: "true",
+        crossOrigin: 'true',
         src: 'https://unpkg.com/react-dom@18/umd/react-dom.development.js',
       }),
       // provide code from the server to the client
