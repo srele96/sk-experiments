@@ -1,22 +1,14 @@
 #!/usr/bin/env node
 'use strict';
 
-const { readFile, mkdir, writeFile } = require('fs/promises');
+const { mkdir, writeFile } = require('fs/promises');
 const { join, basename } = require('path');
 const { Command } = require('commander');
 const program = new Command();
 const { name, description, version } = require('./package.json');
+const templates = require('./templates');
 
 program.name(name).description(description).version(version);
-
-/**
- * @param {string} path
- * @return {Promise<string>}
- */
-function getTemplate(path) {
-  // we use __dirname because templates live in the package
-  return readFile(join(__dirname, path), 'utf-8');
-}
 
 program
   .argument('<directory>', 'new directory for an experiment')
@@ -33,30 +25,41 @@ program
         if (typeof createdDirectoryPath === 'string') {
           console.log('Created ' + baseDirname);
 
-          getTemplate('template-package.json')
-            .then((packageJson) => {
-              // replace placeholders with user input
-              const namePlaceholder = '{name}';
-              const descriptionPlaceholder = '{description}';
+          // replace placeholders with user input
+          const namePlaceholder = '{name}';
+          const descriptionPlaceholder = '{description}';
 
-              return packageJson
-                .replace(namePlaceholder, baseDirname)
-                .replace(descriptionPlaceholder, description);
-            })
-            .then((packageJson) => {
-              // write package.json to created directory
-              return writeFile(
-                join(directory, 'package.json'),
-                packageJson,
-                'utf-8'
-              );
-            })
+          const PACKAGE_JSON = templates.PACKAGE_JSON
+            /* stupid formatting */
+            .replace(namePlaceholder, baseDirname)
+            .replace(descriptionPlaceholder, description);
+
+          // write package.json to created directory
+          writeFile(join(directory, 'package.json'), PACKAGE_JSON, 'utf-8')
             .then(() => {
               console.log('Created ' + join(baseDirname, 'package.json'));
             })
             .catch((error) => {
               console.log(
                 'Error creating ' + join(baseDirname, 'package.json'),
+                error
+              );
+            });
+
+          // replace placeholders with user input
+          const README_MD = templates.README_MD
+            /* stupid formatting */
+            .replace(namePlaceholder, baseDirname)
+            .replace(descriptionPlaceholder, description);
+
+          // write README.md to created directory
+          writeFile(join(directory, 'README.md'), README_MD, 'utf-8')
+            .then(() => {
+              console.log('Created ' + join(baseDirname, 'README.md'));
+            })
+            .catch((error) => {
+              console.log(
+                'Error creating ' + join(baseDirname, 'README.md'),
                 error
               );
             });
