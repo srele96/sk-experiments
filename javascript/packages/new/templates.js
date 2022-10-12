@@ -13,10 +13,12 @@ const PACKAGE_JSON = `{
     "url": "https://github.com/srele96/sk-experiments/issues"
   },
   "homepage": "https://github.com/srele96/sk-experiments#readme"
-}`;
+}
+`;
 
 const README_MD = `# {name}
 
-{description}`;
+{description}
+`;
 
 module.exports = { PACKAGE_JSON, README_MD };
