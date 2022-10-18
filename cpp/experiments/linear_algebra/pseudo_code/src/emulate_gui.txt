@@ -1,0 +1,22 @@
+-- Display screen for each dimension in the terminal.
+-- Emulate graphical user interface - screen.
+-- Initiate screen for each dimension and replace
+-- default pixels with matching vectors.
+
+emulate_gui
+  private:
+    screen
+
+  replace_default_pixels(pixels):
+    for pixel in pixels:
+      screen[pixel.coordinate.x][pixel.coordinate.y] = pixel.display_value
+
+  public:
+    emulate_gui(initial_screen, pixels):
+      screen = initial_screen
+      replace_default_pixels(pixels);
+
+    render():
+      for row in screen:
+        for pixel in row:
+          print(pixel)
