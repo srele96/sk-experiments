@@ -20,7 +20,7 @@ class coordinate {
  public:
   explicit coordinate(linear_algebra::position initial_position);
   void print_formatted_state(const std::string& message) const;
-  void move_and_print_each(const std::vector<int>& vector);
+  void move_and_print_movements(const std::vector<int>& vector);
 };
 
 }  // namespace linear_algebra

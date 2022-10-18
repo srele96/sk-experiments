@@ -38,7 +38,7 @@ void linear_algebra::coordinate::print_formatted_state(
             << ")\n";
 }
 
-void linear_algebra::coordinate::move_and_print_each(
+void linear_algebra::coordinate::move_and_print_movements(
     const std::vector<int>& vector) {
   // for simplicity just assume vector is always the same length as movements
   // problem: i should prefer iterators wherever possible

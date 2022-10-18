@@ -10,7 +10,7 @@ int main() {
 
   std::vector<int> destination{2, 2, -1};
 
-  coordinate.move_and_print_each(destination);
+  coordinate.move_and_print_movements(destination);
   coordinate.print_formatted_state("After movement:");
 
   return 0;
