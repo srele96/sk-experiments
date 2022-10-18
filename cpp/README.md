@@ -9,3 +9,4 @@ The root directory for C++ experiments.
 - [runner](./experiments/runner/)
 - [Combinations of four that matches sum](./experiments/sum_combinations_of_four/)
 - [Employee Factory](./experiments/employee_factory/)
+- [Lambda](./experiments/lambda/)
