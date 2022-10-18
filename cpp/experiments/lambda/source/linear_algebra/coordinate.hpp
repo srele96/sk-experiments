@@ -19,7 +19,6 @@ class coordinate {
 
  public:
   explicit coordinate(linear_algebra::position initial_position);
-  linear_algebra::position get_position() const;
   void print_formatted_state(const std::string& message) const;
   void move_and_print_each(const std::vector<int>& vector);
 };

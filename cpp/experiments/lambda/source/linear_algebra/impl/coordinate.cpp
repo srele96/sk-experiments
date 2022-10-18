@@ -32,10 +32,6 @@ linear_algebra::coordinate::coordinate(
           },
       } {}
 
-linear_algebra::position linear_algebra::coordinate::get_position() const {
-  return position;
-}
-
 void linear_algebra::coordinate::print_formatted_state(
     const std::string& message) const {
   std::cout << message << " (" << position.row << ", " << position.column
