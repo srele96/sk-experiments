@@ -11,8 +11,12 @@
     "url": "https://github.com/srele96/sk-experiments/issues"
   },
   "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "scripts": {
+    "start": "nodemon start.js"
+  },
   "devDependencies": {
     "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.19.4",
     "@babel/register": "^7.18.9",
     "nodemon": "^2.0.20"
   },
