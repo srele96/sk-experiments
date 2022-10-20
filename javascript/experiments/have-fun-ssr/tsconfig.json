@@ -2,8 +2,6 @@
   "compilerOptions": {
     "strict": true,
     "module": "CommonJS",
-    "target": "ES6",
-    "moduleResolution": "Node",
     "esModuleInterop": true,
     "noEmit": true,
     "jsx": "react-jsx"
