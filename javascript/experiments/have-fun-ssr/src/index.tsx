@@ -18,7 +18,7 @@ app.get('/', (_, res) => {
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         pipe(res);
       },
-      onShellError(error) {
+      onShellError() {
         res.statusCode = 500;
         res.setHeader('Content-Type', 'text/html; charset=utf-8');
         // should always be renderable to allow client to take over
