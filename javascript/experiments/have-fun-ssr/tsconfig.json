@@ -5,7 +5,8 @@
     "target": "ES6",
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    "noEmit": true
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": [
     "src/**/*",
