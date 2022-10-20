@@ -1,6 +1,8 @@
 import express from 'express';
 const app = express();
 
+console.log('hello');
+
 app.get('/', (_, res) => {
   res.send('hello asd');
 });
