@@ -1,5 +1,5 @@
 {
-  "name": "have-fun-ssr",
+  "name": "have-fun-setting-ssr",
   "version": "0.1.0",
   "description": "Create server that renders React page component. Use: typescript, babel, react, jsx, express.",
   "author": "Kostic Srecko",
