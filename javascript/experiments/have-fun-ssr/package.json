@@ -12,13 +12,16 @@
   },
   "homepage": "https://github.com/srele96/sk-experiments#readme",
   "scripts": {
-    "start": "nodemon start.js"
+    "babel-node": "babel-node -x \".ts\",\".tsx\"",
+    "start": "nodemon -e ts,tsx --exec yarn babel-node -- src/index.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
+    "@babel/node": "^7.19.1",
     "@babel/preset-env": "^7.19.4",
-    "@babel/register": "^7.18.9",
-    "nodemon": "^2.0.20"
+    "@babel/preset-typescript": "^7.18.6",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.8.4"
   },
   "dependencies": {
     "express": "^4.18.2"
