@@ -17,7 +17,6 @@ add_executable(
   # implementation
   display_vectors/impl/coordinate.cpp
   display_vectors/impl/emulate_gui.cpp
-  display_vectors/impl/origin.cpp
   display_vectors/impl/pixel.cpp
   display_vectors/impl/screen.cpp
 
