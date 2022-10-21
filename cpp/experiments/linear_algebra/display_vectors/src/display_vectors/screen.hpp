@@ -1,7 +1,6 @@
 #ifndef DISPLAY_VECTORS_SCREEN_HPP
 #define DISPLAY_VECTORS_SCREEN_HPP
 
-#include <stdexcept>
 #include <vector>
 
 namespace display_vectors {
