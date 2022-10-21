@@ -42,3 +42,9 @@ display_vectors::screen::screen()
               {'z', ' ', ' ', ' ', 'y', ' ', ' ', ' ', ' '},
           },
       } {}
+
+display_vectors::display display_vectors::screen::get_1d() const { return _1d; }
+
+display_vectors::display display_vectors::screen::get_2d() const { return _2d; }
+
+display_vectors::display display_vectors::screen::get_3d() const { return _3d; }
