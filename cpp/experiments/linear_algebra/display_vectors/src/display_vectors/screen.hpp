@@ -6,11 +6,22 @@
 
 namespace display_vectors {
 
-// https://stackoverflow.com/questions/482745/namespaces-for-enum-types-best-practices
-// The enum class prevents leaking enum properties outside.
-enum class dimension { _1d, _2d, _3d };
+using display_value = char;
+using display = std::vector<std::vector<display_value>>;
 
-std::vector<std::vector<char>> create_screen(dimension space);
+class screen {
+ private:
+  display _1d;
+  display _2d;
+  display _3d;
+
+ public:
+  screen();
+
+  display get_1d() const;
+  display get_2d() const;
+  display get_3d() const;
+};
 
 }  // namespace display_vectors
 
