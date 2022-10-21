@@ -11,11 +11,11 @@ coordinate:
         horisontal_center + by
       ,
       vertically(by):
-        vertical_center + by
+        vertical_center - by
       ,
       diagonally(by):
-        horisontaly(by)
-        vertically(-by)
+        horisontaly(-by)
+        vertically(by)
     ]
 
     set_position(vector):
