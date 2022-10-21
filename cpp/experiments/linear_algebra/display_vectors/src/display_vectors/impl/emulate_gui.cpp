@@ -15,7 +15,7 @@ void display_vectors::emulate_gui::replace_default_pixels(
     const std::vector<display_vectors::pixel>& pixels) {
   for (const display_vectors::pixel& pixel : pixels) {
     display_vectors::point position = pixel.get_coordinate().get_position();
-    screen.at(position.x).at(position.y) = pixel.get_display_value();
+    screen.at(position.y).at(position.x) = pixel.get_display_value();
   }
 }
 
