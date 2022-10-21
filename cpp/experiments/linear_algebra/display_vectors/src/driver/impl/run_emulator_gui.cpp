@@ -18,6 +18,7 @@ void driver::run_terminal_gui_emulator() {
 
   std::string split_and_emphasize_displays = "\n---------\n";
   std::cout << split_and_emphasize_displays;
+
   terminal_1d.render();
   std::cout << split_and_emphasize_displays;
 
