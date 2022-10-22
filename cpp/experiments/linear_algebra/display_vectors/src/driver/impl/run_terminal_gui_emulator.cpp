@@ -1,4 +1,4 @@
-#include "../run_emulator_gui.hpp"
+#include "../run_terminal_gui_emulator.hpp"
 
 #include <iostream>
 #include <string>

@@ -23,9 +23,9 @@ add_executable(
 
   driver.hpp
 
-  driver/run_emulator_gui.hpp
+  driver/run_terminal_gui_emulator.hpp
 
-  driver/impl/run_emulator_gui.cpp
+  driver/impl/run_terminal_gui_emulator.cpp
 )
 
 target_compile_options(
