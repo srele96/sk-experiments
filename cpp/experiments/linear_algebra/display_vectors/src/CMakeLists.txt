@@ -10,7 +10,6 @@ add_executable(
   display_vectors/axis.hpp
   display_vectors/coordinate.hpp
   display_vectors/emulate_gui.hpp
-  display_vectors/origin.hpp
   display_vectors/pixel.hpp
   display_vectors/screen.hpp
 

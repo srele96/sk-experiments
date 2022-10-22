@@ -3,7 +3,6 @@
 #include <vector>
 
 display_vectors::screen::screen()
-    // sync with origin.hpp which has to contain center
     : _1d{
           {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
           {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -15,7 +14,6 @@ display_vectors::screen::screen()
           {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
           {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
       },
-      // sync with origin.hpp which has to contain center
       _2d{
           {' ', ' ', ' ', ' ', 'y', ' ', ' ', ' ', ' '},
           {' ', ' ', ' ', ' ', 'y', ' ', ' ', ' ', ' '},
@@ -27,7 +25,6 @@ display_vectors::screen::screen()
           {' ', ' ', ' ', ' ', 'y', ' ', ' ', ' ', ' '},
           {' ', ' ', ' ', ' ', 'y', ' ', ' ', ' ', ' '},
       },
-      // sync with origin.hpp which has to contain center
       _3d{
           {' ', ' ', ' ', ' ', 'y', ' ', ' ', ' ', 'z'},
           {' ', ' ', ' ', ' ', 'y', ' ', ' ', 'z', ' '},
