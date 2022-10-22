@@ -6,13 +6,26 @@
 display_vectors::coordinate::coordinate(const std::vector<int>& vector)
     : position{display_vectors::point{4, 4}},
       move_along_axis{
-          {
-              [this](const int& move_by) { position.x += move_by; },
-              [this](const int& move_by) { position.y -= move_by; },
-              [this](const int& move_by) {
-                position.x -= move_by;
-                position.y += move_by;
-              },
+          // horisontal
+          [this](const int& move_by) {
+            // reduce by negative value to move left
+            // add positive value to move right
+            position.x += move_by;
+          },
+          // vertical
+          [this](const int& move_by) {
+            // reduce by negative value to move down
+            // reduce by positive value to move up
+            position.y -= move_by;
+          },
+          // diagonal
+          [this](const int& move_by) {
+            // reduce by negative value to move right
+            // reduce by positive value to move left
+            position.x -= move_by;
+            // add negative value to move up
+            // add positive value to move down
+            position.y += move_by;
           },
       } {
   set_position(vector);

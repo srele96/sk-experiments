@@ -3,7 +3,8 @@
 
 namespace display_vectors {
 
-// sync with screen.cpp - has to be its center
+// Manually sync center values with the file screen.cpp because I didn't
+// implement the logic for simplicity.
 enum class origin { vertical_center = 4, horisontal_center = 4 };
 
 };  // namespace display_vectors

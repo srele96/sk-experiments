@@ -18,6 +18,8 @@ class emulate_gui {
   // live with that mistake. My goal is to continue learning linear algebra.
   display_vectors::display screen;
 
+  // Get every vector's x and y position and replace the default pixel with its
+  // value.
   void replace_default_pixels(
       const std::vector<display_vectors::pixel>& pixels);
 
