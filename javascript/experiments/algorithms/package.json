@@ -10,5 +10,11 @@
   "bugs": {
     "url": "https://github.com/srele96/sk-experiments/issues"
   },
-  "homepage": "https://github.com/srele96/sk-experiments#readme"
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "devDependencies": {
+    "jest": "^29.2.2"
+  }
 }
