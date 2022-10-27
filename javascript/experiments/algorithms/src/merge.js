@@ -18,7 +18,12 @@
  * @return {void} Do not return anything, modify nums1 in-place instead.
  */
 function merge(nums1, m, nums2, n) {
-  const left = new Array(m);
+  const left = new Array(m + 1);
+  // Constraint that allows me to use this sentinel
+  // -Math.pow(10,9) <= nums1[i], nums2[j] <= Math.pow(10,9)
+  const sentinel = Math.pow(10, 9) + 1;
+  left[left.length - 1] = sentinel;
+  nums2.push(sentinel);
   // Create a copy of valid elements to be able to perform a clean merge and
   // use the first array as a result.
   for (let i = 0; i != m; ++i) {
@@ -27,34 +32,15 @@ function merge(nums1, m, nums2, n) {
 
   let left_accessor = 0;
   let right_accessor = 0;
-  let insertion_index = 0;
 
   // Merge copied and second arrays and use the first one as a result.
-  while (true) {
-    // Each of the arrays initially may not contain any numbers. In addition,
-    // each of the indexes may reach the end before we finish iterating over
-    // the other. These two make me unable to know which array element I may
-    // access. Therefore, I check at each iteration to see if either of the
-    // accessors has reached the end.
-    if (left_accessor != m && right_accessor != n) {
-      if (left[left_accessor] < nums2[right_accessor]) {
-        nums1[insertion_index] = left[left_accessor];
-        ++left_accessor;
-      } else {
-        nums1[insertion_index] = nums2[right_accessor];
-        ++right_accessor;
-      }
-      ++insertion_index;
-    } else if (left_accessor != m) {
-      nums1[insertion_index] = left[left_accessor];
+  for (let i = 0; i != m + n; ++i) {
+    if (left[left_accessor] < nums2[right_accessor]) {
+      nums1[i] = left[left_accessor];
       ++left_accessor;
-      ++insertion_index;
-    } else if (right_accessor != n) {
-      nums1[insertion_index] = nums2[right_accessor];
-      ++right_accessor;
-      ++insertion_index;
     } else {
-      break;
+      nums1[i] = nums2[right_accessor];
+      ++right_accessor;
     }
   }
 }
