@@ -1,0 +1,1 @@
+const { intersect } = require('../intersect');
