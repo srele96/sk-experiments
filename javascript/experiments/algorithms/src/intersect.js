@@ -16,7 +16,6 @@
 //
 // If I don't find it, I can proceed because I am sure the current value does
 // not have a pair. If I see this value again, I won't have a match for it, so
-//
 // I don't need to save it. That means I don't need to keep any values from
 // this set.
 //
