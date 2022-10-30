@@ -51,9 +51,7 @@ function reshape_matrix(mat, r, c) {
       for (let j = 0; j != column_length; ++j) {
         reshaped_matrix[row][column] = mat[i][j];
 
-        // Track the two pointers for the reshaped matrix.
         ++column;
-
         // Column is out of bounds.
         if (column === c) {
           ++row;
