@@ -38,7 +38,8 @@ function reshape_matrix(mat, r, c) {
   let row_length = mat.length;
   let column_length = mat[0].length;
 
-  // Matrix transformation is possible when old and new have an equal amount of elements.
+  // Matrix transformation is possible when old and new have an equal amount
+  // of elements.
   if (row_length * column_length === r * c) {
     let row = 0;
     let column = 0;
