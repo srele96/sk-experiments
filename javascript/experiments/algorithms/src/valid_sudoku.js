@@ -180,7 +180,6 @@ function valid_sudoku(board) {
   let current_box = undefined;
 
   let cell = undefined;
-  let count = undefined;
 
   // Initialize histories.
   for (let i = 0; i != board_size; ++i) {
