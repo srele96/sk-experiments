@@ -10,6 +10,14 @@
 // merged, and the last n elements are set to 0 and should be ignored. nums2
 // has a length of n.
 
+// Constraints:
+
+//     nums1.length == m + n
+//     nums2.length == n
+//     0 <= m, n <= 200
+//     1 <= m + n <= 200
+//     -109 <= nums1[i], nums2[j] <= 109
+
 /**
  * @param {number[]} nums1
  * @param {number} m
