@@ -221,3 +221,5 @@ function valid_sudoku(board) {
   // Sudoku board is valid.
   return true;
 }
+
+module.exports.valid_sudoku = valid_sudoku;
