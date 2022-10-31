@@ -102,21 +102,25 @@
 // Each cell belongs to each of the rules.
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const below = (value) => value <= 2;
-const between = (value) => value >= 3 && value <= 5;
-const above = (value) => value >= 6;
+// Bounds
+const below /*************/ = (value) => value <= 2;
+const between /***********/ = (value) => value >= 3 && value <= 5;
+const above /*************/ = (value) => value >= 6;
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-const is_top_left = (row, column) => below(row) && below(column);
-const is_top_center = (row, column) => below(row) && between(column);
-const is_top_right = (row, column) => below(row) && above(column);
+// Rules
+const is_top_left /*******/ = (row, column) => below(row) && below(column);
+const is_top_center /*****/ = (row, column) => below(row) && between(column);
+const is_top_right /******/ = (row, column) => below(row) && above(column);
 
-const is_center_left = (row, column) => between(row) && below(column);
-const is_center_center = (row, column) => between(row) && between(column);
-const is_center_right = (row, column) => between(row) && above(column);
+const is_center_left /****/ = (row, column) => between(row) && below(column);
+const is_center_center /**/ = (row, column) => between(row) && between(column);
+const is_center_right /***/ = (row, column) => between(row) && above(column);
 
-const is_bottom_left = (row, column) => above(row) && below(column);
-const is_bottom_center = (row, column) => above(row) && between(column);
-const is_bottom_right = (row, column) => above(row) && above(column);
+const is_bottom_left /****/ = (row, column) => above(row) && below(column);
+const is_bottom_center /**/ = (row, column) => above(row) && between(column);
+const is_bottom_right /***/ = (row, column) => above(row) && above(column);
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 const box = {
   top_left: 0,
