@@ -198,6 +198,7 @@ function valid_sudoku(board) {
 
       if (cell !== ignore_cell) {
         current_row = row_history.get(row);
+        // Check if the value is duplicate.
         if (current_row.has(cell)) {
           return invalid_board;
         } else {
@@ -205,6 +206,7 @@ function valid_sudoku(board) {
         }
 
         current_column = column_history.get(column);
+        // Check if the value is duplicate.
         if (current_column.has(cell)) {
           return invalid_board;
         } else {
@@ -212,6 +214,7 @@ function valid_sudoku(board) {
         }
 
         current_box = box_history.get(get_box(row, column));
+        // Check if the value is duplicate.
         if (current_box.has(cell)) {
           return invalid_board;
         } else {
