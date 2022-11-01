@@ -105,11 +105,18 @@
 // Each cell belongs to each of the rules.
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+const index = {
+  two: 2,
+  three: 3,
+  five: 5,
+  six: 6,
+};
+
 // Bounds
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const below /*************/ = (value) => value <= 2;
-const between /***********/ = (value) => value >= 3 && value <= 5;
-const above /*************/ = (value) => value >= 6;
+const below /*******/ = (value) => value <= index.two;
+const between /*****/ = (value) => value >= index.three && value <= index.five;
+const above /*******/ = (value) => value >= index.six;
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // Rules
