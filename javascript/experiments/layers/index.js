@@ -214,12 +214,17 @@ const zIndex = produceSequence({
   length: options.length,
 });
 
-const assign = (i, direction) => ({
-  size: size[i],
-  scale: scale[i],
-  order: order[i],
-  zIndex: zIndex[i],
-  direction: direction[i],
+const assign = ({ byOrder, direction }) => ({
+  size: size[byOrder],
+  scale: scale[byOrder],
+  order: order[byOrder],
+  zIndex: zIndex[byOrder],
+  direction: direction[byOrder],
+
+  topLayerSize: options.topLayerSize.initialValue,
+  topLayerIndex: options.topLayerIndex,
+  offset: options.offset,
+  initialOffset: options.initialOffset,
 });
 
 const layers = new Array(options.length);
@@ -227,15 +232,7 @@ const layers = new Array(options.length);
 let i = options.topLayerIndex;
 let byOrder = 0;
 while (i >= 0) {
-  layers[i] = {
-    size: size[byOrder],
-    scale: scale[byOrder],
-    order: order[byOrder],
-    zIndex: zIndex[byOrder],
-
-    direction: left[byOrder],
-  };
-
+  layers[i] = assign({ byOrder, direction: left });
   ++byOrder;
   --i;
 }
@@ -243,14 +240,7 @@ while (i >= 0) {
 i = options.topLayerIndex;
 byOrder = 0;
 while (i != layers.length) {
-  layers[i] = {
-    size: size[byOrder],
-    scale: scale[byOrder],
-    order: order[byOrder],
-    zIndex: zIndex[byOrder],
-
-    direction: right[byOrder],
-  };
+  layers[i] = assign({ byOrder, direction: right });
 
   ++byOrder;
   ++i;
@@ -258,15 +248,7 @@ while (i != layers.length) {
 
 i = 0;
 while (i != layers.length) {
-  layers[i] = {
-    ...layers[i],
-
-    index: i,
-    topLayerSize: options.topLayerSize.initialValue,
-    topLayerIndex: options.topLayerIndex,
-    offset: options.offset,
-    initialOffset: options.initialOffset,
-  };
+  layers[i].index = i;
   ++i;
 }
 
