@@ -19,6 +19,18 @@ const invariant = Object.freeze({
       throw new Error('received invalid numbers');
     }
   }),
+  validArray: Object.freeze(function (array) {
+    if (!Array.isArray(array)) {
+      throw new Error('received unexpected type, expected array');
+    }
+  }),
+  lengthEqualOrLess: Object.freeze(function (array, length) {
+    if (array.length > length) {
+      throw new Error(
+        'expected an array to have equal or smaller length than ' + length
+      );
+    }
+  }),
 });
 
 function Calculate(options) {
