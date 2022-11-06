@@ -191,9 +191,8 @@
             e('h1', null, 'Click to Change Picture'),
             e('div', { style: { padding: '5px' } }),
             e(
-              'article',
+              'section',
               null,
-
               e(
                 'h1',
                 { style: { textAlign: 'center' } },
@@ -280,35 +279,56 @@
               )
             ),
             e(
-              'div',
-              {
-                style: { paddingTop: '20px' },
-              },
-              layers.map((layer, index) => {
-                return e(
-                  'button',
-                  {
-                    style: {
-                      width: '30px',
-                      height: '30px',
-                      cursor: 'pointer',
-                      margin: '0 5px',
-                      borderColor: layer.topLayerIndex === index ? 'red' : '',
-                    },
-                    onClick: () => {
-                      setLayers(
-                        generateLayers({
-                          topLayerIndex: layer.index,
-                          initialOffset: layer.initialOffset,
-                        })
-                      );
-                      setCurrentTopLayerIndex(layer.index);
-                    },
-                    key: layer.index
+              'section',
+              null,
+              e('div', { style: { padding: '5px'}}),
+              e(
+                'h1',
+                { style: { textAlign: 'center' } },
+                'Button - Direct Navigation'
+              ),
+              e(
+                'ul',
+                {
+                  style: {
+                    paddingTop: '20px',
+                    listStyle: 'none',
+                    display: 'flex',
                   },
-                  layer.index + 1
-                );
-              })
+                },
+                layers.map((layer, index) => {
+                  return e(
+                    'li',
+                    {
+                      key: layer.index,
+                      'aria-current': layer.topLayerIndex === index,
+                    },
+                    e(
+                      'button',
+                      {
+                        style: {
+                          width: '30px',
+                          height: '30px',
+                          cursor: 'pointer',
+                          margin: '0 5px',
+                          borderColor:
+                            layer.topLayerIndex === index ? 'red' : '',
+                        },
+                        onClick: () => {
+                          setLayers(
+                            generateLayers({
+                              topLayerIndex: layer.index,
+                              initialOffset: layer.initialOffset,
+                            })
+                          );
+                          setCurrentTopLayerIndex(layer.index);
+                        },
+                      },
+                      layer.index + 1
+                    )
+                  );
+                })
+              )
             ),
             e(
               'div',
