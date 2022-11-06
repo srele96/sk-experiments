@@ -267,6 +267,36 @@
             e(
               'div',
               {
+                style: { paddingTop: '20px' },
+              },
+              layers.map((layer, index) => {
+                return e(
+                  'button',
+                  {
+                    style: {
+                      width: '30px',
+                      height: '30px',
+                      cursor: 'pointer',
+                      margin: '0 5px',
+                      borderColor: layer.topLayerIndex === index ? 'red' : '',
+                    },
+                    onClick: () => {
+                      setLayers(
+                        generateLayers({
+                          topLayerIndex: layer.index,
+                          initialOffset: layer.initialOffset,
+                        })
+                      );
+                      setCurrentTopLayerIndex(layer.index);
+                    },
+                  },
+                  layer.index + 1
+                );
+              })
+            ),
+            e(
+              'div',
+              {
                 style: {
                   paddingTop: '20px',
                   display: 'flex',
