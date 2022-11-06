@@ -177,77 +177,83 @@
           );
 
           return e(
-            'div',
-            {
-              style: {
-                width: props.containerWidth,
-                height: 1.5 * props.width,
-                position: 'relative',
-                margin: '0 auto',
-              },
-            },
-            layers.map((layer) => {
-              return e(
-                'div',
-                {
-                  style: {
-                    zIndex: layer.zIndex,
-                    width: props.width,
-                    height: 0,
-                    position: 'absolute',
-                    transform: `translateX(${calculateTopLayerOffset({
-                      topLayerIndex: layer.topLayerIndex,
-                      offset: layer.offset,
-                      initialOffset: layer.initialOffset,
-                    })}%)`,
-                  },
-                  key: layer.index,
+            'article',
+            null,
+            e(
+              'div',
+              {
+                style: {
+                  width: props.containerWidth,
+                  height: 1.5 * props.width,
+                  position: 'relative',
+                  margin: '0 auto',
                 },
-                e(
+              },
+              layers.map((layer) => {
+                return e(
                   'div',
                   {
                     style: {
-                      position: 'absolute',
+                      zIndex: layer.zIndex,
                       width: props.width,
                       height: 0,
-                      transform: `translateX(${calculateSizeToMoveInDirection({
-                        direction: layer.direction,
-                        topLayerSize: layer.topLayerSize,
-                        size: layer.size,
-                        order: layer.order,
+                      position: 'absolute',
+                      transform: `translateX(${calculateTopLayerOffset({
+                        topLayerIndex: layer.topLayerIndex,
                         offset: layer.offset,
                         initialOffset: layer.initialOffset,
                       })}%)`,
                     },
+                    key: layer.index,
                   },
                   e(
-                    'button',
+                    'div',
                     {
                       style: {
+                        position: 'absolute',
                         width: props.width,
-                        height: props.width * 1.5,
-                        transform: `scale(${layer.scale})`,
-                        padding: 0,
-                        border: 0,
-                        cursor: 'pointer',
-                      },
-                      onClick: () =>
-                        setLayers(
-                          generateLayers({
-                            topLayerIndex: layer.index,
+                        height: 0,
+                        transform: `translateX(${calculateSizeToMoveInDirection(
+                          {
+                            direction: layer.direction,
+                            topLayerSize: layer.topLayerSize,
+                            size: layer.size,
+                            order: layer.order,
+                            offset: layer.offset,
                             initialOffset: layer.initialOffset,
-                          })
-                        ),
+                          }
+                        )}%)`,
+                      },
                     },
-                    e('img', {
-                      style: { width: '100%', height: '100%' },
-                      src: layer.picture.src,
-                      alt: layer.picture.alt,
-                    })
+                    e(
+                      'button',
+                      {
+                        style: {
+                          width: props.width,
+                          height: props.width * 1.5,
+                          transform: `scale(${layer.scale})`,
+                          padding: 0,
+                          border: 0,
+                          cursor: 'pointer',
+                        },
+                        onClick: () =>
+                          setLayers(
+                            generateLayers({
+                              topLayerIndex: layer.index,
+                              initialOffset: layer.initialOffset,
+                            })
+                          ),
+                      },
+                      e('img', {
+                        style: { width: '100%', height: '100%' },
+                        src: layer.picture.src,
+                        alt: layer.picture.alt,
+                      })
+                    )
                   )
-                )
-              );
-            })
+                );
+              })
+            )
           );
         }
 
