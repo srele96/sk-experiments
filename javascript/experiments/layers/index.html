@@ -188,81 +188,96 @@
                 flexDirection: 'column',
               },
             },
+            e('h1', null, 'Click to Change Picture'),
+            e('div', { style: { padding: '5px' } }),
             e(
-              'div',
-              {
-                style: {
-                  width: props.containerWidth,
-                  height: 1.5 * props.width,
-                  position: 'relative',
-                },
-              },
-              layers.map((layer) => {
-                return e(
-                  'div',
-                  {
-                    style: {
-                      zIndex: layer.zIndex,
-                      width: props.width,
-                      height: 0,
-                      position: 'absolute',
-                      transform: `translateX(${calculateTopLayerOffset({
-                        topLayerIndex: layer.topLayerIndex,
-                        offset: layer.offset,
-                        initialOffset: layer.initialOffset,
-                      })}%)`,
-                    },
-                    key: layer.index,
+              'article',
+              null,
+
+              e(
+                'h1',
+                { style: { textAlign: 'center' } },
+                'Picture - Direct Navigation'
+              ),
+              e('div', { style: { padding: '5px' } }),
+              e(
+                'ul',
+                {
+                  style: {
+                    width: props.containerWidth,
+                    height: 1.5 * props.width,
+                    position: 'relative',
                   },
-                  e(
-                    'div',
+                },
+                layers.map((layer) => {
+                  return e(
+                    'li',
                     {
+                      'aria-current': layer.index === layer.topLayerIndex,
                       style: {
-                        position: 'absolute',
+                        zIndex: layer.zIndex,
                         width: props.width,
                         height: 0,
-                        transform: `translateX(${calculateSizeToMoveInDirection(
-                          {
-                            direction: layer.direction,
-                            topLayerSize: layer.topLayerSize,
-                            size: layer.size,
-                            order: layer.order,
-                            offset: layer.offset,
-                            initialOffset: layer.initialOffset,
-                          }
-                        )}%)`,
+                        position: 'absolute',
+                        transform: `translateX(${calculateTopLayerOffset({
+                          topLayerIndex: layer.topLayerIndex,
+                          offset: layer.offset,
+                          initialOffset: layer.initialOffset,
+                        })}%)`,
+                        listStyle: 'none',
                       },
+                      key: layer.index,
                     },
                     e(
-                      'button',
+                      'div',
                       {
                         style: {
+                          position: 'absolute',
                           width: props.width,
-                          height: props.width * 1.5,
-                          transform: `scale(${layer.scale})`,
-                          padding: 0,
-                          border: 0,
-                          cursor: 'pointer',
-                        },
-                        onClick: () => {
-                          setLayers(
-                            generateLayers({
-                              topLayerIndex: layer.index,
+                          height: 0,
+                          transform: `translateX(${calculateSizeToMoveInDirection(
+                            {
+                              direction: layer.direction,
+                              topLayerSize: layer.topLayerSize,
+                              size: layer.size,
+                              order: layer.order,
+                              offset: layer.offset,
                               initialOffset: layer.initialOffset,
-                            })
-                          );
-                          setCurrentTopLayerIndex(layer.index);
+                            }
+                          )}%)`,
                         },
                       },
-                      e('img', {
-                        style: { width: '100%', height: '100%' },
-                        src: layer.picture.src,
-                        alt: layer.picture.alt,
-                      })
+                      e(
+                        'button',
+                        {
+                          style: {
+                            width: props.width,
+                            height: props.width * 1.5,
+                            transform: `scale(${layer.scale})`,
+                            padding: 0,
+                            border: 0,
+                            cursor: 'pointer',
+                          },
+                          onClick: () => {
+                            setLayers(
+                              generateLayers({
+                                topLayerIndex: layer.index,
+                                initialOffset: layer.initialOffset,
+                              })
+                            );
+                            setCurrentTopLayerIndex(layer.index);
+                          },
+                        },
+                        e('img', {
+                          style: { width: '100%', height: '100%' },
+                          src: layer.picture.src,
+                          alt: layer.picture.alt,
+                        })
+                      )
                     )
-                  )
-                );
-              })
+                  );
+                })
+              )
             ),
             e(
               'div',
@@ -365,6 +380,17 @@
           return e(
             'main',
             null,
+            e(
+              'div',
+              { style: { textAlign: 'center' } },
+              e('h1', null, 'Picture Layers'),
+              e(
+                'p',
+                null,
+                'Click Pictures or Buttons to change the visible picture.'
+              )
+            ),
+            e('div', { style: { padding: '10px' } }),
             e(PictureLayers, {
               width,
               containerWidth: 1.6 * width,
