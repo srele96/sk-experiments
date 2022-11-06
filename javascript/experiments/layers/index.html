@@ -13,7 +13,7 @@
       }
 
       main {
-        padding: 10px;
+        padding: 10px 0;
       }
     </style>
   </head>
@@ -52,6 +52,11 @@
           }),
         });
 
+        // i use top layer index because the first element as top layer does not move, all others move to the right of it
+        // when the second element is the top layer, it has index 1 and moves 1 time by that offset to free the space on the left
+        //
+        // i need to calculate the top layer's index because the movement of every layer starts from the center of the current top layer
+        // therefore i need to move an element to the position of the top layer, after that i can calculate how much do i need to move the element
         const calculateTopLayerOffset = ({
           topLayerIndex,
           offset,
@@ -62,6 +67,19 @@
           return topLayerIndex * offset + initialOffset;
         };
 
+        // i need direction to know if a layer has to move left or right because css translate function takes a positive or a negative percentage to show that
+        //
+        // i need top layer's size because i need to know how much to move the current layer to the edge of the top layer
+        //
+        // i need the size of the current layer so i can calculate how much space is missing to reach the left or right edge
+        //
+        // i need order because i need to know the order of my current layer relative the the top layer, that is because i need to know how much to move the layer to show a part of it
+        // first hidden layer behind the top layer moves once to the edge of top layer and once more to become visible
+        // second hidden layer behind the first hidden layer has to move once to the edge of top layer and once to the right to reach the edge of first hidden layer, second time to show a part of it
+        //
+        // an offset is how much of the current layer is visible behind the layer above it
+        //
+        // initial offset is the initial space around the top layer, it is an initial offset of every movement
         const calculateSizeToMoveInDirection = ({
           direction,
           topLayerSize,
@@ -79,6 +97,8 @@
             initialOffset
           );
 
+          // i need to calculate how much to move the element to the edge because when layer is smaller than the top one and i want to show a part of it
+          // i have to reach the edge of the top layer
           const sizeToBothEdges = topLayerSize - size;
           const sizeToOneEdge = sizeToBothEdges / 2;
           const moveToShowByOrder = order * offset;
@@ -91,12 +111,48 @@
           invariant.withinBounds(topLayerIndex, 0, 6);
           invariant.validNumbers(initialOffset);
 
+          // the order of values for each layer to the side of top layer
+          // each layer gets smaller
           const size = [100, 80, 70, 60, 50, 40, 30];
+          // each layer gets smaller - css property
           const scale = [1, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3];
           const order = [0, 1, 2, 3, 4, 5, 6];
+          // the first element does not move
           const right = [0, 1, 1, 1, 1, 1, 1];
+          // the first element does not move
           const left = [0, -1, -1, -1, -1, -1, -1];
+          // every subsequent element is behind the previous one
           const zIndex = [7, 6, 5, 4, 3, 2, 1];
+
+          const assign = ({ orderBy, direction }) => ({
+            size: size[orderBy],
+            scale: scale[orderBy],
+            order: order[orderBy],
+            direction: direction[orderBy],
+            zIndex: zIndex[orderBy],
+          });
+
+          const layers = new Array(7);
+
+          // assign properties from begin to end from the top layer to the left
+          let i = topLayerIndex;
+          let orderBy = 0;
+          while (i >= 0) {
+            layers[i] = assign({ orderBy, direction: left });
+            ++orderBy;
+            --i;
+          }
+
+          // assign properties from begin to end from the top layer to the left
+          i = topLayerIndex;
+          orderBy = 0;
+          while (i <= 6) {
+            layers[i] = assign({ orderBy, direction: right });
+            ++orderBy;
+            ++i;
+          }
+
+          // provide pictures for every layer so that i can easily access them in the current layer
           const pictures = [
             {
               src: 'https://i.pinimg.com/564x/2f/19/aa/2f19aad54ba05a5ebd5e7852e10852c3.jpg',
@@ -128,36 +184,12 @@
             },
           ];
 
-          const assign = ({ orderBy, direction }) => ({
-            size: size[orderBy],
-            scale: scale[orderBy],
-            order: order[orderBy],
-            direction: direction[orderBy],
-            zIndex: zIndex[orderBy],
-          });
-
-          const layers = new Array(7);
-
-          let i = topLayerIndex;
-          let orderBy = 0;
-          while (i >= 0) {
-            layers[i] = assign({ orderBy, direction: left });
-            ++orderBy;
-            --i;
-          }
-
-          i = topLayerIndex;
-          orderBy = 0;
-          while (i <= 6) {
-            layers[i] = assign({ orderBy, direction: right });
-            ++orderBy;
-            ++i;
-          }
-
           i = 0;
           while (i != 7) {
+            // use this index instead of the one when mapping the layers
             layers[i].index = i;
             layers[i].picture = pictures[i];
+            // provide values that i need for the formula so i can access them from the current layer
             layers[i].topLayerIndex = topLayerIndex;
             layers[i].topLayerSize = 100;
             layers[i].offset = 10;
@@ -176,9 +208,10 @@
             })
           );
           const [currentTopLayerIndex, setCurrentTopLayerIndex] = useState(
-            layers[0].topLayerIndex
+            props.topLayerIndex
           );
 
+          const thisHeightScalerFitPicturesWell = 1.5;
           return e(
             'article',
             {
@@ -204,7 +237,7 @@
                 {
                   style: {
                     width: props.containerWidth,
-                    height: 1.5 * props.width,
+                    height: thisHeightScalerFitPicturesWell * props.width,
                     position: 'relative',
                     margin: 'auto',
                   },
@@ -219,6 +252,7 @@
                         width: props.width,
                         height: 0,
                         position: 'absolute',
+                        // track the position of the top layer index so every other layer can move from that position
                         transform: `translateX(${calculateTopLayerOffset({
                           topLayerIndex: layer.topLayerIndex,
                           offset: layer.offset,
@@ -252,7 +286,8 @@
                         {
                           style: {
                             width: props.width,
-                            height: props.width * 1.5,
+                            height:
+                              props.width * thisHeightScalerFitPicturesWell,
                             transform: `scale(${layer.scale})`,
                             padding: 0,
                             border: 0,
@@ -390,14 +425,29 @@
           );
         }
 
+        function getWidthForContainerToFillUpLargerPortionOfTheScreen() {
+          const reduceBecauseContainerMultipliesWidth = 4;
+          return window.innerWidth / reduceBecauseContainerMultipliesWidth;
+        }
+
         function CreatePictureLayers() {
-          const [width, setWidth] = useState(window.innerWidth / 4);
+          const [width, setWidth] = useState(
+            getWidthForContainerToFillUpLargerPortionOfTheScreen()
+          );
 
           useEffect(() => {
-            window.addEventListener('resize', () => {
-              setWidth(window.innerWidth / 4);
-            });
+            function updateWidthBecauseWeControlWidthFromJavaScript() {
+              window.addEventListener('resize', () => {
+                setWidth(
+                  getWidthForContainerToFillUpLargerPortionOfTheScreen()
+                );
+              });
+            }
+
+            updateWidthBecauseWeControlWidthFromJavaScript();
           }, [setWidth]);
+
+          const middle = 3;
 
           return e(
             'main',
@@ -415,15 +465,20 @@
             e('div', { style: { padding: '10px' } }),
             e(PictureLayers, {
               width,
+              // seven layers, first one takes 100% and six other layers have 10% visible part
+              // that means we need 160% width for container of all layers
               containerWidth: 1.6 * width,
-              topLayerIndex: 3,
+              topLayerIndex: middle,
               initialOffset: 0,
             }),
             e('div', { style: { padding: '10px' } }),
             e(PictureLayers, {
               width,
+              // seven layers, first one takes 100%, six other layers take 10% each for their visible parts
+              // when the top layer is second one, we have initial offset to the left and right
+              // therefore we have 160% initialy and two 80% offsets, so 320% of width in total
               containerWidth: 3.2 * width,
-              topLayerIndex: 3,
+              topLayerIndex: middle,
               initialOffset: 80,
             })
           );
