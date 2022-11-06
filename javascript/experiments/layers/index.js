@@ -31,6 +31,11 @@ const invariant = Object.freeze({
       );
     }
   }),
+  withinInclusiveBounds: Object.freeze(function ({ value, begin, end }) {
+    if (value < begin || value > end) {
+      throw new Error('value out of bounds');
+    }
+  }),
 });
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -186,7 +191,6 @@ const options = Object.freeze({
 });
 
 function produceSequences(sequences, length) {
-  invariant.validArray(sequences);
   invariant.validNumbers(length);
 
   const initialSequences = {};
@@ -209,42 +213,103 @@ const sequences = Object.freeze(
   produceSequences(options.sequences, options.length)
 );
 
-const assign = ({ byOrder, direction }) => ({
-  size: sequences.size[byOrder],
-  scale: sequences.scale[byOrder],
-  order: sequences.order[byOrder],
-  zIndex: sequences.zIndex[byOrder],
-  direction: direction[byOrder],
+/**
+ * @typedef {{ initialValue: number; changeSubsequentBy: number[] }} Sequence
+ *
+ * @param {{
+ *   sequences: {
+ *     size: Sequence;
+ *     scale: Sequence;
+ *     order: Sequence;
+ *     right: Sequence;
+ *     left: Sequence;
+ *     zIndex: Sequence;
+ *   };
+ *   length: number;
+ *   topLayerIndex: number;
+ *   offset: number;
+ *   initialOffset: number;
+ * }} options
+ */
+function Layers(options) {
+  const validOptions = Object.freeze([
+    'sequences',
+    'length',
+    'topLayerIndex',
+    'offset',
+    'initialOffset',
+  ]);
+  invariant.validOptions(options, validOptions);
 
-  topLayerSize: options.sequences.size.initialValue,
-  topLayerIndex: options.topLayerIndex,
-  offset: options.offset,
-  initialOffset: options.initialOffset,
-});
+  const { sequences, length, topLayerIndex, offset, initialOffset } = options;
+  invariant.validNumbers(length, topLayerIndex, offset, initialOffset);
 
-const layers = new Array(options.length);
+  const validSequences = Object.freeze([
+    'size',
+    'scale',
+    'order',
+    'right',
+    'left',
+    'zIndex',
+  ]);
+  invariant.validOptions(sequences, validSequences);
 
-let i = options.topLayerIndex;
-let byOrder = 0;
-while (i >= 0) {
-  layers[i] = assign({ byOrder, direction: sequences.left });
-  ++byOrder;
-  --i;
+  this.__sequences = Object.freeze(produceSequences(sequences, length));
+  this.__options = options;
 }
 
-i = options.topLayerIndex;
-byOrder = 0;
-while (i != layers.length) {
-  layers[i] = assign({ byOrder, direction: sequences.right });
+Layers.prototype.getLayers = function (topLayerIndex) {
+  const includeLastIndex = 1;
+  invariant.validNumbers(topLayerIndex);
+  invariant.withinInclusiveBounds({
+    value: topLayerIndex,
+    begin: 0,
+    end: this.__options.length - includeLastIndex,
+  });
 
-  ++byOrder;
-  ++i;
-}
+  const layers = new Array(this.__options.length);
 
-i = 0;
-while (i != layers.length) {
-  layers[i].index = i;
-  ++i;
-}
+  const assign = ({ byOrder, direction }) => ({
+    size: sequences.size[byOrder],
+    scale: sequences.scale[byOrder],
+    order: sequences.order[byOrder],
+    zIndex: sequences.zIndex[byOrder],
+    direction: direction[byOrder],
 
-console.log(layers);
+    topLayerIndex,
+    topLayerSize: options.sequences.size.initialValue,
+    offset: options.offset,
+    initialOffset: options.initialOffset,
+  });
+
+  let i = topLayerIndex;
+  let byOrder = 0;
+  while (i >= 0) {
+    layers[i] = assign({ byOrder, direction: this.__sequences.left });
+    ++byOrder;
+    --i;
+  }
+
+  i = topLayerIndex;
+  byOrder = 0;
+  while (i != layers.length) {
+    layers[i] = assign({ byOrder, direction: this.__sequences.right });
+
+    ++byOrder;
+    ++i;
+  }
+
+  i = 0;
+  while (i != layers.length) {
+    layers[i].index = i;
+    ++i;
+  }
+
+  return layers;
+};
+
+const layers = new Layers(options);
+console.log(layers.getLayers(1));
+
+const layersWithWings = new Layers({ ...options, initialOffset: 80 });
+console.log(layersWithWings.getLayers(3));
