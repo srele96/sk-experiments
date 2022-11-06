@@ -117,35 +117,25 @@
                 width: props.containerWidth,
                 height: 1.5 * props.width,
                 position: 'relative',
-                margin: '0 auto'
+                margin: '0 auto',
               },
             },
-            layers.map((layer, i) => {
-              const {
-                topLayerIndex,
-                offset,
-                initialOffset,
-                direction,
-                topLayerSize,
-                size,
-                order,
-              } = layer;
-
+            layers.map((layer) => {
               return e(
                 'div',
                 {
                   style: {
+                    zIndex: layer.zIndex,
                     width: props.width,
                     height: 0,
                     position: 'absolute',
-                    zIndex: layer.zIndex,
                     transform: `translateX(${calculateTopLayerOffset({
-                      topLayerIndex,
-                      offset,
-                      initialOffset,
+                      topLayerIndex: layer.topLayerIndex,
+                      offset: layer.offset,
+                      initialOffset: layer.initialOffset,
                     })}%)`,
                   },
-                  key: i,
+                  key: layer.index,
                 },
                 e(
                   'div',
@@ -155,12 +145,12 @@
                       width: props.width,
                       height: 0,
                       transform: `translateX(${calculateSizeToMoveInDirection({
-                        direction,
-                        topLayerSize,
-                        size,
-                        order,
-                        offset,
-                        initialOffset,
+                        direction: layer.direction,
+                        topLayerSize: layer.topLayerSize,
+                        size: layer.size,
+                        order: layer.order,
+                        offset: layer.offset,
+                        initialOffset: layer.initialOffset,
                       })}%)`,
                     },
                   },
@@ -178,8 +168,8 @@
                       onClick: () =>
                         setLayers(
                           generateLayers({
-                            topLayerIndex: i,
-                            initialOffset: props.initialOffset,
+                            topLayerIndex: layer.index,
+                            initialOffset: layer.initialOffset,
                             pictures: props.pictures,
                           })
                         ),
@@ -246,7 +236,7 @@
               initialOffset: 0,
               pictures,
             }),
-            e('div', { style: { padding: '20px'} }),
+            e('div', { style: { padding: '20px' } }),
             e(PictureLayers, {
               width,
               containerWidth: 3.2 * width,
