@@ -178,7 +178,13 @@
 
           return e(
             'article',
-            null,
+            {
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'column',
+              },
+            },
             e(
               'div',
               {
@@ -186,7 +192,6 @@
                   width: props.containerWidth,
                   height: 1.5 * props.width,
                   position: 'relative',
-                  margin: '0 auto',
                 },
               },
               layers.map((layer) => {
@@ -253,6 +258,33 @@
                   )
                 );
               })
+            ),
+            e(
+              'div',
+              {
+                style: {
+                  width: props.containerWidth,
+                  paddingTop: '20px',
+                  display: 'flex',
+                },
+              },
+              e(
+                'button',
+                { style: { flex: '1', cursor: 'pointer', padding: '5px' } },
+                '< left'
+              ),
+              e(
+                'button',
+                {
+                  style: {
+                    flex: '1',
+                    cursor: 'pointer',
+                    padding: '5px',
+                    marginLeft: '20px',
+                  },
+                },
+                'right >'
+              )
             )
           );
         }
