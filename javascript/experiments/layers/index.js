@@ -153,29 +153,31 @@ function produceSequence({ initialValue, changeSubsequentBy, length }) {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 const options = Object.freeze({
-  topLayerSize: Object.freeze({
-    initialValue: 100,
-    changeSubsequentBy: Object.freeze([-20, -10]),
-  }),
-  scale: Object.freeze({
-    initialValue: 1,
-    changeSubsequentBy: Object.freeze([-0.2, -0.1]),
-  }),
-  order: Object.freeze({
-    initialValue: 0,
-    changeSubsequentBy: Object.freeze([1]),
-  }),
-  right: Object.freeze({
-    initialValue: 0,
-    changeSubsequentBy: Object.freeze([1, 0]),
-  }),
-  left: Object.freeze({
-    initialValue: 0,
-    changeSubsequentBy: Object.freeze([-1, 0]),
-  }),
-  zIndex: Object.freeze({
-    initialValue: 8,
-    changeSubsequentBy: Object.freeze([-1]),
+  sequences: Object.freeze({
+    size: Object.freeze({
+      initialValue: 100,
+      changeSubsequentBy: Object.freeze([-20, -10]),
+    }),
+    scale: Object.freeze({
+      initialValue: 1,
+      changeSubsequentBy: Object.freeze([-0.2, -0.1]),
+    }),
+    order: Object.freeze({
+      initialValue: 0,
+      changeSubsequentBy: Object.freeze([1]),
+    }),
+    right: Object.freeze({
+      initialValue: 0,
+      changeSubsequentBy: Object.freeze([1, 0]),
+    }),
+    left: Object.freeze({
+      initialValue: 0,
+      changeSubsequentBy: Object.freeze([-1, 0]),
+    }),
+    zIndex: Object.freeze({
+      initialValue: 8,
+      changeSubsequentBy: Object.freeze([-1]),
+    }),
   }),
   length: 4,
   topLayerIndex: 1,
@@ -183,45 +185,38 @@ const options = Object.freeze({
   initialOffset: 0,
 });
 
-const size = produceSequence({
-  initialValue: options.topLayerSize.initialValue,
-  changeSubsequentBy: options.topLayerSize.changeSubsequentBy,
-  length: options.length,
-});
-const scale = produceSequence({
-  initialValue: options.scale.initialValue,
-  changeSubsequentBy: options.scale.changeSubsequentBy,
-  length: options.length,
-});
-const order = produceSequence({
-  initialValue: options.order.initialValue,
-  changeSubsequentBy: options.order.changeSubsequentBy,
-  length: options.length,
-});
-const right = produceSequence({
-  initialValue: options.right.initialValue,
-  changeSubsequentBy: options.right.changeSubsequentBy,
-  length: options.length,
-});
-const left = produceSequence({
-  initialValue: options.left.initialValue,
-  changeSubsequentBy: options.left.changeSubsequentBy,
-  length: options.length,
-});
-const zIndex = produceSequence({
-  initialValue: options.zIndex.initialValue,
-  changeSubsequentBy: options.zIndex.changeSubsequentBy,
-  length: options.length,
-});
+function produceSequences(sequences, length) {
+  invariant.validArray(sequences);
+  invariant.validNumbers(length);
+
+  const initialSequences = {};
+
+  return Object.entries(sequences).reduce(
+    (sequences, [key, { initialValue, changeSubsequentBy }]) => {
+      sequences[key] = produceSequence({
+        initialValue,
+        changeSubsequentBy,
+        length,
+      });
+
+      return sequences;
+    },
+    initialSequences
+  );
+}
+
+const sequences = Object.freeze(
+  produceSequences(options.sequences, options.length)
+);
 
 const assign = ({ byOrder, direction }) => ({
-  size: size[byOrder],
-  scale: scale[byOrder],
-  order: order[byOrder],
-  zIndex: zIndex[byOrder],
+  size: sequences.size[byOrder],
+  scale: sequences.scale[byOrder],
+  order: sequences.order[byOrder],
+  zIndex: sequences.zIndex[byOrder],
   direction: direction[byOrder],
 
-  topLayerSize: options.topLayerSize.initialValue,
+  topLayerSize: options.sequences.size.initialValue,
   topLayerIndex: options.topLayerIndex,
   offset: options.offset,
   initialOffset: options.initialOffset,
@@ -232,7 +227,7 @@ const layers = new Array(options.length);
 let i = options.topLayerIndex;
 let byOrder = 0;
 while (i >= 0) {
-  layers[i] = assign({ byOrder, direction: left });
+  layers[i] = assign({ byOrder, direction: sequences.left });
   ++byOrder;
   --i;
 }
@@ -240,7 +235,7 @@ while (i >= 0) {
 i = options.topLayerIndex;
 byOrder = 0;
 while (i != layers.length) {
-  layers[i] = assign({ byOrder, direction: right });
+  layers[i] = assign({ byOrder, direction: sequences.right });
 
   ++byOrder;
   ++i;
