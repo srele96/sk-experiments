@@ -4,10 +4,263 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Layers</title>
+    <style>
+      * {
+        transition: transform 0.15s ease-in-out;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
 
-    <script src="index.js"></script>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script>
+      'use strict';
+
+      (() => {
+        const { createElement: e, useState, useEffect } = React;
+
+        const calculateTopLayerOffset = ({
+          topLayerIndex,
+          offset,
+          initialOffset,
+        }) => topLayerIndex * offset + initialOffset;
+
+        const calculateSizeToMoveInDirection = ({
+          direction,
+          topLayerSize,
+          size,
+          order,
+          offset,
+          initialOffset,
+        }) =>
+          direction *
+          ((topLayerSize - size) / 2 + order * offset + initialOffset);
+
+        function generateLayers({ topLayerIndex, initialOffset, pictures }) {
+          if (topLayerIndex < 0 || topLayerIndex > 6) {
+            throw new Error(
+              'topLayerIndex out of bounds, valid bounds are between 0 and 6'
+            );
+          }
+          if (!Number.isFinite(initialOffset)) {
+            throw new Error('initial offset is not a finite number');
+          }
+
+          const size = [100, 80, 70, 60, 50, 40, 30];
+          const scale = [1, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3];
+          const order = [0, 1, 2, 3, 4, 5, 6];
+          const right = [0, 1, 1, 1, 1, 1, 1];
+          const left = [0, -1, -1, -1, -1, -1, -1];
+          const zIndex = [7, 6, 5, 4, 3, 2, 1];
+
+          const assign = ({ orderBy, direction }) => ({
+            size: size[orderBy],
+            scale: scale[orderBy],
+            order: order[orderBy],
+            direction: direction[orderBy],
+            zIndex: zIndex[orderBy],
+          });
+
+          const layers = new Array(7);
+
+          let i = topLayerIndex;
+          let orderBy = 0;
+          while (i >= 0) {
+            layers[i] = assign({ orderBy, direction: left });
+            ++orderBy;
+            --i;
+          }
+
+          i = topLayerIndex;
+          orderBy = 0;
+          while (i <= 6) {
+            layers[i] = assign({ orderBy, direction: right });
+            ++orderBy;
+            ++i;
+          }
+
+          i = 0;
+          while (i != 7) {
+            layers[i].index = i;
+            layers[i].picture = pictures[i];
+            layers[i].topLayerIndex = topLayerIndex;
+            layers[i].topLayerSize = 100;
+            layers[i].offset = 10;
+            layers[i].initialOffset = initialOffset;
+            ++i;
+          }
+
+          return layers;
+        }
+
+        function PictureLayers(props) {
+          const [layers, setLayers] = useState(
+            generateLayers({
+              topLayerIndex: props.topLayerIndex,
+              initialOffset: props.initialOffset,
+              pictures: props.pictures,
+            })
+          );
+
+          return e(
+            'div',
+            {
+              style: {
+                width: props.containerWidth,
+                height: 1.5 * props.width,
+                position: 'relative',
+                margin: '0 auto'
+              },
+            },
+            layers.map((layer, i) => {
+              const {
+                topLayerIndex,
+                offset,
+                initialOffset,
+                direction,
+                topLayerSize,
+                size,
+                order,
+              } = layer;
+
+              return e(
+                'div',
+                {
+                  style: {
+                    width: props.width,
+                    height: 0,
+                    position: 'absolute',
+                    zIndex: layer.zIndex,
+                    transform: `translateX(${calculateTopLayerOffset({
+                      topLayerIndex,
+                      offset,
+                      initialOffset,
+                    })}%)`,
+                  },
+                  key: i,
+                },
+                e(
+                  'div',
+                  {
+                    style: {
+                      position: 'absolute',
+                      width: props.width,
+                      height: 0,
+                      transform: `translateX(${calculateSizeToMoveInDirection({
+                        direction,
+                        topLayerSize,
+                        size,
+                        order,
+                        offset,
+                        initialOffset,
+                      })}%)`,
+                    },
+                  },
+                  e(
+                    'button',
+                    {
+                      style: {
+                        width: props.width,
+                        height: props.width * 1.5,
+                        transform: `scale(${layer.scale})`,
+                        padding: 0,
+                        border: 0,
+                        cursor: 'pointer',
+                      },
+                      onClick: () =>
+                        setLayers(
+                          generateLayers({
+                            topLayerIndex: i,
+                            initialOffset: props.initialOffset,
+                            pictures: props.pictures,
+                          })
+                        ),
+                    },
+                    e('img', {
+                      style: { width: '100%', height: '100%' },
+                      src: layer.picture.src,
+                      alt: layer.picture.alt,
+                    })
+                  )
+                )
+              );
+            })
+          );
+        }
+
+        const pictures = [
+          {
+            src: 'https://i.pinimg.com/564x/2f/19/aa/2f19aad54ba05a5ebd5e7852e10852c3.jpg',
+            alt: 'denji from chainsaw man',
+          },
+          {
+            src: 'https://i.pinimg.com/564x/19/f1/63/19f1633e1c8f8e9ac16b45ea1a187ae4.jpg',
+            alt: 'power from chainsaw man',
+          },
+          {
+            src: 'https://i.pinimg.com/564x/43/61/75/436175e69b591504d34d94e93f84c136.jpg',
+            alt: 'power from chainsaw man',
+          },
+          {
+            src: 'https://i.pinimg.com/564x/64/6e/17/646e179ffb9aaaff4c674626ee204c0a.jpg',
+            alt: 'makima from chainsaw man',
+          },
+          {
+            src: 'https://i.pinimg.com/564x/75/e4/d2/75e4d2c8868322d92e6254fe52929c34.jpg',
+            alt: 'denji transformed to chainsaw from chainsaw man',
+          },
+          {
+            src: 'https://i.pinimg.com/564x/b6/a9/39/b6a939a9456ec3eb1dd95363d55a97f8.jpg',
+            alt: 'makima in the suit from chainsaw man',
+          },
+          {
+            src: 'https://i.pinimg.com/564x/65/14/b7/6514b77834324824340015a550a9e2c0.jpg',
+            alt: 'makima with crossed fingers in the suit from chainsaw man',
+          },
+        ];
+
+        function CreatePictureLayers() {
+          const [width, setWidth] = useState(window.innerWidth / 4);
+
+          useEffect(() => {
+            window.addEventListener('resize', () => {
+              setWidth(window.innerWidth / 4);
+            });
+          }, [setWidth]);
+
+          return e(
+            'main',
+            null,
+            e(PictureLayers, {
+              width,
+              containerWidth: 1.6 * width,
+              topLayerIndex: 3,
+              initialOffset: 0,
+              pictures,
+            }),
+            e('div', { style: { padding: '20px'} }),
+            e(PictureLayers, {
+              width,
+              containerWidth: 3.2 * width,
+              topLayerIndex: 3,
+              initialOffset: 80,
+              pictures,
+            })
+          );
+        }
+
+        ReactDOM.createRoot(document.querySelector('#root')).render(
+          e(CreatePictureLayers)
+        );
+      })();
+    </script>
   </body>
 </html>
