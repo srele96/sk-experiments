@@ -51,7 +51,7 @@
           direction *
           ((topLayerSize - size) / 2 + order * offset + initialOffset);
 
-        function generateLayers({ topLayerIndex, initialOffset, pictures }) {
+        function generateLayers({ topLayerIndex, initialOffset }) {
           if (topLayerIndex < 0 || topLayerIndex > 6) {
             throw new Error(
               'topLayerIndex out of bounds, valid bounds are between 0 and 6'
@@ -67,6 +67,36 @@
           const right = [0, 1, 1, 1, 1, 1, 1];
           const left = [0, -1, -1, -1, -1, -1, -1];
           const zIndex = [7, 6, 5, 4, 3, 2, 1];
+          const pictures = [
+            {
+              src: 'https://i.pinimg.com/564x/2f/19/aa/2f19aad54ba05a5ebd5e7852e10852c3.jpg',
+              alt: 'denji from chainsaw man',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/19/f1/63/19f1633e1c8f8e9ac16b45ea1a187ae4.jpg',
+              alt: 'power from chainsaw man',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/43/61/75/436175e69b591504d34d94e93f84c136.jpg',
+              alt: 'power from chainsaw man',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/64/6e/17/646e179ffb9aaaff4c674626ee204c0a.jpg',
+              alt: 'makima from chainsaw man',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/75/e4/d2/75e4d2c8868322d92e6254fe52929c34.jpg',
+              alt: 'denji transformed to chainsaw from chainsaw man',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/b6/a9/39/b6a939a9456ec3eb1dd95363d55a97f8.jpg',
+              alt: 'makima in the suit from chainsaw man',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/65/14/b7/6514b77834324824340015a550a9e2c0.jpg',
+              alt: 'makima with crossed fingers in the suit from chainsaw man',
+            },
+          ];
 
           const assign = ({ orderBy, direction }) => ({
             size: size[orderBy],
@@ -113,7 +143,6 @@
             generateLayers({
               topLayerIndex: props.topLayerIndex,
               initialOffset: props.initialOffset,
-              pictures: props.pictures,
             })
           );
 
@@ -177,7 +206,6 @@
                           generateLayers({
                             topLayerIndex: layer.index,
                             initialOffset: layer.initialOffset,
-                            pictures: props.pictures,
                           })
                         ),
                     },
@@ -192,37 +220,6 @@
             })
           );
         }
-
-        const pictures = [
-          {
-            src: 'https://i.pinimg.com/564x/2f/19/aa/2f19aad54ba05a5ebd5e7852e10852c3.jpg',
-            alt: 'denji from chainsaw man',
-          },
-          {
-            src: 'https://i.pinimg.com/564x/19/f1/63/19f1633e1c8f8e9ac16b45ea1a187ae4.jpg',
-            alt: 'power from chainsaw man',
-          },
-          {
-            src: 'https://i.pinimg.com/564x/43/61/75/436175e69b591504d34d94e93f84c136.jpg',
-            alt: 'power from chainsaw man',
-          },
-          {
-            src: 'https://i.pinimg.com/564x/64/6e/17/646e179ffb9aaaff4c674626ee204c0a.jpg',
-            alt: 'makima from chainsaw man',
-          },
-          {
-            src: 'https://i.pinimg.com/564x/75/e4/d2/75e4d2c8868322d92e6254fe52929c34.jpg',
-            alt: 'denji transformed to chainsaw from chainsaw man',
-          },
-          {
-            src: 'https://i.pinimg.com/564x/b6/a9/39/b6a939a9456ec3eb1dd95363d55a97f8.jpg',
-            alt: 'makima in the suit from chainsaw man',
-          },
-          {
-            src: 'https://i.pinimg.com/564x/65/14/b7/6514b77834324824340015a550a9e2c0.jpg',
-            alt: 'makima with crossed fingers in the suit from chainsaw man',
-          },
-        ];
 
         function CreatePictureLayers() {
           const [width, setWidth] = useState(window.innerWidth / 4);
@@ -241,7 +238,6 @@
               containerWidth: 1.6 * width,
               topLayerIndex: 3,
               initialOffset: 0,
-              pictures,
             }),
             e('div', { style: { padding: '10px' } }),
             e(PictureLayers, {
@@ -249,7 +245,6 @@
               containerWidth: 3.2 * width,
               topLayerIndex: 3,
               initialOffset: 80,
-              pictures,
             })
           );
         }
