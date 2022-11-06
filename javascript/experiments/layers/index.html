@@ -175,6 +175,9 @@
               initialOffset: props.initialOffset,
             })
           );
+          const [currentTopLayerIndex, setCurrentTopLayerIndex] = useState(
+            layers[0].topLayerIndex
+          );
 
           return e(
             'article',
@@ -241,13 +244,15 @@
                           border: 0,
                           cursor: 'pointer',
                         },
-                        onClick: () =>
+                        onClick: () => {
                           setLayers(
                             generateLayers({
                               topLayerIndex: layer.index,
                               initialOffset: layer.initialOffset,
                             })
-                          ),
+                          );
+                          setCurrentTopLayerIndex(layer.index);
+                        },
                       },
                       e('img', {
                         style: { width: '100%', height: '100%' },
@@ -263,24 +268,53 @@
               'div',
               {
                 style: {
-                  width: props.containerWidth,
                   paddingTop: '20px',
                   display: 'flex',
                 },
               },
               e(
                 'button',
-                { style: { flex: '1', cursor: 'pointer', padding: '5px' } },
+                {
+                  style: { width: '120px', cursor: 'pointer', padding: '5px' },
+                  onClick: () => {
+                    if (currentTopLayerIndex > 0) {
+                      setCurrentTopLayerIndex((previousTopLayerIndex) => {
+                        const previous = --previousTopLayerIndex;
+
+                        setLayers(
+                          generateLayers({
+                            topLayerIndex: previous,
+                            initialOffset: props.initialOffset,
+                          })
+                        );
+
+                        return previous;
+                      });
+                    }
+                  },
+                },
                 '< left'
               ),
+              e('div', { style: { width: '20px' } }),
               e(
                 'button',
                 {
-                  style: {
-                    flex: '1',
-                    cursor: 'pointer',
-                    padding: '5px',
-                    marginLeft: '20px',
+                  style: { width: '120px', cursor: 'pointer', padding: '5px' },
+                  onClick: () => {
+                    if (currentTopLayerIndex < 6) {
+                      setCurrentTopLayerIndex((previousTopLayerIndex) => {
+                        const next = ++previousTopLayerIndex;
+
+                        setLayers(
+                          generateLayers({
+                            topLayerIndex: next,
+                            initialOffset: props.initialOffset,
+                          })
+                        );
+
+                        return next;
+                      });
+                    }
                   },
                 },
                 'right >'
