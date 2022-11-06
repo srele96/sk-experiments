@@ -34,11 +34,33 @@
       (() => {
         const { createElement: e, useState, useEffect } = React;
 
+        const invariant = Object.freeze({
+          withinBounds: Object.freeze((value, begin, end) => {
+            if (value < begin || value > end) {
+              throw new Error(
+                'value out of bounds, valid bounds are from ' +
+                  begin +
+                  ' to ' +
+                  end
+              );
+            }
+          }),
+          validNumbers: Object.freeze((...numbers) => {
+            if (!numbers.every(Number.isFinite)) {
+              throw new Error('received value that is not a finite number');
+            }
+          }),
+        });
+
         const calculateTopLayerOffset = ({
           topLayerIndex,
           offset,
           initialOffset,
-        }) => topLayerIndex * offset + initialOffset;
+        }) => {
+          invariant.validNumbers(topLayerIndex, offset, initialOffset);
+
+          return topLayerIndex * offset + initialOffset;
+        };
 
         const calculateSizeToMoveInDirection = ({
           direction,
@@ -47,19 +69,27 @@
           order,
           offset,
           initialOffset,
-        }) =>
-          direction *
-          ((topLayerSize - size) / 2 + order * offset + initialOffset);
+        }) => {
+          invariant.validNumbers(
+            direction,
+            topLayerSize,
+            size,
+            order,
+            offset,
+            initialOffset
+          );
+
+          const sizeToBothEdges = topLayerSize - size;
+          const sizeToOneEdge = sizeToBothEdges / 2;
+          const moveToShowByOrder = order * offset;
+          const moveToShow = sizeToOneEdge + moveToShowByOrder + initialOffset;
+
+          return direction * moveToShow;
+        };
 
         function generateLayers({ topLayerIndex, initialOffset }) {
-          if (topLayerIndex < 0 || topLayerIndex > 6) {
-            throw new Error(
-              'topLayerIndex out of bounds, valid bounds are between 0 and 6'
-            );
-          }
-          if (!Number.isFinite(initialOffset)) {
-            throw new Error('initial offset is not a finite number');
-          }
+          invariant.withinBounds(topLayerIndex, 0, 6);
+          invariant.validNumbers(initialOffset);
 
           const size = [100, 80, 70, 60, 50, 40, 30];
           const scale = [1, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3];
