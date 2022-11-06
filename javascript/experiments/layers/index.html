@@ -318,7 +318,7 @@
         }
 
         ReactDOM.createRoot(document.querySelector('#root')).render(
-          e(CreatePictureLayers)
+          e(React.StrictMode, null, e(CreatePictureLayers))
         );
       })();
     </script>
