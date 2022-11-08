@@ -218,6 +218,27 @@
             };
           }
 
+          const left = -1;
+          const right = 1;
+          function next({ condition, direction }) {
+            return () => {
+              if (condition) {
+                setCurrentTopLayerIndex((previousTopLayerIndex) => {
+                  const moveInDirection = previousTopLayerIndex + direction;
+
+                  setLayers(
+                    generateLayers({
+                      topLayerIndex: moveInDirection,
+                      initialOffset: props.initialOffset,
+                    })
+                  );
+
+                  return moveInDirection;
+                });
+              }
+            };
+          }
+
           const thisHeightScalerFitPicturesWell = 1.5;
           return e(
             'article',
@@ -379,22 +400,10 @@
                 'button',
                 {
                   style: { width: '120px', cursor: 'pointer', padding: '5px' },
-                  onClick: () => {
-                    if (currentTopLayerIndex > 0) {
-                      setCurrentTopLayerIndex((previousTopLayerIndex) => {
-                        const previous = --previousTopLayerIndex;
-
-                        setLayers(
-                          generateLayers({
-                            topLayerIndex: previous,
-                            initialOffset: props.initialOffset,
-                          })
-                        );
-
-                        return previous;
-                      });
-                    }
-                  },
+                  onClick: next({
+                    condition: currentTopLayerIndex > 0,
+                    direction: left,
+                  }),
                 },
                 '< left'
               ),
@@ -403,22 +412,10 @@
                 'button',
                 {
                   style: { width: '120px', cursor: 'pointer', padding: '5px' },
-                  onClick: () => {
-                    if (currentTopLayerIndex < 6) {
-                      setCurrentTopLayerIndex((previousTopLayerIndex) => {
-                        const next = ++previousTopLayerIndex;
-
-                        setLayers(
-                          generateLayers({
-                            topLayerIndex: next,
-                            initialOffset: props.initialOffset,
-                          })
-                        );
-
-                        return next;
-                      });
-                    }
-                  },
+                  onClick: next({
+                    condition: currentTopLayerIndex < 6,
+                    direction: right,
+                  }),
                 },
                 'right >'
               )
