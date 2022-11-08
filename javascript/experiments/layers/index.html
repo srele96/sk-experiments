@@ -129,17 +129,22 @@
           invariant.withinBounds(topLayerIndex, 0, 6);
           invariant.validNumbers(initialOffset);
 
-          // the order of values for each layer to the side of top layer
-          // each layer gets smaller
+          // The arrays of properties in an ordered sequence in the direction
+          // of each half to calculate the layer's properties.
+          // Each layer gets smaller.
           const size = [100, 80, 70, 60, 50, 40, 30];
-          // each layer gets smaller - css property
+          // Each layer gets smaller, but use this value for the CSS scale
+          // property. I don't want to divide the size by 100 to get the
+          // value for the CSS scale property.
           const scale = [1, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3];
           const order = [0, 1, 2, 3, 4, 5, 6];
-          // the first element does not move
+          // The first element does not move. It is in the correct position
+          // with zero offsets.
           const right = [0, 1, 1, 1, 1, 1, 1];
-          // the first element does not move
+          // The first element does not move. It is in the correct position
+          // with zero offsets.
           const left = [0, -1, -1, -1, -1, -1, -1];
-          // every subsequent element is behind the previous one
+          // Every subsequent element is behind the previous one.
           const zIndex = [7, 6, 5, 4, 3, 2, 1];
 
           const assign = ({ orderBy, direction }) => ({
@@ -152,7 +157,7 @@
 
           const layers = new Array(7);
 
-          // assign properties from begin to end from the top layer to the left
+          // Assign properties to one-half.
           let i = topLayerIndex;
           let orderBy = 0;
           while (i >= 0) {
@@ -161,7 +166,7 @@
             --i;
           }
 
-          // assign properties from begin to end from the top layer to the left
+          // Assign properties to one-half.
           i = topLayerIndex;
           orderBy = 0;
           while (i <= 6) {
@@ -170,7 +175,8 @@
             ++i;
           }
 
-          // provide pictures for every layer so that i can easily access them in the current layer
+          // Provide pictures for every layer so I can easily access them in
+          // the current layer.
           const pictures = [
             {
               src: 'https://i.pinimg.com/564x/2f/19/aa/2f19aad54ba05a5ebd5e7852e10852c3.jpg',
@@ -204,10 +210,12 @@
 
           i = 0;
           while (i != 7) {
-            // use this index instead of the one when mapping the layers
+            // Use this index instead of the one when mapping the layers for
+            // consistency, not rely on the array index.
             layers[i].index = i;
             layers[i].picture = pictures[i];
-            // provide values that i need for the formula so i can access them from the current layer
+            // Provide the values I need for the formula to access them from
+            // the current layer.
             layers[i].topLayerIndex = topLayerIndex;
             layers[i].topLayerSize = 100;
             layers[i].offset = 10;
