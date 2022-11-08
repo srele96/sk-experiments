@@ -306,7 +306,8 @@
                         width: props.width,
                         height: 0,
                         position: 'absolute',
-                        // track the position of the top layer index so every other layer can move from that position
+                        // Track the position of the top layer index so every
+                        // other layer can move from that position.
                         transform: `translateX(${calculateTopLayerOffset({
                           topLayerIndex: layer.topLayerIndex,
                           offset: layer.offset,
@@ -489,8 +490,9 @@
             e('div', { style: { padding: '10px' } }),
             e(PictureLayers, {
               width,
-              // seven layers, first one takes 100% and six other layers have 10% visible part
-              // that means we need 160% width for container of all layers
+              // In seven layers, the first one takes 100%, and six other
+              // layers have a 10% visible part, which means we need 160%
+              // width for a container of all layers.
               containerWidth: 1.6 * width,
               topLayerIndex: middle,
               initialOffset: 0,
@@ -498,9 +500,11 @@
             e('div', { style: { padding: '10px' } }),
             e(PictureLayers, {
               width,
-              // seven layers, first one takes 100%, six other layers take 10% each for their visible parts
-              // when the top layer is second one, we have initial offset to the left and right
-              // therefore we have 160% initialy and two 80% offsets, so 320% of width in total
+              // Seven layers, the first one takes 100%, and six other layers
+              // take 10% each for their visible parts. When the top layer is
+              // the second one, we have an initial offset to the left and
+              // right. Therefore we have 160% initially and two 80% offsets,
+              // so 320% of width in total.
               containerWidth: 3.2 * width,
               topLayerIndex: middle,
               initialOffset: 80,
