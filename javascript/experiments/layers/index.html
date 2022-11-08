@@ -72,19 +72,31 @@
           return topLayerIndex * offset + initialOffset;
         };
 
-        // i need direction to know if a layer has to move left or right because css translate function takes a positive or a negative percentage to show that
+        // I need direction to know if a layer has to move left or right
+        // because the CSS translate function takes a positive or a negative
+        // percentage to show that.
         //
-        // i need top layer's size because i need to know how much to move the current layer to the edge of the top layer
+        // I need the top layer's size because I need to know how much to move
+        // the current layer to the edge of the top layer.
         //
-        // i need the size of the current layer so i can calculate how much space is missing to reach the left or right edge
+        // I need the size of the current layer so I can calculate how much
+        // space is missing to reach the left or right edge.
         //
-        // i need order because i need to know the order of my current layer relative the the top layer, that is because i need to know how much to move the layer to show a part of it
-        // first hidden layer behind the top layer moves once to the edge of top layer and once more to become visible
-        // second hidden layer behind the first hidden layer has to move once to the edge of top layer and once to the right to reach the edge of first hidden layer, second time to show a part of it
+        // I need an order because I need to know the order of my current layer
+        // relative to the top layer. That is because I need to know how much
+        // to move the layer to show a part of it.
+        //  - The first hidden layer behind the top layer moves once to the
+        //    edge of the top layer and once more to become visible.
+        //  - The second hidden layer behind the first hidden layer has to
+        //    move once to the edge of the top layer and once to the right to
+        //    reach the edge of the first hidden layer. The second time to
+        //    show a part of it.
         //
-        // an offset is how much of the current layer is visible behind the layer above it
+        // An offset is how much of the current layer is visible behind the
+        // layer above it.
         //
-        // initial offset is the initial space around the top layer, it is an initial offset of every movement
+        // The initial offset is the initial space around the top layer. It is
+        // an initial offset of every movement.
         const calculateSizeToMoveInDirection = ({
           direction,
           topLayerSize,
