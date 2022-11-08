@@ -211,6 +211,13 @@
             props.topLayerIndex
           );
 
+          function setTopLayer({ topLayerIndex, initialOffset }) {
+            return () => {
+              setLayers(generateLayers({ topLayerIndex, initialOffset }));
+              setCurrentTopLayerIndex(topLayerIndex);
+            };
+          }
+
           const thisHeightScalerFitPicturesWell = 1.5;
           return e(
             'article',
@@ -293,18 +300,17 @@
                             border: 0,
                             cursor: 'pointer',
                           },
-                          onClick: () => {
-                            setLayers(
-                              generateLayers({
-                                topLayerIndex: layer.index,
-                                initialOffset: layer.initialOffset,
-                              })
-                            );
-                            setCurrentTopLayerIndex(layer.index);
-                          },
+                          onClick: setTopLayer({
+                            topLayerIndex: layer.index,
+                            initialOffset: layer.initialOffset,
+                          }),
                         },
                         e('img', {
-                          style: { width: '100%', height: '100%', objectFit: 'cover' },
+                          style: {
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          },
                           src: layer.picture.src,
                           alt: layer.picture.alt,
                         })
@@ -350,15 +356,10 @@
                           borderColor:
                             layer.topLayerIndex === index ? 'red' : '',
                         },
-                        onClick: () => {
-                          setLayers(
-                            generateLayers({
-                              topLayerIndex: layer.index,
-                              initialOffset: layer.initialOffset,
-                            })
-                          );
-                          setCurrentTopLayerIndex(layer.index);
-                        },
+                        onClick: setTopLayer({
+                          topLayerIndex: layer.index,
+                          initialOffset: layer.initialOffset,
+                        }),
                       },
                       layer.index + 1
                     )
