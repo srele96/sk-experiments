@@ -114,8 +114,9 @@
             initialOffset
           );
 
-          // i need to calculate how much to move the element to the edge because when layer is smaller than the top one and i want to show a part of it
-          // i have to reach the edge of the top layer
+          // I need to calculate how much to move the element to the edge
+          // because when the layer is smaller than the top one, and I want
+          // to show a part of it, I have to reach the edge of the top layer.
           const sizeToBothEdges = topLayerSize - size;
           const sizeToOneEdge = sizeToBothEdges / 2;
           const moveToShowByOrder = order * offset;
