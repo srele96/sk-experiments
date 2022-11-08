@@ -52,11 +52,16 @@
           }),
         });
 
-        // i use top layer index because the first element as top layer does not move, all others move to the right of it
-        // when the second element is the top layer, it has index 1 and moves 1 time by that offset to free the space on the left
+        // I use the top layer index because the first element, as the top
+        // layer, does not move. All others move to the right of it. So when
+        // the second element is the top layer, it has index one and moves one
+        // time by that offset to free the space on the left.
         //
-        // i need to calculate the top layer's index because the movement of every layer starts from the center of the current top layer
-        // therefore i need to move an element to the position of the top layer, after that i can calculate how much do i need to move the element
+        // I need to calculate the top layer's index because the movement of
+        // every layer starts from the center of the current top layer.
+        // Therefore I need to move an element to the position of the top
+        // layer. After that, I can calculate how much I need to move the
+        // element.
         const calculateTopLayerOffset = ({
           topLayerIndex,
           offset,
