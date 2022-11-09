@@ -1,6 +1,13 @@
 # Layers Design Document
 
 ```txt
+// The design of the code does not produce scalable code that follows the
+// Single Responsibility principle. I designed the code with simplicity in
+// mind. I originally wanted to create mathematical calculations for the
+// arrangement of movements, but that produced code that was hard to
+// understand. A code with exact values is much easier to understand because
+// the reader does not need to understand the reasoning behind each formula.
+
 get_size():
   // divide the width of the window by a value larger than multiplier
   // because all my moving logic bases on width of the layer
