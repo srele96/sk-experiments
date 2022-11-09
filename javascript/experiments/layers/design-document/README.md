@@ -27,4 +27,23 @@ get_mirror_properties(index):
     result = mirror_properties[current_property]
 
   return result
+
+get_merged_properties(index)
+  mirror_properties = get_mirror_properties(index)
+  additional_properties = [
+    { src, alt },
+    { src, alt },
+    { src, alt },
+    { src, alt },
+    { src, alt },
+    { src, alt },
+    { src, alt },
+  ]
+
+  result = Array(length)
+
+  for i = begin to length
+    result[i] = { ...mirror_properties[i], ...additional_properties[i] }
+
+  return result
 ```
