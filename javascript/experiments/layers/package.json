@@ -12,7 +12,7 @@
   },
   "homepage": "https://github.com/srele96/sk-experiments#readme",
   "scripts": {
-    "start": "nodemon compiler.js"
+    "start": "nodemon server.js"
   },
   "nodemonConfig": {
     "execMap": {
