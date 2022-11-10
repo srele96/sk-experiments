@@ -2,6 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import express from 'express';
+import { renderToPipeableStream } from 'react-dom/server';
 
 const app = express();
 
@@ -14,6 +15,21 @@ const handleCompilationRequests = webpackDevMiddleware(
 
 app.use(handleCompilationRequests);
 
+function Template(props) {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
+      <body>
+        <div id="root">{props.children}</div>
+        {props.scripts}
+      </body>
+    </html>
+  );
+}
+
 /**
  *
  * @param {import('express').Request} _
@@ -22,28 +38,22 @@ app.use(handleCompilationRequests);
 function renderTemplate(_, res) {
   handleCompilationRequests.waitUntilValid((stats) => {
     const createScriptTags = stats.toJson().assets.reduce((scripts, asset) => {
-      return (scripts += `<script src="${asset.name}"></script>`);
-    }, '');
-    const template = `
-      <!DOCTYPE html>
-      <html lang="en">
-        <head>
-          <meta charset="UTF-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
-        </head>
-        <body>
-          <div id="root"></div>
-          ${createScriptTags}
-        </body>
-      </html>
-    `;
+      scripts.push(<script key={asset.name} src={asset.name}></script>);
+      return scripts;
+    }, []);
 
-    res.status = 200;
-    res.setHeader('Content-Type', 'text/html');
-    res.send(template);
+    const stream = renderToPipeableStream(
+      <Template scripts={<>{createScriptTags}</>}>
+        <h1>Hello React World!</h1>
+      </Template>,
+      {
+        onShellReady() {
+          res.status = 200;
+          res.setHeader('Content-Type', 'text/html');
+          stream.pipe(res);
+        },
+      }
+    );
   });
 }
 
