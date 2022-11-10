@@ -34,7 +34,6 @@ app.use(handleCompilationRequests);
  */
 
 /**
- *
  * @param {TemplateProps} props
  * @returns {import('react').ReactNode}
  */
@@ -54,7 +53,6 @@ function Template(props) {
 }
 
 /**
- *
  * @param {import('express').Request} _
  * @param {import('express').Response} res
  */
