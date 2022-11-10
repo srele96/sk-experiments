@@ -1,0 +1,36 @@
+{
+  "name": "layers",
+  "version": "0.1.0",
+  "description": "The Chainsaw Man Album With Cool Scaling and Movement.",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "scripts": {
+    "start": "nodemon compiler.js"
+  },
+  "nodemonConfig": {
+    "execMap": {
+      "js": "babel-node"
+    }
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.2",
+    "@babel/node": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "express": "^4.18.2",
+    "nodemon": "^2.0.20",
+    "webpack": "^5.75.0",
+    "webpack-dev-middleware": "^5.3.3"
+  }
+}
