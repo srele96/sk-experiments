@@ -53,9 +53,10 @@ function renderTemplate(_, res) {
       scripts.push(<script key={asset.name} src={asset.name}></script>);
       return scripts;
     }, []);
+    const asSingleChild = <>{createScriptTags}</>;
 
     const stream = renderToPipeableStream(
-      <Template scripts={<>{createScriptTags}</>}>
+      <Template scripts={asSingleChild}>
         <App />
       </Template>,
       {
