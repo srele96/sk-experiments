@@ -3,6 +3,7 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import express from 'express';
 import { renderToPipeableStream } from 'react-dom/server';
+import { App } from './src/App';
 
 const app = express();
 
@@ -10,6 +11,17 @@ const handleCompilationRequests = webpackDevMiddleware(
   webpack({
     entry: path.resolve('src', 'index.js'),
     mode: 'development',
+    module: {
+      rules: [
+        {
+          test: /\.js/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+          },
+        },
+      ],
+    },
   })
 );
 
@@ -44,7 +56,7 @@ function renderTemplate(_, res) {
 
     const stream = renderToPipeableStream(
       <Template scripts={<>{createScriptTags}</>}>
-        <h1>Hello React World!</h1>
+        <App />
       </Template>,
       {
         onShellReady() {
