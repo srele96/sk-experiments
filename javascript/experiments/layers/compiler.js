@@ -27,6 +27,17 @@ const handleCompilationRequests = webpackDevMiddleware(
 
 app.use(handleCompilationRequests);
 
+/**
+ * @typedef {Object} TemplateProps
+ * @property {import('react').ReactNode} children
+ * @property {import('react').ReactNode} scripts
+ */
+
+/**
+ *
+ * @param {TemplateProps} props
+ * @returns {import('react').ReactNode}
+ */
 function Template(props) {
   return (
     <html lang="en">
