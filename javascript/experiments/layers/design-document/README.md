@@ -8,12 +8,19 @@
 // A code with exact values is much easier to understand because the reader
 // does not need to understand the reasoning behind each formula.
 
-get_size():
+get_layer_width():
   // Divide the window width by a value more significant than the multiplier
   // because all my moving logic relies on the layer's width.
   layer_width = screen_width / 4
+
+  return layer_width
+
+get_size_for_equally_spaced_layers():
+  layer_width = get_layer_width()
+
   container_width: 1.6 * layer_width
   container_height: 1.5 * layer_width
+
   return { layer_width, container_width, container_height }
 
 space_layers_equally: {
@@ -31,6 +38,14 @@ space_layers_equally: {
   [ 5]: { move:   80%, scale: .4, depth: 2 }
   [ 6]: { move:   95%, scale: .3, depth: 1 }
 }
+
+get_size_for_layers_spaced_around_top_layer():
+  layer_width = get_layer_width()
+
+  container_width: 3.2 * layer_width
+  container_height: 1.5 * layer_width
+
+  return { layer_width, container_width, container_height }
 
 space_around_top_layer: {
   [-6]: { move: -175%, scale: .3, depth: 1, move_top_layer: 140% }
