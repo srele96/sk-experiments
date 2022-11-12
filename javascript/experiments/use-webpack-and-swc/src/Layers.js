@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { getSize } from './getSize';
 import { moveAroundTopLayer } from './moveAroundTopLayer';
@@ -8,8 +8,17 @@ import { Layer } from './Layer';
 import styles from './Layers.module.scss';
 
 function Layers() {
-  const [size] = useState(getSize());
+  const [size, setSize] = useState(getSize());
   const [layers] = useState(moveAroundTopLayer);
+
+  // Update size.
+  useEffect(() => {
+    const updateLayerSize = () => setSize(getSize());
+
+    addEventListener('resize', updateLayerSize);
+
+    return () => removeEventListener('resize', updateLayerSize);
+  }, [setSize]);
 
   return (
     <ul
