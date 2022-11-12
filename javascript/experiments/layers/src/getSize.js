@@ -6,15 +6,15 @@
  */
 
 /**
+ * @param {number} widthMultiplier
  * @returns {Size}
  */
-function getSize() {
+function getSize(widthMultiplier) {
   // Divide the window width by a value more significant than the multiplier
   // because all my moving logic relies on the layer's width.
   const layerWidth = window.innerWidth / 4;
 
-  const sixByTenPercentToSide = 1.6;
-  const containerWidth = sixByTenPercentToSide * layerWidth;
+  const containerWidth = widthMultiplier * layerWidth;
 
   const largerThanWidth = 1.5;
   const containerHeight = largerThanWidth * layerWidth;

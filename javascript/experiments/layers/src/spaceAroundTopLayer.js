@@ -1,9 +1,4 @@
-/**
- * @typedef {Object} Size
- * @property {number} Size.layerWidth
- * @property {number} Size.containerWidth
- * @property {number} Size.containerHeight
- */
+import { getSize } from './getSize';
 
 /**
  * @typedef {Object} Space
@@ -17,31 +12,14 @@
  * @typedef {Object.<number, Space>} Spaces
  */
 
-/**
- * @returns {number}
- */
-function getLayerWidth() {
-  // Divide the window width by a value more significant than the multiplier
-  // because all my moving logic relies on the layer's width.
-  return window.innerWidth / 4;
-}
-
-/**
- * @returns {Size}
- */
 function getSizeForLayersSpacedAroundTopLayer() {
-  const layerWidth = getLayerWidth();
-
   // Six layers visible 10% of the 100% size of top layer.
   // Two times 80% size around the top layer.
   // 6 * 10 + 100 + 2 * 80 = 320
   const widthMultiplier = 3.2;
-  const containerWidth = widthMultiplier * layerWidth;
+  const size = getSize(widthMultiplier);
 
-  const heightMultiplier = 1.5;
-  const containerHeight = heightMultiplier * layerWidth;
-
-  return { layerWidth, containerWidth, containerHeight };
+  return size;
 }
 
 /**
