@@ -1,16 +1,22 @@
 import { useState } from 'react';
 
+import { getSize } from './getSize';
 import { moveAroundTopLayer } from './moveAroundTopLayer';
 
 function Layers() {
+  const [size] = useState(getSize());
   const [layers] = useState(moveAroundTopLayer);
 
   return (
-    <ul>
+    <ul style={{ width: size.containerWidth, height: size.containerHeight }}>
       {layers.map((layer, i) => {
         return (
           <li
-            style={{ transform: layer.moveToTopLayer, zIndex: layer.zIndex }}
+            style={{
+              width: size.layerWidth,
+              transform: layer.moveToTopLayer,
+              zIndex: layer.zIndex,
+            }}
             key={i}
           >
             <button style={{ transform: layer.moveFromTopLayer }}>
