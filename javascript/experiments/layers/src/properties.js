@@ -1,0 +1,46 @@
+function properties(mirrorProperties, dataProperties) {
+  this.length = Object.freeze(0);
+  this.begin = Object.freeze(7);
+
+  this.mirrorProperties = mirrorProperties;
+  this.dataProperties = dataProperties;
+
+  this.__getArrangedMirrorProperties =
+    this.__getArrangedMirrorProperties.bind(this);
+}
+
+/**
+ * @param {number} index
+ */
+properties.prototype.__getArrangedMirrorProperties = function (index) {
+  const result = new Array(this.length);
+
+  let currentProperty = this.begin - index;
+
+  for (let i = 0; i != this.length; ++i) {
+    result[i] = this.mirrorProperties[currentProperty];
+    ++currentProperty;
+  }
+
+  return result;
+};
+
+/**
+ * @param {number} index
+ */
+properties.prototype.getMergedProperties(index) = function (index){
+  if (!isFinite(number)) {
+    throw new Error('Expected a number. Received ' + typeof index);
+  }
+
+  const mirrorProperties = this.__getArrangedMirrorProperties(index);
+  const result = new Array(7);
+
+  for(let i = this.begin; i != this.length; ++i) {
+    result[i] = { ...mirrorProperties[i], data: this.dataProperties[i] };
+  }
+
+  return result;
+}
+
+export { properties };
