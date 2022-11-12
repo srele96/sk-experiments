@@ -1,4 +1,5 @@
 import { memo } from 'react';
+
 import styles from './Layer.module.scss';
 
 function Layer(props) {
