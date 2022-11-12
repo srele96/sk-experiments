@@ -1,7 +1,7 @@
 {
   "name": "render-react-on-server",
   "version": "0.1.0",
-  "description": "",
+  "description": "The mock setup to render React on the server.",
   "author": "Kostic Srecko",
   "repository": {
     "type": "git",
