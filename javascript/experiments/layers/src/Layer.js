@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import styles from './Layer.module.scss';
 
 function Layer(props) {
@@ -38,4 +39,5 @@ function Layer(props) {
   );
 }
 
-export { Layer };
+const LayerMemo = memo(Layer);
+export { LayerMemo as Layer };
