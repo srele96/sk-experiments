@@ -1,4 +1,3 @@
-import { hydrateRoot } from 'react-dom/client';
-import { App } from './App';
+import { createRoot } from 'react-dom/client';
 
-hydrateRoot(document.querySelector('#root'), <App />);
+createRoot(document.querySelector('#root')).render(<h1>React App</h1>);
