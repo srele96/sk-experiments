@@ -34,7 +34,7 @@ Properties.prototype.getMergedProperties = function (index) {
   }
 
   const mirrorProperties = this.__getArrangedMirrorProperties(index);
-  const result = new Array(7);
+  const result = new Array(this.length);
 
   for (let i = this.begin; i != this.length; ++i) {
     result[i] = { ...mirrorProperties[i], data: this.dataProperties[i] };
@@ -43,4 +43,4 @@ Properties.prototype.getMergedProperties = function (index) {
   return result;
 };
 
-export { properties };
+export { Properties };
