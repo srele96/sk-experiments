@@ -20,7 +20,14 @@ module.exports = {
         test: /\.scss/,
         use: [
           require.resolve('style-loader'),
-          require.resolve('css-loader'),
+          {
+            loader: require.resolve('css-loader'),
+            options: {
+              modules: {
+                exportLocalsConvention: 'camelCase',
+              },
+            },
+          },
           require.resolve('sass-loader'),
         ],
       },
