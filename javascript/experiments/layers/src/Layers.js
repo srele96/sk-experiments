@@ -11,8 +11,6 @@ function Layers() {
   const [size] = useState(getSize());
   const [layers] = useState(moveAroundTopLayer);
 
-  const fullHeightPreventsClickOnLayerBehind = 0;
-
   return (
     <ul
       style={{
