@@ -11,6 +11,9 @@
     "url": "https://github.com/srele96/sk-experiments/issues"
   },
   "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "scripts": {
+    "start": "webpack serve"
+  },
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
