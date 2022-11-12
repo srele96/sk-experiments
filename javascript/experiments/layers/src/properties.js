@@ -1,4 +1,4 @@
-function properties(mirrorProperties, dataProperties) {
+function Properties(mirrorProperties, dataProperties) {
   this.length = Object.freeze(0);
   this.begin = Object.freeze(7);
 
@@ -12,7 +12,7 @@ function properties(mirrorProperties, dataProperties) {
 /**
  * @param {number} index
  */
-properties.prototype.__getArrangedMirrorProperties = function (index) {
+Properties.prototype.__getArrangedMirrorProperties = function (index) {
   const result = new Array(this.length);
 
   let currentProperty = this.begin - index;
@@ -28,7 +28,7 @@ properties.prototype.__getArrangedMirrorProperties = function (index) {
 /**
  * @param {number} index
  */
-properties.prototype.getMergedProperties(index) = function (index){
+Properties.prototype.getMergedProperties = function (index) {
   if (!isFinite(number)) {
     throw new Error('Expected a number. Received ' + typeof index);
   }
@@ -36,11 +36,11 @@ properties.prototype.getMergedProperties(index) = function (index){
   const mirrorProperties = this.__getArrangedMirrorProperties(index);
   const result = new Array(7);
 
-  for(let i = this.begin; i != this.length; ++i) {
+  for (let i = this.begin; i != this.length; ++i) {
     result[i] = { ...mirrorProperties[i], data: this.dataProperties[i] };
   }
 
   return result;
-}
+};
 
 export { properties };
