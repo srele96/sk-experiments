@@ -39,5 +39,5 @@ function Layer(props) {
   );
 }
 
-const LayerMemo = memo(Layer);
-export { LayerMemo as Layer };
+const MemoLayer = memo(Layer);
+export { MemoLayer as Layer };
