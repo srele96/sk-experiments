@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { getSize } from './getSize';
 import { moveAroundTopLayer } from './moveAroundTopLayer';
 
+import styles from './Layers.module.scss';
+
 function Layers() {
   const [size] = useState(getSize());
   const [layers] = useState(moveAroundTopLayer);
@@ -14,9 +16,11 @@ function Layers() {
           <li
             style={{
               width: size.layerWidth,
+              height: size.containerHeight,
               transform: layer.moveToTopLayer,
               zIndex: layer.zIndex,
             }}
+            className={styles.onTopOfEachOther}
             key={i}
           >
             <button style={{ transform: layer.moveFromTopLayer }}>
