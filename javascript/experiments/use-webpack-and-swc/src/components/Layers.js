@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-import { getSize } from './getSize';
-import { moveAroundTopLayer } from './moveAroundTopLayer';
+import { getSize } from '../getSize';
+import { moveAroundTopLayer } from '../moveAroundTopLayer';
 
 import { Layer } from './Layer';
 
