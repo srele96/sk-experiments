@@ -7,7 +7,10 @@
     },
     "transform": {
       "react": {
-        "runtime": "automatic"
+        "runtime": "automatic",
+        // Fast refresh won't work without explicitly setting development: true.
+        "development": true,
+        "refresh": true
       }
     }
   }

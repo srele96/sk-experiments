@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -21,6 +22,7 @@ module.exports = {
     hot: true,
   },
   plugins: [
+    new ReactRefreshWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve('public', 'index.html'),
     }),

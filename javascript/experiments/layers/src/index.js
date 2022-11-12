@@ -1,3 +1,4 @@
 import { createRoot } from 'react-dom/client';
+import { App } from './App';
 
-createRoot(document.querySelector('#root')).render(<h1>React App</h1>);
+createRoot(document.querySelector('#root')).render(<App />);
