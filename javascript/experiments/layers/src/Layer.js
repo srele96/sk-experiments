@@ -1,15 +1,12 @@
 import styles from './Layer.module.scss';
 
 function Layer(props) {
-  const fullHeightPreventsClickOnLayerBehind = 0;
-
   return (
     <li
       style={{
         transform: props.layer.moveToTopLayer,
         zIndex: props.layer.zIndex,
         width: props.size.layerWidth,
-        height: fullHeightPreventsClickOnLayerBehind,
       }}
       className={[styles.onTopOfEachOther, styles.allowClickOnLayerBehind].join(
         ' '
