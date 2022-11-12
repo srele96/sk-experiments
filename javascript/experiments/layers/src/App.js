@@ -1,12 +1,9 @@
-import { Left } from './Left';
-import { Right } from './Right';
+import { Layers } from './Layers';
 
 function App() {
   return (
     <main>
-      {/* Verify that fast refresh works. */}
-      <Left />
-      <Right />
+      <Layers />
     </main>
   );
 }
