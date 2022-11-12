@@ -12,7 +12,10 @@ function Layers() {
   const fullHeightPreventsClickOnLayerBehind = 0;
 
   return (
-    <ul style={{ width: size.containerWidth, height: size.containerHeight }}>
+    <ul
+      style={{ width: size.containerWidth, height: size.containerHeight }}
+      className={styles.layers}
+    >
       {layers.map((layer, i) => {
         return (
           <li

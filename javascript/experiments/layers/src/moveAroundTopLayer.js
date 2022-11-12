@@ -17,7 +17,7 @@
 const moveAroundTopLayer = [
   {
     moveFromTopLayer: 'translateX(-50%)',
-    moveToTopLayer: 'translateX(20%)',
+    moveToTopLayer: 'translateX(30%)',
     scale: 'scale(0.6)',
     zIndex: 4,
     data: {
@@ -27,7 +27,7 @@ const moveAroundTopLayer = [
   },
   {
     moveFromTopLayer: 'translateX(-35%)',
-    moveToTopLayer: 'translateX(20%)',
+    moveToTopLayer: 'translateX(30%)',
     scale: 'scale(0.7)',
     zIndex: 5,
     data: {
@@ -37,7 +37,7 @@ const moveAroundTopLayer = [
   },
   {
     moveFromTopLayer: 'translateX(-20%)',
-    moveToTopLayer: 'translateX(20%)',
+    moveToTopLayer: 'translateX(30%)',
     scale: 'scale(0.8)',
     zIndex: 6,
     data: {
@@ -47,7 +47,7 @@ const moveAroundTopLayer = [
   },
   {
     moveFromTopLayer: 'translateX(0%)',
-    moveToTopLayer: 'translateX(20%)',
+    moveToTopLayer: 'translateX(30%)',
     scale: 'scale(1)',
     zIndex: 7,
     data: {
@@ -57,7 +57,7 @@ const moveAroundTopLayer = [
   },
   {
     moveFromTopLayer: 'translateX(20%)',
-    moveToTopLayer: 'translateX(20%)',
+    moveToTopLayer: 'translateX(30%)',
     scale: 'scale(0.8)',
     zIndex: 6,
     data: {
@@ -67,7 +67,7 @@ const moveAroundTopLayer = [
   },
   {
     moveFromTopLayer: 'translateX(35%)',
-    moveToTopLayer: 'translateX(20%)',
+    moveToTopLayer: 'translateX(30%)',
     scale: 'scale(0.7)',
     zIndex: 5,
     data: {
@@ -77,7 +77,7 @@ const moveAroundTopLayer = [
   },
   {
     moveFromTopLayer: 'translateX(50%)',
-    moveToTopLayer: 'translateX(20%)',
+    moveToTopLayer: 'translateX(30%)',
     scale: 'scale(0.6)',
     zIndex: 4,
     data: {
