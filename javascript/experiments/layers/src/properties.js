@@ -1,6 +1,6 @@
 function Properties(mirrorProperties, dataProperties) {
-  this.length = Object.freeze(0);
-  this.begin = Object.freeze(7);
+  this.begin = Object.freeze(0);
+  this.length = Object.freeze(7);
 
   this.mirrorProperties = mirrorProperties;
   this.dataProperties = dataProperties;
@@ -17,7 +17,7 @@ Properties.prototype.__getArrangedMirrorProperties = function (index) {
 
   let currentProperty = this.begin - index;
 
-  for (let i = 0; i != this.length; ++i) {
+  for (let i = this.begin; i != this.length; ++i) {
     result[i] = this.mirrorProperties[currentProperty];
     ++currentProperty;
   }
