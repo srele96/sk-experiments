@@ -13,28 +13,38 @@ function Layers() {
 
   return (
     <ul
-      style={{ width: size.containerWidth, height: size.containerHeight }}
+      style={{
+        width: size.containerWidth,
+        height: size.containerHeight,
+      }}
       className={styles.layers}
     >
       {layers.map((layer, i) => {
         return (
           <li
             style={{
-              width: size.layerWidth,
-              height: fullHeightPreventsClickOnLayerBehind,
               transform: layer.moveToTopLayer,
               zIndex: layer.zIndex,
+              width: size.layerWidth,
+              height: fullHeightPreventsClickOnLayerBehind,
             }}
             className={styles.onTopOfEachOther}
             key={i}
           >
-            <div style={{ transform: layer.moveFromTopLayer }}>
+            <div
+              style={{
+                transform: layer.moveFromTopLayer,
+                width: size.layerWidth,
+                height: fullHeightPreventsClickOnLayerBehind,
+              }}
+            >
               <button
                 style={{
+                  transform: layer.scale,
                   width: size.layerWidth,
                   height: size.containerHeight,
-                  transform: layer.scale,
                 }}
+                className={styles.navigation}
               >
                 <img
                   className={styles.picture}
