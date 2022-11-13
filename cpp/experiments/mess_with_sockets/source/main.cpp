@@ -26,11 +26,9 @@ int main() {
   SOCKET server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   std::cout << "Created server socket.\n";
 
-  const int PORT = 3000;
-
   sockaddr_in address{};
   address.sin_family = AF_INET;
-  address.sin_port = PORT;
+  address.sin_port = htons(3000);
   address.sin_addr.s_addr = inet_addr("127.0.0.1");
   std::cout << "Created address for server socket.\n";
 
@@ -41,10 +39,17 @@ int main() {
   listen(server, SOMAXCONN);
   std::cout << "Listening for incomming connections on the server socket.\n";
 
-  std::cout << "Accepting request on: http://127.0.0.1:" << PORT << "\n";
+  std::cout << "Listening on: http://127.0.0.1:3000\n";
   // https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-accept
   // Pass null to ignore the information about the client.
   SOCKET client = accept(server, NULL, NULL);
+
+  // https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-recv
+  const int byte = 1024;
+  char buffer[byte];
+  // Save content of the request to the buffer.
+  recv(client, buffer, byte, 0);
+  std::cout << "Received:\n" << buffer << "\n";
 
   // Release the resources.
   closesocket(server);
