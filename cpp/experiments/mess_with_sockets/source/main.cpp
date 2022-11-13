@@ -52,6 +52,7 @@ int main() {
   std::cout << "Received:\n" << buffer << "\n";
 
   // Release the resources.
+  closesocket(client);
   closesocket(server);
   WSACleanup();
   std::cout << "Released server socket resources.\n";
