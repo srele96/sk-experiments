@@ -20,9 +20,11 @@ int main() {
   const int version_2_2 = MAKEWORD(two, two);
   // https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastartup#remarks
   WSAStartup(version_2_2, &wsaData);
+  std::cout << "Initialized socket server.\n";
 
   // https://en.wikipedia.org/wiki/Network_socket#Types
   SOCKET server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+  std::cout << "Created server socket.\n";
 
   const int PORT = 3000;
 
@@ -30,11 +32,17 @@ int main() {
   address.sin_family = AF_INET;
   address.sin_port = PORT;
   address.sin_addr.s_addr = inet_addr("127.0.0.1");
+  std::cout << "Created address for server socket.\n";
 
   // https://stackoverflow.com/questions/21099041/why-do-we-cast-sockaddr-in-to-sockaddr-when-calling-bind
   bind(server, reinterpret_cast<SOCKADDR*>(&address), sizeof(address));
+  std::cout << "Bound server socket to address.\n";
+
+  listen(server, SOMAXCONN);
+  std::cout << "Listening for incomming connections on the server socket.\n";
 
   // Release the resources.
   WSACleanup();
+  std::cout << "Released server socket resources.\n";
   return 0;
 }
