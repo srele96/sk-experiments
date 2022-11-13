@@ -51,6 +51,13 @@ int main() {
   recv(client, buffer, byte, 0);
   std::cout << "Received:\n" << buffer << "\n";
 
+  const char* send_people_json =
+      "HTTP/1.1 200 OK\r\n"
+      "Content-Type: application/json\r\n"
+      "Access-Control-Allow-Origin: *\r\n\r\n"
+      "[{\"name\":\"John\"},{\"name\":\"Jane\"}]";
+  send(client, send_people_json, strlen(send_people_json), 0);
+
   // Release the resources.
   closesocket(client);
   closesocket(server);
