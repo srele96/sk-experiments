@@ -51,6 +51,8 @@ int main() {
   recv(client, buffer, byte, 0);
   std::cout << "Received:\n" << buffer << "\n";
 
+  // https://www.rfc-editor.org/rfc/rfc7231#page-73
+  // https://stackoverflow.com/questions/8315209/sending-http-headers-with-python
   const char* send_people_json =
       "HTTP/1.1 200 OK\r\n"
       "Content-Type: application/json\r\n"
