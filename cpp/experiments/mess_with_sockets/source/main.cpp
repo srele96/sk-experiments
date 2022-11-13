@@ -3,7 +3,12 @@
 #include <iostream>
 
 int main() {
-  std::cout << "Mess with sockets.\n";
+  WSADATA wsaData;
+  const int two = 2;
+  const int version_2_2 = MAKEWORD(two, two);
+  WSAStartup(version_2_2, &wsaData);
 
+  // Release the resources.
+  WSACleanup();
   return 0;
 }
