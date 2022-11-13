@@ -21,6 +21,9 @@ int main() {
   // https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastartup#remarks
   WSAStartup(version_2_2, &wsaData);
 
+  // https://en.wikipedia.org/wiki/Network_socket#Types
+  SOCKET server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
   // Release the resources.
   WSACleanup();
   return 0;
