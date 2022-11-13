@@ -42,6 +42,7 @@ int main() {
   std::cout << "Listening for incomming connections on the server socket.\n";
 
   // Release the resources.
+  closesocket(server);
   WSACleanup();
   std::cout << "Released server socket resources.\n";
   return 0;
