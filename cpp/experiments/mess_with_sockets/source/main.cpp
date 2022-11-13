@@ -41,6 +41,11 @@ int main() {
   listen(server, SOMAXCONN);
   std::cout << "Listening for incomming connections on the server socket.\n";
 
+  std::cout << "Accepting request on: http://127.0.0.1:" << PORT << "\n";
+  // https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-accept
+  // Pass null to ignore the information about the client.
+  SOCKET client = accept(server, NULL, NULL);
+
   // Release the resources.
   closesocket(server);
   WSACleanup();
