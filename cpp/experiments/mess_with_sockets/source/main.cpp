@@ -24,6 +24,16 @@ int main() {
   // https://en.wikipedia.org/wiki/Network_socket#Types
   SOCKET server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
+  const int PORT = 3000;
+
+  sockaddr_in address{};
+  address.sin_family = AF_INET;
+  address.sin_port = PORT;
+  address.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+  // https://stackoverflow.com/questions/21099041/why-do-we-cast-sockaddr-in-to-sockaddr-when-calling-bind
+  bind(server, reinterpret_cast<SOCKADDR*>(&address), sizeof(address));
+
   // Release the resources.
   WSACleanup();
   return 0;
