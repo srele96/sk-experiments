@@ -1,9 +1,9 @@
 add_executable(
-  mess_with_sockets
+  tcp_socket_server
 
   main.cpp
 )
 
 # Calls to WSAStartup fail without this.
 # Error: undefined reference to `__imp_WSAStartup'
-target_link_libraries(mess_with_sockets ws2_32.lib)
+target_link_libraries(tcp_socket_server ws2_32.lib)
