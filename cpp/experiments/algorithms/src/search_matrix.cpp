@@ -114,7 +114,7 @@ bool binary_search(int begin, int end,
         return binary_search(begin, half - 1, predicate);
       }
       case value::to_end: {
-        // We checked the current one, go towards the end.
+        // We checked the current one, so go towards the end.
         return binary_search(half + 1, end, predicate);
       }
       default: {
