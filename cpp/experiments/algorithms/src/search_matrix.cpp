@@ -1,7 +1,5 @@
 /*
 
-/*
-
 target_location = 'found' | 'to_begin' | 'to_end'
 target_not_found = -1
 
@@ -41,45 +39,44 @@ find_col(col_half):
 
 */
 
-* /
 #include <cmath>
 #include <functional>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
 
-    namespace search_matrix {
+namespace search_matrix {
 
-  enum class value { found, to_begin, to_end };
+enum class value { found, to_begin, to_end };
 
-  bool binary_search(int begin, int end,
-                     const std::function<value(int)>& predicate) {
-    if (begin < end) {
-      const int half = std::floor((begin + end) / 2);
-      const value result = predicate(half);
+bool binary_search(int begin, int end,
+                   const std::function<value(int)>& predicate) {
+  if (begin < end) {
+    const int half = std::floor((begin + end) / 2);
+    const value result = predicate(half);
 
-      switch (result) {
-        case value::found: {
-          // Value found.
-          return true;
-        }
-        case value::to_begin: {
-          // We checked the current one, so go towards the begin.
-          return binary_search(begin, half - 1, predicate);
-        }
-        case value::to_end: {
-          // We checked the current one, so go towards the end.
-          return binary_search(half + 1, end, predicate);
-        }
-        default: {
-          throw(std::logic_error("Predicate returned unexpected value!"));
-        }
+    switch (result) {
+      case value::found: {
+        // Value found.
+        return true;
       }
-    } else {
-      // Value not found.
-      return false;
+      case value::to_begin: {
+        // We checked the current one, so go towards the begin.
+        return binary_search(begin, half - 1, predicate);
+      }
+      case value::to_end: {
+        // We checked the current one, so go towards the end.
+        return binary_search(half + 1, end, predicate);
+      }
+      default: {
+        throw(std::logic_error("Predicate returned unexpected value!"));
+      }
     }
+  } else {
+    // Value not found.
+    return false;
   }
+}
 
 }  // namespace search_matrix
 
