@@ -9,13 +9,15 @@
   <body>
     <div id="my_root"></div>
 
-    <!-- prettier-ignore-start -->
+    <!--
+      Embed paths to compiled javascript files so we can get their content
+      through proxy.
+    -->
     <% if (scriptPaths) { %>
       <% scriptPaths.map(function(path){ %>
         <script src="<%- path %>"></script>
       <% }); %>
     <% } %>
-    <!-- prettier-ignore-end -->
 
   </body>
 </html>
