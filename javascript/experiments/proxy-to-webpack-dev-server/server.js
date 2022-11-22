@@ -1,14 +1,24 @@
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const fs = require('fs/promises');
+const path = require('path');
 
 const app = express();
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  // Serve some traditional server side page content...
-  res.status(200);
-  res.setHeader('Content-Type', 'text/html');
-  res.render('index');
+  // Get path to javascript files compiled by webpack and insert them.
+  fs.readFile(path.resolve('public', 'manifest.json'))
+    .then((webpackManifest) => {
+      // Transform content of webpack manifest to javascript files.
+      const scriptPaths = Object.values(JSON.parse(webpackManifest.toString()));
+
+      // Serve some traditional server side page content...
+      res.status(200);
+      res.setHeader('Content-Type', 'text/html');
+      res.render('index', { scriptPaths });
+    })
+    .catch();
 });
 
 // Place after every other request.

@@ -6,5 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
   </head>
-  <body></body>
+  <body>
+    <div id="my_root"></div>
+
+    <!-- prettier-ignore-start -->
+    <% if (scriptPaths) { %>
+      <% scriptPaths.map(function(path){ %>
+        <script src="<%- path %>"></script>
+      <% }); %>
+    <% } %>
+    <!-- prettier-ignore-end -->
+
+  </body>
 </html>
