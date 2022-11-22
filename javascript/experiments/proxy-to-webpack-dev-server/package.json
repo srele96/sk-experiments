@@ -19,6 +19,9 @@
   },
   "devDependencies": {
     "http-proxy-middleware": "^2.0.6",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
+    "webpack-dev-server": "^4.11.1"
   }
 }
