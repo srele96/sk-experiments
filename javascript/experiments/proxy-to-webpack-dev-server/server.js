@@ -2,12 +2,13 @@ const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const app = express();
+app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
   // Serve some traditional server side page content...
   res.status(200);
   res.setHeader('Content-Type', 'text/html');
-  res.send('<h1>Hello World!</h1>');
+  res.render('index');
 });
 
 // Place after every other request.
