@@ -1,4 +1,5 @@
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const path = require('path');
 
 /** @type {import('webpack').Configuration} */
@@ -10,6 +11,8 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js',
+    // Remove the public path prefix from WebpackManifestPlugin output.
+    publicPath: '',
   },
   module: {
     rules: [
@@ -40,7 +43,13 @@ const config = {
   devServer: {
     hot: true,
   },
-  plugins: [new ReactRefreshWebpackPlugin()],
+  plugins: [
+    new ReactRefreshWebpackPlugin(),
+    new WebpackManifestPlugin({
+      // Create manifest at runtime.
+      writeToFileEmit: true,
+    }),
+  ],
 };
 
 module.exports = config;
