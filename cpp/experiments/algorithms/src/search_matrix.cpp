@@ -26,15 +26,19 @@ find_row(row_half):
   if target >= matrix[row_half][col_begin] and
      target <= matrix[row_half][col_end]
     return target_location.found
+
   if target <= matrix[row_half][col_begin]
-    return target_location.to_begin return
-  target_location.to_end
+    return target_location.to_begin
+
+  return target_location.to_end
 
 find_col(col_half):
   if target === matrix[row][col_half]
     return target_location.found
+
   if target <= matrix[row][col_half]
     return target_location.to_begin
+
   return target_location.to_end
 
 */
