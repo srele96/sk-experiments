@@ -1,10 +1,11 @@
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const path = require('path');
 
 /** @type {import('webpack').Configuration} */
 const config = {
   // Don't care to change mode. This is demo.
   mode: 'development',
-  entry: 'client.js',
+  entry: path.resolve('client.js'),
   // Use the same directory as the express server.
   output: {
     path: path.resolve(__dirname, 'public'),
@@ -13,7 +14,7 @@ const config = {
   module: {
     rules: [
       {
-        test: '.js',
+        test: /\.js/,
         exclude: /node_modules/,
         use: [
           {
@@ -39,7 +40,7 @@ const config = {
   devServer: {
     hot: true,
   },
-  plugins: [isDevelopment && new ReactRefreshWebpackPlugin()].filter(Boolean),
+  plugins: [new ReactRefreshWebpackPlugin()],
 };
 
 module.exports = config;
