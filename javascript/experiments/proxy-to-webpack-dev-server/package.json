@@ -1,0 +1,24 @@
+{
+  "name": "proxy-to-webpack-dev-server",
+  "version": "0.1.0",
+  "description": "An express server that proxies unhandled requests to webpack-dev-server.",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "scripts": {
+    "server": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^2.0.6",
+    "nodemon": "^2.0.20"
+  }
+}
