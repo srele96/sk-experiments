@@ -6,6 +6,14 @@ const path = require('path');
 const app = express();
 app.set('view engine', 'ejs');
 
+// Use mock server data and render in template to prove that we are really
+// using ReactJS, Webpack and Webpack Dev Server aside from template engine.
+const people = [
+  { id: '1', name: 'John' },
+  { id: '2', name: 'Jane' },
+  { id: '3', name: 'Caren' },
+];
+
 app.get('/', (req, res) => {
   // Get path to javascript files compiled by webpack and insert them.
   fs.readFile(path.resolve('public', 'manifest.json'))
@@ -16,7 +24,7 @@ app.get('/', (req, res) => {
       // Serve some traditional server side page content...
       res.status(200);
       res.setHeader('Content-Type', 'text/html');
-      res.render('index', { scriptPaths });
+      res.render('index', { scriptPaths, people });
     })
     .catch((error) => {
       console.error(error);
