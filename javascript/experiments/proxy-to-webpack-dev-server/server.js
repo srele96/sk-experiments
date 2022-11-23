@@ -48,28 +48,13 @@ app.use(
     // to use HMR and fast refresh with another server aside of
     // webpack-dev-server.
     changeOrigin: true,
+    // We have to proxy WebSocket requests to support Hot Module Reloading.
+    // Without ws: true one of the compiled javascript files throw an error:
+    // The connection to ws://localhost:3000/ws has failed. We can see that it
+    // hits port 3000 which most likely means we have to proxy WebSocket
+    // requests.
+    ws: true,
   })
 );
-
-/**
- * NOTE!!!
- *
- * The HMR throws an error because websockets fail to connect to:
- *
- * ws:localhost:3000/ws
- *
- * I assume that happens because we don't proxy WebSocket requests to the
- * webpack-dev-server WebSocket server.
- *
- * I tried to fix that by setting up two separate proxies.
- * - JavaScript content.
- * - HMR
- *
- * I tried to use regexes on app.use(/only_websockets_for_hrm/)
- * and app.use(/exclude_websocket_requests_for_the_rest/)
- * but I couldn't make that work and I didn't figure out why.
- *
- * I decided to stop because it became less fun the more time went on.
- */
 
 app.listen(3000, () => console.log('http://localhost:3000'));
