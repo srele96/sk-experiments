@@ -34,7 +34,7 @@ So, what was our initial problem? We wanted to use fast refresh on the part of o
 
 First, what is a browser? A browser is a program good at parsing text. It reads the text and tries to use it appropriately (in other words, it tries to parse it). So what else does it let me do? It allows me to browse the content of my computer. Why am I saying this? Because browsing the content of my computer is similar to visiting YouTube. The difference is that my computer allows the browser to open anything, and the YouTube server allows a browser to enter only parts of it.
 
-If you have a Windows machine and open C drive through a browser, you are browsing a directory. For example, this link file:///C:/.
+If you have a Windows machine and open C drive through a browser, you are browsing a directory. For example, this link [file:///C:/](file:///C:/).
 
 So, what is the code? The code is a text, and since the browser is good at parsing text, we can send it some code.
 
