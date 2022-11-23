@@ -8,7 +8,7 @@ const config = {
   mode: 'development',
   entry: path.resolve('client.js'),
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
     // Remove the public path prefix from WebpackManifestPlugin output.
     publicPath: '',
@@ -58,6 +58,9 @@ const config = {
   },
   plugins: [
     new ReactRefreshWebpackPlugin(),
+    // NOTE!
+    // Avoid writing to webpack-dev-server static file directory because it is
+    // going to trigger full page reload every time content in there changes.
     // Create manifest with paths to javascript files. The express server can
     // use them to insert them to an html page.
     // https://webpack.js.org/concepts/manifest/

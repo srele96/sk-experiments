@@ -16,7 +16,7 @@ const people = [
 
 app.get('/', (req, res) => {
   // Get path to javascript files compiled by webpack and insert them.
-  fs.readFile(path.resolve('public', 'manifest.json'))
+  fs.readFile(path.resolve('dist', 'manifest.json'))
     .then((webpackManifest) => {
       // Transform content of webpack manifest to javascript file paths.
       const scriptPaths = Object.values(JSON.parse(webpackManifest.toString()));
