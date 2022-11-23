@@ -70,9 +70,6 @@ app.use(
  * but I couldn't make that work and I didn't figure out why.
  *
  * I decided to stop because it became less fun the more time went on.
- *
- * For me the error occured after I run the server, open the initial page
- * and wait for one minute, the websocket error was in the console.
  */
 
 app.listen(3000, () => console.log('http://localhost:3000'));
