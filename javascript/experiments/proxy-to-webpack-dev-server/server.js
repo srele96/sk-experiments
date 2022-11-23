@@ -34,8 +34,11 @@ app.use(
   createProxyMiddleware({
     // Hit webpack-dev-server.
     target: 'http://localhost:8080',
-    // Run this only in development, so we can treat webpack content as same origin.
-    // Because in production we serve the webpack content from only one origin.
+    // Use this option and whole middleware only in development.
+    // The whole purpose of middleware is to retrieve the javascript files
+    // that the webpack-dev-server compiles. Additionally, this allows us
+    // to use HMR and fast refresh with another server aside of
+    // webpack-dev-server.
     changeOrigin: true,
   })
 );
