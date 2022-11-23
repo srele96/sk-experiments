@@ -58,6 +58,10 @@ const config = {
   },
   plugins: [
     new ReactRefreshWebpackPlugin(),
+    // Create manifest with paths to javascript files. The express server can
+    // use them to insert them to an html page.
+    // https://webpack.js.org/concepts/manifest/
+    // https://webpack.js.org/guides/output-management/#the-manifest
     new WebpackManifestPlugin({
       // Create manifest at runtime.
       writeToFileEmit: true,

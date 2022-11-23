@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
   // Get path to javascript files compiled by webpack and insert them.
   fs.readFile(path.resolve('public', 'manifest.json'))
     .then((webpackManifest) => {
-      // Transform content of webpack manifest to javascript files.
+      // Transform content of webpack manifest to javascript file paths.
       const scriptPaths = Object.values(JSON.parse(webpackManifest.toString()));
 
       // Serve some traditional server side page content...
