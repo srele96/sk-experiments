@@ -12,7 +12,7 @@
   },
   "homepage": "https://github.com/srele96/sk-experiments#readme",
   "scripts": {
-    "server": "nodemon server.js",
+    "server": "nodemon -w ./server.js server.js",
     "client": "webpack serve"
   },
   "dependencies": {
