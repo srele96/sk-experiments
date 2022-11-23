@@ -51,4 +51,25 @@ app.use(
   })
 );
 
+/**
+ * NOTE!!!
+ *
+ * The HMR throws an error because websockets fail to connect to:
+ *
+ * ws:localhost:3000/ws
+ *
+ * I assume that happens because we don't proxy WebSocket requests to the
+ * webpack-dev-server WebSocket server.
+ *
+ * I tried to fix that by setting up two separate proxies.
+ * - JavaScript content.
+ * - HMR
+ *
+ * I tried to use regexes on app.use(/only_websockets_for_hrm/)
+ * and app.use(/exclude_websocket_requests_for_the_rest/)
+ * but I couldn't make that work and I didn't figure out why.
+ *
+ * I decided to stop because it became less fun the more time went on.
+ */
+
 app.listen(3000, () => console.log('http://localhost:3000'));
