@@ -18,7 +18,14 @@ app.get('/', (req, res) => {
       res.setHeader('Content-Type', 'text/html');
       res.render('index', { scriptPaths });
     })
-    .catch();
+    .catch((error) => {
+      console.error(error);
+
+      // Treat all errors as internal server error and provide feedback.
+      res.status = 500;
+      res.setHeader('Content-Type', 'text/html');
+      res.send('Oops! Sorry, something went wrong.');
+    });
 });
 
 // Place after every other request.
