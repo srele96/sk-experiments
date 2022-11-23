@@ -1,6 +1,6 @@
 # Using Proxy setup ReactJS, Webpack Dev Server, Fast Refresh, NodeJS express, and a template engine
 
-Using a proxy to the working setup of ReactJS with Webpack Dev Server, Fast Refresh, NodeJS Express, and a Template Engine
+I will use a proxy for the working setup of ReactJS with Webpack Dev Server, Fast Refresh, NodeJS Express, and a Template Engine.
 
 ## What if I have a traditional server and want to add the part of the page to be in react?
 
