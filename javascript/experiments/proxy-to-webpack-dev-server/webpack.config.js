@@ -7,12 +7,25 @@ const config = {
   // Don't care to change mode. This is demo.
   mode: 'development',
   entry: path.resolve('client.js'),
-  // Use the same directory as the express server.
   output: {
     path: path.resolve(__dirname, 'public'),
-    filename: 'bundle.js',
+    filename: '[name].[contenthash].js',
     // Remove the public path prefix from WebpackManifestPlugin output.
     publicPath: '',
+  },
+  // Use optimization to verify that everything works with multiple
+  // JavaScript files.
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /node_modules/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
   module: {
     rules: [
