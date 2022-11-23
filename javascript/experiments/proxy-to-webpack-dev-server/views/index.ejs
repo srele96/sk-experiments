@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>People</h1>
+    <ul>
+      <% people.map(function(person){ %>
+        <li>
+          <div>ID: <%- person.id %> Name: <%- person.name %></div>
+        </li>
+      <% }) %>
+    </ul>
+
+    <!--
+      React part of the site lives here in peace with content rendered by
+      template engine.
+    -->
+    <div id="my_root"></div>
+
+    <!--
+      Embed paths to compiled javascript files so we can get their content
+      through proxy.
+    -->
+    <% if (scriptPaths) { %>
+      <% scriptPaths.map(function(path){ %>
+        <script src="<%- path %>"></script>
+      <% }); %>
+    <% } %>
+
+  </body>
+</html>
