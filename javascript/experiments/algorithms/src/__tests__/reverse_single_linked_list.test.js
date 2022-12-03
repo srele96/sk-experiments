@@ -17,7 +17,6 @@ describe('reverse_single_linked_list', () => {
         value: 2,
         next: {
           value: 1,
-          next: null,
         },
       },
     };
@@ -34,7 +33,6 @@ describe('reverse_single_linked_list', () => {
         value: 4,
         next: {
           value: 5,
-          next: null,
         },
       },
     };

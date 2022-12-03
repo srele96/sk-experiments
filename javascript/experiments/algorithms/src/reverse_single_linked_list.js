@@ -20,7 +20,7 @@ function reverse_single_linked_list() {
       // Recycle the current node to avoid unnecessary memory consumption.
       current_node = node;
       // Break the cyclic dependency. We can safely ignore the next value because we are traversing the list in reverse.
-      current_node.next = null;
+      delete current_node.next;
 
       if (head_of_reverse_linked_list) {
         // Create subsequent nodes.
