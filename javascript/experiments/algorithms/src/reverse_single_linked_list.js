@@ -1,8 +1,10 @@
 /** @typedef {{ value: number, next?: Node }} Node */
 
-// Wrap in IIFE to scope variables outside of recursion calls to avoid using old values in subsequent calls.
+// Wrap recursive function to scope variables outside of recursion calls to
+// avoid using old values in subsequent calls.
 function reverse_single_linked_list() {
-  // Store values the recursion needs outside the function to avoid additional memory usage.
+  // Store values the recursion needs outside the function to avoid additional
+  // memory usage.
   /** @type {Node | null} */
   let head_of_reverse_linked_list = null;
   /** @type {Node | null} */
@@ -19,7 +21,8 @@ function reverse_single_linked_list() {
       reverse(node.next);
       // Recycle the current node to avoid unnecessary memory consumption.
       current_node = node;
-      // Break the cyclic dependency. We can safely ignore the next value because we are traversing the list in reverse.
+      // Break the cyclic dependency. We can safely ignore the next value
+      // because we are traversing the list in reverse.
       delete current_node.next;
 
       if (head_of_reverse_linked_list) {
