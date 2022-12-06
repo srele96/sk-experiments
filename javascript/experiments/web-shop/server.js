@@ -2,6 +2,7 @@ const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require('fs/promises');
 const path = require('path');
+const App = require('./App');
 
 const app = express();
 app.set('view engine', 'ejs');

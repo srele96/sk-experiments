@@ -36,16 +36,6 @@ const config = {
           {
             loader: require.resolve('babel-loader'),
             options: {
-              presets: [
-                '@babel/preset-env',
-                [
-                  '@babel/preset-react',
-                  {
-                    runtime: 'automatic',
-                    mode: 'development',
-                  },
-                ],
-              ],
               plugins: [require.resolve('react-refresh/babel')],
             },
           },
