@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
       // Transform content of webpack manifest to javascript file paths.
       const scriptPaths = Object.values(JSON.parse(webpackManifest.toString()));
 
-      let didError = false;
+      // TODO: What kind of errors: SHOULD I handle here? MUST I handle here?
       const stream = renderToPipeableStream(
         <PageTemplate scriptPaths={scriptPaths}>
           <App />
@@ -48,7 +48,6 @@ app.get('/', (req, res) => {
             console.error('onShellError', error);
           },
           onError(error) {
-            didError = true;
             console.error('onError', error);
           },
         }
