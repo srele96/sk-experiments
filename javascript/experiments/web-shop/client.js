@@ -1,12 +1,13 @@
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client';
 
 import { App } from './App';
 
-const root = document.querySelector('#my_root');
+const root = document.querySelector('#root');
 
 // https://github.com/pmmmwh/react-refresh-webpack-plugin/issues/177#issuecomment-718271457
-createRoot(root).render(
+hydrateRoot(
+  root,
   <StrictMode>
     <App />
   </StrictMode>

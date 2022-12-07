@@ -1,19 +1,30 @@
 const express = require('express');
+const { renderToPipeableStream } = require('react-dom/server');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const fs = require('fs/promises');
 const path = require('path');
-const App = require('./App');
+const { App } = require('./App');
 
 const app = express();
-app.set('view engine', 'ejs');
 
-// Use mock server data and render in template to prove that we are really
-// using ReactJS, Webpack and Webpack Dev Server aside from template engine.
-const people = [
-  { id: '1', name: 'John' },
-  { id: '2', name: 'Jane' },
-  { id: '3', name: 'Caren' },
-];
+/**
+ * @param {{ children: import('react').ReactNode; scriptPaths: string[] }} props
+ * @returns {import('react').ReactNode}
+ */
+function PageTemplate(props) {
+  return (
+    <html>
+      <head></head>
+      <body>
+        <div id="root">{props.children}</div>
+
+        {props.scriptPaths.map((scriptPath) => (
+          <script key={scriptPath} src={scriptPath}></script>
+        ))}
+      </body>
+    </html>
+  );
+}
 
 app.get('/', (req, res) => {
   // Get path to javascript files compiled by webpack and insert them.
@@ -22,10 +33,26 @@ app.get('/', (req, res) => {
       // Transform content of webpack manifest to javascript file paths.
       const scriptPaths = Object.values(JSON.parse(webpackManifest.toString()));
 
-      // Serve some traditional server side page content...
-      res.status(200);
-      res.setHeader('Content-Type', 'text/html');
-      res.render('index', { scriptPaths, people });
+      let didError = false;
+      const stream = renderToPipeableStream(
+        <PageTemplate scriptPaths={scriptPaths}>
+          <App />
+        </PageTemplate>,
+        {
+          onShellReady() {
+            res.status(200);
+            res.setHeader('Content-Type', 'text/html');
+            stream.pipe(res);
+          },
+          onShellError(error) {
+            console.error('onShellError', error);
+          },
+          onError(error) {
+            didError = true;
+            console.error('onError', error);
+          },
+        }
+      );
     })
     .catch((error) => {
       console.error(error);
