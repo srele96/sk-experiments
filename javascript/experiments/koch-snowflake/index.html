@@ -123,11 +123,12 @@
       }
 
       class KochSnowflakeWindow {
-        width = Object.freeze(500);
-        height = Object.freeze(500);
         id = Object.freeze('koch-snowflake-window');
 
-        constructor() {
+        constructor({ width, height }) {
+          this.width = width;
+          this.height = height;
+
           this.canvas = document.createElement('canvas');
           this.ctx = this.canvas.getContext('2d');
 
@@ -162,7 +163,7 @@
       }
 
       class KochSnowflake {
-        constructor({ destination, lineLength, rotationAngle }) {
+        constructor({ destination, lineLength, rotationAngle, windowSize }) {
           this.destination = destination;
           this.lineLength = lineLength;
           this.rotationAngle = rotationAngle;
@@ -170,7 +171,9 @@
           const initialAngle = 0;
 
           this.angle = initialAngle;
-          this.kochSnowflakeWindow = new KochSnowflakeWindow();
+          // TODO: Decouple snowflake window. It is troublesome to use
+          // KochSnowflake as proxy for configuration to KochSnowflakeWindow.
+          this.kochSnowflakeWindow = new KochSnowflakeWindow(windowSize);
         }
 
         TurnLeft() {
@@ -235,6 +238,7 @@
           destination: initialDestination,
           lineLength,
           rotationAngle,
+          windowSize: { width: 500, height: 500 },
         });
 
         kochSnowflake.Draw(3);
