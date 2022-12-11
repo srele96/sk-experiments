@@ -11,7 +11,10 @@
       }
     </style>
   </head>
-  <body></body>
+  <body>
+    <div id="__root"></div>
+  </body>
+
   <script>
     (() => {
       'use strict';
@@ -144,11 +147,11 @@
       function drawKochSnowflake() {
         const x = 50;
         const y = 350;
-        const lineLength = 0.015;
+        const lineLength = 20;
         const initialDestination = new Point({ x, y });
         const kochSnowflake = new KochSnowflake(initialDestination, lineLength);
 
-        kochSnowflake.Draw(10);
+        kochSnowflake.Draw(3);
       }
 
       drawKochSnowflake();
