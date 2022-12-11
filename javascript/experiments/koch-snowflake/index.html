@@ -285,7 +285,8 @@
         };
 
         SaveConfigurationValue = ({ key, value }) => {
-          this.configuration[key] = value;
+          // TODO: Skip updating on non-numeric values. We don't know what the user is going to put in.
+          this.configuration[key] = parseInt(value);
         };
 
         DrawKochSnowflake = () => {
