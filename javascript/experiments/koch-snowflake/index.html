@@ -35,7 +35,7 @@
           class="config__input"
           type="number"
           id="x"
-          name="y"
+          name="x"
           data-value="50"
         />
       </label>
@@ -240,24 +240,56 @@
 
       // TODO: Setup listeners.
       class ConfigurationControls {
+        configuration = {};
+
         constructor() {
           this.configurationInputs =
             document.querySelectorAll('.config__input');
           this.event = 'input';
 
+          this.SaveDefaultConfigurationValues();
+          this.DrawKochSnowflake();
           this.SetupListeners();
         }
+
+        SaveDefaultConfigurationValues = () => {
+          this.configurationInputs.forEach((input) => {
+            this.DisplayDefaultConfigurationValue(input);
+            this.SaveDefaultConfigurationValue(input);
+          });
+        };
+
+        DisplayDefaultConfigurationValue = (input) => {
+          input.value = input.dataset.value;
+        };
+
+        SaveDefaultConfigurationValue = (input) => {
+          this.SaveConfigurationValue({
+            key: input.name,
+            value: input.dataset.value,
+          });
+        };
 
         SetupListeners = () => {
           this.configurationInputs.forEach(this.SetupListener);
         };
 
-        UpdateConfiguration = (event) => {
-          console.log(event.target.name, event.target.value);
+        SetupListener = (input) => {
+          input.addEventListener(this.event, (event) => {
+            this.SaveConfigurationValue({
+              key: event.target.name,
+              value: event.target.value,
+            });
+            this.DrawKochSnowflake();
+          });
         };
 
-        SetupListener = (input) => {
-          input.addEventListener(this.event, this.UpdateConfiguration);
+        SaveConfigurationValue = ({ key, value }) => {
+          this.configuration[key] = value;
+        };
+
+        DrawKochSnowflake = () => {
+          console.log(this.configuration);
         };
       }
 
