@@ -9,9 +9,57 @@
       canvas {
         border: 1px solid black;
       }
+      .config {
+        width: max-content;
+        display: flex;
+        flex-direction: column;
+      }
+      .config__control {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+      }
+      .config__input {
+        margin-left: 5px;
+      }
     </style>
   </head>
-  <body></body>
+  <body>
+    <div class="config">
+      <label class="config__control" for="x">
+        x <input class="config__input" type="number" id="x" name="y"
+      /></label>
+      <label class="config__control" for="y">
+        y <input class="config__input" type="number" id="y" name="y"
+      /></label>
+      <label class="config__control" for="angle">
+        angle
+        <input class="config__input" type="number" id="angle" name="angle"
+      /></label>
+      <label class="config__control" for="canvasWidth">
+        canvasWidth
+        <input
+          class="config__input"
+          type="number"
+          id="canvasWidth"
+          name="canvasWidth"
+        />
+      </label>
+      <label class="config__control" for="canvasHeight">
+        canvasHeight
+        <input
+          class="config__input"
+          type="number"
+          name="canvasHeight"
+          id="canvasHeight"
+        />
+      </label>
+      <label class="config__control" for="level">
+        level
+        <input class="config__input" type="number" name="level" id="level" />
+      </label>
+    </div>
+  </body>
 
   <script>
     (() => {
