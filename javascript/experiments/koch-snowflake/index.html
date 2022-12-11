@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Koch Snowflake</title>
+  </head>
+  <body></body>
+  <script>
+    (() => {
+      'use strict';
+      console.clear();
+
+      // TODO: Create error handlers.
+
+      class Point {
+        constructor(properties) {
+          // TODO: Validate properties
+          this.x = properties.x;
+          this.y = properties.y;
+        }
+      }
+
+      class Geometry {
+        constructor() {
+          // https://stackoverflow.com/questions/597769/how-do-i-create-an-abstract-base-class-in-javascript
+          if (this.constructor === Geometry) {
+            // TODO: Abstract class Geometry can't be instantiated.
+          }
+        }
+
+        static GetRadians(degrees) {
+          // TODO: Validate degrees.
+          return (Math.PI / 180) * degrees;
+        }
+
+        static GetDestinationPoint({ from, direction, angle }) {
+          // TODO: Validate arguments.
+          return new Point({
+            x: from.x + Math.cos(Geometry.GetRadians(angle)) * direction,
+            y: from.y + Math.sin(Geometry.GetRadians(angle)) * direction,
+          });
+        }
+      }
+
+      class KochSnowflakeWindow {
+        width = Object.freeze(500);
+        height = Object.freeze(500);
+        id = Object.freeze('koch-snowflake-window');
+
+        constructor() {
+          this.canvas = document.createElement('canvas');
+          this.ctx = this.canvas.getContext('2d');
+
+          this.SetCanvasProperties();
+          this.ShowCanvasOnce();
+        }
+
+        SetCanvasProperties() {
+          this.canvas.width = this.width;
+          this.canvas.height = this.height;
+          this.canvas.id = this.id;
+        }
+
+        ShowCanvasOnce() {
+          const canvasIsVisible = document.getElementById(this.id);
+          if (!canvasIsVisible) {
+            document.getElementsByTagName('body')[0].appendChild(this.canvas);
+          }
+        }
+
+        Stroke() {
+          this.ctx.stroke();
+        }
+
+        MoveTo(point) {
+          // TODO: Validate point.
+          this.ctx.moveTo(point.x, point.y);
+        }
+
+        LineTo(point) {
+          // TODO: Validate point.
+          this.ctx.lineTo(point.x, point.y);
+        }
+      }
+
+      class KochSnowflake {
+        constructor(initialDestination, lineLength) {
+          // TODO: Validate initialDestination
+          // TODO: Validate lineLength
+          this.destination = initialDestination;
+          this.lineLength = lineLength;
+
+          const initialAngle = 0;
+          const initialRotationDegrees = 60;
+
+          this.rotationDegrees = initialRotationDegrees;
+          this.angle = initialAngle;
+          this.kochSnowflakeWindow = new KochSnowflakeWindow();
+        }
+
+        TurnLeft() {
+          this.angle -= this.rotationDegrees;
+        }
+
+        TurnRight() {
+          this.angle += this.rotationDegrees;
+        }
+
+        CalculateAndSaveDestination() {
+          this.destination = Geometry.GetDestinationPoint({
+            from: this.destination,
+            direction: this.lineLength,
+            angle: this.angle,
+          });
+        }
+
+        DrawLine() {
+          this.CalculateAndSaveDestination();
+          this.kochSnowflakeWindow.LineTo(this.destination);
+        }
+
+        DrawSide(n) {
+          if (n > 1) {
+            this.DrawSide(n - 1);
+            this.TurnLeft();
+            this.DrawSide(n - 1);
+            this.TurnRight();
+            this.TurnRight();
+            this.DrawSide(n - 1);
+            this.TurnLeft();
+            this.DrawSide(n - 1);
+          } else {
+            this.DrawLine();
+          }
+        }
+
+        Draw(n) {
+          this.kochSnowflakeWindow.MoveTo(this.destination);
+
+          this.TurnLeft();
+          this.DrawSide(n);
+          this.TurnRight();
+          this.TurnRight();
+          this.DrawSide(n);
+          this.TurnRight();
+          this.TurnRight();
+          this.DrawSide(n);
+
+          this.kochSnowflakeWindow.Stroke();
+        }
+      }
+
+      function drawKochSnowflake() {
+        const x = 50;
+        const y = 350;
+        const lineLength = 0.015;
+        const initialDestination = new Point({ x, y });
+        const kochSnowflake = new KochSnowflake(initialDestination, lineLength);
+
+        kochSnowflake.Draw(10);
+      }
+
+      drawKochSnowflake();
+    })();
+  </script>
+</html>
