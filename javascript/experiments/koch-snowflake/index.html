@@ -30,17 +30,37 @@
   <body>
     <div class="config">
       <label class="config__control" for="x">
-        x <input class="config__input" type="number" id="x" name="y"
-      /></label>
+        x
+        <input
+          class="config__input"
+          type="number"
+          id="x"
+          name="y"
+          data-value="50"
+        />
+      </label>
 
       <label class="config__control" for="y">
-        y <input class="config__input" type="number" id="y" name="y"
-      /></label>
+        y
+        <input
+          class="config__input"
+          type="number"
+          id="y"
+          name="y"
+          data-value="350"
+        />
+      </label>
 
       <label class="config__control" for="angle">
         angle
-        <input class="config__input" type="number" id="angle" name="angle"
-      /></label>
+        <input
+          class="config__input"
+          type="number"
+          id="angle"
+          name="angle"
+          data-value="60"
+        />
+      </label>
 
       <label class="config__control" for="canvasWidth">
         canvasWidth
@@ -49,6 +69,7 @@
           type="number"
           id="canvasWidth"
           name="canvasWidth"
+          data-value="360"
         />
       </label>
 
@@ -59,12 +80,19 @@
           type="number"
           name="canvasHeight"
           id="canvasHeight"
+          data-value="360"
         />
       </label>
 
       <label class="config__control" for="level">
         level
-        <input class="config__input" type="number" name="level" id="level" />
+        <input
+          class="config__input"
+          type="number"
+          name="level"
+          id="level"
+          data-value="3"
+        />
       </label>
     </div>
   </body>
@@ -211,6 +239,29 @@
       drawKochSnowflake();
 
       // TODO: Setup listeners.
+      class ConfigurationControls {
+        constructor() {
+          this.configurationInputs =
+            document.querySelectorAll('.config__input');
+          this.event = 'input';
+
+          this.SetupListeners();
+        }
+
+        SetupListeners = () => {
+          this.configurationInputs.forEach(this.SetupListener);
+        };
+
+        UpdateConfiguration = (event) => {
+          console.log(event.target.name, event.target.value);
+        };
+
+        SetupListener = (input) => {
+          input.addEventListener(this.event, this.UpdateConfiguration);
+        };
+      }
+
+      new ConfigurationControls();
     })();
   </script>
 </html>
