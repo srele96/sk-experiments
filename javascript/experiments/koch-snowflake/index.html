@@ -17,31 +17,19 @@
       'use strict';
       console.clear();
 
-      // TODO: Create error handlers.
-
       class Point {
         constructor(properties) {
-          // TODO: Validate properties
           this.x = properties.x;
           this.y = properties.y;
         }
       }
 
       class Geometry {
-        constructor() {
-          // https://stackoverflow.com/questions/597769/how-do-i-create-an-abstract-base-class-in-javascript
-          if (this.constructor === Geometry) {
-            // TODO: Abstract class Geometry can't be instantiated.
-          }
-        }
-
         static GetRadians(degrees) {
-          // TODO: Validate degrees.
           return (Math.PI / 180) * degrees;
         }
 
         static GetDestinationPoint({ from, direction, angle }) {
-          // TODO: Validate arguments.
           return new Point({
             x: from.x + Math.cos(Geometry.GetRadians(angle)) * direction,
             y: from.y + Math.sin(Geometry.GetRadians(angle)) * direction,
@@ -80,12 +68,10 @@
         }
 
         MoveTo(point) {
-          // TODO: Validate point.
           this.ctx.moveTo(point.x, point.y);
         }
 
         LineTo(point) {
-          // TODO: Validate point.
           this.ctx.lineTo(point.x, point.y);
         }
       }
