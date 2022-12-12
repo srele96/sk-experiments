@@ -47,17 +47,28 @@
           type="number"
           id="y"
           name="y"
-          data-value="350"
+          data-value="250"
         />
       </label>
 
-      <label class="config__control" for="angle">
-        angle
+      <label class="config__control" for="lineLength">
+        lineLength
         <input
           class="config__input"
           type="number"
-          id="angle"
-          name="angle"
+          id="lineLength"
+          name="lineLength"
+          data-value="25"
+        />
+      </label>
+
+      <label class="config__control" for="rotationAngle">
+        rotationAngle
+        <input
+          class="config__input"
+          type="number"
+          id="rotationAngle"
+          name="rotationAngle"
           data-value="60"
         />
       </label>
@@ -95,6 +106,8 @@
         />
       </label>
     </div>
+
+    <canvas id="koch-snowflake-window"></canvas>
   </body>
 
   <script>
@@ -123,30 +136,19 @@
       }
 
       class KochSnowflakeWindow {
-        id = Object.freeze('koch-snowflake-window');
-
         constructor({ width, height }) {
           this.width = width;
           this.height = height;
 
-          this.canvas = document.createElement('canvas');
+          this.canvas = document.getElementById('koch-snowflake-window');
           this.ctx = this.canvas.getContext('2d');
 
           this.SetCanvasProperties();
-          this.ShowCanvasOnce();
         }
 
         SetCanvasProperties() {
           this.canvas.width = this.width;
           this.canvas.height = this.height;
-          this.canvas.id = this.id;
-        }
-
-        ShowCanvasOnce() {
-          const canvasIsVisible = document.getElementById(this.id);
-          if (!canvasIsVisible) {
-            document.getElementsByTagName('body')[0].appendChild(this.canvas);
-          }
         }
 
         Stroke() {
@@ -213,6 +215,7 @@
         }
 
         Draw(n) {
+          // TODO: Do I need to clear window?
           this.kochSnowflakeWindow.MoveTo(this.destination);
 
           this.TurnLeft();
@@ -227,24 +230,6 @@
           this.kochSnowflakeWindow.Stroke();
         }
       }
-
-      function drawKochSnowflake() {
-        const x = 50;
-        const y = 350;
-        const lineLength = 20;
-        const rotationAngle = 60;
-        const initialDestination = new Point({ x, y });
-        const kochSnowflake = new KochSnowflake({
-          destination: initialDestination,
-          lineLength,
-          rotationAngle,
-          windowSize: { width: 500, height: 500 },
-        });
-
-        kochSnowflake.Draw(3);
-      }
-
-      drawKochSnowflake();
 
       class ConfigurationControls {
         configuration = {};
@@ -298,7 +283,24 @@
         };
 
         DrawKochSnowflake = () => {
-          console.log(this.configuration);
+          const {
+            x,
+            y,
+            lineLength,
+            rotationAngle,
+            canvasWidth,
+            canvasHeight,
+            level,
+          } = this.configuration;
+
+          const kochSnowflake = new KochSnowflake({
+            windowSize: { width: canvasWidth, height: canvasHeight },
+            destination: new Point({ x, y }),
+            lineLength,
+            rotationAngle,
+          });
+
+          kochSnowflake.Draw(level);
         };
       }
 
