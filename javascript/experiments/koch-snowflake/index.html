@@ -265,12 +265,12 @@
                   min: 1,
                   max: 10,
                 },
-                leftAngle: {
-                  label: 'left angle',
+                rotateLeftAngle: {
+                  label: 'rotate left angle',
                   value: 60,
                 },
-                rightAngle: {
-                  label: 'right angle',
+                rotateRightAngle: {
+                  label: 'rotate right angle',
                   value: 60,
                 },
               }}
@@ -295,23 +295,26 @@
                             fractalCanopy({
                               n: n - 1,
                               from: Geometry.GetDestination({
-                                lineLength: lineLength,
                                 from,
                                 angle,
+                                lineLength,
                               }),
                               lineLength: lineLength * scale,
-                              angle: angle + 60,
+                              angle:
+                                angle - configuration['rotateLeftAngle'].value,
                               scale,
                             });
+
                             fractalCanopy({
                               n: n - 1,
                               from: Geometry.GetDestination({
-                                lineLength: lineLength,
                                 from,
                                 angle,
+                                lineLength,
                               }),
                               lineLength: lineLength * scale,
-                              angle: angle - 60,
+                              angle:
+                                angle + configuration['rotateRightAngle'].value,
                               scale,
                             });
 
