@@ -116,7 +116,7 @@
 
         GeneratePoints({ generation, from, angle, lineLength }) {
           if (generation > 0) {
-            this.Draw({
+            this.GeneratePoints({
               generation: generation - 1,
               from: Geometry.GetDestination({
                 from,
@@ -126,7 +126,7 @@
               lineLength: lineLength * this.#scale,
               angle: angle - this.#rotateLeftAngle,
             });
-            this.Draw({
+            this.GeneratePoints({
               generation: generation - 1,
               from: Geometry.GetDestination({
                 from,
@@ -284,45 +284,19 @@
                       width={configuration['canvasWidth'].value}
                       height={configuration['canvasHeight'].value}
                       useContext2d={(ctx) => {
-                        function fractalCanopy({
-                          n,
-                          from,
-                          angle,
-                          lineLength,
-                          scale,
-                        }) {
-                          if (n > 0) {
-                            fractalCanopy({
-                              n: n - 1,
-                              from: Geometry.GetDestination({
-                                from,
-                                angle,
-                                lineLength,
-                              }),
-                              lineLength: lineLength * scale,
-                              angle:
-                                angle - configuration['rotateLeftAngle'].value,
-                              scale,
-                            });
-
-                            fractalCanopy({
-                              n: n - 1,
-                              from: Geometry.GetDestination({
-                                from,
-                                angle,
-                                lineLength,
-                              }),
-                              lineLength: lineLength * scale,
-                              angle:
-                                angle + configuration['rotateRightAngle'].value,
-                              scale,
-                            });
-
-                            ctx.lineTo(from.x, from.y);
-                          } else {
-                            ctx.moveTo(from.x, from.y);
-                          }
-                        }
+                        const fractalCanopy = new FractalCanopy({
+                          scale: configuration['scale'].value,
+                          rotateLeftAngle:
+                            configuration['rotateLeftAngle'].value,
+                          rotateRightAngle:
+                            configuration['rotateRightAngle'].value,
+                          useBeginPoint: ({ x, y }) => {
+                            ctx.moveTo(x, y);
+                          },
+                          useSubsequentPoint: ({ x, y }) => {
+                            ctx.lineTo(x, y);
+                          },
+                        });
 
                         const begin = 0;
 
@@ -335,20 +309,14 @@
 
                         ctx.beginPath();
 
-                        ctx.moveTo(
-                          configuration['x'].value,
-                          configuration['y'].value
-                        );
-
-                        fractalCanopy({
-                          n: configuration['generation'].value,
+                        fractalCanopy.GeneratePoints({
+                          generation: configuration['generation'].value,
                           from: {
                             x: configuration['x'].value,
                             y: configuration['y'].value,
                           },
                           lineLength: configuration['lineLength'].value,
                           angle: configuration['angle'].value,
-                          scale: configuration['scale'].value,
                         });
 
                         ctx.stroke();
