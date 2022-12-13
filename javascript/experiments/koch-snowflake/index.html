@@ -82,13 +82,31 @@
           );
         }
 
+        function updateIfWithinProvidedBounds({ name, newValue, oldValue }) {
+          const { min, max } = configuration[name];
+
+          const isWithinBounds =
+            Number.isFinite(min) &&
+            Number.isFinite(max) &&
+            min <= newValue &&
+            newValue <= max;
+
+          return isWithinBounds ? newValue : oldValue;
+        }
+
         function onChange(event) {
+          const { name, value } = event.target;
+
           setConfiguration((previousConfiguration) => {
             return {
               ...previousConfiguration,
-              [event.target.name]: {
-                ...previousConfiguration[event.target.name],
-                value: parseFloat(event.target.value),
+              [name]: {
+                ...previousConfiguration[name],
+                value: updateIfWithinProvidedBounds({
+                  name,
+                  newValue: value,
+                  oldValue: previousConfiguration[name].value,
+                }),
               },
             };
           });
@@ -102,11 +120,14 @@
 
                 <input
                   className="configuration__input"
+                  type="number"
                   id={key}
                   name={key}
                   value={entry.value}
+                  step={entry.step}
+                  min={entry.min}
+                  max={entry.max}
                   onChange={onChange}
-                  type="number"
                 />
               </label>
             );
@@ -154,6 +175,7 @@
                 scale: {
                   label: 'scale',
                   value: 0.8,
+                  step: 0.1,
                 },
                 canvasWidth: {
                   label: 'canvas width',
@@ -166,6 +188,8 @@
                 generation: {
                   label: 'generation',
                   value: 2,
+                  min: 1,
+                  max: 10,
                 },
                 leftAngle: {
                   label: 'left angle',
