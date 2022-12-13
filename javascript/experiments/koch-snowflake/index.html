@@ -73,6 +73,77 @@
         }
       }
 
+      class FractalCanopy {
+        #scale;
+        #rotateLeftAngle;
+        #rotateRightAngle;
+        #useBeginPoint;
+        #useSubsequentPoint;
+
+        constructor({
+          scale,
+          rotateLeftAngle,
+          rotateRightAngle,
+          useBeginPoint,
+          useSubsequentPoint,
+        }) {
+          this.#scale = scale;
+          this.#rotateLeftAngle = rotateLeftAngle;
+          this.#rotateRightAngle = rotateRightAngle;
+          this.#useBeginPoint = useBeginPoint;
+          this.#useSubsequentPoint = useSubsequentPoint;
+        }
+
+        SetScale(scale) {
+          this.#scale = scale;
+        }
+
+        SetRotateLeftAngle(rotateLeftAngle) {
+          this.#rotateLeftAngle = rotateLeftAngle;
+        }
+
+        SetRotateRightAngle(rotateRightAngle) {
+          this.#rotateRightAngle = rotateRightAngle;
+        }
+
+        SetUseBeginPoint(useBeginPoint) {
+          this.#useBeginPoint = useBeginPoint;
+        }
+
+        SetUseSubsequentPoint(useSubsequentPoint) {
+          this.#useSubsequentPoint = useSubsequentPoint;
+        }
+
+        GeneratePoints({ generation, from, angle, lineLength }) {
+          if (generation > 0) {
+            this.Draw({
+              generation: generation - 1,
+              from: Geometry.GetDestination({
+                from,
+                angle,
+                lineLength,
+              }),
+              lineLength: lineLength * this.#scale,
+              angle: angle - this.#rotateLeftAngle,
+            });
+            this.Draw({
+              generation: generation - 1,
+              from: Geometry.GetDestination({
+                from,
+                angle,
+                lineLength,
+              }),
+              lineLength: lineLength * this.#scale,
+              angle: angle + this.#rotateRightAngle,
+            });
+
+            this.#useSubsequentPoint(from);
+          } else {
+            this.#useBeginPoint(from);
+          }
+        }
+      }
+
       function Configuration({ data, children }) {
         const [configuration, setConfiguration] = useState(data);
 
