@@ -234,56 +234,56 @@
         return <canvas ref={canvas} {...rest} />;
       }
 
+      const initialConfiguration = {
+        x: {
+          label: 'x',
+          value: 170,
+        },
+        y: {
+          label: 'y',
+          value: 350,
+        },
+        lineLength: {
+          label: 'line length',
+          value: 75,
+        },
+        angle: {
+          label: 'angle',
+          value: -90,
+        },
+        scale: {
+          label: 'scale',
+          value: 0.8,
+          step: 0.1,
+        },
+        canvasWidth: {
+          label: 'canvas width',
+          value: 360,
+        },
+        canvasHeight: {
+          label: 'canvas height',
+          value: 360,
+        },
+        generation: {
+          label: 'generation',
+          value: 2,
+          min: 1,
+          max: 10,
+        },
+        rotateLeftAngle: {
+          label: 'rotate left angle',
+          value: 30,
+        },
+        rotateRightAngle: {
+          label: 'rotate right angle',
+          value: 30,
+        },
+      };
+
       function Fractals() {
         return (
           <main>
-            <Configuration
-              data={{
-                x: {
-                  label: 'x',
-                  value: 170,
-                },
-                y: {
-                  label: 'y',
-                  value: 350,
-                },
-                lineLength: {
-                  label: 'line length',
-                  value: 75,
-                },
-                angle: {
-                  label: 'angle',
-                  value: -90,
-                },
-                scale: {
-                  label: 'scale',
-                  value: 0.8,
-                  step: 0.1,
-                },
-                canvasWidth: {
-                  label: 'canvas width',
-                  value: 360,
-                },
-                canvasHeight: {
-                  label: 'canvas height',
-                  value: 360,
-                },
-                generation: {
-                  label: 'generation',
-                  value: 2,
-                  min: 1,
-                  max: 10,
-                },
-                rotateLeftAngle: {
-                  label: 'rotate left angle',
-                  value: 60,
-                },
-                rotateRightAngle: {
-                  label: 'rotate right angle',
-                  value: 60,
-                },
-              }}
-            >
+            <Configuration data={initialConfiguration}>
               {(configurationInputs, configuration) => {
                 const {
                   canvasWidth,
