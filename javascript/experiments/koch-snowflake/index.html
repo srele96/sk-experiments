@@ -85,13 +85,16 @@
         function updateIfWithinProvidedBounds({ name, newValue, oldValue }) {
           const { min, max } = configuration[name];
 
-          const isWithinBounds =
-            Number.isFinite(min) &&
-            Number.isFinite(max) &&
-            min <= newValue &&
-            newValue <= max;
+          const shouldCheckBounds =
+            Number.isFinite(min) && Number.isFinite(max);
 
-          return isWithinBounds ? newValue : oldValue;
+          if (shouldCheckBounds) {
+            const isWithinBounds = min <= newValue && newValue <= max;
+
+            return isWithinBounds ? newValue : oldValue;
+          } else {
+            return newValue;
+          }
         }
 
         function onChange(event) {
@@ -104,8 +107,8 @@
                 ...previousConfiguration[name],
                 value: updateIfWithinProvidedBounds({
                   name,
-                  newValue: value,
-                  oldValue: previousConfiguration[name].value,
+                  newValue: parseFloat(value),
+                  oldValue: parseFloat(previousConfiguration[name].value),
                 }),
               },
             };
