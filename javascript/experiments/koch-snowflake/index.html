@@ -208,9 +208,18 @@
           }
         );
 
+        const simplifiedConfiguration = {};
+        const simplifyConfigurationUsage = Object.entries(configuration).reduce(
+          (accumulator, [key, data]) => {
+            accumulator[key] = data.value;
+            return accumulator;
+          },
+          simplifiedConfiguration
+        );
+
         return children(
           <div className="configuration">{configurationInputs}</div>,
-          configuration
+          simplifyConfigurationUsage
         );
       }
 
@@ -236,11 +245,11 @@
                 },
                 y: {
                   label: 'y',
-                  value: 250,
+                  value: 350,
                 },
                 lineLength: {
                   label: 'line length',
-                  value: 150,
+                  value: 75,
                 },
                 angle: {
                   label: 'angle',
@@ -276,47 +285,50 @@
               }}
             >
               {(configurationInputs, configuration) => {
+                const {
+                  canvasWidth,
+                  canvasHeight,
+                  scale,
+                  rotateLeftAngle,
+                  rotateRightAngle,
+                  generation,
+                  x,
+                  y,
+                  lineLength,
+                  angle,
+                } = configuration;
+
                 return (
                   <Fragment>
                     {configurationInputs}
 
                     <Canvas
-                      width={configuration['canvasWidth'].value}
-                      height={configuration['canvasHeight'].value}
+                      width={canvasWidth}
+                      height={canvasHeight}
                       useContext2d={(ctx) => {
                         const fractalCanopy = new FractalCanopy({
-                          scale: configuration['scale'].value,
-                          rotateLeftAngle:
-                            configuration['rotateLeftAngle'].value,
-                          rotateRightAngle:
-                            configuration['rotateRightAngle'].value,
-                          useBeginPoint: ({ x, y }) => {
-                            ctx.moveTo(x, y);
+                          scale,
+                          rotateLeftAngle,
+                          rotateRightAngle,
+                          useBeginPoint: (point) => {
+                            ctx.moveTo(point.x, point.y);
                           },
-                          useSubsequentPoint: ({ x, y }) => {
-                            ctx.lineTo(x, y);
+                          useSubsequentPoint: (point) => {
+                            ctx.lineTo(point.x, point.y);
                           },
                         });
 
                         const begin = 0;
 
-                        ctx.clearRect(
-                          begin,
-                          begin,
-                          configuration['canvasWidth'].value,
-                          configuration['canvasHeight'].value
-                        );
+                        ctx.clearRect(begin, begin, canvasWidth, canvasHeight);
 
                         ctx.beginPath();
 
                         fractalCanopy.GeneratePoints({
-                          generation: configuration['generation'].value,
-                          from: {
-                            x: configuration['x'].value,
-                            y: configuration['y'].value,
-                          },
-                          lineLength: configuration['lineLength'].value,
-                          angle: configuration['angle'].value,
+                          generation,
+                          from: { x, y },
+                          lineLength,
+                          angle,
                         });
 
                         ctx.stroke();
