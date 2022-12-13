@@ -58,6 +58,21 @@
     <script type="text/babel" data-presets="env,react">
       const { useState, useEffect, useRef, Fragment } = React;
 
+      class Geometry {
+        static GetRadians(degrees) {
+          return (Math.PI / 180) * degrees;
+        }
+
+        static GetDestination({ from, lineLength, angle }) {
+          const radians = Geometry.GetRadians(angle);
+
+          return {
+            x: from.x + Math.cos(radians) * lineLength,
+            y: from.y + Math.sin(radians) * lineLength,
+          };
+        }
+      }
+
       function Configuration({ data, children }) {
         const [configuration, setConfiguration] = useState(data);
 
@@ -142,7 +157,7 @@
                       width="360"
                       height="360"
                       useContext2d={(ctx) => {
-                        // Use context ...
+                        function fractalCanopy({ n, from, angle, direction }) {}
                       }}
                     />
                   </Fragment>
