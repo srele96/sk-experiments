@@ -4,307 +4,57 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Koch Snowflake</title>
+
+    <title>Fractals</title>
+
     <style>
       canvas {
         border: 1px solid black;
       }
-
-      .config {
-        width: max-content;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .config__control {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-      }
-
-      .config__input {
-        margin-left: 5px;
-      }
     </style>
   </head>
   <body>
-    <div class="config">
-      <label class="config__control" for="x">
-        x
-        <input
-          class="config__input"
-          type="number"
-          id="x"
-          name="x"
-          data-value="50"
-        />
-      </label>
+    <div id="fractals"></div>
 
-      <label class="config__control" for="y">
-        y
-        <input
-          class="config__input"
-          type="number"
-          id="y"
-          name="y"
-          data-value="250"
-        />
-      </label>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-      <label class="config__control" for="lineLength">
-        lineLength
-        <input
-          class="config__input"
-          type="number"
-          id="lineLength"
-          name="lineLength"
-          data-value="25"
-        />
-      </label>
+    <script type="text/babel" data-presets="env,react">
+      const { useEffect, useRef } = React;
 
-      <label class="config__control" for="rotationAngle">
-        rotationAngle
-        <input
-          class="config__input"
-          type="number"
-          id="rotationAngle"
-          name="rotationAngle"
-          data-value="60"
-        />
-      </label>
+      function Canvas(props) {
+        const canvas = useRef(null);
+        const { context2d, ...rest } = props;
 
-      <label class="config__control" for="canvasWidth">
-        canvasWidth
-        <input
-          class="config__input"
-          type="number"
-          id="canvasWidth"
-          name="canvasWidth"
-          data-value="360"
-        />
-      </label>
+        useEffect(() => {
+          context2d(canvas.current.getContext('2d'));
+        }, [context2d]);
 
-      <label class="config__control" for="canvasHeight">
-        canvasHeight
-        <input
-          class="config__input"
-          type="number"
-          name="canvasHeight"
-          id="canvasHeight"
-          data-value="360"
-        />
-      </label>
+        return <canvas ref={canvas} {...rest} />;
+      }
 
-      <label class="config__control" for="level">
-        level
-        <input
-          class="config__input"
-          type="number"
-          name="level"
-          id="level"
-          data-value="3"
-        />
-      </label>
-    </div>
+      function Fractals() {
+        return (
+          <Canvas
+            width="360"
+            height="360"
+            context2d={(ctx) => {
+              console.log(ctx);
+            }}
+          />
+        );
+      }
 
-    <canvas id="koch-snowflake-window"></canvas>
+      ReactDOM.createRoot(document.getElementById('fractals')).render(
+        <Fractals />
+      );
+    </script>
   </body>
-
-  <script>
-    (() => {
-      'use strict';
-      console.clear();
-
-      class Point {
-        constructor(properties) {
-          this.x = properties.x;
-          this.y = properties.y;
-        }
-      }
-
-      class Geometry {
-        static GetRadians(degrees) {
-          return (Math.PI / 180) * degrees;
-        }
-
-        static GetDestinationPoint({ from, direction, angle }) {
-          return new Point({
-            x: from.x + Math.cos(Geometry.GetRadians(angle)) * direction,
-            y: from.y + Math.sin(Geometry.GetRadians(angle)) * direction,
-          });
-        }
-      }
-
-      class KochSnowflakeWindow {
-        constructor({ width, height }) {
-          this.width = width;
-          this.height = height;
-
-          this.canvas = document.getElementById('koch-snowflake-window');
-          this.ctx = this.canvas.getContext('2d');
-
-          this.SetCanvasProperties();
-        }
-
-        SetCanvasProperties() {
-          this.canvas.width = this.width;
-          this.canvas.height = this.height;
-        }
-
-        Stroke() {
-          this.ctx.stroke();
-        }
-
-        MoveTo(point) {
-          this.ctx.moveTo(point.x, point.y);
-        }
-
-        LineTo(point) {
-          this.ctx.lineTo(point.x, point.y);
-        }
-      }
-
-      class KochSnowflake {
-        constructor({ destination, lineLength, rotationAngle, windowSize }) {
-          this.destination = destination;
-          this.lineLength = lineLength;
-          this.rotationAngle = rotationAngle;
-
-          const initialAngle = 0;
-
-          this.angle = initialAngle;
-          // TODO: Decouple snowflake window. It is troublesome to use
-          // KochSnowflake as proxy for configuration to KochSnowflakeWindow.
-          this.kochSnowflakeWindow = new KochSnowflakeWindow(windowSize);
-        }
-
-        TurnLeft() {
-          this.angle -= this.rotationAngle;
-        }
-
-        TurnRight() {
-          this.angle += this.rotationAngle;
-        }
-
-        CalculateAndSaveDestination() {
-          this.destination = Geometry.GetDestinationPoint({
-            from: this.destination,
-            direction: this.lineLength,
-            angle: this.angle,
-          });
-        }
-
-        DrawLine() {
-          this.CalculateAndSaveDestination();
-          this.kochSnowflakeWindow.LineTo(this.destination);
-        }
-
-        DrawSide(n) {
-          if (n > 1) {
-            this.DrawSide(n - 1);
-            this.TurnLeft();
-            this.DrawSide(n - 1);
-            this.TurnRight();
-            this.TurnRight();
-            this.DrawSide(n - 1);
-            this.TurnLeft();
-            this.DrawSide(n - 1);
-          } else {
-            this.DrawLine();
-          }
-        }
-
-        Draw(n) {
-          // TODO: Do I need to clear window?
-          this.kochSnowflakeWindow.MoveTo(this.destination);
-
-          this.TurnLeft();
-          this.DrawSide(n);
-          this.TurnRight();
-          this.TurnRight();
-          this.DrawSide(n);
-          this.TurnRight();
-          this.TurnRight();
-          this.DrawSide(n);
-
-          this.kochSnowflakeWindow.Stroke();
-        }
-      }
-
-      class ConfigurationControls {
-        configuration = {};
-
-        constructor() {
-          this.configurationInputs =
-            document.querySelectorAll('.config__input');
-          this.event = 'input';
-
-          this.SaveDefaultConfigurationValues();
-          this.DrawKochSnowflake();
-          this.SetupListeners();
-        }
-
-        SaveDefaultConfigurationValues = () => {
-          this.configurationInputs.forEach((input) => {
-            this.DisplayDefaultConfigurationValue(input);
-            this.SaveDefaultConfigurationValue(input);
-          });
-        };
-
-        DisplayDefaultConfigurationValue = (input) => {
-          input.value = input.dataset.value;
-        };
-
-        SaveDefaultConfigurationValue = (input) => {
-          this.SaveConfigurationValue({
-            key: input.name,
-            value: input.dataset.value,
-          });
-        };
-
-        SetupListeners = () => {
-          this.configurationInputs.forEach(this.SetupListener);
-        };
-
-        SetupListener = (input) => {
-          input.addEventListener(this.event, (event) => {
-            this.SaveConfigurationValue({
-              key: event.target.name,
-              value: event.target.value,
-            });
-            this.DrawKochSnowflake();
-          });
-        };
-
-        SaveConfigurationValue = ({ key, value }) => {
-          // TODO: Skip updating on non-numeric values. We don't know what the
-          // user is going to put in.
-          this.configuration[key] = parseInt(value);
-        };
-
-        DrawKochSnowflake = () => {
-          const {
-            x,
-            y,
-            lineLength,
-            rotationAngle,
-            canvasWidth,
-            canvasHeight,
-            level,
-          } = this.configuration;
-
-          const kochSnowflake = new KochSnowflake({
-            windowSize: { width: canvasWidth, height: canvasHeight },
-            destination: new Point({ x, y }),
-            lineLength,
-            rotationAngle,
-          });
-
-          kochSnowflake.Draw(level);
-        };
-      }
-
-      new ConfigurationControls();
-    })();
-  </script>
 </html>
