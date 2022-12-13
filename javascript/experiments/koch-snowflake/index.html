@@ -56,7 +56,7 @@
     ></script>
 
     <script type="text/babel" data-presets="env,react">
-      const { useState, useEffect, useRef, Fragment } = React;
+      const { useState, useEffect, useRef, Fragment, StrictMode } = React;
 
       class Geometry {
         static GetRadians(degrees) {
@@ -114,7 +114,8 @@
         );
 
         return children(
-          <div className="configuration">{configurationInputs}</div>
+          <div className="configuration">{configurationInputs}</div>,
+          configuration
         );
       }
 
@@ -136,28 +137,120 @@
               data={{
                 x: {
                   label: 'x',
-                  value: 0,
+                  value: 170,
                 },
                 y: {
                   label: 'y',
-                  value: 0,
+                  value: 250,
+                },
+                lineLength: {
+                  label: 'line length',
+                  value: 150,
+                },
+                angle: {
+                  label: 'angle',
+                  value: -90,
+                },
+                scale: {
+                  label: 'scale',
+                  value: 0.8,
                 },
                 canvasWidth: {
                   label: 'canvas width',
-                  value: 0,
+                  value: 360,
+                },
+                canvasHeight: {
+                  label: 'canvas height',
+                  value: 360,
+                },
+                generation: {
+                  label: 'generation',
+                  value: 2,
+                },
+                leftAngle: {
+                  label: 'left angle',
+                  value: 60,
+                },
+                rightAngle: {
+                  label: 'right angle',
+                  value: 60,
                 },
               }}
             >
-              {(configurationInputs) => {
+              {(configurationInputs, configuration) => {
                 return (
                   <Fragment>
                     {configurationInputs}
 
                     <Canvas
-                      width="360"
-                      height="360"
+                      width={configuration['canvasWidth'].value}
+                      height={configuration['canvasHeight'].value}
                       useContext2d={(ctx) => {
-                        function fractalCanopy({ n, from, angle, direction }) {}
+                        function fractalCanopy({
+                          n,
+                          from,
+                          angle,
+                          lineLength,
+                          scale,
+                        }) {
+                          if (n > 0) {
+                            fractalCanopy({
+                              n: n - 1,
+                              from: Geometry.GetDestination({
+                                lineLength: lineLength,
+                                from,
+                                angle,
+                              }),
+                              lineLength: lineLength * scale,
+                              angle: angle + 60,
+                              scale,
+                            });
+                            fractalCanopy({
+                              n: n - 1,
+                              from: Geometry.GetDestination({
+                                lineLength: lineLength,
+                                from,
+                                angle,
+                              }),
+                              lineLength: lineLength * scale,
+                              angle: angle - 60,
+                              scale,
+                            });
+
+                            ctx.lineTo(from.x, from.y);
+                          } else {
+                            ctx.moveTo(from.x, from.y);
+                          }
+                        }
+
+                        const begin = 0;
+
+                        ctx.clearRect(
+                          begin,
+                          begin,
+                          configuration['canvasWidth'].value,
+                          configuration['canvasHeight'].value
+                        );
+
+                        ctx.beginPath();
+
+                        ctx.moveTo(
+                          configuration['x'].value,
+                          configuration['y'].value
+                        );
+
+                        fractalCanopy({
+                          n: configuration['generation'].value,
+                          from: {
+                            x: configuration['x'].value,
+                            y: configuration['y'].value,
+                          },
+                          lineLength: configuration['lineLength'].value,
+                          angle: configuration['angle'].value,
+                          scale: configuration['scale'].value,
+                        });
+
+                        ctx.stroke();
                       }}
                     />
                   </Fragment>
@@ -169,7 +262,9 @@
       }
 
       ReactDOM.createRoot(document.getElementById('fractals')).render(
-        <Fractals />
+        <StrictMode>
+          <Fractals />
+        </StrictMode>
       );
     </script>
   </body>
