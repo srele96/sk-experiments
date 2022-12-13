@@ -8,8 +8,34 @@
     <title>Fractals</title>
 
     <style>
+      :root {
+        --margin-none: 0;
+        --margin-small: 5px;
+        --margin-medium: 10px;
+      }
+
       canvas {
         border: 1px solid black;
+      }
+
+      .configuration {
+        display: flex;
+        flex-direction: column;
+        width: max-content;
+        padding: var(--margin-small) var(--margin-none);
+      }
+
+      .configuration__label {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .configuration__label:not(:last-child) {
+        margin-bottom: var(--margin-small);
+      }
+
+      .configuration__input {
+        margin-left: var(--margin-medium);
       }
     </style>
   </head>
@@ -53,10 +79,11 @@
         const changeConfiguration = Object.entries(configuration).map(
           ([key, entry]) => {
             return (
-              <label key={key} htmlFor={key}>
+              <label className="configuration__label" key={key} htmlFor={key}>
                 {entry.label}
 
                 <input
+                  className="configuration__input"
                   id={key}
                   name={key}
                   value={entry.value}
@@ -68,7 +95,9 @@
           }
         );
 
-        return children(changeConfiguration);
+        return children(
+          <div className="configuration">{changeConfiguration}</div>
+        );
       }
 
       function Canvas(props) {
@@ -88,11 +117,15 @@
             <Configuration
               data={{
                 x: {
-                  label: 'X',
+                  label: 'x',
                   value: 0,
                 },
                 y: {
                   label: 'y',
+                  value: 0,
+                },
+                canvasWidth: {
+                  label: 'canvas width',
                   value: 0,
                 },
               }}
