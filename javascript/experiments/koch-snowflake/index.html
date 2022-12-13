@@ -94,26 +94,6 @@
           this.#useSubsequentPoint = useSubsequentPoint;
         }
 
-        SetScale(scale) {
-          this.#scale = scale;
-        }
-
-        SetRotateLeftAngle(rotateLeftAngle) {
-          this.#rotateLeftAngle = rotateLeftAngle;
-        }
-
-        SetRotateRightAngle(rotateRightAngle) {
-          this.#rotateRightAngle = rotateRightAngle;
-        }
-
-        SetUseBeginPoint(useBeginPoint) {
-          this.#useBeginPoint = useBeginPoint;
-        }
-
-        SetUseSubsequentPoint(useSubsequentPoint) {
-          this.#useSubsequentPoint = useSubsequentPoint;
-        }
-
         GeneratePoints({ generation, from, angle, lineLength }) {
           if (generation > 0) {
             this.GeneratePoints({
