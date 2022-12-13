@@ -50,7 +50,10 @@
       crossorigin
       src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
     ></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
 
     <script type="text/babel" data-presets="env,react">
       const { useState, useEffect, useRef, Fragment } = React;
@@ -76,7 +79,7 @@
           });
         }
 
-        const changeConfiguration = Object.entries(configuration).map(
+        const configurationInputs = Object.entries(configuration).map(
           ([key, entry]) => {
             return (
               <label className="configuration__label" key={key} htmlFor={key}>
@@ -96,7 +99,7 @@
         );
 
         return children(
-          <div className="configuration">{changeConfiguration}</div>
+          <div className="configuration">{configurationInputs}</div>
         );
       }
 
@@ -130,10 +133,10 @@
                 },
               }}
             >
-              {(changeConfiguration) => {
+              {(configurationInputs) => {
                 return (
                   <Fragment>
-                    {changeConfiguration}
+                    {configurationInputs}
 
                     <Canvas
                       width="360"
