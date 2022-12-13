@@ -27,28 +27,93 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script type="text/babel" data-presets="env,react">
-      const { useEffect, useRef } = React;
+      const { useState, useEffect, useRef, Fragment } = React;
+
+      function Configuration({ data, children }) {
+        const [configuration, setConfiguration] = useState(data);
+
+        if (typeof children !== 'function') {
+          throw new Error(
+            'Excepted children to be a function. Received ' + typeof children
+          );
+        }
+
+        function onChange(event) {
+          setConfiguration((previousConfiguration) => {
+            return {
+              ...previousConfiguration,
+              [event.target.name]: {
+                ...previousConfiguration[event.target.name],
+                value: parseFloat(event.target.value),
+              },
+            };
+          });
+        }
+
+        const changeConfiguration = Object.entries(configuration).map(
+          ([key, entry]) => {
+            return (
+              <label key={key} htmlFor={key}>
+                {entry.label}
+
+                <input
+                  id={key}
+                  name={key}
+                  value={entry.value}
+                  onChange={onChange}
+                  type="number"
+                />
+              </label>
+            );
+          }
+        );
+
+        return children(changeConfiguration);
+      }
 
       function Canvas(props) {
         const canvas = useRef(null);
-        const { context2d, ...rest } = props;
+        const { useContext2d, ...rest } = props;
 
         useEffect(() => {
-          context2d(canvas.current.getContext('2d'));
-        }, [context2d]);
+          useContext2d(canvas.current.getContext('2d'));
+        }, [useContext2d]);
 
         return <canvas ref={canvas} {...rest} />;
       }
 
       function Fractals() {
         return (
-          <Canvas
-            width="360"
-            height="360"
-            context2d={(ctx) => {
-              console.log(ctx);
-            }}
-          />
+          <main>
+            <Configuration
+              data={{
+                x: {
+                  label: 'X',
+                  value: 0,
+                },
+                y: {
+                  label: 'y',
+                  value: 0,
+                },
+              }}
+            >
+              {(changeConfiguration) => {
+                return (
+                  <Fragment>
+                    {changeConfiguration}
+
+                    <Canvas
+                      width="360"
+                      height="360"
+                      useContext2d={(ctx) => {
+                        // Use context ...
+                      }}
+                    />
+                  </Fragment>
+                );
+              }}
+            </Configuration>
+          </main>
         );
       }
 
