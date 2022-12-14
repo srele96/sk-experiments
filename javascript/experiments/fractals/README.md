@@ -1,3 +1,3 @@
-# koch-snowflake
+# fractals
 
-Recursive implementation of Koch Snowflake to improve my approach to solving problems using recursion.
+Recursive implementation of fractals.
