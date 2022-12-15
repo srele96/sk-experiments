@@ -7,8 +7,29 @@
     <title>Chat</title>
   </head>
   <body>
+    <div id="root"></div>
+
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="/socket.io/socket.io.js"></script>
+
     <script>
-      console.log('Hi');
+      const socket = io();
+
+      const { createElement: e } = React;
+
+      function Chat() {
+        return e('h1', null, 'Chat App');
+      }
+
+      const root = document.getElementById('root');
+      ReactDOM.createRoot(root).render(e(Chat));
     </script>
   </body>
 </html>

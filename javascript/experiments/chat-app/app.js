@@ -1,5 +1,8 @@
+const { Server } = require('socket.io');
+const { createServer } = require('http');
 const express = require('express');
 const path = require('path');
+
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -12,6 +15,13 @@ app.get('/', (_, res) => {
 
 const PORT = process.env.PORT ?? 3000;
 
-app.listen(PORT, () => {
+const server = createServer(app);
+const io = new Server(server);
+
+server.listen(PORT, () => {
   console.log(`Server started on: http://localhost:${PORT}/`);
+});
+
+io.on('connection', (socket) => {
+  console.log(`Socket id: ${socket.id} connected.`);
 });
