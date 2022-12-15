@@ -9,6 +9,10 @@
   <body>
     <div id="root"></div>
 
+    <script>
+      window.__INITIAL_DATA__= <%- JSON.stringify(__INITIAL_DATA__) %>;
+    </script>
+
     <script
       crossorigin
       src="https://unpkg.com/react@18/umd/react.development.js"
@@ -22,10 +26,10 @@
     <script>
       const socket = io();
 
-      const { createElement: e } = React;
+      const { createElement: e, useState, useEffect } = React;
 
       function Chat() {
-        return e('h1', null, 'Chat App');
+        return e('h1', null, __INITIAL_DATA__.title);
       }
 
       const root = document.getElementById('root');

@@ -9,19 +9,21 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (_, res) => {
-  res.render('index');
+app.get('/', (_, response) => {
+  const __INITIAL_DATA__ = { title: 'Chat App' };
+
+  response.render('index', { __INITIAL_DATA__ });
 });
 
 const PORT = process.env.PORT ?? 3000;
 
-const server = createServer(app);
-const io = new Server(server);
+const appServer = createServer(app);
+const socketServer = new Server(appServer);
 
-server.listen(PORT, () => {
+appServer.listen(PORT, () => {
   console.log(`Server started on: http://localhost:${PORT}/`);
 });
 
-io.on('connection', (socket) => {
+socketServer.on('connection', (socket) => {
   console.log(`Socket id: ${socket.id} connected.`);
 });
