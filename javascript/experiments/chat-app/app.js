@@ -2,6 +2,27 @@ const { Server } = require('socket.io');
 const { createServer } = require('http');
 const express = require('express');
 const path = require('path');
+const { renderToPipeableStream } = require('react-dom/server');
+const { PageOne, PageTwo, DataContext } = require('./client');
+const { useState } = require('react');
+
+const css = new Set();
+function insertCss(...styles) {
+  styles.forEach((style) => css.add(style._getCss()));
+}
+
+console.log([...css].join(''));
+
+const stream = renderToPipeableStream(
+  <DataContext.Provider value={{ test: 'test' }}>
+    <PageOne />
+  </DataContext.Provider>,
+  {
+    onShellReady() {
+      stream.pipe(process.stdout);
+    },
+  }
+);
 
 const app = express();
 
