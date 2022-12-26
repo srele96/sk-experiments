@@ -1,6 +1,31 @@
 #include <array>
 #include <iostream>
 
+// implement heap
+// what if i want to represent a heap using graph?
+// implement heap using
+//  - matrix
+//  - tree
+//  - array
+
+namespace data_structure {
+
+class heap {
+  // store data using array, matrix or array
+
+  // how should heap work?
+
+  // operations
+  // insert
+  // delete
+  // peek
+  // extract
+  // decrease_key
+  // increase_key
+};
+
+};  // namespace data_structure
+
 namespace graphs {
 
 void print_connected_vertices() {
