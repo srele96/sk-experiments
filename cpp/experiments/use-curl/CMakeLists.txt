@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.14)
 
 project(use-curl)
 
@@ -14,8 +14,7 @@ FetchContent_Declare(
   curl
   GIT_REPOSITORY https://github.com/curl/curl.git
   GIT_TAG c12fb3ddaf48e709a7a4deaa55ec485e4df163ee # release 7.87.0
+  GIT_SHALLOW 1 # Only download the latest commit to improve performance
 )
 
-FetchContent_MakeAvailable(curl)
-
-add_subdirectory(src)
+add_subdirectory(./src)
