@@ -24,6 +24,15 @@ class heap {
   // increase_key
 };
 
+struct children_indexes {
+  int left;
+  int right;
+};
+
+children_indexes get_children_indexes(int index) {
+  return children_indexes{2 * index + 1, 2 * index + 2};
+}
+
 };  // namespace data_structure
 
 namespace graphs {
@@ -50,6 +59,13 @@ void print_connected_vertices() {
 };  // namespace graphs
 
 int main() {
+  const int index = 1;
+  data_structure::children_indexes children_indexes =
+      data_structure::get_children_indexes(index);
+
+  std::cout << "Child " << children_indexes.left << " , "
+            << children_indexes.right << '\n';
+
   graphs::print_connected_vertices();
 
   return 0;
