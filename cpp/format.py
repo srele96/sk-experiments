@@ -44,7 +44,7 @@ class Formatter:
     def format(self):
         for file in self.files:
             print('Formatting file: ' + file)
-            os.system('clang-format -i -style=file ' + file)
+            subprocess.run(['clang-format', '-i', '-style=file', file])
 
 def run_formatter():
     formatter = Formatter()
