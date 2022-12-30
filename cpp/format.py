@@ -14,7 +14,11 @@ class Formatter:
         for root, _, filenames in os.walk('.'):
             for filename in filenames:
                 has_valid_extension = os.path.splitext(filename)[1] in self.extensions
-                not_ignored = 'build' not in root
+                # The file is always a child of all the directories in the
+                # path, so if any of the parent directories are 'build',
+                # we can ignore the file.
+                not_ignored = 'build' not in root.split(os.sep)
+
                 if has_valid_extension and not_ignored:
                     self.files.append(os.path.join(root, filename))
 
