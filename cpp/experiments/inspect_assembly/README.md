@@ -97,3 +97,8 @@ Once LLDB was open and breakpoint ready, run program:
 ```
 
 [After that, I can use commands to move through the program flow.](https://lldb.llvm.org/use/tutorial.html#controlling-your-program)
+
+## Additional references
+
+- [LLDB Error: Unable to resolve breakpoint to any actual locations](https://stackoverflow.com/questions/31122871/lldb-error-unable-to-resolve-breakpoint-to-any-actual-locations)
+- [How can I see the assembly code for a C++ program?](https://stackoverflow.com/questions/840321/how-can-i-see-the-assembly-code-for-a-c-program)
