@@ -5,7 +5,9 @@ namespace cpp_constructs {
 
 const int any_number = 10;
 // Default parameter is a value known at compile time. The compiler doesn't need
-// to figure out what the value is.
+// to figure out what the value is. It doesn't need to evaluate the value, for
+// example an increment in the function declaration would need to be evaluated
+// at compile time.
 void print_default_parameter(int val = any_number) {
   std::cout << "Value = " << val;
 }
@@ -27,9 +29,9 @@ void insert_and_print_result(std::unordered_set<int>& numbers, int number) {
 int main() {
   std::unordered_set<int> numbers;
 
-  const int different_than_default = 5;
   cpp_constructs::print_default_parameter();
   std::cout << '\n';
+  const int different_than_default = 5;
   cpp_constructs::print_default_parameter(different_than_default);
   std::cout << '\n';
 
