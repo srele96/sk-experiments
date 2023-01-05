@@ -8,7 +8,7 @@ ECHO ----
 mkdir build
 
 ECHO Compiling %1.cpp to build\%1
-g++ -std=c++11 -O2 -Wall %1.cpp -o build\%1
+g++ -std=c++17 -O2 -Wall %1.cpp -o build\%1
 
 ECHO Running build\%1
 ECHO ----
