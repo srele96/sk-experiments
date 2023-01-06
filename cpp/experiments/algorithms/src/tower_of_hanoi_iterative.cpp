@@ -16,7 +16,6 @@ namespace algorithm {
 
 struct function_call {
   int move;
-
   data::tower tower;
 };
 
@@ -43,7 +42,9 @@ void tower_of_hanoi(int moves, data::tower tower) {
     const function_call last_call = call_stack.top();
     call_stack.pop();
 
-    if (last_call.move == 1) {
+    const bool is_base_case = last_call.move == 1;
+
+    if (is_base_case) {
       std::cout << "Move disk " << last_call.move << " from "
                 << last_call.tower.from << " to " << last_call.tower.end
                 << '\n';
