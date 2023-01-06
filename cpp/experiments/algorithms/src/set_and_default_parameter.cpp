@@ -24,6 +24,12 @@ void insert_and_print_result(std::unordered_set<int>& numbers, int number) {
   }
 }
 
+void print_numbers(const std::unordered_set<int>& numbers) {
+  for (const auto number : numbers) {
+    std::cout << number << '\n';
+  }
+}
+
 }  // namespace util
 
 int main() {
@@ -41,10 +47,7 @@ int main() {
   const int some_other{2};
   util::insert_and_print_result(numbers, some_other);
 
-  // Print numbers
-  for (const auto& number : numbers) {
-    std::cout << number << '\n';
-  }
+  util::print_numbers(numbers);
 
   return 0;
 }
