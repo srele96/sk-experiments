@@ -65,6 +65,46 @@ void tower_of_hanoi(int moves, data::tower tower) {
 
 }  // namespace algorithm
 
+namespace test {
+
+// Notes:
+//
+// In the recursive solution we rely on the previous function call to hold the
+// correct state. Recursive function uses First In Last Out and also terminates
+// the current execution by entering itself again.
+//
+// The iterative solution uses a stack to hold the state of the function calls.
+// It uses Last In First Out and doesn't terminate the current execution.
+// Because of stack's nature, we need to reverse the order of calls. We also
+// have to push the base case explicitly. Because we don't terminate execution,
+// we rely on sequential calls in reverse order.
+
+void print_recursive(int n) {
+  if (n > 0) {
+    print_recursive(n - 1);
+    std::cout << n << " ";
+    print_recursive(n - 1);
+  }
+}
+
+void print_iterative(int n) {
+  std::stack<int> call_stack;
+  call_stack.push(n);
+
+  while (!call_stack.empty()) {
+    const int last_call = call_stack.top();
+    call_stack.pop();
+
+    if (last_call > 0) {
+      call_stack.push(last_call - 1);
+      std::cout << last_call << " ";
+      call_stack.push(last_call - 1);
+    }
+  }
+}
+
+}  // namespace test
+
 int main() {
   const int three_moves = 3;
   const data::tower tower{'A', 'C', 'B'};
@@ -77,6 +117,12 @@ int main() {
   const int two_moves = 2;
   std::cout << "Moves = " << two_moves << " \n";
   algorithm::tower_of_hanoi(two_moves, tower);
+
+  std::cout << '\n';
+
+  test::print_recursive(3);
+  std::cout << '\n';
+  test::print_iterative(3);
 
   return 0;
 }
