@@ -8,8 +8,7 @@ void counting_sort(vi& nums) {
   int h = nums.at(0);
   for (int n : nums) h = max(n, h);
   // Create bookkeeping array
-  vi bka;
-  bka.resize(h + 1);
+  vi bka(h + 1);
   // Count
   for (int n : nums) {
     ++bka.at(n);
