@@ -47,8 +47,9 @@ void print_result(bool found, int number) {
 
 void search_and_print_result(const std::vector<int>& numbers, int number) {
   const std::size_t index = algorithm::binary_search(numbers, number);
+  const bool found = index != algorithm::result::not_found;
 
-  util::print_result(index != algorithm::result::not_found, number);
+  util::print_result(found, number);
 }
 
 }  // namespace util
@@ -56,8 +57,11 @@ void search_and_print_result(const std::vector<int>& numbers, int number) {
 int main() {
   const int number = 5;
   const std::vector<int> numbers{1, 2, 3, 4, number, 6, 7, 8, 9, 10};
+
   util::search_and_print_result(numbers, number);
+
   const int wont_be_found = 15;
+
   util::search_and_print_result(numbers, wont_be_found);
 
   return 0;
