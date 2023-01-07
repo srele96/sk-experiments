@@ -2,6 +2,7 @@
 #include <stack>
 #include <string>
 
+namespace algorithm {
 namespace data {
 
 struct tower {
@@ -11,6 +12,7 @@ struct tower {
 };
 
 }  // namespace data
+}  // namespace algorithm
 
 namespace algorithm {
 
@@ -66,6 +68,7 @@ void tower_of_hanoi(int moves, data::tower tower) {
 
 }  // namespace algorithm
 
+namespace algorithm {
 namespace test {
 
 // Notes:
@@ -105,10 +108,11 @@ void print_iterative(int n) {
 }
 
 }  // namespace test
+}  // namespace algorithm
 
 int main() {
   const int three_moves = 3;
-  const data::tower tower{'A', 'C', 'B'};
+  const algorithm::data::tower tower{'A', 'C', 'B'};
 
   std::cout << "Moves = " << three_moves << " \n";
   algorithm::tower_of_hanoi(three_moves, tower);
@@ -121,9 +125,9 @@ int main() {
 
   std::cout << '\n';
 
-  test::print_recursive(3);
+  algorithm::test::print_recursive(3);
   std::cout << '\n';
-  test::print_iterative(3);
+  algorithm::test::print_iterative(3);
 
   return 0;
 }
