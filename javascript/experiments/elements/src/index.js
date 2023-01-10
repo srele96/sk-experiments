@@ -24,6 +24,7 @@ function get_elements(options) {
     const main_element_index = main_element - 1;
 
     for (let i = 0; i != elements.length; ++i) {
+      // TODO: Allow configurable default assignment to element.
       const element = {
         order: i - main_element_index,
       };
