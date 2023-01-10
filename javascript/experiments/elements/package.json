@@ -1,7 +1,7 @@
 {
   "name": "elements",
   "version": "0.1.0",
-  "description": "",
+  "description": "Elements library intends to assist in generating various sequences.",
   "author": "Kostic Srecko",
   "repository": {
     "type": "git",
