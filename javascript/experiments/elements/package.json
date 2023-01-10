@@ -12,9 +12,12 @@
   },
   "homepage": "https://github.com/srele96/sk-experiments#readme",
   "scripts": {
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "build": "rollup -c"
   },
   "devDependencies": {
-    "jest": "^29.3.1"
+    "@rollup/plugin-commonjs": "^24.0.0",
+    "jest": "^29.3.1",
+    "rollup": "^3.9.1"
   }
 }

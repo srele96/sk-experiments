@@ -36,4 +36,5 @@ function get_elements(options) {
   };
 }
 
-module.exports.get_elements = get_elements;
+exports.get_elements = get_elements;
+exports = { get_elements };
