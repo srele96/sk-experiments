@@ -1,3 +1,4 @@
+// pragma vs guard, any differences?
 #pragma once
 
 // include twice
@@ -12,12 +13,14 @@
 #include "test_guard.h"
 #include "test_guard.h"
 
+// try to define __TEST__ if __WTF__ is not defined
+// see output in the out file
 #ifndef __WTF__
 #define __TEST__
 
 int foo() { return 0; }
 
-#endif
+#endif // __WTF__
 
 #define WOAH
 
@@ -42,7 +45,8 @@ struct A {
 };
 
 // does it take content with spaces?
-#define WITH_SPACES FIRST SECOND THIRD HEHEHE HEHEH LOOOL __LINE__
+#define WITH_SPACES FIRST SECOND THIRD \
+HEHEHE HEHEH LOOOL __LINE__
 
 // how does define without string behave
 #define test
@@ -50,19 +54,28 @@ struct A {
 // does this check for truthiness?
 #ifdef test
 void with_spaces() {}
-#endif  // WITH_SPACES
+#endif  // test
 
 int main() {
   // does it get replaced?
   int a = 10 + TEST;
   // does it get replaced?
   int a = 10 + WOAH;
-  __LINE__ >>> WOAH << >>> __LINE__ < < < with_spaces();
+  __LINE__
+  >>> WOAH <<<
+  >>> __LINE__ <<< 
+  with_spaces();
 
-// can i place define inside main? somewhere else?
-#define __LOL kekekek
+  // can i place define inside main or other functions?
+  #define __LOL kekekek
 
-  int L(1, 50) __FILE__ __DATE__ __LINE__ __LOL INSIDE_C WITH_SPACES
+  int L(1, 50)
+  __FILE__
+  __DATE__
+  __LINE__
+  __LOL
+  INSIDE_C
+  WITH_SPACES
 
-      return 0;
+  return 0;
 }
