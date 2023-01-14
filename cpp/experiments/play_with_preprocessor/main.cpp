@@ -1,3 +1,6 @@
+// NOTE!
+// This file contains syntax mistakes and much else. That is intended.
+
 // pragma vs guard, any differences?
 #pragma once
 
