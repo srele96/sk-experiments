@@ -30,11 +30,23 @@ describe('reshape matrix', () => {
       [4, 5, 6],
       [7, 8, 9],
     ];
-    const rows = 1;
-    const columns = 9;
-    const reshaped = [[1, 2, 3, 4, 5, 6, 7, 8, 9]];
+    const result_one = {
+      rows: 1,
+      columns: 9,
+      matrix: [[1, 2, 3, 4, 5, 6, 7, 8, 9]],
+    };
+    const result_two = {
+      rows: 9,
+      columns: 1,
+      matrix: [[1], [2], [3], [4], [5], [6], [7], [8], [9]],
+    };
 
-    expect(reshape_matrix(matrix, rows, columns)).toEqual(reshaped);
+    expect(reshape_matrix(matrix, result_one.rows, result_one.columns)).toEqual(
+      result_one.matrix
+    );
+    expect(reshape_matrix(matrix, result_two.rows, result_two.columns)).toEqual(
+      result_two.matrix
+    );
   });
 
   test('should not reshape the matrix from 3x3 to 1x6', () => {
