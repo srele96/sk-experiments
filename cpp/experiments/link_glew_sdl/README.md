@@ -2,6 +2,12 @@
 
 An experiment to link GLEW and SDL.
 
+## How to run
+
+I downloaded .dll and .lib files for 64-bit processor on Windows operating system. I checked the licences for SDL and GLEW and as I understood they allow redistribution. In case I would like to run this experiment on other machine, I would need it to be 64-bit and I would need the binaries.
+
+I don't know of more convenient way to distribute them so I can download the binaries on other machine.
+
 ## Important
 
 **DYNAMIC LIBRARIES MUST BE PLACED IN THE LOCATION OF EXECUTABLE!!!**
