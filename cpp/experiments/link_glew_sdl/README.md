@@ -2,6 +2,14 @@
 
 An experiment to link GLEW and SDL.
 
+## Important
+
+**DYNAMIC LIBRARIES MUST BE PLACED IN THE LOCATION OF EXECUTABLE!!!**
+
+An alternative approach is to add it to wherever the executable searches for dynamic libraries on the system.
+
+It seems it is common approach to deliver dynamic libraries in the directory of the executable. For example, World of Warcraft has dynamic libraries located next to the executable.
+
 ## Notes
 
 Notes about problems I encountered when performing this experiment.
