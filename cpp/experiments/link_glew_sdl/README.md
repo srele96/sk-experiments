@@ -98,7 +98,8 @@ The reason i said _one and another directory_ is because it tells where to searc
 
 ### Explanation of the compilation command
 
-- Search for .lib files in the current directory: `-L./`
+- Search for lib files in: `-L./deps/GLEW-2.2.0/lib`
+- Search for lib files in: `-L./deps/SDL2-2.26.2/lib`
 - Link SDL2main.lib: `-lSDL2main`
 - Link SDL2.lib: `-lSDL2`
 - Link glew32.lib: `-lglew32`
