@@ -6,8 +6,8 @@
 #include <cstdlib>
 #include <iostream>
 
-#include "deps/GLEW-2.2.0/include/GL/glew.h"
-#include "deps/SDL2-2.26.2/include/SDL.h"
+#include "GL/glew.h"
+#include "SDL2/SDL.h"
 
 GLuint program;
 GLuint attribute_coord2d;
