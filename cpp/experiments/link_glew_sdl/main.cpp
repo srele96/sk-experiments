@@ -92,9 +92,7 @@ void main_loop(SDL_Window* window) {
   }
 }
 
-void free_resources() {
-  glDeleteProgram(program);
-}
+void free_resources() { glDeleteProgram(program); }
 
 int main(int argv, char** args) {
   SDL_Init(SDL_INIT_VIDEO);
