@@ -2,6 +2,10 @@
 
 I was curious how does C++ handle function return values. Does it copy, move, or do I need to make proper decision based on my use case.
 
+## Motivation
+
+I thought about how does C++ handle return function calls of containers. Since there are construction, destruction, copy, and move semantics it must be using them for return statements of containers.
+
 ## Conclusion
 
 I guess the most suitable answer is that I need to handle them based on my use case. It feels like **too much** how many variants there are. For example, sometimes it calls constructor when return value is `return Foo{}`, but when I create, modify and return that value, it moves it. I guess it makes sense because. It seems that rule of six is there because of this.
