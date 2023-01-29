@@ -4,7 +4,7 @@
 SET link_search_flag=-L
 SET link_search_path_sdl=%link_search_flag%./deps/SDL2-2.26.2/lib
 SET link_search_path_glew=%link_search_flag%./deps/GLEW-2.2.0/lib
-set link_search_paths=%link_search_path_sdl% %link_search_path_glew%
+SET link_search_paths=%link_search_path_sdl% %link_search_path_glew%
 
 @REM LINKER INCLUDES
 SET link_flag=-l
