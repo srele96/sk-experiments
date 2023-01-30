@@ -8,7 +8,7 @@ SET link_search_paths=%link_search_path_sdl% %link_search_path_glew%
 
 @REM LINKER INCLUDES
 SET link_flag=-l
-SET link_sdl=%link_flag%SDL2main -lSDL2
+SET link_sdl=%link_flag%SDL2main %link_flag%SDL2
 SET link_glew=%link_flag%glew32
 SET link_opengl=%link_flag%opengl32
 SET link_libs=%link_sdl% %link_glew% %link_opengl%
