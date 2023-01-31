@@ -40,8 +40,8 @@ const deepOptional: DeepOptional<Keys> = {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-type MyRecord<T extends keyof any, E> = {
-  [K in T]: E;
+type MyRecord<Type extends keyof any, Keys> = {
+  [Key in Type]: Keys;
 };
 
 type Mage = 'Mage';
