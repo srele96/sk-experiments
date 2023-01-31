@@ -69,7 +69,7 @@ interface Properties {
   health: Health;
 }
 
-const heroes: MyRecord<Hero, Properties> = {
+const hero: MyRecord<Hero, Properties> = {
   Mage: {
     weapon: {
       name: 'Staff',
