@@ -40,6 +40,10 @@ const deepOptional: DeepOptional<Keys> = {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+// Restrict Type to be a valid union of keys. That is required because I have
+// to iterate over union of keys to give it a type of `Keys`. To be sure that
+// I can iterate over it, I must restrict it before I receive it. Alternative
+// would be to do: `type MyRecord<Type extends string | number | symbol, Keys>`.
 type MyRecord<Type extends keyof any, Keys> = {
   [Key in Type]: Keys;
 };
