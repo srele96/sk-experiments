@@ -52,6 +52,8 @@ type Mage = 'Mage';
 type Warrior = 'Warrior';
 type Rogue = 'Rogue';
 
+type Hero = Mage | Warrior | Rogue;
+
 interface Weapon {
   name: string;
   damage: number;
@@ -62,10 +64,12 @@ interface Health {
   max: number;
 }
 
-const heroes: MyRecord<
-  Mage | Warrior | Rogue,
-  { weapon: Weapon; health: Health }
-> = {
+interface Properties {
+  weapon: Weapon;
+  health: Health;
+}
+
+const heroes: MyRecord<Hero, Properties> = {
   Mage: {
     weapon: {
       name: 'Staff',
