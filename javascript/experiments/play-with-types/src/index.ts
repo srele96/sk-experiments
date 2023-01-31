@@ -40,10 +40,12 @@ const deepOptional: DeepOptional<Keys> = {
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// Restrict Type to be a valid union of keys. That is required because I have
-// to iterate over union of keys to give it a type of `Keys`. To be sure that
-// I can iterate over it, I must restrict it before I receive it. Alternative
-// would be to do: `type MyRecord<Type extends string | number | symbol, Keys>`.
+/**
+ * Restrict Type to be a valid union of keys. That is required because I have
+ * to iterate over union of keys to give it a type of `Keys`. To be sure that
+ * I can iterate over it, I must restrict it before I receive it. Alternative
+ * would be to do: `type MyRecord<Type extends string | number | symbol, Keys>`.
+ */
 type MyRecord<Type extends keyof any, Keys> = {
   [Key in Type]: Keys;
 };
@@ -102,9 +104,11 @@ const hero: MyRecord<Hero, Properties> = {
   },
 };
 
-// Test `keyof T`, it gives me a union of all keys of the type. So basically,
-// any time I get a `keyof any` I get a union and I can iterate over it using
-// `K in T`. However I can't accept unrestricted type because `keyof T` which
-// is not restricted isn't what I want.
+/**
+ * Test `keyof T`, it gives me a union of all keys of the type. So basically,
+ * any time I get a `keyof any` I get a union and I can iterate over it using
+ * `K in T`. However I can't accept unrestricted type because `keyof T` which
+ * is not restricted isn't what I want.
+ */
 type WeaponProperties = keyof Weapon;
 const weaponProperties: WeaponProperties = 'damage';
