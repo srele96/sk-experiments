@@ -29,7 +29,6 @@
 #define SDL_metal_h_
 
 #include "SDL_video.h"
-
 #include "begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
@@ -37,7 +36,8 @@ extern "C" {
 #endif
 
 /**
- *  \brief A handle to a CAMetalLayer-backed NSView (macOS) or UIView (iOS/tvOS).
+ *  \brief A handle to a CAMetalLayer-backed NSView (macOS) or UIView
+ * (iOS/tvOS).
  *
  *  \note This can be cast directly to an NSView or UIView.
  */
@@ -63,7 +63,7 @@ typedef void *SDL_MetalView;
  * \sa SDL_Metal_DestroyView
  * \sa SDL_Metal_GetLayer
  */
-extern DECLSPEC SDL_MetalView SDLCALL SDL_Metal_CreateView(SDL_Window * window);
+extern DECLSPEC SDL_MetalView SDLCALL SDL_Metal_CreateView(SDL_Window *window);
 
 /**
  * Destroy an existing SDL_MetalView object.
@@ -99,10 +99,10 @@ extern DECLSPEC void *SDLCALL SDL_Metal_GetLayer(SDL_MetalView view);
  * \sa SDL_GetWindowSize
  * \sa SDL_CreateWindow
  */
-extern DECLSPEC void SDLCALL SDL_Metal_GetDrawableSize(SDL_Window* window, int *w,
-                                                       int *h);
+extern DECLSPEC void SDLCALL SDL_Metal_GetDrawableSize(SDL_Window *window,
+                                                       int *w, int *h);
 
-/* @} *//* Metal support functions */
+/* @} */ /* Metal support functions */
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus
