@@ -30,35 +30,36 @@
 
 #if defined(_AIX)
 #undef __AIX__
-#define __AIX__     1
+#define __AIX__ 1
 #endif
 #if defined(__HAIKU__)
 #undef __HAIKU__
-#define __HAIKU__   1
+#define __HAIKU__ 1
 #endif
 #if defined(bsdi) || defined(__bsdi) || defined(__bsdi__)
 #undef __BSDI__
-#define __BSDI__    1
+#define __BSDI__ 1
 #endif
 #if defined(_arch_dreamcast)
 #undef __DREAMCAST__
-#define __DREAMCAST__   1
+#define __DREAMCAST__ 1
 #endif
-#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || defined(__DragonFly__)
+#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__) || \
+    defined(__DragonFly__)
 #undef __FREEBSD__
 #define __FREEBSD__ 1
 #endif
 #if defined(hpux) || defined(__hpux) || defined(__hpux__)
 #undef __HPUX__
-#define __HPUX__    1
+#define __HPUX__ 1
 #endif
 #if defined(sgi) || defined(__sgi) || defined(__sgi__) || defined(_SGI_SOURCE)
 #undef __IRIX__
-#define __IRIX__    1
+#define __IRIX__ 1
 #endif
 #if (defined(linux) || defined(__linux) || defined(__linux__))
 #undef __LINUX__
-#define __LINUX__   1
+#define __LINUX__ 1
 #endif
 #if defined(ANDROID) || defined(__ANDROID__)
 #undef __ANDROID__
@@ -107,16 +108,16 @@
 #else
 /* if not compiling for iOS */
 #undef __MACOSX__
-#define __MACOSX__  1
+#define __MACOSX__ 1
 #if MAC_OS_X_VERSION_MIN_REQUIRED < 1070
-# error SDL for Mac OS X only supports deploying on 10.7 and above.
+#error SDL for Mac OS X only supports deploying on 10.7 and above.
 #endif /* MAC_OS_X_VERSION_MIN_REQUIRED < 1070 */
 #endif /* TARGET_OS_IPHONE */
 #endif /* defined(__APPLE__) */
 
 #if defined(__NetBSD__)
 #undef __NETBSD__
-#define __NETBSD__  1
+#define __NETBSD__ 1
 #endif
 #if defined(__OpenBSD__)
 #undef __OPENBSD__
@@ -124,26 +125,27 @@
 #endif
 #if defined(__OS2__) || defined(__EMX__)
 #undef __OS2__
-#define __OS2__     1
+#define __OS2__ 1
 #endif
 #if defined(osf) || defined(__osf) || defined(__osf__) || defined(_OSF_SOURCE)
 #undef __OSF__
-#define __OSF__     1
+#define __OSF__ 1
 #endif
 #if defined(__QNXNTO__)
 #undef __QNXNTO__
-#define __QNXNTO__  1
+#define __QNXNTO__ 1
 #endif
 #if defined(riscos) || defined(__riscos) || defined(__riscos__)
 #undef __RISCOS__
-#define __RISCOS__  1
+#define __RISCOS__ 1
 #endif
 #if defined(__sun) && defined(__SVR4)
 #undef __SOLARIS__
 #define __SOLARIS__ 1
 #endif
 
-#if defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__) || defined(__MINGW32__)
+#if defined(WIN32) || defined(_WIN32) || defined(__CYGWIN__) || \
+    defined(__MINGW32__)
 /* Try to find out if we're compiling for WinRT, GDK or non-WinRT/GDK */
 #if defined(_MSC_VER) && defined(__has_include)
 #if __has_include(<winapifamily.h>)
@@ -152,8 +154,11 @@
 #define HAVE_WINAPIFAMILY_H 0
 #endif
 
-/* If _USING_V110_SDK71_ is defined it means we are using the Windows XP toolset. */
-#elif defined(_MSC_VER) && (_MSC_VER >= 1700 && !_USING_V110_SDK71_)    /* _MSC_VER == 1700 for Visual Studio 2012 */
+/* If _USING_V110_SDK71_ is defined it means we are using the Windows XP
+ * toolset. */
+#elif defined(_MSC_VER) && \
+    (_MSC_VER >= 1700 &&   \
+     !_USING_V110_SDK71_) /* _MSC_VER == 1700 for Visual Studio 2012 */
 #define HAVE_WINAPIFAMILY_H 1
 #else
 #define HAVE_WINAPIFAMILY_H 0
@@ -161,7 +166,9 @@
 
 #if HAVE_WINAPIFAMILY_H
 #include <winapifamily.h>
-#define WINAPI_FAMILY_WINRT (!WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP))
+#define WINAPI_FAMILY_WINRT                              \
+  (!WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP) && \
+   WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP))
 #else
 #define WINAPI_FAMILY_WINRT 0
 #endif /* HAVE_WINAPIFAMILY_H */
@@ -169,7 +176,8 @@
 #if WINAPI_FAMILY_WINRT
 #undef __WINRT__
 #define __WINRT__ 1
-#elif defined(_GAMING_DESKTOP) /* GDK project configuration always defines _GAMING_XXX */
+#elif defined(_GAMING_DESKTOP) /* GDK project configuration always defines \
+                                  _GAMING_XXX */
 #undef __WINGDK__
 #define __WINGDK__ 1
 #elif defined(_GAMING_XBOX_XBOXONE)
@@ -202,7 +210,8 @@
 #endif
 
 /* The NACL compiler defines __native_client__ and __pnacl__
- * Ref: http://www.chromium.org/nativeclient/pnacl/stability-of-the-pnacl-bitcode-abi
+ * Ref:
+ * http://www.chromium.org/nativeclient/pnacl/stability-of-the-pnacl-bitcode-abi
  */
 #if defined(__native_client__)
 #undef __LINUX__
@@ -248,7 +257,7 @@ extern "C" {
  *
  * \since This function is available since SDL 2.0.0.
  */
-extern DECLSPEC const char * SDLCALL SDL_GetPlatform (void);
+extern DECLSPEC const char* SDLCALL SDL_GetPlatform(void);
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

@@ -28,11 +28,10 @@
 #ifndef SDL_keyboard_h_
 #define SDL_keyboard_h_
 
-#include "SDL_stdinc.h"
 #include "SDL_error.h"
 #include "SDL_keycode.h"
+#include "SDL_stdinc.h"
 #include "SDL_video.h"
-
 #include "begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
@@ -42,14 +41,15 @@ extern "C" {
 /**
  *  \brief The SDL keysym structure, used in key events.
  *
- *  \note  If you are looking for translated character input, see the ::SDL_TEXTINPUT event.
+ *  \note  If you are looking for translated character input, see the
+ * ::SDL_TEXTINPUT event.
  */
-typedef struct SDL_Keysym
-{
-    SDL_Scancode scancode;      /**< SDL physical key code - see ::SDL_Scancode for details */
-    SDL_Keycode sym;            /**< SDL virtual key code - see ::SDL_Keycode for details */
-    Uint16 mod;                 /**< current key modifiers */
-    Uint32 unused;
+typedef struct SDL_Keysym {
+  SDL_Scancode
+      scancode; /**< SDL physical key code - see ::SDL_Scancode for details */
+  SDL_Keycode sym; /**< SDL virtual key code - see ::SDL_Keycode for details */
+  Uint16 mod;      /**< current key modifiers */
+  Uint32 unused;
 } SDL_Keysym;
 
 /* Function prototypes */
@@ -61,7 +61,7 @@ typedef struct SDL_Keysym
  *
  * \since This function is available since SDL 2.0.0.
  */
-extern DECLSPEC SDL_Window * SDLCALL SDL_GetKeyboardFocus(void);
+extern DECLSPEC SDL_Window *SDLCALL SDL_GetKeyboardFocus(void);
 
 /**
  * Get a snapshot of the current state of the keyboard.
@@ -151,7 +151,8 @@ extern DECLSPEC void SDLCALL SDL_SetModState(SDL_Keymod modstate);
  * \sa SDL_GetKeyName
  * \sa SDL_GetScancodeFromKey
  */
-extern DECLSPEC SDL_Keycode SDLCALL SDL_GetKeyFromScancode(SDL_Scancode scancode);
+extern DECLSPEC SDL_Keycode SDLCALL
+SDL_GetKeyFromScancode(SDL_Scancode scancode);
 
 /**
  * Get the scancode corresponding to the given key code according to the

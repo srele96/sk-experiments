@@ -28,9 +28,8 @@
  *  Functions to provide thread synchronization primitives.
  */
 
-#include "SDL_stdinc.h"
 #include "SDL_error.h"
-
+#include "SDL_stdinc.h"
 #include "begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
@@ -41,13 +40,12 @@ extern "C" {
  *  Synchronization functions which can time out return this value
  *  if they time out.
  */
-#define SDL_MUTEX_TIMEDOUT  1
+#define SDL_MUTEX_TIMEDOUT 1
 
 /**
  *  This is the timeout value which corresponds to never time out.
  */
-#define SDL_MUTEX_MAXWAIT   (~(Uint32)0)
-
+#define SDL_MUTEX_MAXWAIT (~(Uint32)0)
 
 /**
  *  \name Mutex functions
@@ -96,8 +94,8 @@ extern DECLSPEC SDL_mutex *SDLCALL SDL_CreateMutex(void);
  *
  * \since This function is available since SDL 2.0.0.
  */
-extern DECLSPEC int SDLCALL SDL_LockMutex(SDL_mutex * mutex);
-#define SDL_mutexP(m)   SDL_LockMutex(m)
+extern DECLSPEC int SDLCALL SDL_LockMutex(SDL_mutex *mutex);
+#define SDL_mutexP(m) SDL_LockMutex(m)
 
 /**
  * Try to lock a mutex without blocking.
@@ -119,7 +117,7 @@ extern DECLSPEC int SDLCALL SDL_LockMutex(SDL_mutex * mutex);
  * \sa SDL_LockMutex
  * \sa SDL_UnlockMutex
  */
-extern DECLSPEC int SDLCALL SDL_TryLockMutex(SDL_mutex * mutex);
+extern DECLSPEC int SDLCALL SDL_TryLockMutex(SDL_mutex *mutex);
 
 /**
  * Unlock the mutex.
@@ -138,8 +136,8 @@ extern DECLSPEC int SDLCALL SDL_TryLockMutex(SDL_mutex * mutex);
  *
  * \since This function is available since SDL 2.0.0.
  */
-extern DECLSPEC int SDLCALL SDL_UnlockMutex(SDL_mutex * mutex);
-#define SDL_mutexV(m)   SDL_UnlockMutex(m)
+extern DECLSPEC int SDLCALL SDL_UnlockMutex(SDL_mutex *mutex);
+#define SDL_mutexV(m) SDL_UnlockMutex(m)
 
 /**
  * Destroy a mutex created with SDL_CreateMutex().
@@ -159,10 +157,9 @@ extern DECLSPEC int SDLCALL SDL_UnlockMutex(SDL_mutex * mutex);
  * \sa SDL_TryLockMutex
  * \sa SDL_UnlockMutex
  */
-extern DECLSPEC void SDLCALL SDL_DestroyMutex(SDL_mutex * mutex);
+extern DECLSPEC void SDLCALL SDL_DestroyMutex(SDL_mutex *mutex);
 
-/* @} *//* Mutex functions */
-
+/* @} */ /* Mutex functions */
 
 /**
  *  \name Semaphore functions
@@ -214,7 +211,7 @@ extern DECLSPEC SDL_sem *SDLCALL SDL_CreateSemaphore(Uint32 initial_value);
  * \sa SDL_SemWait
  * \sa SDL_SemWaitTimeout
  */
-extern DECLSPEC void SDLCALL SDL_DestroySemaphore(SDL_sem * sem);
+extern DECLSPEC void SDLCALL SDL_DestroySemaphore(SDL_sem *sem);
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -241,7 +238,7 @@ extern DECLSPEC void SDLCALL SDL_DestroySemaphore(SDL_sem * sem);
  * \sa SDL_SemWait
  * \sa SDL_SemWaitTimeout
  */
-extern DECLSPEC int SDLCALL SDL_SemWait(SDL_sem * sem);
+extern DECLSPEC int SDLCALL SDL_SemWait(SDL_sem *sem);
 
 /**
  * See if a semaphore has a positive value and decrement it if it does.
@@ -265,7 +262,7 @@ extern DECLSPEC int SDLCALL SDL_SemWait(SDL_sem * sem);
  * \sa SDL_SemWait
  * \sa SDL_SemWaitTimeout
  */
-extern DECLSPEC int SDLCALL SDL_SemTryWait(SDL_sem * sem);
+extern DECLSPEC int SDLCALL SDL_SemTryWait(SDL_sem *sem);
 
 /**
  * Wait until a semaphore has a positive value and then decrements it.
@@ -290,7 +287,7 @@ extern DECLSPEC int SDLCALL SDL_SemTryWait(SDL_sem * sem);
  * \sa SDL_SemValue
  * \sa SDL_SemWait
  */
-extern DECLSPEC int SDLCALL SDL_SemWaitTimeout(SDL_sem * sem, Uint32 ms);
+extern DECLSPEC int SDLCALL SDL_SemWaitTimeout(SDL_sem *sem, Uint32 ms);
 
 /**
  * Atomically increment a semaphore's value and wake waiting threads.
@@ -308,7 +305,7 @@ extern DECLSPEC int SDLCALL SDL_SemWaitTimeout(SDL_sem * sem, Uint32 ms);
  * \sa SDL_SemWait
  * \sa SDL_SemWaitTimeout
  */
-extern DECLSPEC int SDLCALL SDL_SemPost(SDL_sem * sem);
+extern DECLSPEC int SDLCALL SDL_SemPost(SDL_sem *sem);
 
 /**
  * Get the current value of a semaphore.
@@ -320,10 +317,9 @@ extern DECLSPEC int SDLCALL SDL_SemPost(SDL_sem * sem);
  *
  * \sa SDL_CreateSemaphore
  */
-extern DECLSPEC Uint32 SDLCALL SDL_SemValue(SDL_sem * sem);
+extern DECLSPEC Uint32 SDLCALL SDL_SemValue(SDL_sem *sem);
 
-/* @} *//* Semaphore functions */
-
+/* @} */ /* Semaphore functions */
 
 /**
  *  \name Condition variable functions
@@ -363,7 +359,7 @@ extern DECLSPEC SDL_cond *SDLCALL SDL_CreateCond(void);
  * \sa SDL_CondWaitTimeout
  * \sa SDL_CreateCond
  */
-extern DECLSPEC void SDLCALL SDL_DestroyCond(SDL_cond * cond);
+extern DECLSPEC void SDLCALL SDL_DestroyCond(SDL_cond *cond);
 
 /**
  * Restart one of the threads that are waiting on the condition variable.
@@ -380,7 +376,7 @@ extern DECLSPEC void SDLCALL SDL_DestroyCond(SDL_cond * cond);
  * \sa SDL_CreateCond
  * \sa SDL_DestroyCond
  */
-extern DECLSPEC int SDLCALL SDL_CondSignal(SDL_cond * cond);
+extern DECLSPEC int SDLCALL SDL_CondSignal(SDL_cond *cond);
 
 /**
  * Restart all threads that are waiting on the condition variable.
@@ -397,7 +393,7 @@ extern DECLSPEC int SDLCALL SDL_CondSignal(SDL_cond * cond);
  * \sa SDL_CreateCond
  * \sa SDL_DestroyCond
  */
-extern DECLSPEC int SDLCALL SDL_CondBroadcast(SDL_cond * cond);
+extern DECLSPEC int SDLCALL SDL_CondBroadcast(SDL_cond *cond);
 
 /**
  * Wait until a condition variable is signaled.
@@ -425,7 +421,7 @@ extern DECLSPEC int SDLCALL SDL_CondBroadcast(SDL_cond * cond);
  * \sa SDL_CreateCond
  * \sa SDL_DestroyCond
  */
-extern DECLSPEC int SDLCALL SDL_CondWait(SDL_cond * cond, SDL_mutex * mutex);
+extern DECLSPEC int SDLCALL SDL_CondWait(SDL_cond *cond, SDL_mutex *mutex);
 
 /**
  * Wait until a condition variable is signaled or a certain time has passed.
@@ -454,11 +450,10 @@ extern DECLSPEC int SDLCALL SDL_CondWait(SDL_cond * cond, SDL_mutex * mutex);
  * \sa SDL_CreateCond
  * \sa SDL_DestroyCond
  */
-extern DECLSPEC int SDLCALL SDL_CondWaitTimeout(SDL_cond * cond,
-                                                SDL_mutex * mutex, Uint32 ms);
+extern DECLSPEC int SDLCALL SDL_CondWaitTimeout(SDL_cond *cond,
+                                                SDL_mutex *mutex, Uint32 ms);
 
-/* @} *//* Condition variable functions */
-
+/* @} */ /* Condition variable functions */
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus

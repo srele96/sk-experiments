@@ -28,9 +28,8 @@
 #ifndef SDL_guid_h_
 #define SDL_guid_h_
 
-#include "SDL_stdinc.h"
 #include "SDL_error.h"
-
+#include "SDL_stdinc.h"
 #include "begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
@@ -53,7 +52,7 @@ extern "C" {
  *   different GUIDs on different operating systems).
  */
 typedef struct {
-    Uint8 data[16];
+  Uint8 data[16];
 } SDL_GUID;
 
 /* Function prototypes */
@@ -71,7 +70,8 @@ typedef struct {
  *
  * \sa SDL_GUIDFromString
  */
-extern DECLSPEC void SDLCALL SDL_GUIDToString(SDL_GUID guid, char *pszGUID, int cbGUID);
+extern DECLSPEC void SDLCALL SDL_GUIDToString(SDL_GUID guid, char *pszGUID,
+                                              int cbGUID);
 
 /**
  * Convert a GUID string into a ::SDL_GUID structure.

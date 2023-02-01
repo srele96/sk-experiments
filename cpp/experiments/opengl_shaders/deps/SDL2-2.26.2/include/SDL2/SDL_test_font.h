@@ -39,7 +39,7 @@ extern "C" {
 /* Function prototypes */
 
 #define FONT_CHARACTER_SIZE 8
-#define FONT_LINE_HEIGHT    (FONT_CHARACTER_SIZE + 2)
+#define FONT_LINE_HEIGHT (FONT_CHARACTER_SIZE + 2)
 
 /**
  *  \brief Draw a string in the currently set font.
@@ -56,7 +56,8 @@ int SDLTest_DrawCharacter(SDL_Renderer *renderer, int x, int y, Uint32 c);
 /**
  *  \brief Draw a UTF-8 string in the currently set font.
  *
- *  The font currently only supports characters in the Basic Latin and Latin-1 Supplement sets.
+ *  The font currently only supports characters in the Basic Latin and Latin-1
+ * Supplement sets.
  *
  *  \param renderer The renderer to draw on.
  *  \param x The X coordinate of the upper left corner of the string.
@@ -70,12 +71,11 @@ int SDLTest_DrawString(SDL_Renderer *renderer, int x, int y, const char *s);
 /**
  *  \brief Data used for multi-line text output
  */
-typedef struct SDLTest_TextWindow
-{
-    SDL_Rect rect;
-    int current;
-    int numlines;
-    char **lines;
+typedef struct SDLTest_TextWindow {
+  SDL_Rect rect;
+  int current;
+  int numlines;
+  char **lines;
 } SDLTest_TextWindow;
 
 /**
@@ -102,29 +102,33 @@ SDLTest_TextWindow *SDLTest_TextWindowCreate(int x, int y, int w, int h);
  *
  *  \since This function is available since SDL 2.24.0
  */
-void SDLTest_TextWindowDisplay(SDLTest_TextWindow *textwin, SDL_Renderer *renderer);
+void SDLTest_TextWindowDisplay(SDLTest_TextWindow *textwin,
+                               SDL_Renderer *renderer);
 
 /**
  *  \brief Add text to a multi-line text output window
  *
- *  Adds UTF-8 text to the end of the current text. The newline character starts a
- *  new line of text. The backspace character deletes the last character or, if the
- *  line is empty, deletes the line and goes to the end of the previous line.
+ *  Adds UTF-8 text to the end of the current text. The newline character starts
+ * a new line of text. The backspace character deletes the last character or, if
+ * the line is empty, deletes the line and goes to the end of the previous line.
  *
  *  \param textwin The text output window
  *  \param fmt A printf() style format string
- *  \param ...  additional parameters matching % tokens in the `fmt` string, if any
+ *  \param ...  additional parameters matching % tokens in the `fmt` string, if
+ * any
  *
  *  \since This function is available since SDL 2.24.0
  */
-void SDLTest_TextWindowAddText(SDLTest_TextWindow *textwin, SDL_PRINTF_FORMAT_STRING const char *fmt, ...) SDL_PRINTF_VARARG_FUNC(2);
+void SDLTest_TextWindowAddText(SDLTest_TextWindow *textwin,
+                               SDL_PRINTF_FORMAT_STRING const char *fmt, ...)
+    SDL_PRINTF_VARARG_FUNC(2);
 
 /**
  *  \brief Add text to a multi-line text output window
  *
- *  Adds UTF-8 text to the end of the current text. The newline character starts a
- *  new line of text. The backspace character deletes the last character or, if the
- *  line is empty, deletes the line and goes to the end of the previous line.
+ *  Adds UTF-8 text to the end of the current text. The newline character starts
+ * a new line of text. The backspace character deletes the last character or, if
+ * the line is empty, deletes the line and goes to the end of the previous line.
  *
  *  \param textwin The text output window
  *  \param text The text to add to the window
@@ -132,7 +136,8 @@ void SDLTest_TextWindowAddText(SDLTest_TextWindow *textwin, SDL_PRINTF_FORMAT_ST
  *
  *  \since This function is available since SDL 2.24.0
  */
-void SDLTest_TextWindowAddTextWithLength(SDLTest_TextWindow *textwin, const char *text, size_t len);
+void SDLTest_TextWindowAddTextWithLength(SDLTest_TextWindow *textwin,
+                                         const char *text, size_t len);
 
 /**
  *  \brief Clear the text in a multi-line text output window

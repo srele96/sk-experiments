@@ -28,9 +28,8 @@
 #ifndef _SDL_locale_h
 #define _SDL_locale_h
 
-#include "SDL_stdinc.h"
 #include "SDL_error.h"
-
+#include "SDL_stdinc.h"
 #include "begin_code.h"
 /* Set up for C function definitions, even when using C++ */
 #ifdef __cplusplus
@@ -39,11 +38,9 @@ extern "C" {
 /* *INDENT-ON* */
 #endif
 
-
-typedef struct SDL_Locale
-{
-    const char *language;  /**< A language name, like "en" for English. */
-    const char *country;  /**< A country, like "US" for America. Can be NULL. */
+typedef struct SDL_Locale {
+  const char *language; /**< A language name, like "en" for English. */
+  const char *country;  /**< A country, like "US" for America. Can be NULL. */
 } SDL_Locale;
 
 /**
@@ -88,7 +85,7 @@ typedef struct SDL_Locale
  *
  * \since This function is available since SDL 2.0.14.
  */
-extern DECLSPEC SDL_Locale * SDLCALL SDL_GetPreferredLocales(void);
+extern DECLSPEC SDL_Locale *SDLCALL SDL_GetPreferredLocales(void);
 
 /* Ends C function definitions when using C++ */
 #ifdef __cplusplus
