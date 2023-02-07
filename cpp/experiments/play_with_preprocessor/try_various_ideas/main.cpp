@@ -66,7 +66,7 @@ int main() {
   int a = 10 + WOAH;
   __LINE__
   >>> WOAH <<<
-  >>> __LINE__ <<< 
+  >>> __LINE__ <<<
   with_spaces();
 
   // can i place define inside main or other functions?
