@@ -14,3 +14,4 @@ The root directory for C++ experiments.
 - [Linear Algebra - Print Linear Combinations](./experiments/linear_algebra/linear_combinations/)
 - [Play with preprocessor](./experiments/play_with_preprocessor/)
 - [Use Lambdas Creatively](./experiments/use_lambdas_creatively/)
+- [Link GLEW and SDL](./experiments/link_glew_sdl/)
