@@ -13,3 +13,4 @@ The root directory for C++ experiments.
 - [Linear Algebra - Display Vectors In Terminal](./experiments/linear_algebra/display_vectors/)
 - [Linear Algebra - Print Linear Combinations](./experiments/linear_algebra/linear_combinations/)
 - [Play with preprocessor](./experiments/play_with_preprocessor/)
+- [Use Lambdas Creatively](./experiments/use_lambdas_creatively/)
