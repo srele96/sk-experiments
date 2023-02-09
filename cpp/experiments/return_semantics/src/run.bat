@@ -2,13 +2,14 @@
 
 SET file_name=%1.cpp
 SET executable=%1.exe
-SET out_dir=build
-SET out_path=%out_dir%\%executable%
+SET out_dir=build\
+SET out_path=%out_dir%%executable%
 
 ECHO Compiling %file_name%
 
-IF NOT EXIST %outdir% (
-  MKDIR %outdir%
+IF NOT EXIST %out_dir% (
+  ECHO Creating %out_dir% directory...
+  MKDIR %out_dir%
 )
 
 clang++ -std=c++17 %file_name% -o %out_path%
