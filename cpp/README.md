@@ -16,3 +16,4 @@ The root directory for C++ experiments.
 - [Use Lambdas Creatively](./experiments/use_lambdas_creatively/)
 - [Link GLEW and SDL](./experiments/link_glew_sdl/)
 - [Read AST - Abstract Syntax Tree](./experiments/read_ast/)
+- [Play with return semantics](./experiments/return_semantics/)
