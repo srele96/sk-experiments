@@ -1,3 +1,4 @@
+#include <functional>
 #include <iostream>
 #include <string>
 
@@ -19,6 +20,10 @@ int main() {
   run_with_param([](const std::string& param) {
     std::cout << "Run With Param -> " << param << "\n";
   });
+  run_with_param<std::function<void(const std::string&)>>(
+      [](const std::string& param) {
+        std::cout << "Run With Param -> " << param << "\n";
+      });
 
   return 0;
 }
