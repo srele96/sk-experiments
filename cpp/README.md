@@ -19,3 +19,4 @@ The root directory for C++ experiments.
 - [Play with return semantics](./experiments/return_semantics/)
 - [Allocate large memory](./experiments/allocate_large_memory/)
 - [Play with overloading](./experiments/play_with_overloading/)
+- [Separate declaration and definition](./experiments/separate_declaration_and_definition/)
