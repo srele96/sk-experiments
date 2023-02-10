@@ -20,3 +20,4 @@ The root directory for C++ experiments.
 - [Allocate large memory](./experiments/allocate_large_memory/)
 - [Play with overloading](./experiments/play_with_overloading/)
 - [Separate declaration and definition](./experiments/separate_declaration_and_definition/)
+- [Inspect assembly and use debugger](./experiments/inspect_assembly/)
