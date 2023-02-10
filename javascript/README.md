@@ -25,3 +25,4 @@ The root directory for JavaScript experiments.
 - [Render Isomorphic React App](./experiments/render-isomorphic-react-app/)
 - [Have Fun Setting SSR](./experiments/have-fun-setting-ssr/)
 - [Proxy to Webpack Dev Server](./experiments/proxy-to-webpack-dev-server/)
+- [Play with types - TypeScript](./experiments/play-with-types/)
