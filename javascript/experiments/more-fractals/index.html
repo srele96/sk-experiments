@@ -128,7 +128,7 @@
       }
 
       const generateFractalCanopyPoints = createFractalCanopyPointsGenerator({
-        useInitialPoint: (point) => {
+        useInitialPoint(point) {
           ctx.moveTo(point.x, point.y);
         },
         useSubsequentPoint(point) {
