@@ -32,6 +32,7 @@
    */
   function createCanopyPointsGenerator(options = {}) {
     const generateCanopyPoints = (() => {
+      // Encapsulate private variables to abide Single Responsibility Principle.
       const changeLeftAngle = 30;
       const scaleLeftLength = 0.8;
 
