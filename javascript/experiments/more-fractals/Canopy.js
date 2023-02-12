@@ -30,7 +30,7 @@
    * @param {Handler} options.onBeforeGenerate
    * @param {Handler} options.onAfterGenerate
    */
-  function createFractalCanopyPointsGenerator(options = {}) {
+  function createCanopyPointsGenerator(options = {}) {
     const changeLeftAngle = 30;
     const scaleLeftLength = 0.8;
 
@@ -42,9 +42,9 @@
     /**
      * @param {CanopyOptions} canopyOptions
      */
-    function generateFractalCanopyPoints({ from, angle, length, level }) {
+    function generateCanopyPoints({ from, angle, length, level }) {
       if (level > 0) {
-        generateFractalCanopyPoints({
+        generateCanopyPoints({
           from: point({
             from,
             angle,
@@ -54,7 +54,7 @@
           length: length * scaleLeftLength,
           level: level - changeLevel,
         });
-        generateFractalCanopyPoints({
+        generateCanopyPoints({
           from: point({
             from,
             angle,
@@ -73,14 +73,14 @@
     /**
      * @param {CanopyOptions} canopyOptions
      */
-    return function fractalCanopyPointsGenerator(canopyOptions) {
+    return function canopyPointsGenerator(canopyOptions) {
       options.onBeforeGenerate();
-      generateFractalCanopyPoints(canopyOptions);
+      generateCanopyPoints(canopyOptions);
       options.onAfterGenerate();
     };
   }
 
-  const generateFractalCanopyPoints = createFractalCanopyPointsGenerator({
+  const generateCanopyPoints = createCanopyPointsGenerator({
     useInitialPoint(point) {
       ctx.moveTo(point.x, point.y);
     },
@@ -120,5 +120,5 @@
     return settings;
   }
 
-  generateFractalCanopyPoints(createSettings());
+  generateCanopyPoints(createSettings());
 })();

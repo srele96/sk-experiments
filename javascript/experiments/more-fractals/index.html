@@ -25,35 +25,8 @@
       const moreFractals = 'more-fractals';
       const canvas = document.getElementById(moreFractals);
       const ctx = canvas.getContext('2d');
-
-      /**
-       * @param {number} degree
-       */
-      function radians(degree) {
-        return degree * (Math.PI / 180);
-      }
-
-      /**
-       * @typedef {Object} Point
-       * @property {number} Point.x
-       * @property {number} Point.y
-       */
-
-      /**
-       * @param {Object} options
-       * @param {Point} options.from
-       * @param {number} options.angle
-       * @param {number} options.length
-       */
-      function point({ from, angle, length }) {
-        const angleInRadians = radians(angle);
-
-        return {
-          x: from.x + length * Math.cos(angleInRadians),
-          y: from.y + length * Math.sin(angleInRadians),
-        };
-      }
     </script>
+    <script src="Geometry.js"></script>
     <script src="Canopy.js"></script>
   </body>
 </html>
