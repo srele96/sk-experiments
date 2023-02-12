@@ -80,45 +80,53 @@
     };
   }
 
-  const generateCanopyPoints = createCanopyPointsGenerator({
-    useInitialPoint(point) {
-      ctx.moveTo(point.x, point.y);
-    },
-    useSubsequentPoint(point) {
-      ctx.lineTo(point.x, point.y);
-    },
-    onBeforeGenerate() {
-      ctx.beginPath();
-    },
-    onAfterGenerate() {
-      ctx.stroke();
-      ctx.closePath();
-    },
-  });
+  function drawCanopy() {
+    const id = 'canopy';
+    const canvas = document.getElementById(id);
+    const ctx = canvas.getContext('2d');
 
-  /**
-   * @return {CanopyOptions}
-   */
-  function createSettings() {
-    const bottomOffset = 50;
-    const midBottom = {
-      x: canvas.clientWidth / 2,
-      y: canvas.clientHeight - bottomOffset,
-    };
-    const initialAngle = -90;
-    const initialLength = 50;
-    const level = 10;
+    /**
+     * @return {CanopyOptions}
+     */
+    function createSettings() {
+      const bottomOffset = 50;
+      const midBottom = {
+        x: canvas.clientWidth / 2,
+        y: canvas.clientHeight - bottomOffset,
+      };
+      const initialAngle = -90;
+      const initialLength = 50;
+      const level = 10;
 
-    /** @type {CanopyOptions} */
-    const settings = {
-      from: midBottom,
-      angle: initialAngle,
-      length: initialLength,
-      level,
-    };
+      /** @type {CanopyOptions} */
+      const settings = {
+        from: midBottom,
+        angle: initialAngle,
+        length: initialLength,
+        level,
+      };
 
-    return settings;
+      return settings;
+    }
+
+    const generateCanopyPoints = createCanopyPointsGenerator({
+      useInitialPoint(point) {
+        ctx.moveTo(point.x, point.y);
+      },
+      useSubsequentPoint(point) {
+        ctx.lineTo(point.x, point.y);
+      },
+      onBeforeGenerate() {
+        ctx.beginPath();
+      },
+      onAfterGenerate() {
+        ctx.stroke();
+        ctx.closePath();
+      },
+    });
+
+    generateCanopyPoints(createSettings());
   }
 
-  generateCanopyPoints(createSettings());
+  drawCanopy();
 })();
