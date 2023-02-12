@@ -25,8 +25,8 @@
 
   /**
    * @param {Object} options
-   * @param {UsePoint} options.useInitialPoint
-   * @param {UsePoint} options.useSubsequentPoint
+   * @param {UsePoint} options.onInitialPointGeneration
+   * @param {UsePoint} options.onPointGeneration
    * @param {Handler} options.onBeforeGenerate
    * @param {Handler} options.onAfterGenerate
    */
@@ -65,9 +65,9 @@
             length: length * scaleRightLength,
             level: level - changeLevel,
           });
-          options.useSubsequentPoint(from);
+          options.onPointGeneration(from);
         } else {
-          options.useInitialPoint(from);
+          options.onInitialPointGeneration(from);
         }
       };
     })();
@@ -112,14 +112,14 @@
     }
 
     const generateCanopyPoints = createCanopyPointsGenerator({
-      useInitialPoint(point) {
-        ctx.moveTo(point.x, point.y);
-      },
-      useSubsequentPoint(point) {
-        ctx.lineTo(point.x, point.y);
-      },
       onBeforeGenerate() {
         ctx.beginPath();
+      },
+      onInitialPointGeneration(point) {
+        ctx.moveTo(point.x, point.y);
+      },
+      onPointGeneration(point) {
+        ctx.lineTo(point.x, point.y);
       },
       onAfterGenerate() {
         ctx.stroke();
