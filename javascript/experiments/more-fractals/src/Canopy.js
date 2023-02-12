@@ -30,7 +30,7 @@
    * @param {Handler} options.onBeforeGenerate
    * @param {Handler} options.onAfterGenerate
    */
-  function createCanopyPointsGenerator(options = {}) {
+  function createCanopyPointsGenerator(options) {
     const generateCanopyPoints = (() => {
       // Encapsulate private variables to abide Single Responsibility Principle.
       const changeLeftAngle = 30;
