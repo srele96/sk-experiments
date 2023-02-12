@@ -41,3 +41,7 @@ I was having fun playing around with fractals that I've created. I got carried a
 ### Fractal Canopy with three branches with 45 degree angle and decreased scale on the sides
 
 ![Fractal Canopy with three branches with 45 degree angle and decreased scale on the sides](./gallery/i.png)
+
+### Fractal Canopy with two branches, right side scale is smaller with larger angle to right
+
+![Fractal Canopy with two branches, right side scale is smaller with larger angle to right](./gallery/j.png)
