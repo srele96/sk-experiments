@@ -31,44 +31,46 @@
    * @param {Handler} options.onAfterGenerate
    */
   function createCanopyPointsGenerator(options = {}) {
-    const changeLeftAngle = 30;
-    const scaleLeftLength = 0.8;
+    const generateCanopyPoints = (() => {
+      const changeLeftAngle = 30;
+      const scaleLeftLength = 0.8;
 
-    const changeRightAngle = 30;
-    const scaleRightLength = 0.8;
+      const changeRightAngle = 30;
+      const scaleRightLength = 0.8;
 
-    const changeLevel = 1;
+      const changeLevel = 1;
 
-    /**
-     * @param {CanopyOptions} canopyOptions
-     */
-    function generateCanopyPoints({ from, angle, length, level }) {
-      if (level > 0) {
-        generateCanopyPoints({
-          from: point({
-            from,
-            angle,
-            length,
-          }),
-          angle: angle - changeLeftAngle,
-          length: length * scaleLeftLength,
-          level: level - changeLevel,
-        });
-        generateCanopyPoints({
-          from: point({
-            from,
-            angle,
-            length,
-          }),
-          angle: angle + changeRightAngle,
-          length: length * scaleRightLength,
-          level: level - changeLevel,
-        });
-        options.useSubsequentPoint(from);
-      } else {
-        options.useInitialPoint(from);
-      }
-    }
+      /**
+       * @param {CanopyOptions} canopyOptions
+       */
+      return function generateCanopyPoints({ from, angle, length, level }) {
+        if (level > 0) {
+          generateCanopyPoints({
+            from: point({
+              from,
+              angle,
+              length,
+            }),
+            angle: angle - changeLeftAngle,
+            length: length * scaleLeftLength,
+            level: level - changeLevel,
+          });
+          generateCanopyPoints({
+            from: point({
+              from,
+              angle,
+              length,
+            }),
+            angle: angle + changeRightAngle,
+            length: length * scaleRightLength,
+            level: level - changeLevel,
+          });
+          options.useSubsequentPoint(from);
+        } else {
+          options.useInitialPoint(from);
+        }
+      };
+    })();
 
     /**
      * @param {CanopyOptions} canopyOptions
