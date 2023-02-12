@@ -88,6 +88,22 @@
     const canvas = document.getElementById(id);
     const ctx = canvas.getContext('2d');
 
+    const generateCanopyPoints = createCanopyPointsGenerator({
+      onBeforeGenerate() {
+        ctx.beginPath();
+      },
+      onInitialPointGeneration(point) {
+        ctx.moveTo(point.x, point.y);
+      },
+      onPointGeneration(point) {
+        ctx.lineTo(point.x, point.y);
+      },
+      onAfterGenerate() {
+        ctx.stroke();
+        ctx.closePath();
+      },
+    });
+
     /**
      * @return {CanopyOptions}
      */
@@ -111,22 +127,6 @@
 
       return settings;
     }
-
-    const generateCanopyPoints = createCanopyPointsGenerator({
-      onBeforeGenerate() {
-        ctx.beginPath();
-      },
-      onInitialPointGeneration(point) {
-        ctx.moveTo(point.x, point.y);
-      },
-      onPointGeneration(point) {
-        ctx.lineTo(point.x, point.y);
-      },
-      onAfterGenerate() {
-        ctx.stroke();
-        ctx.closePath();
-      },
-    });
 
     generateCanopyPoints(createSettings());
   }

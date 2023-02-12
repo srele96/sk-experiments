@@ -73,12 +73,26 @@
       },
     });
 
-    generateSierpinskiPoints({
-      from: { x: 180, y: 200 },
-      angle: -90,
-      length: 50,
-      level: 10,
-    });
+    function createSettings() {
+      const middle = {
+        x: canvas.clientWidth / 2,
+        y: canvas.clientHeight / 2,
+      };
+      const initialAngle = -90;
+      const initialLength = 50;
+      const level = 10;
+
+      const settings = {
+        from: middle,
+        angle: initialAngle,
+        length: initialLength,
+        level,
+      };
+
+      return settings;
+    }
+
+    generateSierpinskiPoints(createSettings());
   }
 
   drawSierpinski();
