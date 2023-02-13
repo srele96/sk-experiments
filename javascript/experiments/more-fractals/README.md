@@ -45,3 +45,51 @@ I was having fun playing around with fractals that I've created. I got carried a
 ### Fractal Canopy with two branches, right side scale is smaller with larger angle to right
 
 ![Fractal Canopy with two branches, right side scale is smaller with larger angle to right](./gallery/j.png)
+
+### Two third of Sierpinski Triangle without the top
+
+![Two third of Sierpinski Triangle without the top](./gallery/k.png)
+
+### Regular sierpinski Triangle using fractal tree
+
+![Regular sierpinski Triangle using fractal tree](./gallery/l.png)
+
+### Sierpinski triangle with 90 degree angle
+
+![Sierpinski triangle with 90 degree angle](./gallery/m.png)
+
+### Sierpinski triangle with around 70 degree angle
+
+![Sierpinski triangle with around 70 degree angle](./gallery/n.png)
+
+### Sierpinski triangle with around 30 degree angle
+
+![Sierpinski triangle with around 30 degree angle](./gallery/o.png)
+
+### Two third of Sierpinski Triangle without the top and around 30 degree angle with lower line scaler
+
+![Two third of Sierpinski Triangle without the top and around 30 degree angle with lower line scaler](./gallery/p.png)
+
+### Two third of Sierpinski Triangle without the top and around 45 degree angle
+
+![Two third of Sierpinski Triangle without the top and around 45 degree angle](./gallery/q.png)
+
+### Two third of Sierpinski Triangle without the top and around 90 degree angle which looks like Sierpinski Carpet
+
+![Two third of Sierpinski Triangle without the top and around 90 degree angle which looks like Sierpinski Carpet](./gallery/r.png)
+
+### Two third of regular Sierpinski Triangle
+
+![Two third of regular Sierpinski Triangle](./gallery/s.png)
+
+### Two third of regular Sierpinski Triangle with higher line scaler
+
+![Two third of regular Sierpinski Triangle with higher line scaler](./gallery/t.png)
+
+### Two third of regular Sierpinski Triangle without the top and around 90 degree with higher line scaler which looks like Sierpinski Carpet
+
+![Two third of regular Sierpinski Triangle without the top and around 90 degree with higher line scaler which looks like Sierpinski Carpet](./gallery/u.png)
+
+### Two third of regular Sierpinski Triangle without the top and around 45 degree angle and high line scaler
+
+![Two third of regular Sierpinski Triangle without the top and around 45 degree angle and high line scaler](./gallery/v.png)
