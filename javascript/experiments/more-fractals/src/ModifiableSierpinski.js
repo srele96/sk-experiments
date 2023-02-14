@@ -13,11 +13,32 @@
 
   // Take options so we can separate the point generation from the logic using
   // generated points.
-  function createSierpinskiPointsGenerator(options) {
+  function createSierpinskiPointsGenerator(generatorOptions) {
+    // Merge generator options to avoid assigning default values to
+    // `generatorOptions` to avoid mutation outside of the function.
+    function mergeOptions() {
+      const left = true;
+      const top = true;
+      const right = true;
+      const generateDefaultPoints = { left, top, right };
+
+      const options = {
+        ...generatorOptions,
+        generate: generatorOptions.generate ?? generateDefaultPoints,
+      };
+
+      return options;
+    }
+
+    const options = mergeOptions();
+
     const generateSierpinskiPoints = (() => {
       // Use IIFE - Immediately Invoked Function Expression to encapsulate
       // private variables to abide Single Responsibility Principle. I don't
       // want to create these values inside the algorithm.
+      const shouldGenerateLeft = options.generate.left;
+      const shouldGenerateTop = options.generate.top;
+      const shouldGenerateRight = options.generate.right;
       function rotateLeft(angle) {
         return angle - options.changeAngle;
       }
@@ -34,42 +55,58 @@
 
       return function generateSierpinskiPoints({ from, angle, length, level }) {
         if (level > 0) {
-          const left = calculate.point({
-            from,
-            angle: rotateLeft(angle),
-            length,
-          });
-          const top = calculate.point({
-            from,
-            angle,
-            length,
-          });
-          const right = calculate.point({
-            from,
-            angle: rotateRight(angle),
-            length,
-          });
+          let left = null;
+          let top = null;
+          let right = null;
+
+          if (shouldGenerateLeft) {
+            left = calculate.point({
+              from,
+              angle: rotateLeft(angle),
+              length,
+            });
+          }
+          if (shouldGenerateTop) {
+            top = calculate.point({
+              from,
+              angle,
+              length,
+            });
+          }
+          if (shouldGenerateRight) {
+            right = calculate.point({
+              from,
+              angle: rotateRight(angle),
+              length,
+            });
+          }
 
           options.onPointsGeneration({ from, left, top, right });
 
-          generateSierpinskiPoints({
-            from: left,
-            angle: rotateLeft(angle),
-            length: scale(length),
-            level: changeLevel(level),
-          });
-          generateSierpinskiPoints({
-            from: top,
-            angle,
-            length: scale(length),
-            level: changeLevel(level),
-          });
-          generateSierpinskiPoints({
-            from: right,
-            angle: rotateRight(angle),
-            length: scale(length),
-            level: changeLevel(level),
-          });
+          if (shouldGenerateLeft) {
+            generateSierpinskiPoints({
+              from: left,
+              angle: rotateLeft(angle),
+              length: scale(length),
+              level: changeLevel(level),
+            });
+          }
+          if (shouldGenerateTop) {
+            generateSierpinskiPoints({
+              from: top,
+              angle,
+              length: scale(length),
+              level: changeLevel(level),
+            });
+          }
+          if (shouldGenerateRight) {
+            generateSierpinskiPoints({
+              from: right,
+              angle: rotateRight(angle),
+              length: scale(length),
+              level: changeLevel(level),
+            });
+          }
         }
       };
     })();
@@ -169,14 +206,20 @@
       }
 
       function connectPoints({ from, left, top, right }) {
-        moveTo(from);
-        lineTo(left);
+        if (left) {
+          moveTo(from);
+          lineTo(left);
+        }
 
-        moveTo(from);
-        lineTo(top);
+        if (top) {
+          moveTo(from);
+          lineTo(top);
+        }
 
-        moveTo(from);
-        lineTo(right);
+        if (right) {
+          moveTo(from);
+          lineTo(right);
+        }
       }
 
       function finishDrawing() {
