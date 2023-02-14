@@ -20,7 +20,8 @@
       const left = true;
       const top = true;
       const right = true;
-      const generateDefaultPoints = { left, top, right };
+      const down = true;
+      const generateDefaultPoints = { left, top, right, down };
 
       const options = {
         ...generatorOptions,
@@ -39,11 +40,16 @@
       const shouldGenerateLeft = options.generate.left;
       const shouldGenerateTop = options.generate.top;
       const shouldGenerateRight = options.generate.right;
+      const shouldGenerateDown = options.generate.down;
       function rotateLeft(angle) {
         return angle - options.changeAngle;
       }
       function rotateRight(angle) {
         return angle + options.changeAngle;
+      }
+      const halfCircleDegrees = 180;
+      function rotateDown(angle) {
+        return angle - halfCircleDegrees;
       }
       function scale(length) {
         return length * options.scaleLength;
@@ -58,6 +64,7 @@
           let left = null;
           let top = null;
           let right = null;
+          let down = null;
 
           if (shouldGenerateLeft) {
             left = calculate.point({
@@ -80,8 +87,15 @@
               length,
             });
           }
+          if (shouldGenerateDown) {
+            down = calculate.point({
+              from,
+              angle: rotateDown(angle),
+              length,
+            });
+          }
 
-          options.onPointsGeneration({ from, left, top, right });
+          options.onPointsGeneration({ from, left, top, right, down });
 
           if (shouldGenerateLeft) {
             generateSierpinskiPoints({
@@ -103,6 +117,14 @@
             generateSierpinskiPoints({
               from: right,
               angle: rotateRight(angle),
+              length: scale(length),
+              level: changeLevel(level),
+            });
+          }
+          if (shouldGenerateDown) {
+            generateSierpinskiPoints({
+              from: down,
+              angle: rotateDown(angle),
               length: scale(length),
               level: changeLevel(level),
             });
@@ -174,8 +196,9 @@
       const left = true;
       const top = true;
       const right = true;
+      const down = false;
 
-      const selectedBranches = { left, top, right };
+      const selectedBranches = { left, top, right, down };
 
       return selectedBranches;
     }
@@ -268,7 +291,7 @@
         ctx.lineTo(point.x, point.y);
       }
 
-      function connectPoints({ from, left, top, right }) {
+      function connectPoints({ from, left, top, right, down }) {
         if (left) {
           moveTo(from);
           lineTo(left);
@@ -282,6 +305,11 @@
         if (right) {
           moveTo(from);
           lineTo(right);
+        }
+
+        if (down) {
+          moveTo(from);
+          lineTo(down);
         }
       }
 
