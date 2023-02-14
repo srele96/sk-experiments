@@ -103,6 +103,7 @@
     const changeByOne = 1;
     const defaultChangeAngle = maximumChangeAngle;
     const [changeAngle, setChangeAngle] = React.useState(defaultChangeAngle);
+    const changeAngleLabel = `Angle: ${changeAngle}`;
     function saveChangeAngle(event) {
       // We receive value as a string and it has to be parsed.
       setChangeAngle(Number(event.target.value));
@@ -114,6 +115,7 @@
     const changeByPointOne = 0.1;
     const defaultScaleLength = maximumScaleLength;
     const [scaleLength, setScaleLength] = React.useState(defaultScaleLength);
+    const scaleLengthLabel = `Scale Length: ${scaleLength}`;
     function saveScaleLength(event) {
       // We receive value as a string and it has to be parsed.
       setScaleLength(Number(event.target.value));
@@ -201,7 +203,7 @@
       e(
         'label',
         { htmlFor: changeAngleId },
-        e('div', null, `Angle: ${changeAngle}`),
+        e('div', null, changeAngleLabel),
         e('input', {
           type: 'range',
           id: changeAngleId,
@@ -215,7 +217,7 @@
       e(
         'label',
         { htmlFor: scaleLengthId },
-        e('div', null, `Scale Length: ${scaleLength}`),
+        e('div', null, scaleLengthLabel),
         e('input', {
           type: 'range',
           id: scaleLengthId,
