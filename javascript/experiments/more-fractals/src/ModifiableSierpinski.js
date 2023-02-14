@@ -134,29 +134,92 @@
   }
 
   function App() {
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     const changeAngleId = 'change-angle';
     const minimumChangeAngle = 0;
     const maximumChangeAngle = 120;
     const changeByOne = 1;
     const defaultChangeAngle = maximumChangeAngle;
+
     const [changeAngle, setChangeAngle] = React.useState(defaultChangeAngle);
+
     const changeAngleLabel = `Angle: ${changeAngle}`;
+
     function saveChangeAngle(event) {
       // We receive value as a string and it has to be parsed.
       setChangeAngle(Number(event.target.value));
     }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     const scaleLengthId = 'scale-length';
     const minimumScaleLength = 0.1;
     const maximumScaleLength = 0.5;
     const changeByPointOne = 0.1;
     const defaultScaleLength = maximumScaleLength;
+
     const [scaleLength, setScaleLength] = React.useState(defaultScaleLength);
+
     const scaleLengthLabel = `Scale Length: ${scaleLength}`;
+
     function saveScaleLength(event) {
       // We receive value as a string and it has to be parsed.
       setScaleLength(Number(event.target.value));
     }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    function createDefaultBranchSelection() {
+      const left = true;
+      const top = true;
+      const right = true;
+
+      const selectedBranches = { left, top, right };
+
+      return selectedBranches;
+    }
+
+    const [selectedBranches, setSelectedBranches] = React.useState(
+      createDefaultBranchSelection()
+    );
+
+    function renderSelectedBranches() {
+      function saveSelectedBranch(event) {
+        const { name, checked } = event.target;
+
+        setSelectedBranches((previouslySelectedBranch) => {
+          return { ...previouslySelectedBranch, [name]: checked };
+        });
+      }
+
+      function renderSelectedBranch(selectedBranch) {
+        const [key, value] = selectedBranch;
+
+        const label = ` ${key} `;
+
+        return e(
+          'label',
+          { htmlFor: key, key },
+          label,
+          e('input', {
+            type: 'checkbox',
+            id: key,
+            name: key,
+            checked: value,
+            onChange: saveSelectedBranch,
+          })
+        );
+      }
+
+      return e(
+        'div',
+        null,
+        Object.entries(selectedBranches).map(renderSelectedBranch)
+      );
+    }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     // Fit the small phone screens in case someone opens CodePen on the device
     // with a really small screen.
@@ -233,6 +296,7 @@
         onBeforeGeneration: clearScreenAndPrepareItForDrawing,
         onPointsGeneration: connectPoints,
         onAfterGeneration: finishDrawing,
+        generate: selectedBranches,
       });
 
       generateSierpinskiGasketPoints(createOptions());
@@ -270,7 +334,9 @@
           value: scaleLength,
           onChange: saveScaleLength,
         })
-      )
+      ),
+      e('p', null, 'Select branches:'),
+      renderSelectedBranches()
     );
   }
 
