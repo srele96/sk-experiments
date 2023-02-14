@@ -207,7 +207,7 @@
       createDefaultBranchSelection()
     );
 
-    function renderSelectedBranches() {
+    function renderSelectBranches() {
       function saveSelectedBranch(event) {
         const { name, checked } = event.target;
 
@@ -216,7 +216,7 @@
         });
       }
 
-      function renderSelectedBranch(selectedBranch) {
+      function renderSelectBranch(selectedBranch) {
         const [key, value] = selectedBranch;
 
         const label = ` ${key} `;
@@ -238,7 +238,7 @@
       return e(
         'div',
         null,
-        Object.entries(selectedBranches).map(renderSelectedBranch)
+        Object.entries(selectedBranches).map(renderSelectBranch)
       );
     }
 
@@ -364,7 +364,7 @@
         })
       ),
       e('p', null, 'Select branches:'),
-      renderSelectedBranches()
+      renderSelectBranches()
     );
   }
 
