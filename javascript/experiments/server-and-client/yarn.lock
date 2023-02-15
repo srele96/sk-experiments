@@ -2227,6 +2227,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"server-and-client@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "server-and-client@workspace:."
+  dependencies:
+    express: ^4.18.2
+    nodemon: ^2.0.20
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    webpack: ^5.75.0
+    webpack-cli: ^5.0.1
+    webpack-node-externals: ^3.0.0
+  languageName: unknown
+  linkType: soft
+
 "set-blocking@npm:^2.0.0":
   version: 2.0.0
   resolution: "set-blocking@npm:2.0.0"
@@ -2407,20 +2421,6 @@ __metadata:
   checksum: 53b1e247e68e05db7b3808b99b892bd36fb096e6fba213a06da7fab22045e97597db425c724f2bbd6c99a3c295e1e73f3e4de78592289f38431049e1277ca0ae
   languageName: node
   linkType: hard
-
-"swc-react-express@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "swc-react-express@workspace:."
-  dependencies:
-    express: ^4.18.2
-    nodemon: ^2.0.20
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    webpack: ^5.75.0
-    webpack-cli: ^5.0.1
-    webpack-node-externals: ^3.0.0
-  languageName: unknown
-  linkType: soft
 
 "tapable@npm:^2.1.1, tapable@npm:^2.2.0":
   version: 2.2.1
