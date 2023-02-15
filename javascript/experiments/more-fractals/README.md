@@ -2,6 +2,10 @@
 
 Have more fun playing with fractals and designing functions using JavaScript.
 
+## Play with Sierpinski Gasket
+
+Here is the [CodePen link](https://codepen.io/Flexos96/pen/abaoOve) to the Sierpinski Gasket that I've created. You can play with the values and see how the shape changes.
+
 ## Motivation
 
 I was going through pictures of when I started doing fractals because I wanted to learn recursion. In addition, I had some nostalgia and wanted more of what I'd done. So I decided to make more implementations of fractals using recursion because fractals are recursive structures. So over the last few days, I've created three implementations of fractals.
