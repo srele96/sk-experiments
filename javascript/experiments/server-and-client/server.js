@@ -16,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
  * @param {Object} props
  * @param {import('react').ReactNode} props.children
  **/
-function Page(props) {
+function Chrome(props) {
   return e(
     'html',
     null,
@@ -33,30 +33,39 @@ function Page(props) {
   );
 }
 
-app.get('*', (request, response) => {
-  const PageComponent = request.url === '/about' ? About : Home;
+function renderPage(element) {
+  /**
+   * @param {import('express').Request} request
+   * @param {import('express').Response} response
+   */
+  function requestHandler(request, response) {
+    const stream = renderToPipeableStream(
+      e(StaticRouter, { location: request.url }, e(Chrome, null, element)),
+      {
+        bootstrapScripts: ['client.js'],
+        onAllReady() {
+          console.log('all ready');
+        },
+        onShellError(error) {
+          const internalServerError = 500;
+          response.statusCode = internalServerError;
+          response.setHeader('content-type', 'text/html');
+          const simpleFallbackErrorPage = '<h1>Something went wrong.</h1>';
+          response.send(simpleFallbackErrorPage);
+        },
+        onShellReady() {
+          response.setHeader('content-type', 'text/html');
+          stream.pipe(response);
+        },
+      }
+    );
+  }
 
-  const stream = renderToPipeableStream(
-    e(StaticRouter, { location: request.url }, e(Page, null, e(PageComponent))),
-    {
-      bootstrapScripts: ['client.js'],
-      onAllReady() {
-        console.log('all ready');
-      },
-      onShellError(error) {
-        const internalServerError = 500;
-        response.statusCode = internalServerError;
-        response.setHeader('content-type', 'text/html');
-        const simpleFallbackErrorPage = '<h1>Something went wrong.</h1>';
-        response.send(simpleFallbackErrorPage);
-      },
-      onShellReady() {
-        response.setHeader('content-type', 'text/html');
-        stream.pipe(response);
-      },
-    }
-  );
-});
+  return requestHandler;
+}
+
+app.get('/', renderPage(e(Home)));
+app.get('/about', renderPage(e(About)));
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server on: http://localhost:${PORT}`));
