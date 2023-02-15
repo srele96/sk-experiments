@@ -2,6 +2,14 @@
 
 Have more fun playing with fractals and designing functions using JavaScript.
 
+## Motivation
+
+I was going through pictures of when I started doing fractals because I wanted to learn recursion. In addition, I had some nostalgia and wanted more of what I'd done. So I decided to make more implementations of fractals using recursion because fractals are recursive structures. So over the last few days, I've created three implementations of fractals.
+
+First was a fractal tree, after which I was motivated to draw Sierpinski Gasket using a fractal tree. After drawing Sierpinski Gasket on canvas, I realized I could make User Interface play with values. Then, I took screenshots of fractals using different values to generate the different shapes. After taking screenshots, I started making User Interface to modify the shape easily. After making the User Interface, I was interested in selecting which branch of the Sierpinski Gasket to draw. That took a little effort because I designed the code nicely, and the modification felt effortless. I was interested in drawing four branches because the shape looked cool. I ended up taking more screenshots to have some visual reference in the future when I look back at the work that I've done. I find graphic work more stimulating and easier to share with friends than beautiful code.
+
+Code is beautiful only if you understand its beauty, and we can appreciate it only when we are at an equal level as someone who created it or above. On the other hand, pictures are much easier to relate to and admire.
+
 ## Gallery
 
 I was having fun playing around with fractals that I've created. I got carried away and here are some fractal canopy that I've generated using different values.
