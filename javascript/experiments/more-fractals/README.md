@@ -127,3 +127,41 @@ I was having fun playing around with fractals that I've created. I got carried a
 ![Seventeen](./gallery/sierpinski-gasket/17.png)
 ![Eighteen](./gallery/sierpinski-gasket/18.png)
 ![Nineteen](./gallery/sierpinski-gasket/19.png)
+
+## Collection of Sierpinski Carpet pictures
+
+### Full Carpet
+
+![Full Carpet](./gallery/sierpinski-carpet/01.png)
+
+### Missing Down Right side
+
+![Missing Down Right side](./gallery/sierpinski-carpet/02.png)
+
+### Missing Down Right and Top Left side
+
+![Missing Down Right and Top Left side](./gallery/sierpinski-carpet/03.png)
+
+### Missing Down Right, Top Left, Top Right side
+
+![Missing Down Right, Top Left, Top Right side](./gallery/sierpinski-carpet/04.png)
+
+### Missing Down Left, Down Right, Top Left, Top Right side
+
+![Missing Down Left, Down Right, Top Left, Top Right side](./gallery/sierpinski-carpet/05.png)
+
+### Missing Down Left, Down Center, Down Right, Top Left, and Top Right side
+
+![Missing Down Left, Down Center, Down Right, Top Left, and Top Right side](./gallery/sierpinski-carpet/06.png)
+
+### Missing Top left, Top Right, Center Right, Down Left, Down Center, Down Right side
+
+![Missing Top left, Top Right, Center Right, Down Left, Down Center, Down Right side](./gallery/sierpinski-carpet/07.png)
+
+### Missing Top Right and Down Right side
+
+![Missing Top Right and Down Right side](./gallery/sierpinski-carpet/08.png)
+
+### Missing Top Right, Center Left, and Down Right side
+
+![Missing Top Right, Center Left, and Down Right side](./gallery/sierpinski-carpet/09.png)
