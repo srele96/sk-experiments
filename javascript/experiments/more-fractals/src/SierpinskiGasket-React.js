@@ -330,6 +330,14 @@
       generateSierpinskiGasketPoints(createOptions());
     }
 
+    function arrangeVertically() {
+      return {
+        display: 'flex',
+        flexDirection: 'column',
+        width: 'fit-content',
+      };
+    }
+
     return e(
       React.Fragment,
       null,
@@ -337,8 +345,8 @@
       e('p', null, 'Change values'),
       e(
         'label',
-        { htmlFor: changeAngleId },
-        e('div', null, changeAngleLabel),
+        { htmlFor: changeAngleId, style: arrangeVertically() },
+        changeAngleLabel,
         e('input', {
           type: 'range',
           id: changeAngleId,
@@ -351,8 +359,8 @@
       ),
       e(
         'label',
-        { htmlFor: scaleLengthId },
-        e('div', null, scaleLengthLabel),
+        { htmlFor: scaleLengthId, style: arrangeVertically() },
+        scaleLengthLabel,
         e('input', {
           type: 'range',
           id: scaleLengthId,
