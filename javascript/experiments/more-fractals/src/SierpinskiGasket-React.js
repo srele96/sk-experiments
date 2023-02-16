@@ -368,7 +368,7 @@
     );
   }
 
-  const id = 'modifiable-sierpinski';
+  const id = 'sierpinski-gasket';
   const domRoot = document.getElementById(id);
   const reactRoot = ReactDOM.createRoot(domRoot);
   reactRoot.render(e(App));
