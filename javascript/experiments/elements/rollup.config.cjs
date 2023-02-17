@@ -7,7 +7,7 @@ const packageJson = require('./package.json');
 module.exports = defineConfig({
   input: path.resolve(__dirname, 'src', 'index.js'),
   output: {
-    dir: 'dist',
+    file: `dist/${packageJson.name}.umd.js`,
     format: 'umd',
     name: packageJson.name,
   },
