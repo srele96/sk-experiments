@@ -1,13 +1,13 @@
-#include <algorithm>
 // TODO(include error): Find a way to remove include errors.
 #include <iostream>
-#include <iterator>
 
-#include "boost/lambda/lambda.hpp"
+#include "boost/asio.hpp"
 
 int main() {
-  using namespace boost::lambda;
-  typedef std::istream_iterator<int> in;
+  boost::asio::io_context io;
+  boost::asio::steady_timer t(io, boost::asio::chrono::seconds(5));
+  t.wait();
+  std::cout << "Hello, world!" << std::endl;
 
-  std::for_each(in(std::cin), in(), std::cout << (_1 * 3) << " ");
+  return 0;
 }
