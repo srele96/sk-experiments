@@ -31,7 +31,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 #
 # Don't use COMPONENTS, read the comment on StackOverflow below.
 # https://stackoverflow.com/questions/71610458/could-not-find-boost-missing-system-found-suitable-versihow-on-1-78-0-min
-find_package(Boost 1.80.0)
+find_package(Boost 1.79.0)
 
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
