@@ -1,6 +1,7 @@
-// TODO(include error): Find a way to remove include errors.
 #include <iostream>
 
+// Fix include errors in Visual Studio Code:
+// https://stackoverflow.com/questions/45583473/include-errors-detected-in-vscode
 #include "boost/asio.hpp"
 
 int main() {
