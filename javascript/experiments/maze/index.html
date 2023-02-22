@@ -55,6 +55,8 @@
             return percent / totalSidePercentage;
           }
 
+          // Should be less than totalSidePercentage otherwise it doesn't make
+          // sense.
           const totalGapPercentage = 20;
           const totalGaps = cells + 1;
           const oneGapPercentage = toDecimalPercentage(
