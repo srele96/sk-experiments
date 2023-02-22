@@ -50,13 +50,20 @@
           }
 
           const totalSidePercentage = 100;
+
+          function toDecimalPercentage(percent) {
+            return percent / totalSidePercentage;
+          }
+
           const totalGapPercentage = 20;
           const totalGaps = cells + 1;
-          const oneGapPercentage =
-            totalGapPercentage / totalGaps / totalSidePercentage;
+          const oneGapPercentage = toDecimalPercentage(
+            totalGapPercentage / totalGaps
+          );
           const totalCellPercentage = totalSidePercentage - totalGapPercentage;
-          const oneCellPercentage =
-            totalCellPercentage / cells / totalSidePercentage;
+          const oneCellPercentage = toDecimalPercentage(
+            totalCellPercentage / cells
+          );
 
           function calculateSideOffset(index) {
             const cellAndGap = oneCellPercentage + oneGapPercentage;
@@ -139,7 +146,9 @@
         function renderApp() {
           const id = 'app';
           const domRoot = document.getElementById(id);
-          ReactDOM.createRoot(domRoot).render(e(React.StrictMode, null, e(App)));
+          ReactDOM.createRoot(domRoot).render(
+            e(React.StrictMode, null, e(App))
+          );
         }
 
         renderApp();
