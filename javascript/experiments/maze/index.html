@@ -139,7 +139,7 @@
         function renderApp() {
           const id = 'app';
           const domRoot = document.getElementById(id);
-          ReactDOM.createRoot(domRoot).render(e(App));
+          ReactDOM.createRoot(domRoot).render(e(React.StrictMode, null, e(App)));
         }
 
         renderApp();
