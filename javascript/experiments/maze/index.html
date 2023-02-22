@@ -88,10 +88,9 @@
           }
         }
 
-        function App() {
-          const sharedSize = 300;
-          const width = sharedSize;
-          const height = sharedSize;
+        function Maze(props) {
+          const width = props.side;
+          const height = props.side;
 
           function drawMaze(ctx) {
             const xOffset = 0;
@@ -108,7 +107,6 @@
             const cellColor = 'white';
             ctx.fillStyle = cellColor;
 
-            const cells = 10;
             function drawCell(percent) {
               const cellXOffset = percent.xOffset * width;
               const cellYOffset = percent.yOffset * height;
@@ -118,13 +116,24 @@
               ctx.fillRect(cellXOffset, cellYOffset, cellWidth, cellHeight);
             }
 
-            generateCells(cells, drawCell);
+            generateCells(props.cells, drawCell);
 
             ctx.closePath();
             ctx.stroke();
           }
 
-          return e(Canvas, { width, height, onContext2d: drawMaze });
+          return e(Canvas, {
+            width,
+            height,
+            onContext2d: drawMaze,
+          });
+        }
+
+        function App() {
+          const side = 300;
+          const cells = 10;
+
+          return e(Maze, { side, cells });
         }
 
         function renderApp() {
