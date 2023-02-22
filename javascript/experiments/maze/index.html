@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Maze</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script>
+      (() => {
+        const { createElement: e } = React;
+
+        function Canvas(props) {
+          const ref = React.useRef();
+
+          React.useEffect(() => {
+            const context = '2d';
+            props.onContext2d(ref.current.getContext(context));
+          }, [props.onContext2d]);
+
+          return e('canvas', {
+            ref,
+            width: props.width,
+            height: props.height,
+          });
+        }
+
+        function generateCells(cells, onCell) {
+          if (typeof cells !== 'number') {
+            throw new Error('cells has to be a number');
+          }
+          if (cells < 0) {
+            throw new Error('cells has to be a non negative number');
+          }
+          if (typeof onCell !== 'function') {
+            throw new Error('onCell has to be a function');
+          }
+
+          const totalSidePercentage = 100;
+          const totalGapPercentage = 20;
+          const totalGaps = cells + 1;
+          const oneGapPercentage =
+            totalGapPercentage / totalGaps / totalSidePercentage;
+          const totalCellPercentage = totalSidePercentage - totalGapPercentage;
+          const oneCellPercentage =
+            totalCellPercentage / cells / totalSidePercentage;
+
+          const initialXOffset = 0;
+          const initialYOffset = 0;
+          let xOffset = initialXOffset;
+          let yOffset = initialYOffset;
+
+          function calculateSideOffset(index) {
+            const cellAndGap = oneCellPercentage + oneGapPercentage;
+
+            // Append gap before the first cell.
+            return cellAndGap * index + oneGapPercentage;
+          }
+
+          function calculateOffset(row, col) {
+            const xOffset = calculateSideOffset(col);
+            const yOffset = calculateSideOffset(row);
+            const offset = { xOffset, yOffset };
+
+            return offset;
+          }
+
+          for (let i = 0; i != cells; ++i) {
+            for (let j = 0; j != cells; ++j) {
+              const { xOffset, yOffset } = calculateOffset(i, j);
+
+              const cell = {
+                xOffset,
+                yOffset,
+                width: oneCellPercentage,
+                height: oneCellPercentage,
+              };
+              onCell(cell);
+            }
+          }
+        }
+
+        function App() {
+          const width = 300;
+          const height = 300;
+
+          function drawMaze(ctx) {
+            const xOffset = 0;
+            const yOffset = 0;
+
+            ctx.clearRect(xOffset, yOffset, width, height);
+            ctx.beginPath();
+
+            const gapColor = 'black';
+            ctx.fillStyle = gapColor;
+
+            ctx.fillRect(xOffset, yOffset, width, height);
+
+            const cellColor = 'white';
+            ctx.fillStyle = cellColor;
+
+            const cells = 10;
+            function drawCell(percent) {
+              const cellXOffset = percent.xOffset * width;
+              const cellYOffset = percent.yOffset * height;
+              const cellWidth = percent.width * width;
+              const cellHeight = percent.height * height;
+
+              ctx.fillRect(cellXOffset, cellYOffset, cellWidth, cellHeight);
+            }
+
+            generateCells(cells, drawCell);
+
+            ctx.closePath();
+            ctx.stroke();
+          }
+
+          return e(Canvas, { width, height, onContext2d: drawMaze });
+        }
+
+        function renderApp() {
+          const id = 'app';
+          const domRoot = document.getElementById(id);
+          ReactDOM.createRoot(domRoot).render(e(App));
+        }
+
+        renderApp();
+      })();
+    </script>
+  </body>
+</html>
