@@ -133,8 +133,8 @@
             return index > -1;
           }
 
-          function halfSizeLeft(offset, width) {
-            return offset - width / 2;
+          function reduceByHalfLength(offset, length) {
+            return offset - length / 2;
           }
 
           function createEdgeData(cells, row) {
@@ -144,7 +144,7 @@
               const leftColumn = oneLess(column);
               if (exist(leftColumn)) {
                 const leftVertex = createVertex(row, leftColumn);
-                const xOffset = halfSizeLeft(cell.xOffset, cell.width);
+                const xOffset = reduceByHalfLength(cell.xOffset, cell.width);
                 const edgeCell = new Cell(
                   xOffset,
                   cell.yOffset,
@@ -159,7 +159,7 @@
               const topRow = oneLess(row);
               if (exist(topRow)) {
                 const topVertex = createVertex(topRow, column);
-                const yOffset = halfSizeLeft(cell.yOffset, cell.height);
+                const yOffset = reduceByHalfLength(cell.yOffset, cell.height);
                 const edgeCell = new Cell(
                   cell.xOffset,
                   yOffset,
