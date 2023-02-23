@@ -194,16 +194,20 @@
 
             ctx.fillRect(xOffset, yOffset, width, height);
 
-            const cellColor = 'white';
-            ctx.fillStyle = cellColor;
+            function toValue(cell) {
+              const value = {
+                xOffset: cell.xOffset * width,
+                yOffset: cell.yOffset * height,
+                width: cell.width * width,
+                height: cell.height * height,
+              };
 
-            function drawCell(percent) {
-              const cellXOffset = percent.xOffset * width;
-              const cellYOffset = percent.yOffset * height;
-              const cellWidth = percent.width * width;
-              const cellHeight = percent.height * height;
+              return value;
+            }
 
-              ctx.fillRect(cellXOffset, cellYOffset, cellWidth, cellHeight);
+            function drawCell(cell) {
+              const { xOffset, yOffset, width, height } = toValue(cell);
+              ctx.clearRect(xOffset, yOffset, width, height);
             }
 
             const cellGrid = createCellGrid(props.cells);
