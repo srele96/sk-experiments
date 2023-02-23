@@ -38,15 +38,21 @@
           });
         }
 
-        function generateCells(cells, onCell) {
+        class Cell {
+          constructor(xOffset, yOffset, width, height) {
+            this.xOffset = xOffset;
+            this.yOffset = yOffset;
+            this.width = width;
+            this.height = height;
+          }
+        }
+
+        function createCellGrid(cells) {
           if (typeof cells !== 'number') {
             throw new Error('cells has to be a number');
           }
           if (cells < 0) {
             throw new Error('cells has to be a non negative number');
-          }
-          if (typeof onCell !== 'function') {
-            throw new Error('onCell has to be a function');
           }
 
           const totalSidePercentage = 100;
@@ -82,19 +88,94 @@
             return offset;
           }
 
+          const cellGrid = new Array(cells);
+
           for (let i = 0; i != cells; ++i) {
+            cellGrid[i] = new Array(cells);
+
             for (let j = 0; j != cells; ++j) {
               const { xOffset, yOffset } = calculateOffset(i, j);
 
-              const cell = {
+              const cell = new Cell(
                 xOffset,
                 yOffset,
-                width: oneCellPercentage,
-                height: oneCellPercentage,
-              };
-              onCell(cell);
+                oneCellPercentage,
+                oneCellPercentage
+              );
+
+              cellGrid[i][j] = cell;
             }
           }
+
+          return cellGrid;
+        }
+
+        class Edge {
+          constructor(vertexOne, vertexTwo, cell) {
+            this.vertexOne = vertexOne;
+            this.vertexTwo = vertexTwo;
+            this.cell = cell;
+          }
+        }
+
+        function createEdges(cellGrid) {
+          let edges = [];
+
+          function createVertex(row, column) {
+            return ''.concat(row, column);
+          }
+
+          function oneLess(value) {
+            return value - 1;
+          }
+
+          function exist(index) {
+            return index > -1;
+          }
+
+          function halfSizeLeft(offset, width) {
+            return offset - width / 2;
+          }
+
+          function createEdgeData(cells, row) {
+            cells.forEach((cell, column) => {
+              const currentVertex = createVertex(row, column);
+
+              const leftColumn = oneLess(column);
+              if (exist(leftColumn)) {
+                const leftVertex = createVertex(row, leftColumn);
+                const xOffset = halfSizeLeft(cell.xOffset, cell.width);
+                const edgeCell = new Cell(
+                  xOffset,
+                  cell.yOffset,
+                  cell.width,
+                  cell.height
+                );
+                const edge = new Edge(leftVertex, currentVertex, edgeCell);
+
+                edges.push(edge);
+              }
+
+              const topRow = oneLess(row);
+              if (exist(topRow)) {
+                const topVertex = createVertex(topRow, column);
+                const yOffset = halfSizeLeft(cell.yOffset, cell.height);
+                const edgeCell = new Cell(
+                  cell.xOffset,
+                  yOffset,
+                  cell.width,
+                  cell.height
+                );
+                const edge = new Edge(topVertex, currentVertex, edgeCell);
+
+                edges.push(edge);
+              }
+            });
+          }
+
+          cellGrid.forEach(createEdgeData);
+
+          return edges;
         }
 
         function Maze(props) {
@@ -125,7 +206,10 @@
               ctx.fillRect(cellXOffset, cellYOffset, cellWidth, cellHeight);
             }
 
-            generateCells(props.cells, drawCell);
+            const cellGrid = createCellGrid(props.cells);
+            cellGrid.forEach((row) => row.forEach(drawCell));
+
+            const edges = createEdges(cellGrid);
 
             ctx.closePath();
             ctx.stroke();
