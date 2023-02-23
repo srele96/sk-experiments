@@ -115,6 +115,16 @@
             this.vertexOne = vertexOne;
             this.vertexTwo = vertexTwo;
             this.cell = cell;
+
+            function createRandomPathWeight() {
+              const one = 1;
+              const weight = new Uint32Array(one);
+              crypto.getRandomValues(weight);
+              const only = 0;
+              return weight[only];
+            }
+
+            this.weight = createRandomPathWeight();
           }
         }
 
