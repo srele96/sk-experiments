@@ -119,6 +119,7 @@
             function createRandomPathWeight() {
               const one = 1;
               const weight = new Uint32Array(one);
+              // Try to get as close to true randomness as possible.
               crypto.getRandomValues(weight);
               const only = 0;
               return weight[only];
