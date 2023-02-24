@@ -1,6 +1,6 @@
 import { createElement as e, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App';
+import { App } from './components/App';
 
 function renderApp() {
   const id = 'app';
