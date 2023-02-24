@@ -1,8 +1,5 @@
 /**
  * Create maze path for already sorted edges.
- *
- * @param {Edge[]} edges
- * @param {(edge: Cell) => void} callback
  */
 function createMazePath(edges, provide) {
   class Component {
@@ -13,7 +10,6 @@ function createMazePath(edges, provide) {
   }
 
   class UnionFind {
-    /** @type {Map<string, Component>} */
     #components;
 
     constructor() {
