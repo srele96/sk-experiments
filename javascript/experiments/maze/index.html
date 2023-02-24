@@ -156,7 +156,7 @@
           }
         }
 
-        function createEdges(cellGrid) {
+        function createInnerEdges(cellGrid) {
           let edges = [];
 
           function createVertex(row, column) {
@@ -243,15 +243,15 @@
               return value;
             }
 
-            function drawCell(cell) {
+            function clearCell(cell) {
               const { xOffset, yOffset, width, height } = toValue(cell);
               ctx.clearRect(xOffset, yOffset, width, height);
             }
 
             const cellGrid = createCellGrid(props.cells);
-            cellGrid.forEach((row) => row.forEach(drawCell));
+            cellGrid.forEach((cells) => cells.forEach(clearCell));
 
-            const edges = createEdges(cellGrid);
+            const innerEdges = createInnerEdges(cellGrid);
 
             ctx.closePath();
             ctx.stroke();
