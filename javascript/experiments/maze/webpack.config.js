@@ -11,6 +11,7 @@ const config = {
     filename: 'bundle.js',
   },
   devServer: {
+    hot: false,
     static: 'public',
     port: 3000,
   },
