@@ -1,5 +1,7 @@
 import { createElement as e } from 'react';
-import { Canvas } from './Canvas';
+
+import { Canvas } from '../Canvas';
+
 import { createCellGrid } from './createCellGrid';
 import { createInnerEdges } from './createInnerEdges';
 import { createMazePath } from './createMazePath';

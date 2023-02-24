@@ -1,5 +1,5 @@
 import { createElement as e } from 'react';
-import { Maze } from './Maze';
+import { Maze } from './Maze/Maze';
 
 function App() {
   const side = 300;
