@@ -24,6 +24,7 @@ I would like to generate a maze using an efficient algorithm.
     - [Ten by Ten Cells](#ten-by-ten-cells)
     - [Twenty by Twenty Cells](#twenty-by-twenty-cells)
   - [Story](#story)
+  - [Building a modular application](#building-a-modular-application)
 
 ## Purpose and usage of efficient algorithms and data structures
 
@@ -110,3 +111,28 @@ The only part I had to debug was because I used the `!=` comparison instead of `
 There are some things I figured out along the way. Algorithms and Data Structures are concepts of how a procedure works and stores data. An algorithm's runtime is a set of steps expressed mathematically, and the concept is important. The concept of how Kruskal's algorithm works and the concept of Kruskal's algorithm were important. I had to adapt the two to my use case to generate a maze in the canvas.
 
 I loved the whole process. I loved it so much that I was annoyed that I used pure HTML with 400 lines of JavaScript code at the end. So I used Webpack to make me able to use modular JavaScript and split logic. The result is in this directory.
+
+## Building a modular application
+
+Today I had an idea about how to build a modular application. I would approach it in the way as follows:
+
+- Read the current code that requires the feature
+- Check what the code provides, what variables and data is there
+- Plan how the public API for the new feature's module should look like
+- Implement the module for the feature
+- Use the implemented module to add a new feature
+
+So:
+
+- Why is this a good approach?
+- What are the benefits of this approach?
+
+For example, if you are a C++ user, have you ever considered how much is hidden from us when we write `std::cout << "Hello World";`? Or if you are a JavaScript user, `console.log('Hello World')`? There might be five or five hundred lines of code below. We don't know. Now, imagine we implement our features using one line of code.
+
+```txt
+<My-Cool-Feature {...myCoolFeatureData}></My-Cool-Feature>
+```
+
+I used pseudo-code right there. And who cares how many lines of code our feature takes? For the outside world, it is a simple integration. The world where the feature is used doesn't need to know how difficult it is to implement. The inner implementation may be very ugly. However, if the public Application Programming Interface is friendly to the outside world, they don't care. If the feature requires inside refactoring, a surgery, the outside world doesn't need to know that either. Quite a fantastic idea! Programming is awesome!
+
+I used the idea I described here to implement the Maze, and I feel excellent about it.
