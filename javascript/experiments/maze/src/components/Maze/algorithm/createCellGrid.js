@@ -1,4 +1,4 @@
-import { Cell } from './Cell';
+import { Cell } from '../class/Cell';
 
 function createCellGrid(cells) {
   if (typeof cells !== 'number') {

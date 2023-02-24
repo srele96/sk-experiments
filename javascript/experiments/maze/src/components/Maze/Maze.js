@@ -2,9 +2,9 @@ import { createElement as e } from 'react';
 
 import { Canvas } from '../Canvas';
 
-import { createCellGrid } from './createCellGrid';
-import { createInnerEdges } from './createInnerEdges';
-import { createMazePath } from './createMazePath';
+import { createCellGrid } from './algorithm/createCellGrid';
+import { createInnerEdges } from './algorithm/createInnerEdges';
+import { createMazePath } from './algorithm/createMazePath';
 
 function Maze(props) {
   const width = props.side;

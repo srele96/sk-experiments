@@ -1,5 +1,5 @@
-import { Edge } from './Edge';
-import { Cell } from './Cell';
+import { Edge } from '../class/Edge';
+import { Cell } from '../class/Cell';
 
 function createInnerEdges(cellGrid) {
   let edges = [];
