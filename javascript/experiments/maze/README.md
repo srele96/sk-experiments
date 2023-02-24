@@ -24,7 +24,7 @@ I would like to generate a maze using an efficient algorithm.
     - [Ten by Ten Cells](#ten-by-ten-cells)
     - [Twenty by Twenty Cells](#twenty-by-twenty-cells)
   - [Story](#story)
-  - [Building a modular application](#building-a-modular-application)
+  - [Build a modular application](#build-a-modular-application)
 
 ## Purpose and usage of efficient algorithms and data structures
 
@@ -112,7 +112,7 @@ There are some things I figured out along the way. Algorithms and Data Structure
 
 I loved the whole process. I loved it so much that I was annoyed that I used pure HTML with 400 lines of JavaScript code at the end. So I used Webpack to make me able to use modular JavaScript and split logic. The result is in this directory.
 
-## Building a modular application
+## Build a modular application
 
 Today I had an idea about how to build a modular application. I would approach it in the way as follows:
 
