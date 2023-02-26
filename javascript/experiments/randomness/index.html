@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Randomness</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Use my own library <3 -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@flexos/elements@0.1.1/dist/flexos-elements.umd.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      const { StrictMode, createElement: e, useState, Fragment } = React;
+      const { createRoot } = ReactDOM;
+
+      function InputWithLabel({ id, value, onChange }) {
+        return e(
+          'label',
+          { htmlFor: id },
+          `${id}: `,
+          e('input', {
+            style: { display: 'block' },
+            id,
+            name: id,
+            type: 'number',
+            value,
+            onChange: (event) => {
+              const value = Number(event.target.value);
+              onChange(value);
+            },
+          })
+        );
+      }
+
+      function App() {
+        const defaultLength = 11;
+        const [length, setLength] = useState(defaultLength);
+        const defaultMainElement = 6;
+        const [mainElement, setMainElement] = useState(defaultMainElement);
+
+        function saveLength(newLength) {
+          if (newLength >= mainElement) {
+            setLength(newLength);
+          }
+        }
+
+        function saveMainElement(newMainElement) {
+          if (newMainElement < 1) {
+            setMainElement(length);
+          } else if (newMainElement > length) {
+            setMainElement(1);
+          } else {
+            setMainElement(newMainElement);
+          }
+        }
+
+        const getElements = FlexosElements.get_elements({ length });
+        const elements = getElements(mainElement);
+        const mainElementValue = 0;
+
+        const sharedStyle = {
+          width: '30px',
+          height: '30px',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '25px',
+          fontWeight: 'bold',
+        };
+
+        return e(
+          'div',
+          null,
+          e('h1', null, 'Change numbers to see stuff happen'),
+          e(
+            'div',
+            null,
+            e(InputWithLabel, {
+              id: 'length',
+              value: length,
+              onChange: saveLength,
+            })
+          ),
+          e(
+            'div',
+            null,
+            e(InputWithLabel, {
+              id: 'main-element',
+              value: mainElement,
+              onChange: saveMainElement,
+            })
+          ),
+          e(
+            'ul',
+            null,
+            elements.map(({ order }) => {
+              return e(
+                'li',
+                { key: order },
+                e(
+                  'div',
+                  {
+                    style:
+                      order === mainElementValue
+                        ? { ...sharedStyle, backgroundColor: 'red' }
+                        : {
+                            ...sharedStyle,
+                            backgroundColor: 'black',
+                            color: 'white',
+                          },
+                  },
+                  order
+                )
+              );
+            })
+          )
+        );
+      }
+
+      function renderApp() {
+        const id = 'root';
+        const domRoot = document.getElementById(id);
+        const root = createRoot(domRoot);
+
+        root.render(e(StrictMode, null, e(App)));
+      }
+
+      renderApp();
+    </script>
+  </body>
+</html>
