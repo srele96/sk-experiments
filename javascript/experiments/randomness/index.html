@@ -48,6 +48,44 @@
         );
       }
 
+      function Elements({ elements, mainElementValue }) {
+        const sharedStyle = {
+          width: '30px',
+          height: '30px',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '25px',
+          fontWeight: 'bold',
+        };
+
+        return e(
+          'ul',
+          null,
+          elements.map(({ order }) => {
+            return e(
+              'li',
+              { key: order },
+              e(
+                'div',
+                {
+                  style:
+                    order === mainElementValue
+                      ? { ...sharedStyle, backgroundColor: 'red' }
+                      : {
+                          ...sharedStyle,
+                          backgroundColor: 'black',
+                          color: 'white',
+                        },
+                },
+                order
+              )
+            );
+          })
+        );
+      }
+
       function App() {
         const defaultLength = 11;
         const [length, setLength] = useState(defaultLength);
@@ -107,30 +145,7 @@
               onChange: saveMainElement,
             })
           ),
-          e(
-            'ul',
-            null,
-            elements.map(({ order }) => {
-              return e(
-                'li',
-                { key: order },
-                e(
-                  'div',
-                  {
-                    style:
-                      order === mainElementValue
-                        ? { ...sharedStyle, backgroundColor: 'red' }
-                        : {
-                            ...sharedStyle,
-                            backgroundColor: 'black',
-                            color: 'white',
-                          },
-                  },
-                  order
-                )
-              );
-            })
-          )
+          e(Elements, { elements, mainElementValue })
         );
       }
 
