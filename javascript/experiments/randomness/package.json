@@ -22,8 +22,7 @@
     "webpack-dev-server": "^4.11.1"
   },
   "scripts": {
-    "start": "webpack serve --open",
-    "build": "tsc"
+    "start": "webpack serve --open"
   },
   "dependencies": {
     "@flexos/elements": "^0.1.1",
