@@ -1,5 +1,6 @@
 import { createElement as e } from 'react';
 import { createRoot } from 'react-dom/client';
+// Workaround import because the library doesn't provide imports for CJS or MJS.
 import { get_elements } from '@flexos/elements/dist/flexos-elements.umd';
 
 const createSequenceWithMainElement = get_elements({
