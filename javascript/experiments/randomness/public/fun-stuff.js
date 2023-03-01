@@ -34,7 +34,6 @@
 
     const pageDescriptionInputId = 'page-description';
     const pageDescriptionInputLabel = 'Page description';
-    const pageStyleInputLabel = 'Page style';
     const initialPageDescription = 'This is my page and it rocks!';
     const defaultPageDescription =
       localStorage.getItem(storageKey.pageDescription) ??
@@ -50,6 +49,7 @@
     // --------------------------------------------------------------------
 
     const pageStyleInputId = 'page-style';
+    const pageStyleInputLabel = 'Page style';
     const initialPageStyle = '';
     const defaultPageStyle =
       localStorage.getItem(storageKey.pageStyle) ?? initialPageStyle;
