@@ -50,22 +50,35 @@
 
       const { createElement: e } = React;
 
-      function App() {
-        const [state, setState] = React.useState(store.getState());
+      function useSelector(selector) {
+        const [state, setState] = React.useState(() =>
+          selector(store.getState())
+        );
 
         React.useEffect(() => {
           const unsubscribe = store.subscribe(() => {
-            setState(store.getState());
+            const newState = selector(store.getState());
+
+            if (!Object.is(state, newState)) {
+              setState(newState);
+            }
           });
 
-          return () => unsubscribe();
-        }, [setState]);
+          return unsubscribe;
+        }, [state, setState]);
+
+        return state;
+      }
+
+      function App() {
+        const counter = useSelector((state) => state.counter);
+        const random = useSelector((state) => state.random);
 
         return e(
           'main',
           null,
           e('h1', null, 'Redux Fun'),
-          e('p', null, 'Counter: ', state.counter),
+          e('p', null, 'Counter: ', counter),
           e(
             'button',
             { onClick: () => store.dispatch({ type: 'INCREMENT' }) },
@@ -76,7 +89,7 @@
             { onClick: () => store.dispatch({ type: 'DECREMENT' }) },
             'Decrement'
           ),
-          e('p', null, 'Random: ', state.random),
+          e('p', null, 'Random: ', random),
           e(
             'button',
             { onClick: () => store.dispatch({ type: 'RANDOM' }) },
