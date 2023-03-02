@@ -6,14 +6,15 @@
 #
 ###############################################################################
 
-$linebreak = "--------"
+$linebreak = "----------------"
 Write-Host $linebreak
 
 $outDir = "build"
 
 if (!(Test-Path $outDir)) {
-  Write-Host "Creating build directory"
-  New-Item -ItemType Directory -Path build
+  Write-Host "Creating $outDir directory"
+  New-Item -ItemType Directory -Path $outDir
+  Write-Host $linebreak
 }
 
 $filename = $args[0]
