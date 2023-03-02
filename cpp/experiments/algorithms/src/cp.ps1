@@ -28,7 +28,6 @@ if ($filename) {
   Write-Host $linebreak
 
   if ($LastExitCode -eq 0) {
-    # print "Running $out." with newline after
     Write-Host "Running $out.`n"
     Invoke-Expression $out
   }
