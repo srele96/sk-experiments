@@ -4,6 +4,9 @@
 @REM Don't print out the contents of this file.
 @ECHO OFF
 
+@REM If %1 is empty, go to end and don't compile
+IF "%1"=="" GOTO NO_FILE
+
 ECHO ----
 mkdir build
 
@@ -14,3 +17,12 @@ ECHO Running build\%1
 ECHO ----
 
 build\%1
+GOTO DONE
+
+:NO_FILE
+ECHO ----
+ECHO No file specified.
+
+:END
+ECHO Done.
+ECHO ----
