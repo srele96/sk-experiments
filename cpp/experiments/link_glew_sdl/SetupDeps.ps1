@@ -1,4 +1,4 @@
-function PromptUserToDeleteDirectory {
+function PromptUser {
   param(
     [string]$title,
     [string]$question,
@@ -26,7 +26,7 @@ function SetupRemoteDependenciesRobustly {
       [System.Management.Automation.Host.ChoiceDescription]::new("&Yes", "Delete the directory")
       [System.Management.Automation.Host.ChoiceDescription]::new("&No", "Don't delete the directory.")
     )
-    if (PromptUserToDeleteDirectory $title $question $choices) {
+    if (PromptUser $title $question $choices) {
       Remove-Item -Path $destination -Recurse -Force
       Write-Host "Deleted directory $destination."
     }
@@ -63,7 +63,7 @@ function SetupRemoteDependenciesRobustly {
       [System.Management.Automation.Host.ChoiceDescription]::new("&Yes", "Continue.")
       [System.Management.Automation.Host.ChoiceDescription]::new("&No", "Abort.")
     )
-    if (PromptUserToDeleteDirectory $title $question $choices) {
+    if (PromptUser $title $question $choices) {
       Write-Host "Continuing..."
     }
     else {
@@ -83,7 +83,7 @@ function SetupRemoteDependenciesRobustly {
       [System.Management.Automation.Host.ChoiceDescription]::new("&Yes", "Delete the cloned repository.")
       [System.Management.Automation.Host.ChoiceDescription]::new("&No", "Don't delete the cloned repository.")
     )
-    if (PromptUserToDeleteDirectory $title $question $choices) {
+    if (PromptUser $title $question $choices) {
       Remove-Item -Path $destination -Recurse -Force
       Write-Host "Deleted directory $destination."
     }
