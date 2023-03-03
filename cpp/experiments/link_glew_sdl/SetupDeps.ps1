@@ -24,18 +24,18 @@ function SetupRemoteDependenciesRobustly {
   # dependencies in the project root, and not in the execution location.
   $projectRoot = $PSScriptRoot
   $dependencies = "dependencies"
-  $destination = Join-Path $projectRoot $dependencies
+  $downloadLibrariesDestination = Join-Path $projectRoot $dependencies
 
-  if (Test-Path -Path $destination) {
-    $title = 'Directory already exists: ' + $destination
+  if (Test-Path -Path $downloadLibrariesDestination) {
+    $title = 'Directory already exists: ' + $downloadLibrariesDestination
     $question = 'Do you want to delete it?'
     $choices = @(
       [System.Management.Automation.Host.ChoiceDescription]::new("&Yes", "Delete the directory")
       [System.Management.Automation.Host.ChoiceDescription]::new("&No", "Don't delete the directory.")
     )
     if (AskForConfirmation $title $question $choices) {
-      Remove-Item -Path $destination -Recurse -Force
-      Write-Host "Deleted directory $destination."
+      Remove-Item -Path $downloadLibrariesDestination -Recurse -Force
+      Write-Host "Deleted directory $downloadLibrariesDestination."
     }
     else {
       Write-Host "Aborting setup..."
@@ -44,11 +44,11 @@ function SetupRemoteDependenciesRobustly {
   }
 
   $repository = 'https://github.com/srele96/link-glew-sdl-dependencies.git'
-  git clone $repository $destination
+  git clone $repository $downloadLibrariesDestination
 
   # https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/copy-item?view=powershell-7.3
   $librariesSubdirectory = "libraries\*"
-  $libraries = Join-Path $destination $librariesSubdirectory
+  $libraries = Join-Path $downloadLibrariesDestination $librariesSubdirectory
 
   # Find out which items from the $libraries directory already exist in the
   # project root. We don't want to forcefully overwrite anything without the
@@ -83,7 +83,7 @@ function SetupRemoteDependenciesRobustly {
   Copy-Item -Path $libraries -Destination $projectRoot -Recurse -Force
   Write-Host "Setup complete."
 
-  if (Test-Path -Path $destination) {
+  if (Test-Path -Path $downloadLibrariesDestination) {
     $title = 'Clean up cloned repository.'
     $question = 'Do you want to delete the cloned repository?'
     $choices = @(
@@ -91,8 +91,8 @@ function SetupRemoteDependenciesRobustly {
       [System.Management.Automation.Host.ChoiceDescription]::new("&No", "Don't delete the cloned repository.")
     )
     if (AskForConfirmation $title $question $choices) {
-      Remove-Item -Path $destination -Recurse -Force
-      Write-Host "Deleted directory $destination."
+      Remove-Item -Path $downloadLibrariesDestination -Recurse -Force
+      Write-Host "Deleted directory $downloadLibrariesDestination."
     }
     else {
       Write-Host "Aborting cleanup..."
