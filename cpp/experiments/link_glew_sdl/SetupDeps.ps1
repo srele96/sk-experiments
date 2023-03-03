@@ -1,4 +1,4 @@
-function PromptUser {
+function AskForConfirmation {
   param(
     [string]$title,
     [string]$question,
@@ -6,7 +6,11 @@ function PromptUser {
   )
   # https://stackoverflow.com/questions/69098394/powershell-promptforchoice-how-to-edit-descriptions
   $decision = $Host.UI.PromptForChoice($title, $question, $choices, 0)
-  if ($decision -eq 0) {
+
+  # Always treat the first choice as yes. This solution is flaky and bug-prone,
+  # but it works for now.
+  $yes = 0
+  if ($decision -eq $yes) {
     return $true
   }
   else {
@@ -29,7 +33,7 @@ function SetupRemoteDependenciesRobustly {
       [System.Management.Automation.Host.ChoiceDescription]::new("&Yes", "Delete the directory")
       [System.Management.Automation.Host.ChoiceDescription]::new("&No", "Don't delete the directory.")
     )
-    if (PromptUser $title $question $choices) {
+    if (AskForConfirmation $title $question $choices) {
       Remove-Item -Path $destination -Recurse -Force
       Write-Host "Deleted directory $destination."
     }
@@ -66,7 +70,7 @@ function SetupRemoteDependenciesRobustly {
       [System.Management.Automation.Host.ChoiceDescription]::new("&Yes", "Continue.")
       [System.Management.Automation.Host.ChoiceDescription]::new("&No", "Abort.")
     )
-    if (PromptUser $title $question $choices) {
+    if (AskForConfirmation $title $question $choices) {
       Write-Host "Continuing..."
     }
     else {
@@ -86,7 +90,7 @@ function SetupRemoteDependenciesRobustly {
       [System.Management.Automation.Host.ChoiceDescription]::new("&Yes", "Delete the cloned repository.")
       [System.Management.Automation.Host.ChoiceDescription]::new("&No", "Don't delete the cloned repository.")
     )
-    if (PromptUser $title $question $choices) {
+    if (AskForConfirmation $title $question $choices) {
       Remove-Item -Path $destination -Recurse -Force
       Write-Host "Deleted directory $destination."
     }
