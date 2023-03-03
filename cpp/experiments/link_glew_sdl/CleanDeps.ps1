@@ -7,7 +7,7 @@ $items = @(
 )
 
 $itemList = $items | ForEach-Object { "`n  - $_" }
-Write-Host "Removing the following items from the project root:" + $itemList
+Write-Host "Removing the following items from the project root:" $itemList
 
 foreach ($item in $items) {
   $itemPath = Join-Path $PSScriptRoot $item

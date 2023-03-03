@@ -61,7 +61,8 @@ function SetupRemoteDependenciesRobustly {
     }
   }
 
-  if ($itemsToOverwrite.Count -gt 0) {
+  $hasItemsToOverwrite = $itemsToOverwrite.Count -gt 0
+  if ($hasItemsToOverwrite) {
     $itemsToOverwriteList = $itemsToOverwrite | ForEach-Object { "`n  - $_" }
 
     $title = 'The following items already exist in the project root: ' + $projectRoot + $itemsToOverwriteList
