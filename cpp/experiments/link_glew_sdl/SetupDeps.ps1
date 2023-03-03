@@ -15,7 +15,10 @@ function PromptUser {
 }
 
 function SetupRemoteDependenciesRobustly {
-  $projectRoot = (Get-Location).Path
+  # Always use the path to the powershell script because the script can be
+  # executed from any directory on user's machine. We always want to setup
+  # dependencies in the project root, and not in the execution location.
+  $projectRoot = $PSScriptRoot
   $dependencies = "dependencies"
   $destination = Join-Path $projectRoot $dependencies
 
