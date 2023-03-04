@@ -1,4 +1,3 @@
-# Comment.
 name: format
 on: push
 jobs:
