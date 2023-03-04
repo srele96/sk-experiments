@@ -18,7 +18,6 @@ $flagDynamic = "--dynamic"
 $flagBoth = "--both"
 $availableFlags = @($flagHelp, $flagStatic, $flagDynamic, $flagBoth)
 
-# function that takes expression as a string and executes it
 function PrintAndRun {
   param (
     [string]$expression
