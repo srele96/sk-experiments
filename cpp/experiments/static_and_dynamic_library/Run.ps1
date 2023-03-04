@@ -39,6 +39,11 @@ function RunAndPrintOutput {
   PrintAndRun $executable
 
   Write-Host "Cleaning up the $executable..."
+  # This function doesn't care if deletion of executable succeeds or fails.
+  # I expect that executable will always be gone after Remove-Item. Initially
+  # the Remove-Item was failing when the executable didn't exist. That's why
+  # I decided to attempt to delete and always ignore errors. That might not be
+  # the best solution but I found errors inconvenient and annoying.
   Remove-Item $executable -ErrorAction SilentlyContinue
 }
 
