@@ -34,8 +34,8 @@ function RunAndPrintOutput {
 
   $executable = ".\main.exe"
   $compile = "$expression $executable"
-  PrintAndRun $compile
 
+  PrintAndRun $compile
   PrintAndRun $executable
 
   Write-Host "Cleaning up the $executable..."
