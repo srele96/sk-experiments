@@ -36,4 +36,8 @@ Run the dynamic library:
 .\Run.bat --dynamic
 ```
 
-Run both
+Run both:
+
+```cmd
+.\Run.bat --both
+```
