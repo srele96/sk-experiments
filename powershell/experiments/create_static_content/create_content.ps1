@@ -120,7 +120,7 @@ function downloadFromUrl($url, $outPath) {
   Write-Host "Downloaded: " $outPath
 }
 
-function downloadReactIfNotExist {
+function downloadReactIfNotAlreadyDownloaded {
   $urlReact = "https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"
   $fileNameReact = "react.development.js"
   $outPathReact = Join-Path $staticContentPath $fileNameReact
@@ -146,4 +146,4 @@ function downloadReactIfNotExist {
 
 createDirectorySilentlyIfNotExist $staticContentPath
 createStaticContent
-downloadReactIfNotExist
+downloadReactIfNotAlreadyDownloaded
