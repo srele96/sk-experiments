@@ -94,11 +94,11 @@ function createFileObjects {
   return $fileObjects
 }
 
-function createStaticContentDirectorySilentlyIfNotExist {
-  if (!(Test-Path $staticContentPath)) {
-    Write-Host "Directory already exist: $staticContentPath"
-    Write-Host "Creating directory: $staticContentPath"
-    $createDirectorySilently = New-Item -ItemType Directory -Path $staticContentPath | Out-Null
+function createDirectorySilentlyIfNotExist($path) {
+  if (!(Test-Path $path)) {
+    Write-Host "Directory already exist: $path"
+    Write-Host "Creating directory: $path"
+    $createDirectorySilently = New-Item -ItemType Directory -Path $path | Out-Null
 
     $createDirectorySilently
   }
@@ -144,6 +144,6 @@ function downloadReactIfNotExist {
   }
 }
 
-createStaticContentDirectorySilentlyIfNotExist
+createDirectorySilentlyIfNotExist $staticContentPath
 createStaticContent
 downloadReactIfNotExist
