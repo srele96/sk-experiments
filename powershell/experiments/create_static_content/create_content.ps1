@@ -18,74 +18,74 @@ function createFileObject($fileName, $fileContent) {
 function createFileObjects {
   $indexHtmlFileName = "index.html"
   $indexHtmlFileContent = @"
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Test</title>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test</title>
 
-        <link rel="stylesheet" type="text/css" href="index.css" />
-      </head>
-      <body>
-        <h1>Test</h1>
-        <p>Test</p>
-        <h2 class="red">Test</h2>
-        <script>
-          console.log("Hello World!");
-        </script>
-        <script src="index.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css" />
+  </head>
+  <body>
+    <h1>Test</h1>
+    <p>Test</p>
+    <h2 class="red">Test</h2>
+    <script>
+      console.log("Hello World!");
+    </script>
+    <script src="index.js"></script>
 
-        <script src="react.development.js"></script>
-        <script src="react-dom.development.js"></script>
-        <script>
-          console.log({ React, ReactDOM }) // Verify that they are loaded
-        </script>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <script>
+      console.log({ React, ReactDOM }) // Verify that they are loaded
+    </script>
 
-        <div id="root"></div>
-        <script src="react-app.js"></script>
-      </body>
-    </html>
+    <div id="root"></div>
+    <script src="react-app.js"></script>
+  </body>
+</html>
 "@
   $indexHtml = createFileObject $indexHtmlFileName $indexHtmlFileContent
 
   $indexCssFileName = "index.css"
   $indexCssFileContent = @"
-  .red { color: red; }
+.red { color: red; }
 "@
   $indexCss = createFileObject $indexCssFileName $indexCssFileContent
 
   $indexJsFileName = "index.js"
   $indexJsFileContent = @"
-    function createHeader(type) {
-      const root = document.querySelector('body');
-      const h2 = document.createElement(type);
-      h2.textContent = 'Hello World!';
-      root.appendChild(h2);
-    }
+function createHeader(type) {
+  const root = document.querySelector('body');
+  const h2 = document.createElement(type);
+  h2.textContent = 'Hello World!';
+  root.appendChild(h2);
+}
 
-    const headerType = 'h2';
-    createHeader(headerType);
+const headerType = 'h2';
+createHeader(headerType);
 "@
   $indexJs = createFileObject $indexJsFileName $indexJsFileContent
 
   $reactAppJsFileName = "react-app.js"
   $reactAppJsFileContent = @"
-    const domRootId = 'root';
-    const domRoot = document.getElementById(domRootId);
+const domRootId = 'root';
+const domRoot = document.getElementById(domRootId);
 
-    const { createElement: e } = React;
+const { createElement: e } = React;
 
-    function App() {
-      return e(
-        'h1',
-        { className: 'red' },
-        'Hello React Root!'
-      );
-    }
+function App() {
+  return e(
+    'h1',
+    { className: 'red' },
+    'Hello React Root!'
+  );
+}
 
-    const reactRoot = ReactDOM.createRoot(domRoot)
-    reactRoot.render(e(App));
+const reactRoot = ReactDOM.createRoot(domRoot)
+reactRoot.render(e(App));
 "@
   $reactAppJs = createFileObject $reactAppJsFileName $reactAppJsFileContent
 
