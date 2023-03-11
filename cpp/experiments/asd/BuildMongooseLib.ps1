@@ -27,13 +27,12 @@ $mongooseLibPath = Join-Path $mongoosePath $libDir
 $mongooseStaticLib = "mongoose.lib"
 $mongooseStaticLibPath = Join-Path $mongooseLibPath $mongooseStaticLib
 
-$buildMongooseObject = clang -c $mongooseSourcePath -o $mongooseObjectPath
-
 # Provide information on what is going on so the script doesn't run and exit
 # with a blank screen.
 Write-Host "----"
 Write-Host "Creating object file:"
 Write-Host "Building:" $mongooseSourcePath "`nTo:" $mongooseObjectPath
+$buildMongooseObject = clang -c $mongooseSourcePath -o $mongooseObjectPath
 $buildMongooseObject
 Write-Host "----`n"
 
@@ -45,7 +44,7 @@ if (-not (Test-Path $mongooseLibPath)) {
 
 Write-Host "----"
 Write-Host "Creating static library:"
-$buildMongooseStaticLib = llvm-ar rcs $mongooseStaticLibPath $mongooseObjectPath
 Write-Host "Building:" $mongooseStaticLibPath "`nFrom:" $mongooseObjectPath
+$buildMongooseStaticLib = llvm-ar rcs $mongooseStaticLibPath $mongooseObjectPath
 $buildMongooseStaticLib
 Write-Host "----`n"
