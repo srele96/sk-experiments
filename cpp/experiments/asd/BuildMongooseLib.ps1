@@ -29,6 +29,7 @@ $mongooseStaticLibPath = Join-Path $mongooseLibPath $mongooseStaticLib
 
 # Provide information on what is going on so the script doesn't run and exit
 # with a blank screen.
+
 Write-Host "----"
 Write-Host "Creating object file:"
 Write-Host "Building:" $mongooseSourcePath "`nTo:" $mongooseObjectPath
