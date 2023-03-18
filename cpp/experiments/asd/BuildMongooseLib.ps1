@@ -11,8 +11,6 @@ $__dirname = $PSScriptRoot
 $includeDir = "include"
 $includePath = Join-Path $__dirname $includeDir
 
-$libDir = "lib"
-
 $mongooseDir = "mongoose"
 $mongoosePath = Join-Path $includePath $mongooseDir
 
@@ -22,6 +20,7 @@ $mongooseSourcePath = Join-Path $mongoosePath $mongooseSource
 $mongooseObject = "mongoose.o"
 $mongooseObjectPath = Join-Path $mongoosePath $mongooseObject
 
+$libDir = "lib"
 $mongooseLibPath = Join-Path $mongoosePath $libDir
 
 $mongooseStaticLib = "mongoose.lib"
