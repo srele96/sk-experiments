@@ -32,8 +32,8 @@ $mongooseHeaderPath = Join-Path $mongoosePath $mongooseHeader
 $mongooseObject = "mongoose.o"
 $mongooseObjectPath = Join-Path $mongoosePath $mongooseObject
 
-$libDir = "lib"
-$mongooseLibPath = Join-Path $mongoosePath $libDir
+$mongooseLibDir = "lib"
+$mongooseLibPath = Join-Path $mongoosePath $mongooseLibDir
 
 $mongooseStaticLib = "mongoose.lib"
 $mongooseStaticLibPath = Join-Path $mongooseLibPath $mongooseStaticLib
