@@ -5,7 +5,7 @@
 Requirements:
 
 - `clang` - C compiler.
-- `llvm-ar` - Tool to create static library, check `BuildMongooseLib` scripts.
+- `llvm-ar` - Tool to create static library, check `SetupMongoose` script.
 
 1. Run `.\SetupMongoose`
 
