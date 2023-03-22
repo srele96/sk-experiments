@@ -208,3 +208,13 @@ Based on these facts I am fairly confident that the writing from one end of http
 - The client connection remains open because neither the one who sent response or server close it.
 - Since the connection is open and waiting and we can see the data start filling up the screen right after the poll event happens, it means that the data is written in real time.
 - The real problem is that a loop inside an http event blocks the event handler. Therefore, that makes me think, what is the proper asynchronous way if it even matches the Mongoose's behavior model to write the data asynchronously from the Mongoose to the client?
+
+#### Pictures of the investigation
+
+Client and server terminals
+
+![Client and server terminals](./pictures/server_and_client_terminals.png)
+
+Pictures of terminals when I figured out that events are sequential and that poll does not happen.
+
+![Sequential events](./pictures/sequential_events.png)
