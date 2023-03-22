@@ -5,7 +5,7 @@
 
 // First web page in history
 // static const char *s_url = "http://info.cern.ch/";
-static const char* s_url = "http://localhost:8000";
+static const char *s_url = "http://localhost:8000";
 
 static void fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
   if (ev == MG_EV_CONNECT) {
