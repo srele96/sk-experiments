@@ -6,14 +6,14 @@
 
 #include "mongoose/mongoose.h"
 
-class state {
- public:
-  std::string m_whatever{"initial value"};
+struct state {
+  std::string m_whatever;
 };
 
 int main(const int argc, const char* argv[]) {
   struct mg_mgr mgr {};
-  state _state;
+  const std::string m_whatever{"initial value"};
+  state _state{m_whatever};
 
   mg_log_set(MG_LL_DEBUG);
   mg_mgr_init(&mgr);
@@ -44,38 +44,6 @@ int main(const int argc, const char* argv[]) {
             // send back json response
             // print connection buffer or wherever mg_http_reply writes to
 
-            // mg_printf(connection, "%s",
-            //           "HTTP/1.0 200 OK\r\n"
-            //           "Content-Type: text/html\r\n"
-            //           "Content-Length: 5\r\n"
-            //           "\r\n");
-            // mg_send(connection, "hello", 5);
-            // mg_send(connection, "\r\n", 2);
-
-            mg_printf(connection, "%s",
-                      "HTTP/1.1 200 OK\r\n"
-                      "Transfer-Encoding: chunked\r\n"
-                      "Access-Control-Allow-Origin: *\r\n"
-                      "Content-Type: text/plain\r\n"
-                      "\r\n");
-            // mg_http_printf_chunk(connection, "%s", "first");
-            // mg_http_printf_chunk(connection, "%s", "second");
-            // mg_http_printf_chunk(connection, "%s", "third");
-            // mg_http_printf_chunk(connection, "%s", "fourth");
-
-            // validates that they run in parallel or sequential
-            std::cout << "\n\n\n\n\nStarting...\n\n\n";
-
-            // validate that the client receives data in real time
-            for (int i{0}; i != 10000; ++i) {
-              // slow down the loop to make sure it runs longer than the server
-              // polls print url of connection
-              std::cout << "send...";
-              mg_http_printf_chunk(connection, "%s", "hello -> ");
-            }
-
-            mg_http_printf_chunk(connection, "");
-
             // NOTE
             // - how to pass lambda to c function pointer when it has capture
             // list
@@ -95,16 +63,27 @@ int main(const int argc, const char* argv[]) {
             //  exchange data in the real time.
             //  ----------------------------------------------------------------
 
+            std::cout << "Received http message...\n";
+
             break;
           }
           case MG_EV_HTTP_CHUNK: {
             // print connection information, received before http_msg, why?
             // event data is struct mg_http_message*
 
+            struct mg_http_message* request{
+                static_cast<struct mg_http_message*>(event_data)};
+
+            std::string line_break{
+                "--------------------------------------------------"};
+            std::cout << "Chunk:\n"
+                      << line_break << "\n\n"
+                      << request->head.ptr << "\n"
+                      << line_break << request->chunk.ptr << "\n"
+                      << line_break << "\n\n";
             break;
           }
           case MG_EV_POLL: {
-            std::cout << "Poll\n";
             break;
           }
           default: {
@@ -116,7 +95,7 @@ int main(const int argc, const char* argv[]) {
 
   while (true) {
     // Make sure the server polls extremely fast
-    constexpr int interval{1};
+    constexpr int interval{1000};
     mg_mgr_poll(&mgr, interval);
   }
 

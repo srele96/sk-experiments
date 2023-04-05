@@ -8,18 +8,33 @@
 static const char *s_url = "http://localhost:8000";
 
 static void fn(struct mg_connection *c, int ev, void *ev_data, void *fn_data) {
-  if (ev == MG_EV_CONNECT) {
-    struct mg_str host = mg_url_host(s_url);
-    // Send request
-    mg_printf(c,
-              "GET %s HTTP/1.0\r\n"
-              "Host: %.*s\r\n"
-              "\r\n",
-              mg_url_uri(s_url), (int)host.len, host.ptr);
+  switch (ev) {
+    case MG_EV_CONNECT: {
+      struct mg_str host = mg_url_host(s_url);
+      // Send request
+      mg_printf(c,
+                "GET %s HTTP/1.0\r\n"
+                "Host: %.*s\r\n"
+                "\r\n",
+                mg_url_uri(s_url), (int)host.len, host.ptr);
+
+      break;
+    }
+    case MG_EV_HTTP_MSG: {
+      struct mg_http_message *hm = (struct mg_http_message *)ev_data;
+      printf("%.*s", (int)hm->message.len, hm->message.ptr);
+    }
+    case MG_EV_HTTP_CHUNK: {
+      struct mg_http_message *hm = (struct mg_http_message *)ev_data;
+      printf("%.*s", (int)hm->body.len, hm->body.ptr);
+
+      break;
+    }
+    default: {
+      break;
+    }
   }
-  if (ev == MG_EV_HTTP_MSG) {
-    struct mg_http_message *hm = (struct mg_http_message *)ev_data;
-    printf("%.*s", (int)hm->message.len, hm->message.ptr);
+  if (ev == MG_EV_CONNECT) {
   }
 }
 

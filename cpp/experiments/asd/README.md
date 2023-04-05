@@ -218,3 +218,11 @@ Client and server terminals
 Pictures of terminals when I figured out that events are sequential and that poll does not happen.
 
 ![Sequential events](./pictures/sequential_events.png)
+
+### HTTP Chunking in action
+
+I was going home from the work and thinking about how to see the damn chunking of content... It just doesn't want to work! I figured, what if I was doing it wrong all along? I didn't even have a real-life use case like sending content of file as a body of post request. I thought... since I never used Mongoose `C/C++` library before, I must be thinking of the problem and solution wrongly.
+
+I decided to use my server on realistic use cases. I created a relatively large file with `JSON` data and sent it using curl. `curl.exe -X POST -H "Content-Type: application/json" -d "@body.json" http://localhost:8000`.
+
+And it worked! I finally saw the content of the file chunked on my server, now that was cool! Damn it, that tortured me for a while!
