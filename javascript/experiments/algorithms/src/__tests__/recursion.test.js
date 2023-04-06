@@ -1,4 +1,4 @@
-const { combs, perms } = require('../recursion');
+const { combs, perms, gcd, reverse } = require('../recursion');
 
 describe('recursion', () => {
   test('should return the correct combinations of 1 on list of 3', () => {
@@ -57,5 +57,50 @@ describe('recursion', () => {
     ];
 
     expect(perms(permutations, list)).toEqual(result);
+  });
+
+  test('should return the correct greatest common divisor of 2 and 4', () => {
+    const larger = 4;
+    const smaller = 2;
+    const result = 2;
+
+    expect(gcd(larger, smaller)).toEqual(result);
+  });
+
+  test('should return the correct greatest common divisor of 21 and 42', () => {
+    const larger = 42;
+    const smaller = 21;
+    const result = 21;
+
+    expect(gcd(larger, smaller)).toEqual(result);
+  });
+
+  test('should return the correct greatest common divisor of 10 and 45', () => {
+    const larger = 45;
+    const smaller = 10;
+    const result = 5;
+
+    expect(gcd(larger, smaller)).toEqual(result);
+  });
+
+  test('should reverse the string "hello"', () => {
+    const string = 'hello';
+    const reversed = 'olleh';
+
+    expect(reverse(string)).toEqual(reversed);
+  });
+
+  test('should reverse the string "hello world"', () => {
+    const string = 'hello world';
+    const reversed = 'dlrow olleh';
+
+    expect(reverse(string)).toEqual(reversed);
+  });
+
+  test('should reverse the palindrome "racecar"', () => {
+    const palindrome = 'racecar';
+
+    // Should equal to itself.
+    expect(reverse(palindrome)).toEqual(palindrome);
   });
 });

@@ -76,5 +76,35 @@ function perms(n, list) {
   return result;
 }
 
+/**
+ * Recurrence relation:
+ *
+ * T(1) = 1
+ * T(n) = T(n-1)
+ *
+ * @param {number} larger
+ * @param {number} smaller
+ * @returns {number}
+ */
+function gcd(larger, smaller) {
+  // smaller is previous remainder
+  let remainder = larger % smaller;
+  return remainder === 0 ? smaller : gcd(smaller, remainder);
+}
+
+/**
+ * Recurrence relation:
+ *
+ * T(1) = 1
+ * T(n) = T(n-1)
+ *
+ * @param {string} str
+ * @returns
+ */
+const reverse = (str) =>
+  str.length === 0 ? str : reverse(str.substr(1)) + str.charAt(0);
+
 module.exports.perms = perms;
 module.exports.combs = combs;
+module.exports.gcd = gcd;
+module.exports.reverse = reverse;
