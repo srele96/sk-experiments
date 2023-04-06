@@ -50,7 +50,6 @@ function combs(n, list) {
  * @param {number[]} list
  * @returns
  */
-// T(n, m)
 function perms(n, list) {
   let result = [];
   if (n === 1) {
