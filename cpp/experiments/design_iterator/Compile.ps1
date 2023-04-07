@@ -1,7 +1,10 @@
 param (
   [Parameter(Mandatory = $true)]
   [String]
-  $FileName
+  $FileName,
+
+  [switch]
+  $DebugMode
 )
 
 $__dirname = $PSScriptRoot
@@ -28,8 +31,25 @@ if ($FileName) {
   $outPath = Join-Path $buildDirPath $executable
 
   Write-Host "Compiling $file to $relativeOutPath"
-  $compile = clang++ -std=c++17 -O2 -Wall $file -o $outPath
-  $compile
+
+  $debugFlags = @('-g3', '-O0')
+  $regularFlags = @('-O2')
+  $flags = @('-std=c++17', '-Wall')
+  if ($DebugMode) {
+    Write-Host "Building in debug mode."
+    $flags += $debugFlags
+  }
+  else {
+    Write-Host "Building in regular mode."
+    $flags += $regularFlags
+  }
+  $combineFlags = $flags -join ' '
+  Write-Host "Flags: $combineFlags"
+
+  # Wrap in a string and use Invoke-Expression because flag merging doesn't
+  # work withouth it.
+  $compile = "clang++ $combineFlags $file -o $outPath"
+  Invoke-Expression $compile
 
   if ($LastExitCode -eq 0) {
     Write-Host "Compilation done: $relativeOutPath"
