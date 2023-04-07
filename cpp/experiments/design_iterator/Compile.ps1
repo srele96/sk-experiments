@@ -1,3 +1,4 @@
+# Must be on top of the file, doesn't work otherwise.
 param (
   [Parameter(Mandatory = $true)]
   [String]
