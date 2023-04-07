@@ -25,14 +25,7 @@ function Get-Flags {
   $debugFlags = @('-O0', '-g3')
   $regularFlags = @('-O2')
   $flags = @('-std=c++17', '-Wall')
-  if ($DebugMode) {
-    Write-Host "Building in debug mode."
-    $flags += $debugFlags
-  }
-  else {
-    Write-Host "Building in regular mode."
-    $flags += $regularFlags
-  }
+  $flags += if ($DebugMode) { $debugFlags } else { $regularFlags }
 
   return $flags -join ' '
 }
@@ -54,6 +47,13 @@ if ($FileName) {
   $outPath = Join-Path $buildDirPath $executable
 
   Write-Host "Compiling $file to $relativeOutPath"
+
+  if ($DebugMode) {
+    Write-Host "Building in debug mode."
+  }
+  else {
+    Write-Host "Building in regular mode."
+  }
 
   $combineFlags = Get-Flags $DebugMode
   Write-Host "Flags: $combineFlags"
