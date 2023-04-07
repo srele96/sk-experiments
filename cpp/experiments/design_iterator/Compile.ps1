@@ -8,13 +8,6 @@ param (
   $DebugMode
 )
 
-$__dirname = $PSScriptRoot
-$buildDirName = "build"
-$buildDirPath = Join-Path $__dirname $buildDirName
-
-Write-Host "Location: $buildDirPath"
-Write-Host "Initializing build script..."
-
 function Get-Flags {
   param(
     [Parameter(Mandatory = $true)]
@@ -29,6 +22,13 @@ function Get-Flags {
 
   return $flags -join ' '
 }
+
+$__dirname = $PSScriptRoot
+$buildDirName = "build"
+$buildDirPath = Join-Path $__dirname $buildDirName
+
+Write-Host "Location: $buildDirPath"
+Write-Host "Initializing build script..."
 
 # Make sure we have a filename before we proceed.
 if ($FileName) {
