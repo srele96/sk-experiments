@@ -1,3 +1,9 @@
+param (
+  [Parameter(Mandatory = $true)]
+  [String]
+  $FileName
+)
+
 $__dirname = $PSScriptRoot
 $buildDirName = "build"
 $buildDirPath = Join-Path $__dirname $buildDirName
@@ -5,10 +11,8 @@ $buildDirPath = Join-Path $__dirname $buildDirName
 Write-Host "Location: $buildDirPath"
 Write-Host "Initializing build script..."
 
-$fileName = $args[0]
-
 # Make sure we have a filename before we proceed.
-if ($fileName) {
+if ($FileName) {
   $buildDirExist = Test-Path $buildDirPath
   if (-not $buildDirExist) {
     Write-Host "Creating $buildDirName directory..."
@@ -18,8 +22,8 @@ if ($fileName) {
     Write-Host "Directory already exists: $buildDirName"
   }
 
-  $file = "$fileName.cpp"
-  $executable = "$fileName.exe"
+  $file = "$FileName.cpp"
+  $executable = "$FileName.exe"
   $relativeOutPath = Join-Path $buildDirName $executable
   $outPath = Join-Path $buildDirPath $executable
 
