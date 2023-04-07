@@ -36,6 +36,7 @@ if ($FileName) {
   }
   else {
     Write-Host "Compilation failed."
+    exit $LastExitCode
   }
 }
 else {
