@@ -15,6 +15,28 @@ $buildDirPath = Join-Path $__dirname $buildDirName
 Write-Host "Location: $buildDirPath"
 Write-Host "Initializing build script..."
 
+function Get-Flags {
+  param(
+    [Parameter(Mandatory = $true)]
+    [bool]
+    $DebugMode
+  )
+
+  $debugFlags = @('-O0', '-g3')
+  $regularFlags = @('-O2')
+  $flags = @('-std=c++17', '-Wall')
+  if ($DebugMode) {
+    Write-Host "Building in debug mode."
+    $flags += $debugFlags
+  }
+  else {
+    Write-Host "Building in regular mode."
+    $flags += $regularFlags
+  }
+
+  return $flags -join ' '
+}
+
 # Make sure we have a filename before we proceed.
 if ($FileName) {
   $buildDirExist = Test-Path $buildDirPath
@@ -33,18 +55,7 @@ if ($FileName) {
 
   Write-Host "Compiling $file to $relativeOutPath"
 
-  $debugFlags = @('-g3', '-O0')
-  $regularFlags = @('-O2')
-  $flags = @('-std=c++17', '-Wall')
-  if ($DebugMode) {
-    Write-Host "Building in debug mode."
-    $flags += $debugFlags
-  }
-  else {
-    Write-Host "Building in regular mode."
-    $flags += $regularFlags
-  }
-  $combineFlags = $flags -join ' '
+  $combineFlags = Get-Flags $DebugMode
   Write-Host "Flags: $combineFlags"
 
   # Wrap in a string and use Invoke-Expression because flag merging doesn't
