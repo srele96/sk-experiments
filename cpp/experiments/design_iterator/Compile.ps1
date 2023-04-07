@@ -28,8 +28,7 @@ if ($fileName) {
   $compile
 
   if ($LastExitCode -eq 0) {
-    Write-Host "Done. Running: $relativeOutPath"
-    Invoke-Expression $outPath
+    Write-Host "Compilation done: $relativeOutPath"
   }
   else {
     Write-Host "Compilation failed."
