@@ -1,10 +1,10 @@
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <vector>
 
 void dump_list(std::ostream& _ostream, const std::vector<int>& list) {
   _ostream << "List of: ";
-  for(auto it = list.begin(); it != list.end(); ++it) {
+  for (auto it = list.begin(); it != list.end(); ++it) {
     _ostream << *it << " ";
   }
 }
