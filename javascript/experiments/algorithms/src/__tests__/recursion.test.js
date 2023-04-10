@@ -1,4 +1,10 @@
-const { combs, perms, gcd, reverse } = require('../recursion');
+const {
+  combs,
+  perms,
+  gcd,
+  reverse,
+  generateLadderSteps,
+} = require('../recursion');
 
 describe('recursion', () => {
   describe('combs', () => {
@@ -110,5 +116,56 @@ describe('recursion', () => {
       // Should equal to itself.
       expect(reverse(palindrome)).toEqual(palindrome);
     });
+  });
+
+  describe('generateLadderSteps', () => {
+    test('should generate no steps when n=0', () => {
+      const n = 0;
+      const result = [[]];
+
+      expect(generateLadderSteps(n)).toEqual(result);
+    });
+
+    test('should generate one valid step when n=1', () => {
+      const n = 1;
+      const result = [[1]];
+
+      expect(generateLadderSteps(n)).toEqual(result);
+    });
+
+    test('should generate two valid set of steps when n=2', () => {
+      const n = 2;
+      const result = [[1, 1], [2]];
+
+      expect(generateLadderSteps(n)).toEqual(result);
+    });
+
+    test('should generate three valid set of steps when n=3', () => {
+      const n = 3;
+      const result = [
+        [1, 1, 1],
+        [2, 1],
+        [1, 2],
+      ];
+
+      expect(generateLadderSteps(n)).toEqual(result);
+    });
+
+    test(
+      'should generate five valid set of steps when n=4 because here may ' +
+        'happen accidental appending of 2 to last set of steps from all ' +
+        'n-2th combinations',
+      () => {
+        const n = 4;
+        const result = [
+          [1, 1, 1, 1],
+          [2, 1, 1],
+          [1, 2, 1],
+          [1, 1, 2],
+        ];
+
+        expect(generateLadderSteps(n)).toEqual(result);
+      }
+    );
   });
 });
