@@ -1,4 +1,6 @@
-# asd
+# Play with Mongoose C/C++ library
+
+Quite a few attempts to get familiar with `Mongoose C/C++` networking library, was quite fun!
 
 ## Setup dependencies
 
