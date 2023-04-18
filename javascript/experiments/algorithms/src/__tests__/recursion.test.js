@@ -168,4 +168,28 @@ describe('recursion', () => {
       }
     );
   });
+
+  describe('combsFBT', () => {
+    test.todo(
+      'should generate empty combinations of full binary trees ' +
+        'for even numbers'
+    );
+
+    test.todo(
+      'should generate correct combinations of full binary trees ' +
+        'with 1 node'
+    );
+    test.todo(
+      'should generate correct combinations of full binary trees ' +
+        'with 3 nodes'
+    );
+    test.todo(
+      'should generate correct combinations of full binary trees ' +
+        'with 5 nodes'
+    );
+    test.todo(
+      'should generate correct combinations of full binary trees ' +
+        'with 7 nodes'
+    );
+  });
 });

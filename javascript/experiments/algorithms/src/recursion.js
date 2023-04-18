@@ -173,8 +173,61 @@ function generateLadderSteps(n) {
   return combinationOfSteps;
 }
 
+function TreeNode(val = 0, left = null, right = null) {
+  this.val = val;
+  this.left = left;
+  this.right = right;
+}
+
+/**
+ * Make sure to call like: combsFBT()(3). Do not use like:
+ * const generateCombs = combsFBT();
+ * generateCombs(3);
+ * Because that will use stale memoized state between multiple calls.
+ * Yeah, I know... poor design! Who cares, only I will use it probably
+ * never.
+ */
+function combsFBT() {
+  // Wrap memoized state to provide fresh memoization every time we
+  // generate full binary trees.
+  const memo = new Map();
+  memo.set(1, [new TreeNode()]);
+
+  return function _combsFBT(n) {
+    if (n % 2 === 0) return [];
+    if (!memo.has(n)) {
+      let combs = [];
+      // Make sure not to receive even number because **I THINK**
+      // it will terminate recursion as the solution is designed
+      // to skip even numbers.
+      // Start from n-2 and iterate over odd numbers.
+      // The loop generates for n=5:
+      // i=3 j=1
+      // i=1 j=3
+      // The loop generates for n=7:
+      // i=5 j=1
+      // i=3 j=3
+      // i=1 j=5
+      // The loop merges left and right three of `i` and `j`
+      for (let i = n - 2; i >= 0; i -= 2) {
+        // Start from 1 and increase by 2.
+        const j = n - i - 1;
+        for (const leftTree of _combsFBT(i)) {
+          for (const rightTree of _combsFBT(j)) {
+            combs.push(new TreeNode(0, leftTree, rightTree));
+          }
+        }
+      }
+      memo.set(n, combs);
+    }
+    return memo.get(n);
+  };
+}
+
 module.exports.perms = perms;
 module.exports.combs = combs;
 module.exports.gcd = gcd;
 module.exports.reverse = reverse;
 module.exports.generateLadderSteps = generateLadderSteps;
+module.exports.TreeNode = TreeNode;
+module.exports.combsFBT = combsFBT;
