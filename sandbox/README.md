@@ -2,6 +2,10 @@
 
 The Sandbox is a collection of module and sample units which allow me to do everything I want using C++ and its ecosystem.
 
+## Note
+
+**The reason for _Sandbox_ to be right below the root directory is to allow _SANDBOXING (pun intended)_ of the sandbox directory. Everything in related to `CI/CD` for _SandBox_ should try to isolate itself from the other parts of _sk-experiments_. The same goes for anything else related to _Sandbox_ that's outside of it.**
+
 ## Goals
 
 I want to Evolve and avoid following any binding restrictions. Some of the goals:
