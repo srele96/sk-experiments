@@ -1,6 +1,6 @@
 # Sandbox
 
-The Sandbox is a collection everything I want to do using C++ and everything related to the C++ ecosystem.
+The Sandbox is a collection of module and sample units which allow me to do everything I want using C++ and its ecosystem.
 
 ## Goals
 
