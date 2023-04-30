@@ -11,6 +11,10 @@ Make sure you have [CMake](https://cmake.org/). _(I am sorry. I forgot what it's
 3. Generate project `cmake ..`
 4. Build project: `cmake --build .`
 
+Running the samples: _(If you managed to build, you should be able to run them. I didn't decide yet on how to manage this part, so I left it as it is. It is somewhat inconvenient because the path is long-ish, but oh well...)_
+
+See the paths to executables and run them.
+
 ## Note
 
 **The reason for _Sandbox_ to be right below the root directory is to allow _SANDBOXING (pun intended)_ of the sandbox directory. Everything in related to `CI/CD` for _Sandbox_ should try to isolate itself from the other parts of _sk-experiments_. The same goes for anything else related to _Sandbox_ that's outside of it.**
