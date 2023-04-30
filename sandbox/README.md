@@ -2,6 +2,15 @@
 
 The Sandbox is a collection of module and sample units which allow me to do everything I want using C++ and its ecosystem.
 
+## Building `sandbox` samples and modules
+
+Make sure you have [CMake](https://cmake.org/). _(I am sorry. I forgot what it's like to setup CMake when I did it for the first time and some steps are definitely missing. I will update documentation if a new unfamiliar person encounters issues. Contact me and I will help!.)_
+
+1. Make sure you are in `sandbox` directory.
+2. Make `build` directory `mkdir build`
+3. Generate project `cmake ..`
+4. Build project: `cmake --build .`
+
 ## Note
 
 **The reason for _Sandbox_ to be right below the root directory is to allow _SANDBOXING (pun intended)_ of the sandbox directory. Everything in related to `CI/CD` for _Sandbox_ should try to isolate itself from the other parts of _sk-experiments_. The same goes for anything else related to _Sandbox_ that's outside of it.**
