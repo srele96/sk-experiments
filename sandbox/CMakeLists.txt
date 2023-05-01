@@ -49,6 +49,7 @@ FetchContent_Declare(
   GIT_SUBMODULES "tools/*"
 )
 FetchContent_MakeAvailable(boost)
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # The simplest way I could find to get the current directory name.
