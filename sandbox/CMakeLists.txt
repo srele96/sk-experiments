@@ -58,5 +58,7 @@ function(set_current_dirname var)
   set(${var} ${current_dirname} PARENT_SCOPE)
 endfunction()
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 add_subdirectory(modules)
 add_subdirectory(samples)
