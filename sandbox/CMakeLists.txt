@@ -33,7 +33,7 @@ FetchContent_Declare(
   GIT_TAG b6928ae5c92e21a04bbe17a558e6e066dbe632f6 # boost-1.82.0
   # Show progress, requires `FETCHCONTENT_QUIET FALSE`
   # https://stackoverflow.com/questions/60457301/cmake-fetchcontent-show-download-progress
-  GIT_PROGRESS true
+  GIT_PROGRESS TRUE
   # Cloning submodules is slow for me, be selective when adding them.
   #
   # Absolutely make sure at all times to include every submodule under "tools/*"
