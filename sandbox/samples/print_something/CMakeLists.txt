@@ -1,5 +1,7 @@
+set_current_dirname(PROJECT_NAME)
+
 project(
-  print_something
+  ${PROJECT_NAME}
   LANGUAGES CXX
   VERSION 0.1.0
 )
