@@ -5,3 +5,4 @@
 # Declare samples.
 add_subdirectory(print_aswell)
 add_subdirectory(print_something)
+add_subdirectory(use_boost_asio)

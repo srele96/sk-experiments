@@ -4,16 +4,31 @@ The Sandbox is a collection of module and sample units which allow me to do ever
 
 ## Building `sandbox` samples and modules
 
+Delete `build` directory if it exists. This step helps avoid any conflicts with previously generated build directory.
+
+Set up `vcpkg` using [vcpkg documentation](https://learn.microsoft.com/en-us/vcpkg/examples/manifest-mode-cmake)
+
+I installed `vcpkg` inside `C:\src`.
+
 Make sure you have [CMake](https://cmake.org/). _(I am sorry. I forgot what it's like to setup CMake when I did it for the first time and some steps are definitely missing. I will update documentation if a new unfamiliar person encounters issues. Contact me and I will help!.)_
 
-1. Make sure you are in `sk-experiments/sandbox` directory.
-2. Make `build` directory `mkdir build`
-3. Generate project `cmake ..`
-4. Build project: `cmake --build .`
+Make sure you are in `sk-experiments/sandbox` directory.
+
+Generate build directory and use `vcpkg` to install dependencies. The `-B` flag specifies generation location. The `-S` flag specifies where is project CMakeLists.txt. The `-DCMAKE_TOOLCHAIN_FILE` is from the `vcpkg` documentation.
+
+```powershell
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:\src\vcpkg\scripts\buildsystems\vcpkg.cmake
+```
+
+Build the project.
+
+```powershell
+cmake --build build
+```
 
 Running the samples: _(If you managed to build, you should be able to run them. I didn't decide yet on how to manage this part, so I left it as it is. It is somewhat inconvenient because the path is long-ish, but oh well...)_
 
-See the paths to executables and run them.
+Generated executables mimic path from `sandbox`, search for them inside `build` directory. _(Temporary solution until I find a better one.)_
 
 ## Note
 
