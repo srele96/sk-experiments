@@ -7,6 +7,10 @@
     {
       "name": "boost-asio",
       "version>=": "1.82.0"
+    },
+    {
+      "name": "boost-system",
+      "version>=": "1.82.0"
     }
   ],
   "builtin-baseline": "6d69bbacd2fbeae957f034dbbd2b454b5e3941fe"
