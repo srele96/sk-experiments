@@ -1,0 +1,128 @@
+On the go problem statement
+
+boost windows stream requires a file handle, to create a file handle we have to
+call windows function CreateFile, that function takes parameters where each
+parameter represents some functionality which i did not consider before, hence
+i have to consider each of them back in the problem statement and figure out
+how to solve the problem again, so i have to jump between finding out new
+information, adding it back to the problem statement, going back to attempt to
+solve the problem, finding out a new statement that should go back to the
+problem statement, solving the problem statement again, running back and forth
+until i solve the problem, add relevant tests, etc...
+
+that technique resembles the way algorithmic problems are solved, you can't
+type some code and pray it solves the problem, solution translated into code
+like that almost never works correctly...
+
+
+CreateFile
+  success
+  error
+
+
+See more on CreateFile:
+  https://learn.microsoft.com/en-us/windows/win32/fileio/creating--deleting--and-maintaining-files
+  https://learn.microsoft.com/en-us/windows/win32/fileio/creating-and-opening-files
+  https://learn.microsoft.com/en-us/windows/win32/fileio/closing-and-deleting-files
+
+- What do i need to do?
+  - i need the most basic functionality when opening a file
+
+  - I need to open file only for writing
+  - Free the handle when it's not in use any more
+- Which parameters do i need and why?
+
+create file handle in mode to open file if it exist and create if it doesn't
+
+See parameters:
+https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea
+
+lpFileName
+  "resource_one.txt"
+dwDesiredAccess
+  GENERIC_READ
+dwShareMode
+  0
+lpSecurityAttributes
+  NULL
+dwCreationDisposition
+  OPEN_ALWAYS
+dwFlagsAndAttributes
+  FILE_ATTRIBUTE_NORMAL
+hTemplateFile
+  NULL
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Code in progress, i dislike committing code that's not a logical whole
+
+/**
+ * Note!
+ *
+ * I didn't work with files using C++ and boost::asio before. Therefore I am not
+ * aware of some of the best practices so I'm not sure if everything I've done
+ * is done correctly.
+ **/
+#include "boost/asio.hpp"
+#include <fileapi.h>
+#include <iostream>
+
+int main() {
+  try {
+    boost::asio::io_context io_context;
+    boost::asio::io_context::strand strand{io_context};
+    // See parameters:
+    // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea
+    //
+    // I just chose whichever worked, here is why two functions can create a
+    // file handle:
+    // https://stackoverflow.com/questions/51462048/what-is-the-difference-between-createfile-and-createfilea
+    HANDLE file_handle{CreateFileA(
+        "resource_one.txt", GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_ALWAYS,
+        FILE_FLAG_OVERLAPPED // Enable asynchronous operations because
+                             // boost::asio::windows::stream_handle uses
+                             // overlapped_stream_handle
+                             // https://www.reddit.com/r/cpp_questions/comments/x28y0a/boostasiowindowsstream_handle_error_assign_the/
+        ,
+        NULL)};
+    if (file_handle == INVALID_HANDLE_VALUE) {
+      throw std::runtime_error("Failed to create file handle");
+    }
+    boost::asio::windows::stream_handle handle{io_context, file_handle};
+
+    handle.async_write_some(
+        boost::asio::buffer("Hello world"),
+        [&handle](const boost::system::error_code &ec, std::size_t bytes) {
+          if (ec) {
+            std::cerr << "Error: " << ec.message() << "\n";
+          } else {
+            std::cout << "Wrote " << bytes << " bytes"
+                      << "\n";
+          }
+        });
+    handle.async_write_some(
+        boost::asio::buffer("WoW! Much async!"),
+        [](const boost::system::error_code &ec, std::size_t bytes) {
+          if (ec) {
+            std::cerr << "Error: " << ec.message() << "\n";
+          } else {
+            std::cout << "Wrote " << bytes << " bytes"
+                      << "\n";
+          }
+        });
+
+    constexpr int MAX_BUFFER_SIZE {1024};
+    char buffer[MAX_BUFFER_SIZE];
+
+    io_context.run();
+    CloseHandle(file_handle);
+  } catch (std::exception &e) {
+    std::cerr << e.what() << std::endl;
+  }
+
+  return 0;
+}
+
