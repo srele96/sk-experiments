@@ -126,3 +126,52 @@ int main() {
   return 0;
 }
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The second go
+
+#include "boost/asio.hpp"
+#include "boost/system.hpp"
+#include <fileapi.h>
+#include <iostream>
+
+int main() {
+  try {
+    boost::asio::io_context io_context;
+
+    HANDLE h_file{CreateFileA("resource_one.txt", GENERIC_READ | GENERIC_WRITE,
+                              0, NULL, OPEN_ALWAYS, FILE_FLAG_OVERLAPPED,
+                              NULL)};
+    if (h_file == INVALID_HANDLE_VALUE) {
+      throw std::runtime_error("Failed to open file");
+    }
+
+    boost::asio::windows::stream_handle stream_handle{io_context, h_file};
+
+    auto notify_on_done{
+        [](const boost::system::error_code &ec, std::size_t bytes_transferred) {
+          if (ec) {
+            std::cout << "Error occured! Error code = " << ec.value()
+                      << ". Message: " << ec.message() << "\n";
+            return;
+          }
+          std::cout << "Bytes transferred: " << bytes_transferred << "\n";
+          // One thing I could do is setup another asynchronous operatio here.
+        }};
+    std::cout << "Before calls to async writes.\n";
+    stream_handle.async_write_some(
+        boost::asio::buffer("Asynch! First write, it works!"), notify_on_done);
+    stream_handle.async_write_some(
+        boost::asio::buffer("WoW! Much async, second write!"), notify_on_done);
+    stream_handle.async_write_some(
+        boost::asio::buffer("Third round! What happens now?"), notify_on_done);
+    std::cout << "After calls to async writes.\n";
+
+    io_context.run();
+    CloseHandle(h_file);
+  } catch (std::exception &e) {
+    std::cout << e.what() << "\n";
+  }
+
+  return 0;
+}
