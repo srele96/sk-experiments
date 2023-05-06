@@ -1,4 +1,19 @@
-On the go problem statement
+# Use boost::asio
+
+Use boost::asio to verify that it works with the sandbox and vcpkg setup.
+
+## Original intentions
+
+I originally wanted to use boost::asio to write to a file asynchronously, but
+later thought that I am not sure whether that makes sense... I didn't even
+have well defined behavior requirements.
+
+I ended up using boost::asio code from tutorial for asynchronous timer. That
+validated that boost::asio works with the sandbox and vcpkg setup.
+
+## Some of the things I tried
+
+### Define the problem
 
 boost windows stream requires a file handle, to create a file handle we have to
 call windows function CreateFile, that function takes parameters where each
@@ -14,11 +29,17 @@ that technique resembles the way algorithmic problems are solved, you can't
 type some code and pray it solves the problem, solution translated into code
 like that almost never works correctly...
 
+### Create a file handle
+
+Boost asio works with `boost::asio::windows::stream_handle` which takes
+`boost::asio::io_context` and a `HANDLE`. I found that I can create it using
+windows api `CreateFile`. Then I added it back in the problem statement. After
+that I read documentation to figure out what behavior there is and what
+behavior do I want.
 
 CreateFile
-  success
-  error
-
+  success (state)
+  error (state)
 
 See more on CreateFile:
   https://learn.microsoft.com/en-us/windows/win32/fileio/creating--deleting--and-maintaining-files
@@ -40,25 +61,33 @@ https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfil
 lpFileName
   "resource_one.txt"
 dwDesiredAccess
-  GENERIC_READ
+  // I wanted to read and write.
+  GENERIC_READ | GENERIC_WRITE
 dwShareMode
+  // Prevent undesired effects by other processes.
   0
 lpSecurityAttributes
+  // I didn't need anything that I was aware of.
   NULL
 dwCreationDisposition
+  // Create if doesn't exist, open if exist.
   OPEN_ALWAYS
 dwFlagsAndAttributes
-  FILE_ATTRIBUTE_NORMAL
+  // There was runtime error without this flag.
+  FILE_FLAG_OVERLAPPED
 hTemplateFile
+  // I didn't need one.
   NULL
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+## Attempts to get it working
 
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## First attempt to get it working.
 
 Code in progress, i dislike committing code that's not a logical whole
 
+```cpp
 /**
  * Note!
  *
@@ -125,11 +154,13 @@ int main() {
 
   return 0;
 }
+```
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The second go
+### The second attempt to get it working.
 
+```cpp
 #include "boost/asio.hpp"
 #include "boost/system.hpp"
 #include <fileapi.h>
@@ -175,3 +206,4 @@ int main() {
 
   return 0;
 }
+```
