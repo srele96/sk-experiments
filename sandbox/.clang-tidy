@@ -1,3 +1,5 @@
+# List of available cheks at:
+# https://clang.llvm.org/extra/clang-tidy/#clang-tidy
 Checks: '
   clang-analyzer-*,
   bugprone-*,
