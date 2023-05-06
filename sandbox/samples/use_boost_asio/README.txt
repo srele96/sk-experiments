@@ -124,7 +124,7 @@ int main() {
 
     handle.async_write_some(
         boost::asio::buffer("Hello world"),
-        [&handle](const boost::system::error_code &ec, std::size_t bytes) {
+        [](const boost::system::error_code &ec, std::size_t bytes) {
           if (ec) {
             std::cerr << "Error: " << ec.message() << "\n";
           } else {
