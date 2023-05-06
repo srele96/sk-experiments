@@ -1,3 +1,5 @@
+# Use clang-tidy to provide me feedback on new things that I can learn and that
+# I am doing wrong.
 # List of available cheks at:
 # https://clang.llvm.org/extra/clang-tidy/#clang-tidy
 Checks: '
