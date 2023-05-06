@@ -15,6 +15,7 @@ find_package(Boost REQUIRED)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # The simplest way I could find to get the current directory name.
+# Useful when setting sample or module name to the current directory name.
 function(set_current_dirname var)
   cmake_path(GET CMAKE_CURRENT_SOURCE_DIR FILENAME current_dirname)
   set(${var} ${current_dirname} PARENT_SCOPE)
