@@ -13,6 +13,7 @@ describe('decompress', () => {
     onlystring: 'onlystring',
     'much2[2[2[hey2[b]3[d]]2[c]]]wow':
       'muchheybbdddheybbdddccheybbdddheybbdddccheybbdddheybbdddccheybbdddheybbdddccwow',
+    '3[]': '',
     '': '',
   };
 
