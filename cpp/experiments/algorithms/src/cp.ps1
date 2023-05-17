@@ -23,7 +23,7 @@ $out = "$outDir\$filename.exe"
 
 if ($filename) {
   Write-Host "Compiling $file to $out."
-  g++ -std=c++11 -O2 -Wall $file -o $out
+  g++ -std=c++20 -O2 -Wall $file -o $out
   Write-Host "Done."
   Write-Host $linebreak
 
