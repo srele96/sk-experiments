@@ -11,7 +11,7 @@ Write-Host $linebreak
 
 $outDir = "build"
 
-if (!(Test-Path $outDir)) {
+if (-Not (Test-Path $outDir)) {
   Write-Host "Creating $outDir directory"
   New-Item -ItemType Directory -Path $outDir
   Write-Host $linebreak
