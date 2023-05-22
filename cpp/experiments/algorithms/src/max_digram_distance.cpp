@@ -4,6 +4,24 @@
 
 namespace solution {
 
+// Pseudo-Code for procedure
+//
+// Max-Digram-Distance(string):
+//
+// initiate max distance to non existant distance
+// create map of indices of first occurence of each digram
+// for each digram
+//  if index of first character of digram is saved
+//    if max distance is initialized
+//      calculate distance from current digram to first matching digram
+//      if distance is larger than max distance
+//        save distance as max distance
+//    else
+//      initialize max distance
+//  else
+//    save digram
+// return max distance
+
 std::string::difference_type calcualte_max_digram_distance(
     const std::string &s) {
   constexpr std::string::difference_type not_found{-1};
