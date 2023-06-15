@@ -4,6 +4,11 @@ Srecko Kostic's collection of experiments and reading topic wishlist in form of 
 
 I start to like this repository. It serves as a history and a tool to reflect. I can see how much I've improved.
 
+## Algorithmic problems
+
+- [LeetCode - srele96](https://leetcode.com/srele96/)
+- [CodeForces - flexos96](https://codeforces.com/profile/flexos96)
+
 ## Experiments
 
 - [JavaScript](./javascript)
