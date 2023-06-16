@@ -1,0 +1,2 @@
+# Ignore directory used to generate project using cmake.
+build

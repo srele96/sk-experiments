@@ -1,0 +1,3 @@
+# Use LLVM just because it's what the page below uses:
+# https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+BasedOnStyle: LLVM
