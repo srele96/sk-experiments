@@ -32,3 +32,4 @@ The root directory for JavaScript experiments.
 - [Do randomness with `@flexos/elements`](./experiments/randomness/)
 - [Maze](./experiments/maze/)
 - [Elements](./experiments/elements/)
+- [More fractals](./experiments/more-fractals/)
