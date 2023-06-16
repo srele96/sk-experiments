@@ -4,6 +4,39 @@ Create services and turn them into containers using docker and docker compose.
 
 Ignore all good practices for the sake of practicing and playing around with docker configuration.
 
+## Architecture
+
+![Architecture](./architecture.png)
+
+### Architectural decisions
+
+All architectural decisions were made for fun and to make my life even more complicated than it currently is.
+
+My goal was to cause myself as many problems are possible to have as many things to fix to learn as much as possible.
+
+## How to use
+
+```powershell
+docker compose up --build
+```
+
+Services on the port `4000`:
+
+```txt
+http://localhost:4000/
+http://localhost:4000/foo
+http://localhost:4000/bar
+```
+
+Services on the port `3000`:
+
+```txt
+http://localhost:3000/
+http://localhost:3000/foo
+http://localhost:3000/bar
+http://localhost:3000/postgres
+```
+
 ## Documentation
 
 Initially:
