@@ -3,9 +3,18 @@
 // docker compose.
 // ----------------------------------------------------------------------------
 
+const pg = require('pg');
 const redis = require('redis');
 const express = require('express');
 const app = express();
+
+const pgPool = new pg.Pool({
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
+  host: 'postgres',
+  port: 5432,
+});
 
 const redisClient = redis.createClient({
   url: 'redis://redis:6379',
@@ -63,6 +72,20 @@ app.get('/bar', (req, res) => {
       res.status(500);
       res.send('Error incrementing bar.');
     });
+});
+
+app.get('/postgres', async (req, res) => {
+  try {
+    const client = await pgPool.connect();
+    const result = await client.query('SELECT * FROM my_schema.users');
+    client.release();
+    res.status(200);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error getting users.\n', error);
+    res.status(500);
+    res.send('Error getting users.');
+  }
 });
 
 app.listen(3000, () => {

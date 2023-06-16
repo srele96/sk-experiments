@@ -10,16 +10,20 @@ services:
       - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
       - "./populate.sql:/docker-entrypoint-initdb.d/populate.sql"
     environment:
-      # Terrible practice, but none cares for this demo.
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: db
+      POSTGRES_USER: "${POSTGRES_USER:?error}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
+      POSTGRES_DB: "${POSTGRES_DB:?error}"
   one:
     build: ./one
     ports:
       - "3000:3000"
     depends_on:
       - redis
+      - postgres
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:?error}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
+      POSTGRES_DB: "${POSTGRES_DB:?error}"
   two:
     build: ./two
     ports:
