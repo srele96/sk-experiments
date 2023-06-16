@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 });
 
 const client = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'http://one:3000',
 });
 
 app.get('/', (req, res) => {
