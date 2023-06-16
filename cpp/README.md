@@ -28,3 +28,4 @@ The root directory for C++ experiments.
 - [Design iterator](./experiments/design-iterator/)
 - [Static and Dynamic library](./experiments/static_and_dynamic_library/)
 - [Try boost::asio](./experiments/try_boost_asio/)
+- [Initialization types](./experiments/initialization_types/)
