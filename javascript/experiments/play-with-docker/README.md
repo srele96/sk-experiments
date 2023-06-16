@@ -1,5 +1,9 @@
 # Play with docker
 
+Services are named poorly `one` and `two` because i was trying to be _"fast"_ which I wasn't. Well, that's subjective whether I was fast or not.
+
+I had the help of all the AI bots of the world, ChatGPT and GitHub copilot and my own brain which I train trying various things. This was one of them.
+
 Create services and turn them into containers using docker and docker compose.
 
 Ignore all good practices for the sake of practicing and playing around with docker configuration.
