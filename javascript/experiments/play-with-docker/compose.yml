@@ -1,0 +1,11 @@
+services:
+  one:
+    build: ./one
+    ports:
+      - "3000:3000"
+  two:
+    build: ./two
+    ports:
+      - "4000:4000"
+    depends_on:
+      - one
