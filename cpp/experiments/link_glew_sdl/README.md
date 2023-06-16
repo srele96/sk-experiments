@@ -2,6 +2,25 @@
 
 An experiment to link GLEW and SDL.
 
+## Running the example
+
+Information on limitation and a set of steps on how to run the code using OpenGL.
+
+### Limitations
+
+- Only works on 64-bit Windows operating system.
+- I only used it on Windows 10.
+
+### Steps
+
+1. `.\SetupDeps.bat` - Sets up dependencies by downloading and extracting them to correct location.
+2. `.\compile.bat` - Compiles the code into executable.
+3. `.\main.exe` - Runs the executable, you should see a triangle on the screen.
+
+## Set up dependencies
+
+[Here](./docs/) is documentation on how to set up dependencies.
+
 ## How to run
 
 I downloaded .dll and .lib files for 64-bit processor on Windows operating system. I checked the licences for SDL and GLEW and as I understood they allow redistribution. In case I would like to run this experiment on other machine, I would need it to be 64-bit and I would need the binaries.
