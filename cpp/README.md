@@ -23,3 +23,4 @@ The root directory for C++ experiments.
 - [Inspect assembly and use debugger](./experiments/inspect_assembly/)
 - [Compile and Run using Python](./experiments/compile_using_python/)
 - [Learn nuances](./experiments/learn_nuances/)
+- [Play with Mongoose C/C++](./experiments/play_with_mongoose_c_cpp/)
