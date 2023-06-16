@@ -1,3 +1,8 @@
+// ----------------------------------------------------------------------------
+// Ignore all good practices and make services as fast as possible to use with
+// docker compose.
+// ----------------------------------------------------------------------------
+
 const redis = require('redis');
 const express = require('express');
 const app = express();
