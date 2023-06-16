@@ -28,3 +28,4 @@ The root directory for JavaScript experiments.
 - [Play with types - TypeScript](./experiments/play-with-types/)
 - [Render React on The Server](./experiments/render-react-on-the-server/)
 - [Layers - Album With Cool Scaling and Movement](./experiments/layers/)
+- [Design iterator](./experiments/design-iterator/)
