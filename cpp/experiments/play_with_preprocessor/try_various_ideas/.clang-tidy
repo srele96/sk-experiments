@@ -1,0 +1,5 @@
+# WARNING!
+# Disable clang-tidy checks for the whole directory because of illegal usage
+# of C++ syntax due to playing with preprocessor.
+Checks: '*'
+WarningsAsErrors: ''
