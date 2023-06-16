@@ -1,0 +1,92 @@
+[
+  {
+    "_id": "64271dceb513f27b3a3ba3de",
+    "index": 2,
+    "guid": "2d4790bb-2f0a-47dd-96d1-c38dc36952f6",
+    "isActive": false,
+    "balance": "$2,350.94",
+    "picture": "http://placehold.it/32x32",
+    "age": 30,
+    "eyeColor": "brown",
+    "name": "Lorraine Daugherty",
+    "gender": "female",
+    "company": "UNCORP",
+    "email": "lorrainedaugherty@uncorp.com",
+    "phone": "+1 (801) 411-2448",
+    "address": "281 Logan Street, Jennings, Maine, 4854",
+    "about": "Magna amet non consequat laboris incididunt ullamco occaecat do velit magna ipsum. Sunt deserunt ea veniam in. Sunt sunt incididunt quis aliquip eu officia et fugiat. Culpa in voluptate nostrud nisi ea exercitation aute ex duis.\r\n",
+    "registered": "2016-08-02T09:57:23 -02:00",
+    "latitude": 30.387029,
+    "longitude": -170.882055,
+    "tags": [
+      "deserunt",
+      "dolore",
+      "eu",
+      "irure",
+      "occaecat",
+      "reprehenderit",
+      "eiusmod"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Staci Beach"
+      },
+      {
+        "id": 1,
+        "name": "Glenna Foley"
+      },
+      {
+        "id": 2,
+        "name": "Holcomb Phillips"
+      }
+    ],
+    "greeting": "Hello, Lorraine Daugherty! You have 7 unread messages.",
+    "favoriteFruit": "strawberry"
+  },
+  {
+    "_id": "64271dceb513f27b3a3ba3de",
+    "index": 2,
+    "guid": "2d4790bb-2f0a-47dd-96d1-c38dc36952f6",
+    "isActive": false,
+    "balance": "$2,350.94",
+    "picture": "http://placehold.it/32x32",
+    "age": 30,
+    "eyeColor": "brown",
+    "name": "Lorraine Daugherty",
+    "gender": "female",
+    "company": "UNCORP",
+    "email": "lorrainedaugherty@uncorp.com",
+    "phone": "+1 (801) 411-2448",
+    "address": "281 Logan Street, Jennings, Maine, 4854",
+    "about": "Magna amet non consequat laboris incididunt ullamco occaecat do velit magna ipsum. Sunt deserunt ea veniam in. Sunt sunt incididunt quis aliquip eu officia et fugiat. Culpa in voluptate nostrud nisi ea exercitation aute ex duis.\r\n",
+    "registered": "2016-08-02T09:57:23 -02:00",
+    "latitude": 30.387029,
+    "longitude": -170.882055,
+    "tags": [
+      "deserunt",
+      "dolore",
+      "eu",
+      "irure",
+      "occaecat",
+      "reprehenderit",
+      "eiusmod"
+    ],
+    "friends": [
+      {
+        "id": 0,
+        "name": "Staci Beach"
+      },
+      {
+        "id": 1,
+        "name": "Glenna Foley"
+      },
+      {
+        "id": 2,
+        "name": "Holcomb Phillips"
+      }
+    ],
+    "greeting": "Hello, Lorraine Daugherty! You have 7 unread messages.",
+    "favoriteFruit": "strawberry"
+  }
+]

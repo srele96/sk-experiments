@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Fractal Canopy</title>
+
+    <style>
+      :root {
+        --margin-none: 0;
+        --margin-small: 5px;
+        --margin-medium: 10px;
+      }
+
+      canvas {
+        border: 1px solid black;
+      }
+
+      .configuration {
+        display: flex;
+        flex-direction: column;
+        width: max-content;
+        padding: var(--margin-small) var(--margin-none);
+      }
+
+      .configuration__label {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .configuration__label:not(:last-child) {
+        margin-bottom: var(--margin-small);
+      }
+
+      .configuration__input {
+        margin-left: var(--margin-medium);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="fractals"></div>
+
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
+
+    <script type="text/babel" data-presets="env,react">
+      const { useState, useEffect, useRef, Fragment, StrictMode } = React;
+
+      class Geometry {
+        static GetRadians(degrees) {
+          return (Math.PI / 180) * degrees;
+        }
+
+        static GetDestination({ from, lineLength, angle }) {
+          const radians = Geometry.GetRadians(angle);
+
+          return {
+            x: from.x + Math.cos(radians) * lineLength,
+            y: from.y + Math.sin(radians) * lineLength,
+          };
+        }
+      }
+
+      class FractalCanopy {
+        #scale;
+        #rotateLeftAngle;
+        #rotateRightAngle;
+        #useBeginPoint;
+        #useSubsequentPoint;
+
+        constructor({
+          scale,
+          rotateLeftAngle,
+          rotateRightAngle,
+          useBeginPoint,
+          useSubsequentPoint,
+        }) {
+          this.#scale = scale;
+          this.#rotateLeftAngle = rotateLeftAngle;
+          this.#rotateRightAngle = rotateRightAngle;
+          this.#useBeginPoint = useBeginPoint;
+          this.#useSubsequentPoint = useSubsequentPoint;
+        }
+
+        GeneratePoints({ generation, from, angle, lineLength }) {
+          if (generation > 0) {
+            this.GeneratePoints({
+              generation: generation - 1,
+              from: Geometry.GetDestination({
+                from,
+                angle,
+                lineLength,
+              }),
+              lineLength: lineLength * this.#scale,
+              angle: angle - this.#rotateLeftAngle,
+            });
+            this.GeneratePoints({
+              generation: generation - 1,
+              from: Geometry.GetDestination({
+                from,
+                angle,
+                lineLength,
+              }),
+              lineLength: lineLength * this.#scale,
+              angle: angle + this.#rotateRightAngle,
+            });
+
+            this.#useSubsequentPoint(from);
+          } else {
+            this.#useBeginPoint(from);
+          }
+        }
+      }
+
+      function Configuration({ data, children }) {
+        const [configuration, setConfiguration] = useState(data);
+
+        if (typeof children !== 'function') {
+          throw new Error(
+            'Excepted children to be a function. Received ' + typeof children
+          );
+        }
+
+        function updateIfWithinProvidedBounds({ name, newValue, oldValue }) {
+          const { min, max } = configuration[name];
+
+          const shouldCheckBounds =
+            Number.isFinite(min) && Number.isFinite(max);
+
+          if (shouldCheckBounds) {
+            const isWithinBounds = min <= newValue && newValue <= max;
+
+            return isWithinBounds ? newValue : oldValue;
+          } else {
+            return newValue;
+          }
+        }
+
+        function onChange(event) {
+          const { name, value } = event.target;
+
+          setConfiguration((previousConfiguration) => {
+            return {
+              ...previousConfiguration,
+              [name]: {
+                ...previousConfiguration[name],
+                value: updateIfWithinProvidedBounds({
+                  name,
+                  newValue: parseFloat(value),
+                  oldValue: parseFloat(previousConfiguration[name].value),
+                }),
+              },
+            };
+          });
+        }
+
+        const configurationInputs = Object.entries(configuration).map(
+          ([key, entry]) => {
+            return (
+              <label className="configuration__label" key={key} htmlFor={key}>
+                {entry.label}
+
+                <input
+                  className="configuration__input"
+                  type="number"
+                  id={key}
+                  name={key}
+                  value={entry.value}
+                  step={entry.step}
+                  min={entry.min}
+                  max={entry.max}
+                  onChange={onChange}
+                />
+              </label>
+            );
+          }
+        );
+
+        const simplifiedConfiguration = {};
+        const simplifyConfigurationUsage = Object.entries(configuration).reduce(
+          (accumulator, [key, data]) => {
+            accumulator[key] = data.value;
+            return accumulator;
+          },
+          simplifiedConfiguration
+        );
+
+        return children(
+          <div className="configuration">{configurationInputs}</div>,
+          simplifyConfigurationUsage
+        );
+      }
+
+      function Canvas(props) {
+        const canvas = useRef(null);
+        const { useContext2d, ...rest } = props;
+
+        useEffect(() => {
+          useContext2d(canvas.current.getContext('2d'));
+        }, [useContext2d]);
+
+        return <canvas ref={canvas} {...rest} />;
+      }
+
+      const initialConfiguration = {
+        x: {
+          label: 'x',
+          value: 203,
+        },
+        y: {
+          label: 'y',
+          value: 310,
+        },
+        lineLength: {
+          label: 'line length',
+          value: 40,
+        },
+        angle: {
+          label: 'angle',
+          value: -90,
+        },
+        scale: {
+          label: 'scale',
+          value: 0.8,
+          step: 0.1,
+        },
+        canvasWidth: {
+          label: 'canvas width',
+          value: 360,
+        },
+        canvasHeight: {
+          label: 'canvas height',
+          value: 360,
+        },
+        generation: {
+          label: 'generation',
+          value: 10,
+          min: 1,
+          max: 10,
+        },
+        rotateLeftAngle: {
+          label: 'rotate left angle',
+          value: 55,
+        },
+        rotateRightAngle: {
+          label: 'rotate right angle',
+          value: 25,
+        },
+      };
+
+      function Fractals() {
+        return (
+          <main>
+            <Configuration data={initialConfiguration}>
+              {(configurationInputs, configuration) => {
+                const {
+                  canvasWidth,
+                  canvasHeight,
+                  scale,
+                  rotateLeftAngle,
+                  rotateRightAngle,
+                  generation,
+                  x,
+                  y,
+                  lineLength,
+                  angle,
+                } = configuration;
+
+                return (
+                  <Fragment>
+                    {configurationInputs}
+
+                    <Canvas
+                      width={canvasWidth}
+                      height={canvasHeight}
+                      useContext2d={(ctx) => {
+                        const fractalCanopy = new FractalCanopy({
+                          scale,
+                          rotateLeftAngle,
+                          rotateRightAngle,
+                          useBeginPoint: (point) => {
+                            ctx.moveTo(point.x, point.y);
+                          },
+                          useSubsequentPoint: (point) => {
+                            ctx.lineTo(point.x, point.y);
+                          },
+                        });
+
+                        const begin = 0;
+
+                        ctx.clearRect(begin, begin, canvasWidth, canvasHeight);
+
+                        ctx.beginPath();
+
+                        fractalCanopy.GeneratePoints({
+                          generation,
+                          from: { x, y },
+                          lineLength,
+                          angle,
+                        });
+
+                        ctx.stroke();
+                      }}
+                    />
+                  </Fragment>
+                );
+              }}
+            </Configuration>
+          </main>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('fractals')).render(
+        <StrictMode>
+          <Fractals />
+        </StrictMode>
+      );
+    </script>
+  </body>
+</html>

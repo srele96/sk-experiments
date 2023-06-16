@@ -16,7 +16,8 @@ int main() {
   thornhil_industries.Accept(
       std::make_unique<role::Maintenance>("Captain", "Feline"));
   thornhil_industries.Accept(std::make_unique<role::Operator>("Jane", "Doe"));
-  thornhil_industries.Accept(std::make_unique<role::Operator>("Hindrance", "Man"));
+  thornhil_industries.Accept(
+      std::make_unique<role::Operator>("Hindrance", "Man"));
 
   thornhil_industries.StartWorkHours();
 
