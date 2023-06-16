@@ -1,0 +1,128 @@
+Notes on deliberate practice application
+
+
+deliberate practise is purposeful practise that
+- knows where it is going
+- knows how to get there
+
+
+objective reproducible measures of experts best of the best
+what does the expert do that makes him excel more than the rest
+how does the expert train to be better than others?
+how to setup feedback what i'm doing wrong?
+
+
+how to choose who to learn from?
+
+
+the guy who chased to learn golf
+  - set really concrete spreadsheet of topics to improve on
+  - create a diary of studying, what, how much, how long, what did i do wrong, what did i do right, what can i improve
+
+
+the best teachers didn't set on the rules to particular problems
+encouraged students to think about general patterns and processes
+the why more than how, this was motivating to the children because it raised their intelectual interests
+(this is true because i admire good code when i see it because i can glance at surface of how much effort is behind it)
+
+
+* break the thing down so it is just 10% above my maximum (learn the next atopic step towards larger goal)
+
+* use deliberate practice to learn algorithms from the book
+  - engage intelectual process
+  - find learning resource
+  - how to achieve the same thing they achieved
+  - set measureable goals
+  - learn, get feedback (maybe like benjamin franklin), fix mistakes, create mental representations
+
+
+
+* with the right training, it is possible to achieve exceptionalism
+    - Paul T. Brady has tried to learn perfect pitch by himself and didn't succeed
+    - after age 32 he found an article on how to learn one note, he decided to use it as foundation
+    - after two months of following the training regime, he decided to try it out
+    - for a month or so his wife played one key note on piano, after that was done, he checked results
+    - he got 37 right and 8 off by half or more, which was very close
+    - with the right training, any skill can be learned
+    - __USE_BOOKS_ON_SOFTWARE_ENGINEERING_FROM_GENERALLY_ACCEPTED_PUBLISHERS__, CLEAN_CODE, ETC
+
+
+* pathbreakers - raise to the level of exceptional people before and make a breakthrough (scrabble, pablo picaso)
+
+* obsessing over one thing (autistic savante's are more likely to obsess over one thing and develop highly efficient methods)
+
+* a way to consistently push myself above the current skill
+
+
+
+
+
+
+__ thinking ' how to make x ' yields context and creates mental representations, for example:
+'how to calculate latency?'
+'how to create recursion tree'
+''
+
+
+Things to do to improve the training:
+  * specific training for things i am weak at
+
+* representations of fundamentals
+* how can i effectively learn each algorithm concept
+
+* the students thought about questions
+  - they thought about why it is important, how can they use concepts
+  - questions made them think like physicists
+
+* what is the fundamental problem of learning concept?
+
+* the goal 'what should a person be able to do?' is different than path 'how to get there?'
+
+Questions to ask:
+  * where do i want to go?
+  * how do i get there?
+
+Build mental representation by:
+  - doing something
+  - trying to achieve it
+  - failing
+  - revising
+  - trying again, over, and over again
+
+* What should I be able to do?
+
+* I should gain the ability to improvise and explore on my own
+
+* An expert can understand what it takes to become an expert in other field
+
+* what defines an expert?
+* how do an experts mental representations look like?
+* a new world with many experts
+* what does ane xpert do and how to get there?
+
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+ATTEMPT TO MAKE DELIBERATE PRACTICE A HABIT
+
+LEARN ONE INTERESTING IDEA AT A TIME
+
+  - Want to learn to use Canvas? Implement the exciting idea you have.
+  - Want to learn to use Git? Implement the exciting idea you have.
+  - Want to learn Game Graphics Development? Implement the exciting idea you have.
+  - Want to become an expert? Come back to the same idea after blowing off some steam.
+    Practice consistency. Oh, and implement that exciting idea to blow off some steam.
+
+LEARN IN A DIFFERENT WAY. TRY DIFFERENT LEARNING APPROACHES.
+COPY AND PRACTICE THE WORK OF EXPERTS TO PRODUCE THE WORK OF
+EXPERTS.
+
+It DOES NOT MATTER what it is that I am learning. In the end, I will have tried it all.
+Some may be interesting, and the rest may not. I won't be an expert in any field, but I
+will have tried enough to know what I like.
+
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
