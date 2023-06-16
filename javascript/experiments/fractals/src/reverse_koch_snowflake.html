@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Reverse Koch Snowflake</title>
+
+    <style>
+      #reverse-koch-snowflake {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="reverse-koch-snowflake" width="360" height="360"></canvas>
+
+    <script>
+      const geometry = {
+        get_radians: (degrees) => {
+          return (Math.PI / 180) * degrees;
+        },
+        get_destination: ({ from, line_length, angle }) => {
+          const radians = geometry.get_radians(angle);
+
+          return {
+            x: from.x + Math.cos(radians) * line_length,
+            y: from.y + Math.sin(radians) * line_length,
+          };
+        },
+      };
+
+      function koch_line({ n, from, line_length, angle, cb }) {
+        if (n > 1) {
+          const point_one = koch_line({
+            n: n - 1,
+            line_length: line_length / 3,
+            from,
+            angle,
+            cb,
+          });
+
+          const point_two = koch_line({
+            n: n - 1,
+            line_length: line_length / 3,
+            from: point_one,
+            angle: angle - 60,
+            cb,
+          });
+
+          const point_three = koch_line({
+            n: n - 1,
+            line_length: line_length / 3,
+            from: point_two,
+            angle: angle + 60,
+            cb,
+          });
+
+          return koch_line({
+            n: n - 1,
+            line_length: line_length / 3,
+            from: point_three,
+            angle,
+            cb,
+          });
+        } else {
+          const destination = geometry.get_destination({
+            from,
+            line_length,
+            angle,
+          });
+
+          cb(destination);
+
+          return destination;
+        }
+      }
+
+      function koch_snowflake({ n, from, line_length, angle }) {
+        const canvas = document.getElementById('reverse-koch-snowflake');
+        const ctx = canvas.getContext('2d');
+
+        ctx.moveTo(from.x, from.y);
+
+        function lineTo(destination) {
+          ctx.lineTo(destination.x, destination.y);
+        }
+
+        const right_edge = koch_line({
+          n,
+          from,
+          angle: angle,
+          line_length,
+          cb: lineTo,
+        });
+
+        const degrees_to_top_edge = -120;
+        const top_edge = koch_line({
+          n,
+          from: right_edge,
+          angle: angle + degrees_to_top_edge,
+          line_length,
+          cb: lineTo,
+        });
+
+        const degrees_to_left_edge = -240;
+        koch_line({
+          n,
+          from: top_edge,
+          angle: angle + degrees_to_left_edge,
+          line_length,
+          cb: lineTo,
+        });
+
+        ctx.stroke();
+      }
+
+      const generation = 7;
+      const x = 30;
+      const y = 267;
+      const from = { x, y };
+      const line_length = 250;
+      const angle = 0;
+
+      koch_snowflake({ n: generation, from, line_length, angle });
+    </script>
+  </body>
+</html>

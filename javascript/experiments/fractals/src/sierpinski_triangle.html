@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Sierpinski Triangle</title>
+
+    <style>
+      #sierpinski-triangle {
+        border: 1px solid black;
+      }
+
+      .configuration {
+        padding: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="configuration">
+      <label for="generation">
+        generation
+        <input type="number" value="1" name="generation" id="generation" />
+      </label>
+    </div>
+
+    <canvas id="sierpinski-triangle" width="360" height="360"></canvas>
+
+    <script>
+      // # Explanation:
+      //
+      // ## Base case:
+      //
+      // Assume angle is 0 degree.
+      // Right Bottom Edge = From Left Bottom Edge, draw a line using length lying on angle 0.
+      // Center Top Edge = From Right Bottom Edge draw a line using length lying on angle - 120 degres.
+      // Connect Center Top Edge to the Left Bottom edge.
+      //
+      // That yields a triangle.
+      //
+      // ## Next inductive case
+      //
+      //         @
+      //       @ @ @
+      //     3 @ @ @ @
+      //   @ @ @ @ @ @ @
+      // 1 @ @ @ 2 @ @ @ @
+      //
+      // Draw the same triangle, half of original length starting from points:
+      //
+      // - First point:  1
+      // - Second point: 2
+      // - Third point:  3
+
+      const geometry = {
+        get_radians: (degrees) => {
+          return (Math.PI / 180) * degrees;
+        },
+        get_destination: ({ from, line_length, angle }) => {
+          const radians = geometry.get_radians(angle);
+
+          return {
+            x: from.x + Math.cos(radians) * line_length,
+            y: from.y + Math.sin(radians) * line_length,
+          };
+        },
+      };
+
+      const id = 'sierpinski-triangle';
+      const canvas = document.getElementById(id);
+      const ctx = canvas.getContext('2d');
+
+      function sierpinski_triangle({ generation, from, angle, line_length }) {
+        if (generation > 1) {
+          sierpinski_triangle({
+            generation: generation - 1,
+            from,
+            angle,
+            line_length: line_length / 2,
+          });
+          sierpinski_triangle({
+            generation: generation - 1,
+            from: geometry.get_destination({
+              from,
+              angle,
+              line_length: line_length / 2,
+            }),
+            angle,
+            line_length: line_length / 2,
+          });
+          sierpinski_triangle({
+            generation: generation - 1,
+            from: geometry.get_destination({
+              from,
+              angle: angle - 60,
+              line_length: line_length / 2,
+            }),
+            angle,
+            line_length: line_length / 2,
+          });
+        } else {
+          ctx.moveTo(from.x, from.y);
+          const right_edge = geometry.get_destination({
+            from,
+            angle,
+            line_length,
+          });
+          ctx.lineTo(right_edge.x, right_edge.y);
+
+          const top_edge = geometry.get_destination({
+            from: right_edge,
+            angle: angle - 120,
+            line_length,
+          });
+          ctx.lineTo(top_edge.x, top_edge.y);
+          ctx.lineTo(from.x, from.y);
+        }
+      }
+
+      function draw_sierpinski_triangle(generation) {
+        const begin = 0;
+        const x = 30;
+        const y = 330;
+        const left_bottom_edge = { x, y };
+        const horisontal = 0;
+        const fill_most_of_the_screen = 300;
+
+        ctx.clearRect(begin, begin, canvas.width, canvas.height);
+        ctx.beginPath();
+
+        sierpinski_triangle({
+          generation,
+          from: left_bottom_edge,
+          angle: horisontal,
+          line_length: fill_most_of_the_screen,
+        });
+
+        ctx.fill();
+      }
+
+      (function setup_listeners() {
+        document.getElementById('generation').addEventListener('input', (e) => {
+          draw_sierpinski_triangle(e.target.value);
+        });
+
+        window.addEventListener('load', () => {
+          const base_generation = 1;
+          draw_sierpinski_triangle(base_generation);
+        });
+      })();
+    </script>
+  </body>
+</html>
