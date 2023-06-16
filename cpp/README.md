@@ -25,3 +25,4 @@ The root directory for C++ experiments.
 - [Learn nuances](./experiments/learn_nuances/)
 - [Play with Mongoose C/C++](./experiments/play_with_mongoose_c_cpp/)
 - [Observe lambda capture behavior](./experiments/observe_lambda_capture_behavior/)
+- [Design iterator](./experiments/design-iterator/)
