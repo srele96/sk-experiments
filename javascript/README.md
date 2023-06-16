@@ -29,3 +29,4 @@ The root directory for JavaScript experiments.
 - [Render React on The Server](./experiments/render-react-on-the-server/)
 - [Layers - Album With Cool Scaling and Movement](./experiments/layers/)
 - [Design iterator](./experiments/design-iterator/)
+- [Do randomness with `@flexos/elements`](./experiments/randomness/)
