@@ -38,3 +38,4 @@ The root directory for JavaScript experiments.
 - [Recursive implementation of Fractals](./experiments/fractals/)
 - [Web shop _(A half baked one that doesn't work :D🗡️)_](./experiments/web-shop/)
 - [Use Webpack and SWC](./experiments/use-webpack-and-swc/)
+- [Count images](./experiments/count-images/)
