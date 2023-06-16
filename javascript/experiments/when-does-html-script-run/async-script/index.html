@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Script with async</title>
+  </head>
+  <body>
+    <h1>Script with async</h1>
+    <!-- Loading order of script tags with async attribute -->
+    <!-- load larger script first to make sure that it should get executed first -->
+    <!-- if second scripts gets executed before the first one,
+      they really do execute asynchronously -->
+    <script src="first.js" async></script>
+    <script src="second.js" async></script>
+  </body>
+</html>

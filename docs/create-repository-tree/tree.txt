@@ -1,0 +1,220 @@
+.
+├── cpp
+│   ├── docs
+│   │   ├── important-concepts.md
+│   │   ├── README.md
+│   │   └── setup-clang-format-windows.md
+│   ├── experiments
+│   │   ├── build-static-library
+│   │   │   ├── main.cpp
+│   │   │   ├── Point.cpp
+│   │   │   ├── Point.hpp
+│   │   │   └── README.md
+│   │   ├── build-with-cmake
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── README.md
+│   │   │   └── source
+│   │   │       ├── CMakeLists.txt
+│   │   │       ├── main.cpp
+│   │   │       ├── Point.cpp
+│   │   │       └── Point.hpp
+│   │   ├── README.md
+│   │   ├── runner
+│   │   │   ├── main.cpp
+│   │   │   ├── README.md
+│   │   │   └── run.bat
+│   │   └── sum_combinations_of_four
+│   │       ├── main.cpp
+│   │       ├── README.md
+│   │       └── run.bat
+│   └── README.md
+├── .editorconfig
+├── .github
+│   ├── commit-convention.md
+│   ├── ISSUE_TEMPLATE
+│   │   └── issue-questionnaire.md
+│   └── workflows
+│       └── format.yml
+├── javascript
+│   ├── docs
+│   │   ├── create-node-modules-manually.md
+│   │   ├── graphql-learning-path.md
+│   │   ├── invariants.md
+│   │   ├── reactjs-mouse-move-throttle.md
+│   │   ├── react-scripts-setup-story.md
+│   │   ├── README.md
+│   │   └── webpack-bundle-sizes.md
+│   ├── experiments
+│   │   ├── async-currying
+│   │   │   ├── index.js
+│   │   │   ├── package.json
+│   │   │   └── README.md
+│   │   ├── babel-transpilation
+│   │   │   ├── index.js
+│   │   │   ├── package.json
+│   │   │   └── README.md
+│   │   ├── calculator-demo
+│   │   │   ├── package.json
+│   │   │   ├── packages
+│   │   │   │   ├── add
+│   │   │   │   │   ├── index.js
+│   │   │   │   │   └── package.json
+│   │   │   │   ├── calculator
+│   │   │   │   │   ├── index.js
+│   │   │   │   │   └── package.json
+│   │   │   │   ├── divide
+│   │   │   │   │   ├── index.js
+│   │   │   │   │   └── package.json
+│   │   │   │   ├── multiply
+│   │   │   │   │   ├── index.js
+│   │   │   │   │   └── package.json
+│   │   │   │   └── subtract
+│   │   │   │       ├── index.js
+│   │   │   │       └── package.json
+│   │   │   ├── README.md
+│   │   │   ├── __tests__
+│   │   │   │   ├── useDevBuid.html
+│   │   │   │   ├── useDevBuild.js
+│   │   │   │   ├── useProdBuild.html
+│   │   │   │   ├── useProdBuild.js
+│   │   │   │   └── util
+│   │   │   │       └── runCalculatorTests.js
+│   │   │   ├── webpack.config.js
+│   │   │   └── yarn.lock
+│   │   ├── format-javascript-github-workflow-ci
+│   │   │   ├── format-dummy.js
+│   │   │   ├── package.json
+│   │   │   ├── README.md
+│   │   │   └── yarn.lock
+│   │   ├── gitignore-subdirectories
+│   │   │   └── README.md
+│   │   ├── js-features
+│   │   │   ├── index.js
+│   │   │   ├── package.json
+│   │   │   ├── progress-bar.js
+│   │   │   ├── README.md
+│   │   │   ├── short-circuit.js
+│   │   │   └── webpack.config.js
+│   │   ├── minify-code-using-terser
+│   │   │   ├── index.compress.min.js
+│   │   │   ├── index.default.min.js
+│   │   │   ├── index.js
+│   │   │   ├── index.mangle_and_compress.min.js
+│   │   │   ├── index.mangle.min.js
+│   │   │   ├── package.json
+│   │   │   ├── README.md
+│   │   │   └── yarn.lock
+│   │   ├── nodejs-express-middleware
+│   │   │   ├── package.json
+│   │   │   ├── README.md
+│   │   │   └── server.js
+│   │   ├── nodejs-modules
+│   │   │   ├── a.js
+│   │   │   ├── app.js
+│   │   │   ├── b.js
+│   │   │   ├── c.js
+│   │   │   ├── package.json
+│   │   │   └── README.md
+│   │   ├── picture-album
+│   │   │   ├── package.json
+│   │   │   ├── public
+│   │   │   │   └── index.html
+│   │   │   ├── README.md
+│   │   │   ├── src
+│   │   │   │   ├── Album.js
+│   │   │   │   ├── index.css
+│   │   │   │   ├── index.js
+│   │   │   │   ├── Navigation.js
+│   │   │   │   ├── Navigations.js
+│   │   │   │   ├── Picture.js
+│   │   │   │   └── Pictures.js
+│   │   │   └── yarn.lock
+│   │   ├── react-es5
+│   │   │   ├── index.html
+│   │   │   ├── index.js
+│   │   │   └── README.md
+│   │   ├── react-event-handler-external-content
+│   │   │   ├── index.html
+│   │   │   └── README.md
+│   │   ├── react-router-modal
+│   │   │   ├── index.html
+│   │   │   └── README.md
+│   │   ├── README.md
+│   │   ├── streams
+│   │   │   ├── how-streams-transfer-data.docs.md
+│   │   │   ├── how-streams-transfer-data.js
+│   │   │   ├── how-streams-transform-data.docs.md
+│   │   │   ├── how-streams-transform-data.js
+│   │   │   ├── main.cpp
+│   │   │   ├── one-source-multiple-destinations.docs.md
+│   │   │   ├── one-source-multiple-destinations.js
+│   │   │   ├── package.json
+│   │   │   ├── README.md
+│   │   │   ├── understand-request-response-streams.js
+│   │   │   ├── understand-request-response-streams.observations.md
+│   │   │   └── yarn.lock
+│   │   ├── tcp-packages
+│   │   │   ├── package.json
+│   │   │   ├── public
+│   │   │   │   └── index.html
+│   │   │   ├── README.md
+│   │   │   ├── serve-client.js
+│   │   │   ├── serve-data.js
+│   │   │   └── yarn.lock
+│   │   ├── webpack-bundling-process
+│   │   │   ├── development
+│   │   │   │   ├── development.bundle.js
+│   │   │   │   └── src_Button_js.development.bundle.js
+│   │   │   ├── package.json
+│   │   │   ├── production
+│   │   │   │   ├── 454.production.bundle.js
+│   │   │   │   ├── production.bundle.js
+│   │   │   │   └── production.bundle.js.LICENSE.txt
+│   │   │   ├── README.md
+│   │   │   ├── src
+│   │   │   │   ├── App.js
+│   │   │   │   ├── ButtonES5.js
+│   │   │   │   ├── Button.js
+│   │   │   │   ├── index.js
+│   │   │   │   └── math.js
+│   │   │   └── webpack.config.js
+│   │   ├── webpack-js-output
+│   │   │   ├── package.json
+│   │   │   ├── printWebpackBuildOutput.ts
+│   │   │   ├── README.md
+│   │   │   ├── src
+│   │   │   │   ├── bar.js
+│   │   │   │   ├── baz.js
+│   │   │   │   ├── foo.js
+│   │   │   │   ├── index.js
+│   │   │   │   └── Qux.js
+│   │   │   ├── tsconfig.json
+│   │   │   └── yarn.lock
+│   │   └── when-does-html-script-run
+│   │       ├── async-script
+│   │       │   ├── first.js
+│   │       │   ├── index.html
+│   │       │   ├── README.md
+│   │       │   └── second.js
+│   │       ├── README.md
+│   │       └── regular-script
+│   │           ├── first.js
+│   │           ├── index.html
+│   │           ├── README.md
+│   │           └── second.js
+│   ├── package.json
+│   ├── packages
+│   │   ├── new
+│   │   │   ├── index.js
+│   │   │   ├── package.json
+│   │   │   ├── README.md
+│   │   │   └── template-package.json
+│   │   └── README.md
+│   ├── README.md
+│   └── yarn.lock
+├── python
+│   ├── main.py
+│   ├── README.md
+│   └── requirements.txt
+├── README.md
+└── TOPICS.md

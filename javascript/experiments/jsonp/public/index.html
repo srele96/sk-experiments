@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>JSONP Client</title>
+  </head>
+  <body>
+    <!--  The definition of a function that our server calls.  -->
+    <script>
+      // Try commenting out the function
+      // The script with src="jsonp-static" throws ReferenceError jsonp
+      function jsonp(data) {
+        console.log(data);
+      }
+    </script>
+
+    <!--  Request a server to call our function with the data.  -->
+    <script src="jsonp-static"></script>
+
+    <!--  Inspect the server response.  -->
+    <script>
+      // SyntaxError
+      // JSON.parse: unexpected character at line 1 column 1 of the JSON data
+      fetch('jsonp-static')
+        .then((res) => res.json())
+        .then(console.log)
+        .catch(console.error);
+
+      // Read raw response from the stream because res.json() throws an error
+      fetch('jsonp-static')
+        .then((res) => res.body.getReader())
+        .then((reader) => {
+          let res = '';
+          let decoder = new TextDecoder();
+
+          // Parse data from the stream
+          return reader.read().then(function readStream({ value, done }) {
+            res += decoder.decode(value);
+
+            // Keep reading data until we are done, then return data
+            if (done) return res;
+            else return reader.read().then(readStream);
+          });
+        })
+        .then(console.log)
+        .catch(console.error);
+    </script>
+
+    <script src="js-code"></script>
+  </body>
+</html>

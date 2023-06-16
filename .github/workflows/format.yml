@@ -1,0 +1,21 @@
+name: format
+on: push
+jobs:
+  check-javascript-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          # Match local and CI version. I use version 16 because it's LTS.
+          node-version: "16"
+      - run: cd ./javascript && yarn && yarn ci:format
+  check-cpp-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          # Match local and CI version.
+          python-version: "3.10"
+      - run: cd ./cpp && python format.py --check
