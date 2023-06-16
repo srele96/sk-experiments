@@ -1,0 +1,11 @@
+# The learning difficulty of perfectionism
+
+I have a problem where I want to achieve perfection when using OpenGL and C++. So I don't do them because what I do is not perfect, however, since I started using Vim roughly two weeks ago, I have experienced plenty of issues, and I had to resolve them to make various features work, etc. So I am getting very comfortable and whatnot while using Vim.
+
+The difference between Vim and OpenGL is that I hated doing OpenGL because I didn't know what I wanted to do, so I couldn't look up how to solve it. I had no freakin idea of how the concepts worked and the level of idea of what I wanted to do.
+
+For example, yesterday, I was reading about how to make fog using a fragment shader. There was something about using a function to calculate distance from the camera and use it to apply the fog effect if I had tried to use that and worked my way through errors and whatnot, I would have made much more progress than I currently do because I get annoyed how the solution is not what I want it to be. The solution doesn't fit my taste, etc. So I am now thinking about how I can overcome that need for perfection and why the fuck it even exists.
+
+I assume that perfectionism, which is shit, exists to save me from the blame of other people seeing my mistakes. Then I get stuck refining repeatedly what I am doing and end up not achieving much. I ended up reading and analyzing all the possible things that can go wrong, for example: when I was learning OpenGL, I hated the fact that I couldn't contain in my mind how the process of rendering goes, why the stuff is where it was in some basic OpenGL program, etc. Nevertheless, I kept thinking and crunching them, resulting in accumulated theoretical knowledge and conceptual ideas. I could see the purpose of each of the chunks, etc. however, the terrible downside of all that was that I think I could have made much more progress if I had eliminated the perfectionist part.
+
+The great thing is that my approach, where I systematically crunch that information, works quite well and allows me to learn some seemingly complex and difficult topics. However, the downside is that I am aware of how good it can be that I don't even stop considering how great I've done and learned.
