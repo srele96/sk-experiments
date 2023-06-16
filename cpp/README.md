@@ -24,3 +24,4 @@ The root directory for C++ experiments.
 - [Compile and Run using Python](./experiments/compile_using_python/)
 - [Learn nuances](./experiments/learn_nuances/)
 - [Play with Mongoose C/C++](./experiments/play_with_mongoose_c_cpp/)
+- [Observe lambda capture behavior](./experiments/observe_lambda_capture_behavior/)
