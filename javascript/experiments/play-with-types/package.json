@@ -1,0 +1,22 @@
+{
+  "name": "play-with-types",
+  "version": "0.1.0",
+  "description": "Play with TypeScript types.",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "watch-types": "nodemon -e ts --exec yarn check-types"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20",
+    "typescript": "^4.9.5"
+  }
+}

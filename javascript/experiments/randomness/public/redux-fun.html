@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Redux Fun!</title>
+  </head>
+  <body>
+    <!-- Use __root__ as an ID for fun -->
+    <div id="__root__"></div>
+
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/redux@4.2.1/dist/redux.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      const store = Redux.createStore(
+        Redux.combineReducers({
+          counter: (state = 0, action) => {
+            switch (action.type) {
+              case 'INCREMENT':
+                return state + 1;
+              case 'DECREMENT':
+                return state - 1;
+              default:
+                return state;
+            }
+          },
+          random: (state = 0, action) => {
+            switch (action.type) {
+              case 'RANDOM':
+                return Math.random();
+              default:
+                return state;
+            }
+          },
+        })
+      );
+
+      const { createElement: e } = React;
+
+      function useSelector(selector) {
+        const [state, setState] = React.useState(() =>
+          selector(store.getState())
+        );
+
+        React.useEffect(() => {
+          const unsubscribe = store.subscribe(() => {
+            const newState = selector(store.getState());
+
+            if (!Object.is(state, newState)) {
+              setState(newState);
+            }
+          });
+
+          return unsubscribe;
+        }, [state, setState]);
+
+        return state;
+      }
+
+      function App() {
+        const counter = useSelector((state) => state.counter);
+        const random = useSelector((state) => state.random);
+
+        return e(
+          'main',
+          null,
+          e('h1', null, 'Redux Fun'),
+          e('p', null, 'Counter: ', counter),
+          e(
+            'button',
+            { onClick: () => store.dispatch({ type: 'INCREMENT' }) },
+            'Increment'
+          ),
+          e(
+            'button',
+            { onClick: () => store.dispatch({ type: 'DECREMENT' }) },
+            'Decrement'
+          ),
+          e('p', null, 'Random: ', random),
+          e(
+            'button',
+            { onClick: () => store.dispatch({ type: 'RANDOM' }) },
+            'Random'
+          )
+        );
+      }
+
+      function renderApp() {
+        const id = '__root__';
+        const domRoot = document.getElementById(id);
+        const reactRoot = ReactDOM.createRoot(domRoot);
+
+        reactRoot.render(e(React.StrictMode, null, e(App)));
+      }
+
+      renderApp();
+    </script>
+  </body>
+</html>
