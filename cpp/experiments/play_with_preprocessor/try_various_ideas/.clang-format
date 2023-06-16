@@ -1,0 +1,4 @@
+# WARNING!
+# Disable formatting for whole directory because I've played with various
+# illegal constructs in C++.
+DisableFormat: true
