@@ -40,3 +40,4 @@ The root directory for JavaScript experiments.
 - [Use Webpack and SWC](./experiments/use-webpack-and-swc/)
 - [Count images](./experiments/count-images/)
 - [JSONP](./experiments/jsonp/)
+- [ESLint custom rule](./experiments/eslint-custom-rules/)
