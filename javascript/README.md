@@ -36,3 +36,4 @@ The root directory for JavaScript experiments.
 - [Server and Client](./experiments/server-and-client/)
 - [Chat-App _(A half baked one that doesn't work :D🗡️)_](./experiments/chat-app/)
 - [Recursive implementation of Fractals](./experiments/fractals/)
+- [Web shop _(A half baked one that doesn't work :D🗡️)_](./experiments/web-shop/)
