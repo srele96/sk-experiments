@@ -1,0 +1,10 @@
+-- Create a pixel from a vector, a pixel has a display value.
+
+pixel:
+  private:
+    display_value
+    coordinate
+  public:
+    pixel(initial_display_value, vector):
+      coordinate(vector)
+      display_value = initial_display_value

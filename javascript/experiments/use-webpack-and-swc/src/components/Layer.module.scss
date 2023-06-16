@@ -1,0 +1,21 @@
+.navigation {
+  border: 0;
+  cursor: pointer;
+}
+
+.allow-click-on-layer-behind {
+  height: 0;
+}
+
+.on-top-of-each-other {
+  position: absolute;
+  top: 0;
+  left: 0;
+  list-style: none;
+}
+
+.picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // Attempts to figure out whether chunked response from the Mongoose C/C++
+      // server is received in real time... The code for the server has most
+      // likely changed since I created this file but I am going to leave it as
+      // a resident here for historical purposes. This whole repository is an
+      // experiment to try out various things...
+
+      const xhr = new XMLHttpRequest();
+      const async = true;
+      xhr.open("GET", "http://localhost:8000", async);
+      function handleEvent(e) {
+        console.log(e);
+        console.log(xhr.responseText);
+      }
+      xhr.addEventListener("loadstart", handleEvent);
+      xhr.addEventListener("load", handleEvent);
+      xhr.addEventListener("loadend", handleEvent);
+      xhr.addEventListener("progress", handleEvent);
+      xhr.addEventListener("error", handleEvent);
+      xhr.addEventListener("abort", handleEvent);
+      xhr.send();
+    </script>
+  </body>
+</html>

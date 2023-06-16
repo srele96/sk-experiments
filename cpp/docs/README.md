@@ -1,0 +1,3 @@
+# C++ documentation
+
+The collection of research results, findings, and more...

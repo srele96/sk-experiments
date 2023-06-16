@@ -1,0 +1,28 @@
+-- Calculate vectors two dimensional coordinate.
+-- For each component move along corresponding axis.
+-- An axis is dimension's direction.
+
+coordinate:
+  private:
+    x = origin.horisontal_center
+    y = origin.vertical_center
+    move_along_axis = [
+      horisontaly(by):
+        horisontal_center + by
+      ,
+      vertically(by):
+        vertical_center - by
+      ,
+      diagonally(by):
+        horisontaly(-by)
+        vertically(by)
+    ]
+
+    set_position(vector):
+      for i = 0 to vector.length:
+        component = vector[i]
+        move_along_axis[i](component)
+
+  public:
+    coordinate(vector):
+      set_position(vector)

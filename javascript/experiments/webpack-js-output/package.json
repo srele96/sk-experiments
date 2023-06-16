@@ -1,0 +1,26 @@
+{
+  "name": "webpack-js-output",
+  "version": "0.1.0",
+  "description": "How to read Webpack build JS files for React SSR",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "scripts": {
+    "start:print-webpack-build-output": "nodemon printWebpackBuildOutput.ts -i *.json"
+  },
+  "dependencies": {
+    "@types/node": "^18.0.0",
+    "@types/webpack": "^5.28.0",
+    "nodemon": "^2.0.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0"
+  }
+}
