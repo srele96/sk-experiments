@@ -37,3 +37,4 @@ The root directory for JavaScript experiments.
 - [Chat-App _(A half baked one that doesn't work :D🗡️)_](./experiments/chat-app/)
 - [Recursive implementation of Fractals](./experiments/fractals/)
 - [Web shop _(A half baked one that doesn't work :D🗡️)_](./experiments/web-shop/)
+- [Use Webpack and SWC](./experiments/use-webpack-and-swc/)
