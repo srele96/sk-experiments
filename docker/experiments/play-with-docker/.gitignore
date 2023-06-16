@@ -1,0 +1,9 @@
+# Ignore database directoy.
+data
+# Not good practice to share them but this is demo. Reuse variables for
+# postgres and service that needs to access it. Commit the file since
+# I wanted to share it anyway in README.md.
+#.env
+
+*.log
+node_modules
