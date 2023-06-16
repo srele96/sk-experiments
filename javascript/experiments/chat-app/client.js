@@ -59,7 +59,7 @@ function PageOne() {
     }),
   });
 
-  console.log(_remount)
+  console.log(_remount);
 
   return <h1>Page One</h1>;
 }
