@@ -27,3 +27,4 @@ The root directory for C++ experiments.
 - [Observe lambda capture behavior](./experiments/observe_lambda_capture_behavior/)
 - [Design iterator](./experiments/design-iterator/)
 - [Static and Dynamic library](./experiments/static_and_dynamic_library/)
+- [Try boost::asio](./experiments/try_boost_asio/)
