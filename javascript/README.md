@@ -30,3 +30,4 @@ The root directory for JavaScript experiments.
 - [Layers - Album With Cool Scaling and Movement](./experiments/layers/)
 - [Design iterator](./experiments/design-iterator/)
 - [Do randomness with `@flexos/elements`](./experiments/randomness/)
+- [Maze](./experiments/maze/)
