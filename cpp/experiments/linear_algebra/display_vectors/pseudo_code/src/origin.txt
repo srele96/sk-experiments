@@ -1,0 +1,3 @@
+origin:
+  vertical_center = 4
+  horisontal_center = 4

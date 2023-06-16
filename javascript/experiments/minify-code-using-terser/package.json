@@ -1,0 +1,25 @@
+{
+  "name": "minify-code-using-terser",
+  "version": "0.1.0",
+  "description": "see minified terser output out of curiosity",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "devDependencies": {
+    "terser": "^5.15.0"
+  },
+  "scripts": {
+    "terser:default": "terser index.js -o index.default.min.js",
+    "terser:mangle": "terser index.js -m -o index.mangle.min.js",
+    "terser:compress": "terser index.js -c -o index.compress.min.js",
+    "terser:mangle_and_compress": "terser index.js -m -c -o index.mangle_and_compress.min.js",
+    "compare": "yarn terser:default && yarn terser:mangle && yarn terser:compress && yarn terser:mangle_and_compress",
+    "verify-minified-code-runs": "node index.default.min.js && node index.mangle.min.js && node index.compress.min.js && node index.mangle_and_compress.min.js"
+  }
+}

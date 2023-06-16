@@ -1,0 +1,21 @@
+{
+  "name": "format-javascript-github-workflow-ci",
+  "version": "0.1.0",
+  "description": "Sample directory to format JavaScript using GitHub workflows and continuous integration.",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "scripts": {
+    "format": "prettier --write .",
+    "ci:format": "prettier -c ."
+  },
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  }
+}

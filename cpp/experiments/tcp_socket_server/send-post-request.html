@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Send a POST request</title>
+  </head>
+  <body>
+    <script>
+      // Send a post request to see how does it look like on the server.
+      fetch("http://localhost:3000", {
+        method: "POST",
+        body: JSON.stringify({ number: 1 }),
+      })
+        // How does the response look like here?
+        .then((res) => {
+          console.log(res);
+          return res.json();
+        })
+        // How does the response look like here?
+        .then(console.log)
+        .catch(console.error);
+    </script>
+  </body>
+</html>
