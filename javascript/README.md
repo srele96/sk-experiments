@@ -31,3 +31,4 @@ The root directory for JavaScript experiments.
 - [Design iterator](./experiments/design-iterator/)
 - [Do randomness with `@flexos/elements`](./experiments/randomness/)
 - [Maze](./experiments/maze/)
+- [Elements](./experiments/elements/)
