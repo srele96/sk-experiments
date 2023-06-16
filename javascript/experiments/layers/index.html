@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Layers</title>
+    <style>
+      * {
+        transition: transform 0.15s ease-in-out;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      main {
+        padding: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script>
+      'use strict';
+
+      (() => {
+        const { createElement: e, useState, useEffect } = React;
+
+        const invariant = Object.freeze({
+          withinBounds: Object.freeze((value, begin, end) => {
+            if (value < begin || value > end) {
+              throw new Error(
+                'value out of bounds, valid bounds are from ' +
+                  begin +
+                  ' to ' +
+                  end
+              );
+            }
+          }),
+          validNumbers: Object.freeze((...numbers) => {
+            if (!numbers.every(Number.isFinite)) {
+              throw new Error('received value that is not a finite number');
+            }
+          }),
+        });
+
+        // I use the top layer index because the first element, as the top
+        // layer, does not move. All others move to the right of it. So when
+        // the second element is the top layer, it has index one and moves one
+        // time by that offset to free the space on the left.
+        //
+        // I need to calculate the top layer's index because the movement of
+        // every layer starts from the center of the current top layer.
+        // Therefore I need to move an element to the position of the top
+        // layer. After that, I can calculate how much I need to move the
+        // element.
+        const calculateTopLayerOffset = ({
+          topLayerIndex,
+          offset,
+          initialOffset,
+        }) => {
+          invariant.validNumbers(topLayerIndex, offset, initialOffset);
+
+          return topLayerIndex * offset + initialOffset;
+        };
+
+        // I need direction to know if a layer has to move left or right
+        // because the CSS translate function takes a positive or a negative
+        // percentage to show that.
+        //
+        // I need the top layer's size because I need to know how much to move
+        // the current layer to the edge of the top layer.
+        //
+        // I need the size of the current layer so I can calculate how much
+        // space is missing to reach the left or right edge.
+        //
+        // I need an order because I need to know the order of my current layer
+        // relative to the top layer. That is because I need to know how much
+        // to move the layer to show a part of it.
+        //  - The first hidden layer behind the top layer moves once to the
+        //    edge of the top layer and once more to become visible.
+        //  - The second hidden layer behind the first hidden layer has to
+        //    move once to the edge of the top layer and once to the right to
+        //    reach the edge of the first hidden layer. The second time to
+        //    show a part of it.
+        //
+        // An offset is how much of the current layer is visible behind the
+        // layer above it.
+        //
+        // The initial offset is the initial space around the top layer. It is
+        // an initial offset of every movement.
+        const calculateSizeToMoveInDirection = ({
+          direction,
+          topLayerSize,
+          size,
+          order,
+          offset,
+          initialOffset,
+        }) => {
+          invariant.validNumbers(
+            direction,
+            topLayerSize,
+            size,
+            order,
+            offset,
+            initialOffset
+          );
+
+          // I need to calculate how much to move the element to the edge
+          // because when the layer is smaller than the top one, and I want
+          // to show a part of it, I have to reach the edge of the top layer.
+          const sizeToBothEdges = topLayerSize - size;
+          const sizeToOneEdge = sizeToBothEdges / 2;
+          const moveToShowByOrder = order * offset;
+          const moveToShow = sizeToOneEdge + moveToShowByOrder + initialOffset;
+
+          return direction * moveToShow;
+        };
+
+        function generateLayers({ topLayerIndex, initialOffset }) {
+          invariant.withinBounds(topLayerIndex, 0, 6);
+          invariant.validNumbers(initialOffset);
+
+          // The arrays of properties in an ordered sequence in the direction
+          // of each half to calculate the layer's properties.
+          // Each layer gets smaller.
+          const size = [100, 80, 70, 60, 50, 40, 30];
+          // Each layer gets smaller, but use this value for the CSS scale
+          // property. I don't want to divide the size by 100 to get the
+          // value for the CSS scale property.
+          const scale = [1, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3];
+          const order = [0, 1, 2, 3, 4, 5, 6];
+          // The first element does not move. It is in the correct position
+          // with zero offsets.
+          const right = [0, 1, 1, 1, 1, 1, 1];
+          // The first element does not move. It is in the correct position
+          // with zero offsets.
+          const left = [0, -1, -1, -1, -1, -1, -1];
+          // Every subsequent element is behind the previous one.
+          const zIndex = [7, 6, 5, 4, 3, 2, 1];
+
+          const assign = ({ orderBy, direction }) => ({
+            size: size[orderBy],
+            scale: scale[orderBy],
+            order: order[orderBy],
+            direction: direction[orderBy],
+            zIndex: zIndex[orderBy],
+          });
+
+          const layers = new Array(7);
+
+          // Assign properties to one-half.
+          let i = topLayerIndex;
+          let orderBy = 0;
+          while (i >= 0) {
+            layers[i] = assign({ orderBy, direction: left });
+            ++orderBy;
+            --i;
+          }
+
+          // Assign properties to one-half.
+          i = topLayerIndex;
+          orderBy = 0;
+          while (i <= 6) {
+            layers[i] = assign({ orderBy, direction: right });
+            ++orderBy;
+            ++i;
+          }
+
+          // Provide pictures for every layer so I can easily access them in
+          // the current layer.
+          const pictures = [
+            {
+              src: 'https://i.pinimg.com/564x/2f/19/aa/2f19aad54ba05a5ebd5e7852e10852c3.jpg',
+              alt: 'Half Denji transformed into the chainsaw man and half Denji.',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/19/f1/63/19f1633e1c8f8e9ac16b45ea1a187ae4.jpg',
+              alt: 'Power holding two fingers up.',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/43/61/75/436175e69b591504d34d94e93f84c136.jpg',
+              alt: 'Power looked back from her side with a serious look.',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/64/6e/17/646e179ffb9aaaff4c674626ee204c0a.jpg',
+              alt: 'Makima points her fingers in a gun-shaped hand gesture.',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/75/e4/d2/75e4d2c8868322d92e6254fe52929c34.jpg',
+              alt: 'Denji transformed into the chainsaw man.',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/b6/a9/39/b6a939a9456ec3eb1dd95363d55a97f8.jpg',
+              alt: 'Makima is wearing the suit and looking to her side.',
+            },
+            {
+              src: 'https://i.pinimg.com/564x/aa/8f/10/aa8f1009a94ccf7b6580970ac2b85439.jpg',
+              alt: 'Makima reaches her hand out to Denji, transformed into the chainsaw man.',
+            },
+          ];
+
+          i = 0;
+          while (i != 7) {
+            // Use this index instead of the one when mapping the layers for
+            // consistency, not rely on the array index.
+            layers[i].index = i;
+            layers[i].picture = pictures[i];
+            // Provide the values I need for the formula to access them from
+            // the current layer.
+            layers[i].topLayerIndex = topLayerIndex;
+            layers[i].topLayerSize = 100;
+            layers[i].offset = 10;
+            layers[i].initialOffset = initialOffset;
+            ++i;
+          }
+
+          return layers;
+        }
+
+        function PictureLayers(props) {
+          const [layers, setLayers] = useState(
+            generateLayers({
+              topLayerIndex: props.topLayerIndex,
+              initialOffset: props.initialOffset,
+            })
+          );
+          const [currentTopLayerIndex, setCurrentTopLayerIndex] = useState(
+            props.topLayerIndex
+          );
+
+          function setTopLayer({ topLayerIndex, initialOffset }) {
+            return () => {
+              setLayers(generateLayers({ topLayerIndex, initialOffset }));
+              setCurrentTopLayerIndex(topLayerIndex);
+            };
+          }
+
+          const left = -1;
+          const right = 1;
+          function next({ condition, direction }) {
+            return () => {
+              if (condition) {
+                setCurrentTopLayerIndex((previousTopLayerIndex) => {
+                  const moveInDirection = previousTopLayerIndex + direction;
+
+                  setLayers(
+                    generateLayers({
+                      topLayerIndex: moveInDirection,
+                      initialOffset: props.initialOffset,
+                    })
+                  );
+
+                  return moveInDirection;
+                });
+              }
+            };
+          }
+
+          const thisHeightScalerFitPicturesWell = 1.5;
+          return e(
+            'article',
+            {
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'column',
+              },
+            },
+            e('h1', null, 'Click to Change Picture'),
+            e('div', { style: { padding: '5px' } }),
+            e(
+              'section',
+              null,
+              e(
+                'h1',
+                { style: { textAlign: 'center' } },
+                'Picture - Direct Navigation'
+              ),
+              e('div', { style: { padding: '5px' } }),
+              e(
+                'ul',
+                {
+                  style: {
+                    width: props.containerWidth,
+                    height: thisHeightScalerFitPicturesWell * props.width,
+                    position: 'relative',
+                    margin: 'auto',
+                  },
+                },
+                layers.map((layer) => {
+                  return e(
+                    'li',
+                    {
+                      'aria-current': layer.index === layer.topLayerIndex,
+                      style: {
+                        zIndex: layer.zIndex,
+                        width: props.width,
+                        height: 0,
+                        position: 'absolute',
+                        // Track the position of the top layer index so every
+                        // other layer can move from that position.
+                        transform: `translateX(${calculateTopLayerOffset({
+                          topLayerIndex: layer.topLayerIndex,
+                          offset: layer.offset,
+                          initialOffset: layer.initialOffset,
+                        })}%)`,
+                        listStyle: 'none',
+                      },
+                      key: layer.index,
+                    },
+                    e(
+                      'div',
+                      {
+                        style: {
+                          position: 'absolute',
+                          width: props.width,
+                          height: 0,
+                          transform: `translateX(${calculateSizeToMoveInDirection(
+                            {
+                              direction: layer.direction,
+                              topLayerSize: layer.topLayerSize,
+                              size: layer.size,
+                              order: layer.order,
+                              offset: layer.offset,
+                              initialOffset: layer.initialOffset,
+                            }
+                          )}%)`,
+                        },
+                      },
+                      e(
+                        'button',
+                        {
+                          style: {
+                            width: props.width,
+                            height:
+                              props.width * thisHeightScalerFitPicturesWell,
+                            transform: `scale(${layer.scale})`,
+                            padding: 0,
+                            border: 0,
+                            cursor: 'pointer',
+                          },
+                          onClick: setTopLayer({
+                            topLayerIndex: layer.index,
+                            initialOffset: layer.initialOffset,
+                          }),
+                        },
+                        e('img', {
+                          style: {
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          },
+                          src: layer.picture.src,
+                          alt: layer.picture.alt,
+                        })
+                      )
+                    )
+                  );
+                })
+              )
+            ),
+            e(
+              'section',
+              null,
+              e('div', { style: { padding: '5px' } }),
+              e(
+                'h1',
+                { style: { textAlign: 'center' } },
+                'Button - Direct Navigation'
+              ),
+              e(
+                'ul',
+                {
+                  style: {
+                    paddingTop: '20px',
+                    listStyle: 'none',
+                    display: 'flex',
+                  },
+                },
+                layers.map((layer, index) => {
+                  return e(
+                    'li',
+                    {
+                      key: layer.index,
+                      'aria-current': layer.topLayerIndex === index,
+                    },
+                    e(
+                      'button',
+                      {
+                        style: {
+                          width: '30px',
+                          height: '30px',
+                          cursor: 'pointer',
+                          margin: '0 5px',
+                          borderColor:
+                            layer.topLayerIndex === index ? 'red' : '',
+                        },
+                        onClick: setTopLayer({
+                          topLayerIndex: layer.index,
+                          initialOffset: layer.initialOffset,
+                        }),
+                      },
+                      layer.index + 1
+                    )
+                  );
+                })
+              )
+            ),
+            e(
+              'div',
+              {
+                style: {
+                  paddingTop: '20px',
+                  display: 'flex',
+                },
+              },
+              e(
+                'button',
+                {
+                  style: { width: '120px', cursor: 'pointer', padding: '5px' },
+                  onClick: next({
+                    condition: currentTopLayerIndex > 0,
+                    direction: left,
+                  }),
+                },
+                '< left'
+              ),
+              e('div', { style: { width: '20px' } }),
+              e(
+                'button',
+                {
+                  style: { width: '120px', cursor: 'pointer', padding: '5px' },
+                  onClick: next({
+                    condition: currentTopLayerIndex < 6,
+                    direction: right,
+                  }),
+                },
+                'right >'
+              )
+            )
+          );
+        }
+
+        function getWidthForContainerToFillUpLargerPortionOfTheScreen() {
+          const reduceBecauseContainerMultipliesWidth = 4;
+          return window.innerWidth / reduceBecauseContainerMultipliesWidth;
+        }
+
+        function CreatePictureLayers() {
+          const [width, setWidth] = useState(
+            getWidthForContainerToFillUpLargerPortionOfTheScreen()
+          );
+
+          useEffect(() => {
+            function updateWidthBecauseWeControlWidthFromJavaScript() {
+              window.addEventListener('resize', () => {
+                setWidth(
+                  getWidthForContainerToFillUpLargerPortionOfTheScreen()
+                );
+              });
+            }
+
+            updateWidthBecauseWeControlWidthFromJavaScript();
+          }, [setWidth]);
+
+          const middle = 3;
+
+          return e(
+            'main',
+            null,
+            e(
+              'div',
+              { style: { textAlign: 'center' } },
+              e('h1', null, 'Picture Layers'),
+              e(
+                'p',
+                null,
+                'Click Pictures or Buttons to change the visible picture.'
+              )
+            ),
+            e('div', { style: { padding: '10px' } }),
+            e(PictureLayers, {
+              width,
+              // In seven layers, the first one takes 100%, and six other
+              // layers have a 10% visible part, which means we need 160%
+              // width for a container of all layers.
+              containerWidth: 1.6 * width,
+              topLayerIndex: middle,
+              initialOffset: 0,
+            }),
+            e('div', { style: { padding: '10px' } }),
+            e(PictureLayers, {
+              width,
+              // Seven layers, the first one takes 100%, and six other layers
+              // take 10% each for their visible parts. When the top layer is
+              // the second one, we have an initial offset to the left and
+              // right. Therefore we have 160% initially and two 80% offsets,
+              // so 320% of width in total.
+              containerWidth: 3.2 * width,
+              topLayerIndex: middle,
+              initialOffset: 80,
+            })
+          );
+        }
+
+        ReactDOM.createRoot(document.querySelector('#root')).render(
+          e(React.StrictMode, null, e(CreatePictureLayers))
+        );
+      })();
+    </script>
+  </body>
+</html>
