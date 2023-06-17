@@ -1,4 +1,6 @@
+#include "include/httplib.h"
 #include "pqxx/pqxx"
+#include <functional>
 #include <iostream>
 #include <string>
 #include <utility>
@@ -49,19 +51,49 @@ int main() {
 
     txn_one.commit();
 
-    pqxx::work txn_two{conn};
+    httplib::Server server;
 
-    for (const auto &row : txn_two.exec("SELECT * FROM my_schema.users")) {
-      for (const auto &column : row) {
-        if (!column.is_null()) {
-          std::cout << column.as<std::string>() << " ";
-        }
-      }
-      std::cout << "\n";
-    }
+    server.Get("/postgres",
+               [&conn](const httplib::Request &, httplib::Response &res) {
+                 pqxx::work txn{conn};
+                 pqxx::result result{txn.exec("SELECT * FROM my_schema.users")};
 
-    txn_two.commit();
+                 auto create_user_lists{[&result]() {
+                   std::string lists;
+                   for (const auto &row : result) {
+                     lists += "<ul>";
+                     for (const auto &field : row) {
+                       lists += "<li>";
+                       lists += field.name();
+                       lists += " : ";
+                       lists += field.c_str();
+                       lists += +"</li>";
+                     }
+                     lists += "</ul>";
+                   }
+                   return lists;
+                 }};
 
+                 std::string response{R"(
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Poorly written server</title>
+  </head>
+  <body>
+    <h1>Hello poorly written server</h1>
+    )" + create_user_lists() + R"(
+  </body>
+</html>
+          )"};
+
+                 res.status = 200;
+                 res.set_content(response, "text/html");
+                 txn.commit();
+               });
+
+    std::cout << "Server on http://localhost:5000\n";
+    server.listen("localhost", 5000);
     conn.disconnect();
   } catch (const std::exception &e) {
     std::cerr << "Error: " << e.what() << std::endl;
