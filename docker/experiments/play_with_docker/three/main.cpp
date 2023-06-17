@@ -75,17 +75,18 @@ int main() {
                  }};
 
                  std::string response{R"(
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Poorly written server</title>
-  </head>
-  <body>
-    <h1>Hello poorly written server</h1>
-    )" + create_user_lists() + R"(
-  </body>
-</html>
-          )"};
+                    <!DOCTYPE html>
+                    <html>
+                      <head>
+                        <title>Poorly written server</title>
+                      </head>
+                      <body>
+                        <h1>Hello poorly written server</h1>
+                        )" + create_user_lists() +
+                                      R"(
+                      </body>
+                    </html>
+                  )"};
 
                  res.status = 200;
                  res.set_content(response, "text/html");
