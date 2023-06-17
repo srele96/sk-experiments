@@ -1,0 +1,6 @@
+# Libraries that I tried to build before I realized that I can simply install
+# postgres c++ client using apt-get.
+# Keep the history of the two repositories for postgres client and postgres
+# database.
+libpqxx
+postgres
