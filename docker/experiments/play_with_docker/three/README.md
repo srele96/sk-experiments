@@ -31,7 +31,7 @@ More on:
 - [How to install libpqxx](https://howtoinstall.co/en/libpqxx-dev)
 - [libpqxx package info](https://packages.ubuntu.com/search?keywords=pqxx&searchon=names&suite=kinetic&section=all)
 - [package search](https://packages.ubuntu.com/search?keywords=pqxx&searchon=names&suite=kinetic&section=all)
-- [package files for amd64](https://packages.ubuntu.com/kinetic/amd64/libpqxx-dev/filelist).
+- [package files for amd64](https://packages.ubuntu.com/kinetic/amd64/libpqxx-dev/filelist)
 
 ### Build
 
