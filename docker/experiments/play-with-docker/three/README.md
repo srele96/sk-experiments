@@ -50,7 +50,7 @@ cd build
 Generate build system:
 
 ```terminal
-cmake ..
+cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_CXX_COMPILER=clang++ ..
 ```
 
 Build the project:
