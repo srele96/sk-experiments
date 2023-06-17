@@ -1,0 +1,3 @@
+# Prevent such errors with .sh files.
+# https://stackoverflow.com/questions/48398501/error-in-sh-script-if-statement-gives-unexpected-end-of-file
+*.sh eol=lf
