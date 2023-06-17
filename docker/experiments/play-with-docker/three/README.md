@@ -35,6 +35,20 @@ More on:
 
 ### Build
 
+Download includes because I don't like to commit code that I didn't write especially when it's thousands of lines long because then my GitHub repository increases the % of code in that language that I didn't write.
+
+Make the script executable to download include:
+
+```terminal
+chmod +x ./download_include.sh
+```
+
+Download include:
+
+```terminal
+./download_include.sh
+```
+
 Create build directory:
 
 ```terminal
