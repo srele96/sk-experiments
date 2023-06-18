@@ -54,3 +54,17 @@ If you make changes to docker files or code:
 ```powershell
 docker compose up --build
 ```
+
+To start postgres database accessible through localhost and use the `init.sql` and `populate.sql` place yourself in the directory `docker/experiments/play_with_docker` and run:
+
+```terminal
+sudo docker run --rm -it -p 127.0.0.1:5432:5432 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=db -v "./data:/var/lib/postgresql/data" -v "./init.sql:/docker-entrypoint-initdb.d/init.sql" -v "./populate.sql:/docker-entrypoint-initdb.d/populate.sql" postgres:15.3
+```
+
+## Quirks and issues
+
+If there is every weird behavior, clear existing containers.
+
+```powershell
+docker rm $(docker ps -a -q)
+```

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.10)
 project(three)
 
 # https://stackoverflow.com/questions/45933732/how-to-specify-a-compiler-in-cmake

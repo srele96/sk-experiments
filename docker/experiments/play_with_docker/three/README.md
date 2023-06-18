@@ -2,6 +2,8 @@
 
 A random idea for a service number three to use C++ and connect to postgres.
 
+Versions are all messed up... For example, I just realized that `apt-get` may not have the latest version of the package. One option is to build the version I need by myself and setup the build steps for docker container as well. Another is to just use `apt-get` and say whatever... It won't work later because it currently downloads the latest version. That doesn't matter because I won't need to run this sample later, anyway, well hopefully.
+
 ## Documentation
 
 ### Requirements
@@ -12,7 +14,7 @@ A random idea for a service number three to use C++ and connect to postgres.
 
 ### Setup
 
-Run the following to obtain `libpq` required for libpqxx and linking:
+Run the following to obtain `libpq-dev` required for libpqxx and linking:
 
 ```terminal
 sudo apt-get install libpq-dev

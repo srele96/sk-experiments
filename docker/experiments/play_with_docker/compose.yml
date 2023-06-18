@@ -30,3 +30,9 @@ services:
       - "4000:4000"
     depends_on:
       - one
+  three:
+    build: ./three
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
