@@ -11,6 +11,6 @@ project(three)
 find_library(PQ_LIB pq)
 find_library(PQXX_LIB pqxx)
 
-add_executable(three main.cpp)
+add_executable(three ./main.cpp ./include/mongoose.c)
 
 target_link_libraries(three ${PQ_LIB} ${PQXX_LIB})

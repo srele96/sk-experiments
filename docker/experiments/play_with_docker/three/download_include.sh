@@ -12,18 +12,29 @@ else
   echo "Directory ${include_path} already exists."
 fi
 
-httplib_h_url="https://raw.githubusercontent.com/yhirose/cpp-httplib/v0.12.6/httplib.h"
-httplib_h="httplib.h"
-httplib_h_path="${include_path}/${httplib_h}"
+mongoose_h_url="https://raw.githubusercontent.com/cesanta/mongoose/7.9/mongoose.h"
+mongoose_h="mongoose.h"
+mongoose_h_path="${include_path}/${mongoose_h}"
+mongoose_c_url="https://raw.githubusercontent.com/cesanta/mongoose/7.9/mongoose.c"
+mongoose_c="mongoose.c"
+mongoose_c_path="${include_path}/${mongoose_c}"
 
-if [ ! -f "${httplib_h_path}" ]; then
-  echo "Downloading ${httplib_h_url} to ${httplib_h_path}"
-  curl -f -o "${httplib_h_path}" "${httplib_h_url}"
-  if [ $? -eq 0 ]; then
-    echo "Download succeeded."
+function download_file() {
+  local path=$1
+  local url=$2
+
+  if [ ! -f "${path}" ]; then
+    echo "Downloading ${url} to ${path}"
+    curl -f -o "${path}" "${url}"
+    if [ $? -eq 0 ]; then
+      echo "Successfully downloaded ${url} to ${path}"
+    else
+      echo "Failed to download ${url}"
+    fi
   else
-    echo "Download failed."
+    echo "Path ${path} already exists."
   fi
-else
-  echo "${httplib_h} already exists."
-fi
+}
+
+download_file "${mongoose_h_path}" "${mongoose_h_url}"
+download_file "${mongoose_c_path}" "${mongoose_c_url}"

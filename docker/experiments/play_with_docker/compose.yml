@@ -31,6 +31,11 @@ services:
     depends_on:
       - one
   three:
+    # There is weird behavior that I can't figure out. The mongoose server
+    # doesn't print anything to the console when build with docker compose.
+    # However, the server works fine. I also tried to use
+    # https://github.com/etr/libhttpserver and I thought that it doesn't work
+    # because there is no output in the terminal. Anyway, now it works.
     build: ./three
     ports:
       - "5000:5000"
