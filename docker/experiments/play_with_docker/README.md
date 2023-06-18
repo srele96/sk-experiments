@@ -57,6 +57,13 @@ http://localhost:3000/bar
 http://localhost:3000/postgres
 ```
 
+Services on the port `5000`:
+
+```txt
+http://localhost:5000/
+http://localhost:5000/postgres
+```
+
 ## Documentation
 
 Initially:
