@@ -2,7 +2,7 @@
 using namespace std;
 
 size_t longest_substring(const string& m_string) {
-  size_t m_max{0}, m_right = 0, m_left = 0, m_size = 0;
+  size_t m_max{0}, m_right{0}, m_left{0}, m_size{0};
   char m_char;
   unordered_map<char, size_t> m_chars;
 
