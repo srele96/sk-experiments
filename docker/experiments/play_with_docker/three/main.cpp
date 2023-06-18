@@ -36,6 +36,8 @@ int main() {
                             "<a href=\"/postgres\">Visit me</a>");
             } else if (mg_http_match_uri(hm, "/postgres")) {
               try {
+                // Should allow easier manual running of the server when we
+                // don't set environment variables.
                 const std::string conn_user{
                     "user=" + util::getenv("POSTGRES_USER", "admin")};
                 const std::string conn_password{
