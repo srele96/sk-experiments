@@ -8,6 +8,22 @@ Create services and turn them into containers using docker and docker compose.
 
 Ignore all good practices for the sake of practicing and playing around with docker configuration.
 
+## Explanation
+
+A great mental representation that helped me figure out what I want to do conceptually then look for code that does that is that I first figured out what I want the service to do, then move that same behavior to the docker image. The docker image is a file system and in there I can do everything that I can do on the host. I could do everything that I wanted to for the purpose of this sample...
+
+Going along with that mental representation I would first implemetn and run the service locally on my machine, then I would move all the required logic inside the docker container. Using such mentality allowed me to create the three services and two storage interactions in less than 16 hours.
+
+I knew none of the syntax and had to consult google, ChatGPT, GitHub copilot, but I decided on all the high level decisions such as components, languages, interactions between them, storage type, etc.
+
+Through this sample I worked on my high level thinking and mapping the high level decisions to the implementation details.
+
+I practiced to a small degree design of the architecture by making these stuff play together.
+
+One finishing touch that I could do is adding kubernetes and deploying all this stuff to the cloud.
+
+That one could be a game for the next week. Until the next time, bye!
+
 ## Architecture
 
 ![Architecture](./architecture.png)
