@@ -38,4 +38,6 @@ int main() {
   assert(longest_substring("pw wke w") == 4);
   assert(longest_substring("123456789") == 9);
   assert(longest_substring("@a3 456789") == 10);
+
+  return 0;
 }
