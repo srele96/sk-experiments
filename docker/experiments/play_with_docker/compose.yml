@@ -36,6 +36,10 @@ services:
     # However, the server works fine. I also tried to use
     # https://github.com/etr/libhttpserver and I thought that it doesn't work
     # because there is no output in the terminal. Anyway, now it works.
+    # Removing mongoose or libhttpserver enabled std::cout to log output to the
+    # console within docker compose. Running the server manually displays the
+    # std::cout output. It could be an issue within docker after considering
+    # all of that.
     build: ./three
     ports:
       - "5000:5000"
