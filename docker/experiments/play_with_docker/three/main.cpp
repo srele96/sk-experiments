@@ -3,6 +3,19 @@
 #include <iostream>
 #include <string>
 
+namespace util {
+
+std::string getenv(const std::string &name, const std::string &default_value) {
+  const char *value{std::getenv(name.c_str())};
+  if (value == nullptr) {
+    return default_value;
+  } else {
+    return value;
+  }
+}
+
+} // namespace util
+
 int main() {
   try {
     struct mg_mgr mgr {};
@@ -14,7 +27,7 @@ int main() {
           if (ev == MG_EV_HTTP_MSG) {
             struct mg_http_message *hm = (struct mg_http_message *)ev_data;
 
-            std::cout  << hm->message.ptr << "\n"; // Log requests
+            std::cout << hm->message.ptr << "\n"; // Log requests
 
             const std::string content_type{"Content-Type:text/html\r\n"};
 
@@ -23,8 +36,16 @@ int main() {
                             "<a href=\"/postgres\">Visit me</a>");
             } else if (mg_http_match_uri(hm, "/postgres")) {
               try {
-                pqxx::connection conn("dbname=db user=admin password=admin "
-                                      "host=postgres port=5432");
+                const std::string conn_user{
+                    "user=" + util::getenv("POSTGRES_USER", "admin")};
+                const std::string conn_password{
+                    "password=" + util::getenv("POSTGRES_PASSWORD", "admin")};
+                const std::string conn_dbname{
+                    "dbname=" + util::getenv("POSTGRES_DB", "db")};
+                const std::string conn_str{conn_user + " " + conn_password +
+                                           " " + conn_dbname +
+                                           " host=postgres port=5432"};
+                pqxx::connection conn{conn_str};
 
                 if (conn.is_open()) {
                   std::cout << "Connected to PostgreSQL database.\n";
