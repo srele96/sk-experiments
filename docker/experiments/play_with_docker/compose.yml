@@ -7,14 +7,14 @@ services:
       - "5432:5432"
     volumes:
       - "./data:/var/lib/postgresql/data"
-      - "./init.sql:/docker-entrypoint-initdb.d/init.sql"
-      - "./populate.sql:/docker-entrypoint-initdb.d/populate.sql"
+      - "./sql/init.sql:/docker-entrypoint-initdb.d/init.sql"
+      - "./sql/populate.sql:/docker-entrypoint-initdb.d/populate.sql"
     environment:
       POSTGRES_USER: "${POSTGRES_USER:?error}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
       POSTGRES_DB: "${POSTGRES_DB:?error}"
   one:
-    build: ./one
+    build: ./service/one
     ports:
       - "3000:3000"
     depends_on:
@@ -25,7 +25,7 @@ services:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
       POSTGRES_DB: "${POSTGRES_DB:?error}"
   two:
-    build: ./two
+    build: ./service/two
     ports:
       - "4000:4000"
     depends_on:
@@ -40,7 +40,7 @@ services:
     # console within docker compose. Running the server manually displays the
     # std::cout output. It could be an issue within docker after considering
     # all of that.
-    build: ./three
+    build: ./service/three
     ports:
       - "5000:5000"
     depends_on:
