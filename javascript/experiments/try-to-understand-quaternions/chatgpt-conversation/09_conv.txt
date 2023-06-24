@@ -1,0 +1,147 @@
+const vertexShaderSource = `
+  attribute vec4 position;
+
+  varying lowp vec4 color;
+
+  uniform float angleX;
+  uniform float angleY;
+  uniform float angleZ;
+
+  // Use Euler's rotation matrices.
+
+  mat3 Rx(float angle) {
+    float rad = radians(angle);
+    float c = cos(rad);
+    float s = sin(rad);
+
+    return mat3(
+      1.0, 0.0, 0.0,
+      0.0, c, -s,
+      0.0, s, c
+    );
+  }
+
+  mat3 Ry(float angle) {
+    float rad = radians(angle);
+    float c = cos(rad);
+    float s = sin(rad);
+
+    return mat3(
+      c, 0.0, s,
+      0.0, 1.0, 0.0,
+      -s, 0.0, c
+    );
+  }
+
+  mat3 Rz(float angle) {
+    float rad = radians(angle);
+    float c = cos(rad);
+    float s = sin(rad);
+
+    return mat3(
+      c, -s, 0.0,
+      s, c, 0.0,
+      0.0, 0.0, 1.0
+    );
+  }
+
+  void main() {
+    // Create lightning to make edges clearly visible.
+    mat3 rotation = Rx(angleX) * Ry(angleY) * Rz(angleZ);
+    vec4 result = vec4(rotation * position.xyz, position.w);
+
+    gl_Position = result;
+    color = result;
+  }
+`;
+
+it renders triangle fine, but
+
+vec4 multiply(vec4 q1, vec4 q2) {
+  return vec4(
+    q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y,
+    q1.w * q2.y - q1.x * q2.z + q1.y * q2.w + q1.z * q2.x,
+    q1.w * q2.z + q1.x * q2.y - q1.y * q2.x + q1.z * q2.w,
+    q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z
+  );
+}
+
+void main() {
+  float radX = radians(angleX);
+  float radY = radians(angleY);
+  float radZ = radians(angleZ);
+
+  float halfAngleX = radX * 0.5;
+  float halfAngleY = radY * 0.5;
+  float halfAngleZ = radZ * 0.5;
+
+  vec4 rotationQuaternionX = vec4(sin(halfAngleX), 0.0, 0.0, cos(halfAngleX));
+  vec4 rotationQuaternionY = vec4(0.0, sin(halfAngleY), 0.0, cos(halfAngleY));
+  vec4 rotationQuaternionZ = vec4(0.0, 0.0, sin(halfAngleZ), cos(halfAngleZ));
+
+  vec4 positionQuaternion = vec4(position.xyz, 0.0);
+
+  vec4 x = multiply(multiply(rotationQuaternionX, positionQuaternion), conjugate(rotationQuaternionX));
+  vec4 y = multiply(multiply(rotationQuaternionY, x), conjugate(rotationQuaternionY));
+  vec4 z = multiply(multiply(rotationQuaternionZ, y), conjugate(rotationQuaternionZ));
+
+  gl_Position = z;
+  color = z;
+}
+`;
+
+this one doesn't render anything, can you help me debug it, i wanna use quaternions
+ChatGPT
+
+Certainly! It seems that you are trying to implement quaternion-based rotation in your vertex shader. There are a few issues with the code that could be causing the problem. Let's go through the code and address the potential problems step by step.
+
+First, make sure that you have defined the necessary variables and attributes in your shader code:
+
+glsl
+
+attribute vec4 position;
+varying lowp vec4 color;
+uniform float angleX;
+uniform float angleY;
+uniform float angleZ;
+
+Next, let's examine the quaternion multiplication function. The multiply function you provided seems to be correct, so we can move on to the main function.
+
+glsl
+
+void main() {
+  float radX = radians(angleX);
+  float radY = radians(angleY);
+  float radZ = radians(angleZ);
+
+  float halfAngleX = radX * 0.5;
+  float halfAngleY = radY * 0.5;
+  float halfAngleZ = radZ * 0.5;
+
+  vec4 rotationQuaternionX = vec4(sin(halfAngleX), 0.0, 0.0, cos(halfAngleX));
+  vec4 rotationQuaternionY = vec4(0.0, sin(halfAngleY), 0.0, cos(halfAngleY));
+  vec4 rotationQuaternionZ = vec4(0.0, 0.0, sin(halfAngleZ), cos(halfAngleZ));
+
+  vec4 positionQuaternion = vec4(position.xyz, 0.0);
+
+  vec4 x = multiply(multiply(rotationQuaternionX, positionQuaternion), conjugate(rotationQuaternionX));
+  vec4 y = multiply(multiply(rotationQuaternionY, x), conjugate(rotationQuaternionY));
+  vec4 z = multiply(multiply(rotationQuaternionZ, y), conjugate(rotationQuaternionZ));
+
+  gl_Position = z;
+  color = z;
+}
+
+There is a potential issue with the order of quaternion multiplication. Quaternion multiplication is not commutative, meaning the order matters. To ensure the correct order, you should modify the quaternion multiplication lines as follows:
+
+glsl
+
+vec4 x = multiply(multiply(conjugate(rotationQuaternionX), positionQuaternion), rotationQuaternionX);
+vec4 y = multiply(multiply(conjugate(rotationQuaternionY), x), rotationQuaternionY);
+vec4 z = multiply(multiply(conjugate(rotationQuaternionZ), y), rotationQuaternionZ);
+
+In this case, we first apply the conjugate of the rotation quaternion, then the position quaternion, and finally the original rotation quaternion.
+
+With these changes, your shader code should work correctly and apply quaternion-based rotation to your geometry. Make sure you pass the appropriate values for the angleX, angleY, and angleZ uniforms when rendering.
+
+Note: Quaternion-based rotation is generally used for more advanced transformations and is not a common approach for basic 3D geometry rotations. Ensure that using quaternions is necessary for your specific use case.

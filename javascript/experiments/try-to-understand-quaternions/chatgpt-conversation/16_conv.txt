@@ -1,0 +1,48 @@
+rotate vector (3,3,3) around it's x axis by angleX degrees, y axis by angleY degrees, z axis by angleZ, by using javascript code, use quaternion's and convert result back to vector
+ChatGPT
+
+To rotate a vector (3, 3, 3) around its X, Y, and Z axes using quaternions in JavaScript and convert the result back to a vector, you can use the gl-matrix library, which provides a set of useful matrix and vector operations.
+
+Here's an example code snippet that demonstrates how to achieve this:
+
+javascript
+
+// Import the necessary functions from gl-matrix library
+const { vec3, quat, mat4 } = require('gl-matrix');
+
+// Define the initial vector
+const initialVector = vec3.fromValues(3, 3, 3);
+
+// Convert the rotation angles from degrees to radians
+const angleX = (angleX * Math.PI) / 180;
+const angleY = (angleY * Math.PI) / 180;
+const angleZ = (angleZ * Math.PI) / 180;
+
+// Create the quaternions for each rotation
+const quaternionX = quat.create();
+const quaternionY = quat.create();
+const quaternionZ = quat.create();
+
+quat.rotateX(quaternionX, quaternionX, angleX);
+quat.rotateY(quaternionY, quaternionY, angleY);
+quat.rotateZ(quaternionZ, quaternionZ, angleZ);
+
+// Combine the quaternions using multiplication
+const finalQuaternion = quat.create();
+quat.multiply(finalQuaternion, quaternionZ, quaternionY);
+quat.multiply(finalQuaternion, finalQuaternion, quaternionX);
+
+// Create a rotation matrix from the final quaternion
+const rotationMatrix = mat4.create();
+mat4.fromQuat(rotationMatrix, finalQuaternion);
+
+// Rotate the initial vector using the rotation matrix
+const finalVector = vec3.create();
+vec3.transformMat4(finalVector, initialVector, rotationMatrix);
+
+// Print the final vector
+console.log(finalVector);
+
+Make sure to install the gl-matrix library by running npm install gl-matrix before running the above code.
+
+The code takes the initial vector (3, 3, 3) and rotates it around the X, Y, and Z axes by the specified angles (angleX, angleY, angleZ) in degrees. It converts the angles to radians, creates quaternions for each rotation, multiplies them together, and then creates a rotation matrix from the final quaternion. Finally, it applies the rotation matrix to the initial vector and stores the result in the final vector, which is printed to the console.

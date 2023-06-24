@@ -1,0 +1,202 @@
+this code
+
+  // Convert angles to radians
+  const angleRadX = angleX * (Math.PI / 180);
+  const angleRadY = angleY * (Math.PI / 180);
+  const angleRadZ = angleZ * (Math.PI / 180);
+
+  // Create rotation quaternions for each axis
+  const axisX = [1, 0, 0];
+  const axisY = [0, 1, 0];
+  const axisZ = [0, 0, 1];
+
+  const halfAngleX = angleRadX / 2;
+  const halfAngleY = angleRadY / 2;
+  const halfAngleZ = angleRadZ / 2;
+
+  const sinHalfAngleX = Math.sin(halfAngleX);
+  const sinHalfAngleY = Math.sin(halfAngleY);
+  const sinHalfAngleZ = Math.sin(halfAngleZ);
+
+  const cosHalfAngleX = Math.cos(halfAngleX);
+  const cosHalfAngleY = Math.cos(halfAngleY);
+  const cosHalfAngleZ = Math.cos(halfAngleZ);
+
+  const rotationQuaternionX = [
+    cosHalfAngleX,
+    axisX[0] * sinHalfAngleX,
+    axisX[1] * sinHalfAngleX,
+    axisX[2] * sinHalfAngleX
+  ];
+
+  const rotationQuaternionY = [
+    cosHalfAngleY,
+    axisY[0] * sinHalfAngleY,
+    axisY[1] * sinHalfAngleY,
+    axisY[2] * sinHalfAngleY
+  ];
+
+  const rotationQuaternionZ = [
+    cosHalfAngleZ,
+    axisZ[0] * sinHalfAngleZ,
+    axisZ[1] * sinHalfAngleZ,
+    axisZ[2] * sinHalfAngleZ
+  ];
+
+  // Convert the input vector to a quaternion
+  const vectorQuaternion = [0, vector[0], vector[1], vector[2]];
+
+  // Quaternion multiplication helper function
+  function multiplyQuaternions(q1, q2) {
+    const result = [];
+    result[0] = q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2] - q1[3] * q2[3];
+    result[1] = q1[0] * q2[1] + q1[1] * q2[0] + q1[2] * q2[3] - q1[3] * q2[2];
+    result[2] = q1[0] * q2[2] - q1[1] * q2[3] + q1[2] * q2[0] + q1[3] * q2[1];
+    result[3] = q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1] + q1[3] * q2[0];
+    return result;
+  }
+
+  function conjugate(__quaternion) {
+    const [first, ...rest] = __quaternion;
+    return [first, ...rest.map((q) => (q !== 0 ? -q : q))];
+  }
+
+  const x = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionX, vectorQuaternion),
+    conjugate(rotationQuaternionX)
+  );
+
+  const y = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionY, x),
+    conjugate(rotationQuaternionY)
+  );
+
+  const z = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionZ, y),
+    conjugate(rotationQuaternionZ)
+  );
+
+uses quaternions to perform rotation on vector, i need glsl code for javascript in the browser to perform that, here is my current glsl
+
+const quaternionRotation = `
+  attribute vec4 position;
+
+  varying lowp vec4 color;
+
+  uniform float angleX;
+  uniform float angleY;
+  uniform float angleZ;
+
+  void main() {
+    gl_Position = result;
+    color = result;
+  }
+`;
+ChatGPT
+
+To perform the rotation using quaternions in GLSL (OpenGL Shading Language), you can modify your existing GLSL code as follows:
+
+glsl
+
+precision highp float;
+
+attribute vec4 position;
+
+varying lowp vec4 color;
+
+uniform float angleX;
+uniform float angleY;
+uniform float angleZ;
+
+vec4 multiplyQuaternions(vec4 q1, vec4 q2) {
+  vec4 result;
+  result.x = q1.x * q2.x - q1.y * q2.y - q1.z * q2.z - q1.w * q2.w;
+  result.y = q1.x * q2.y + q1.y * q2.x + q1.z * q2.w - q1.w * q2.z;
+  result.z = q1.x * q2.z - q1.y * q2.w + q1.z * q2.x + q1.w * q2.y;
+  result.w = q1.x * q2.w + q1.y * q2.z - q1.z * q2.y + q1.w * q2.x;
+  return result;
+}
+
+vec4 conjugate(vec4 quaternion) {
+  return vec4(quaternion.x, -quaternion.y, -quaternion.z, -quaternion.w);
+}
+
+void main() {
+  // Convert angles to radians
+  float angleRadX = radians(angleX);
+  float angleRadY = radians(angleY);
+  float angleRadZ = radians(angleZ);
+
+  // Create rotation quaternions for each axis
+  vec4 axisX = vec4(1.0, 0.0, 0.0, 0.0);
+  vec4 axisY = vec4(0.0, 1.0, 0.0, 0.0);
+  vec4 axisZ = vec4(0.0, 0.0, 1.0, 0.0);
+
+  float halfAngleX = angleRadX / 2.0;
+  float halfAngleY = angleRadY / 2.0;
+  float halfAngleZ = angleRadZ / 2.0;
+
+  float sinHalfAngleX = sin(halfAngleX);
+  float sinHalfAngleY = sin(halfAngleY);
+  float sinHalfAngleZ = sin(halfAngleZ);
+
+  float cosHalfAngleX = cos(halfAngleX);
+  float cosHalfAngleY = cos(halfAngleY);
+  float cosHalfAngleZ = cos(halfAngleZ);
+
+  vec4 rotationQuaternionX = vec4(
+    cosHalfAngleX,
+    axisX.x * sinHalfAngleX,
+    axisX.y * sinHalfAngleX,
+    axisX.z * sinHalfAngleX
+  );
+
+  vec4 rotationQuaternionY = vec4(
+    cosHalfAngleY,
+    axisY.x * sinHalfAngleY,
+    axisY.y * sinHalfAngleY,
+    axisY.z * sinHalfAngleY
+  );
+
+  vec4 rotationQuaternionZ = vec4(
+    cosHalfAngleZ,
+    axisZ.x * sinHalfAngleZ,
+    axisZ.y * sinHalfAngleZ,
+    axisZ.z * sinHalfAngleZ
+  );
+
+  // Convert the input vector to a quaternion
+  vec4 vectorQuaternion = vec4(0.0, position.x, position.y, position.z);
+
+  // Perform quaternion multiplication
+  vec4 x = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionX, vectorQuaternion),
+    conjugate(rotationQuaternionX)
+  );
+
+  vec4 y = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionY, x),
+    conjugate(rotationQuaternionY)
+  );
+
+  vec4 z = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionZ, y),
+    conjugate(rotationQuaternionZ)
+  );
+
+  gl_Position = z;
+  color = z;
+}
+
+The modified code includes the quaternion multiplication function (multiplyQuaternions) and the conjugate function (conjugate). It also converts the input angles to radians and creates rotation quaternions for each axis. Finally, it performs the quaternion rotations on the input vector (position) and assigns the result to gl_Position for vertex transformation. The color varying is also set to the transformed position for demonstration purposes.
+User
+what does precision highp float do?
+ChatGPT
+
+In GLSL (OpenGL Shading Language), the precision qualifier is used to specify the precision of floating-point numbers. In the case of precision highp float, it indicates that high precision should be used for floating-point calculations.
+
+The precision qualifier affects the accuracy and range of floating-point calculations in shaders. It specifies the minimum precision that must be provided by the GPU for calculations involving the float data type. The available precision qualifiers are highp, mediump, and lowp, representing high, medium, and low precision, respectively.
+
+Using precision highp float ensures that calculations involving float values are performed with high precision, which provides the most accurate results. It may be necessary in scenarios where precise floating-point calculations are required, such as complex simulations or rendering algorithms that rely on accurate transformations.
+
+However, it's worth noting that the actual precision and performance may vary depending on the GPU and shader compiler. Some GPUs may not fully support high precision and may fallback to a lower precision mode. Additionally, using higher precision can have an impact on shader performance, so it's important to consider the trade-off between precision and performance based on your specific requirements.

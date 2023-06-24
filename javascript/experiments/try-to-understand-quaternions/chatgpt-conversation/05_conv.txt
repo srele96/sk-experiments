@@ -1,0 +1,187 @@
+  function createRotationMatFromQuat(q) {
+    const { x, y, z, w } = q;
+
+    const xx = x * x;
+    const xy = x * y;
+    const xz = x * z;
+    const xw = x * w;
+
+    const yy = y * y;
+    const yz = y * z;
+    const yw = y * w;
+
+    const zz = z * z;
+    const zw = z * w;
+
+    const mat = [
+      1 - 2 * (yy + zz),
+      2 * (xy - zw),
+      2 * (xz + yw),
+      0,
+      2 * (xy + zw),
+      1 - 2 * (xx + zz),
+      2 * (yz - xw),
+      0,
+      2 * (xz - yw),
+      2 * (yz + xw),
+      1 - 2 * (xx + yy),
+      0,
+      0,
+      0,
+      0,
+      1
+    ];
+
+    return mat;
+  }
+
+  function createRotationQuat(theta, axis) {
+    const thetaHalf = theta * 0.5;
+
+    return {
+      x: Math.sin(thetaHalf) * axis.x,
+      y: Math.sin(thetaHalf) * axis.y,
+      z: Math.sin(thetaHalf) * axis.z,
+      w: Math.cos(thetaHalf)
+    };
+  }
+
+  function radians(degree) {
+    return (degree * Math.PI) / 180;
+  }
+
+  const angleX = 90;
+  const axisX = { x: 1, y: 0, z: 0 };
+  const angleY = 0;
+  const axisY = { x: 0, y: 1, z: 0 };
+  const angleZ = 0;
+  const axisZ = { x: 0, y: 0, z: 1 };
+  console.log(
+    createRotationQuat(radians(angleX), axisX),
+    createRotationQuat(radians(angleY), axisY),
+    createRotationQuat(radians(angleZ), axisZ),
+    createRotationMatFromQuat(createRotationQuat(radians(angleX), axisX))
+  );
+})();
+
+write a function to multiply vector with 4 components with a transformation matrix
+ChatGPT
+
+Sure! Here's an example of a function that multiplies a 4-component vector with a transformation matrix:
+
+javascript
+
+function multiplyVectorWithMatrix(vector, matrix) {
+  const result = [0, 0, 0, 0];
+
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 4; j++) {
+      result[i] += vector[j] * matrix[j * 4 + i];
+    }
+  }
+
+  return result;
+}
+
+The multiplyVectorWithMatrix function takes two parameters: vector and matrix. The vector parameter is an array representing a 4-component vector [x, y, z, w], and the matrix parameter is an array representing a 4x4 transformation matrix in column-major order.
+
+The function performs the multiplication by iterating over each row of the matrix and each component of the vector, multiplying them together and accumulating the results in the result array.
+
+Here's an example usage of the function using the provided createRotationMatFromQuat and createRotationQuat functions:
+
+javascript
+
+const vector = [1, 2, 3, 1];
+const rotationMatrix = createRotationMatFromQuat(createRotationQuat(radians(angleX), axisX));
+
+const transformedVector = multiplyVectorWithMatrix(vector, rotationMatrix);
+
+console.log(transformedVector);
+
+In this example, the vector represents a point in 3D space with homogeneous coordinates [x, y, z, w], and rotationMatrix is the transformation matrix obtained from the rotation quaternion. The multiplyVectorWithMatrix function is used to apply the transformation by multiplying the vector with the rotationMatrix, resulting in the transformedVector. The transformed vector represents the original vector after applying the rotation transformation.
+User
+finish this code for me
+
+(() => {
+  function multiplyVectorWithMatrix(vector, matrix) {
+
+  }
+
+  function createRotationMatFromQuat(q) {
+    const { x, y, z, w } = q;
+
+    const xx = x * x;
+    const xy = x * y;
+    const xz = x * z;
+    const xw = x * w;
+
+    const yy = y * y;
+    const yz = y * z;
+    const yw = y * w;
+
+    const zz = z * z;
+    const zw = z * w;
+
+    const mat = [
+      1 - 2 * (yy + zz),
+      2 * (xy - zw),
+      2 * (xz + yw),
+      0,
+      2 * (xy + zw),
+      1 - 2 * (xx + zz),
+      2 * (yz - xw),
+      0,
+      2 * (xz - yw),
+      2 * (yz + xw),
+      1 - 2 * (xx + yy),
+      0,
+      0,
+      0,
+      0,
+      1
+    ];
+
+    return mat;
+  }
+
+  function createRotationQuat(theta, axis) {
+    const thetaHalf = theta * 0.5;
+
+    return {
+      x: Math.sin(thetaHalf) * axis.x,
+      y: Math.sin(thetaHalf) * axis.y,
+      z: Math.sin(thetaHalf) * axis.z,
+      w: Math.cos(thetaHalf)
+    };
+  }
+
+  function radians(degree) {
+    return (degree * Math.PI) / 180;
+  }
+
+  const angleX = 90;
+  const axisX = { x: 1, y: 0, z: 0 };
+  const angleY = 0;
+  const axisY = { x: 0, y: 1, z: 0 };
+  const angleZ = 0;
+  const axisZ = { x: 0, y: 0, z: 1 };
+  console.log(
+    createRotationQuat(radians(angleX), axisX),
+    createRotationQuat(radians(angleY), axisY),
+    createRotationQuat(radians(angleZ), axisZ),
+    createRotationMatFromQuat(createRotationQuat(radians(angleX), axisX)),
+    multiplyVectorWithMatrix()
+  );
+})();
+ChatGPT
+
+Certainly! Here's the complete code with the multiplyVectorWithMatrix function implemented:
+
+javascript
+
+(() => {
+  function multiplyVectorWithMatrix(vector, matrix) {
+    const result = [0, 0, 0, 0];
+
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0;
