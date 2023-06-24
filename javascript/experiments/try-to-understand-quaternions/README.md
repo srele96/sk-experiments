@@ -11,4 +11,5 @@ In this sample I attack the problem of understanding Quaternions from various an
 ## Structure
 
 [ChatGPT Conversations](./chatgpt-conversation/)
+
 [Graphis and Math](./graphics-and-math/)
