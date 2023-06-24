@@ -1,0 +1,90 @@
+javascript code that creates rotation matrix and passes it down to the glsl code, quaternions perform the rotation and they are used to form rotation matrix
+ChatGPT
+
+Certainly! Here's an example of JavaScript code that creates a rotation matrix using quaternions and passes it to GLSL code:
+
+javascript
+
+// Function to create a rotation matrix from a quaternion
+function createRotationMatrixFromQuaternion(q) {
+  const x = q[0];
+  const y = q[1];
+  const z = q[2];
+  const w = q[3];
+
+  const xx = x * x;
+  const xy = x * y;
+  const xz = x * z;
+  const xw = x * w;
+
+  const yy = y * y;
+  const yz = y * z;
+  const yw = y * w;
+
+  const zz = z * z;
+  const zw = z * w;
+
+  const mat = [
+    1 - 2 * (yy + zz), 2 * (xy - zw), 2 * (xz + yw), 0,
+    2 * (xy + zw), 1 - 2 * (xx + zz), 2 * (yz - xw), 0,
+    2 * (xz - yw), 2 * (yz + xw), 1 - 2 * (xx + yy), 0,
+    0, 0, 0, 1
+  ];
+
+  return mat;
+}
+
+// Example quaternion representing a rotation
+const quaternion = [0.707, 0, 0.707, 0]; // Quaternion representing 90 degree rotation around the x-axis
+
+// Create the rotation matrix
+const rotationMatrix = createRotationMatrixFromQuaternion(quaternion);
+
+// Pass the rotation matrix to GLSL code
+const glslCode = `
+  precision mediump float;
+
+  uniform mat4 u_rotationMatrix;
+
+  void main() {
+    // Use the rotation matrix to transform the position
+    gl_Position = u_rotationMatrix * vec4(position, 1.0);
+  }
+`;
+
+// Use the rotation matrix in your WebGL program
+// Set the uniform in your shader program using WebGL API
+// Example using WebGL2 and the 'program' object representing the shader program
+const uRotationMatrixLocation = gl.getUniformLocation(program, 'u_rotationMatrix');
+gl.uniformMatrix4fv(uRotationMatrixLocation, false, rotationMatrix);
+
+In the above code, the createRotationMatrixFromQuaternion function takes a quaternion as input and computes the corresponding rotation matrix. The rotation matrix is then passed to the GLSL code as a uniform variable u_rotationMatrix. Finally, in your WebGL program, you can set the uniform value using the gl.uniformMatrix4fv function.
+
+Note that the code assumes you have a WebGL context and an active shader program in your WebGL program. You may need to adapt it to your specific setup.
+User
+multiply vector by rotation matrix
+ChatGPT
+
+To multiply a vector by a rotation matrix in JavaScript, you can use the mat4 functions provided by a math library like gl-matrix. Here's an example of how to multiply a vector by a rotation matrix:
+
+javascript
+
+// Assuming you have the gl-matrix library imported
+
+// Create a vector
+const vector = vec3.fromValues(1, 0, 0); // Example vector [1, 0, 0]
+
+// Create a rotation matrix
+const rotationMatrix = mat4.create();
+mat4.rotateX(rotationMatrix, rotationMatrix, Math.PI / 2); // Rotate 90 degrees around the x-axis
+
+// Multiply the vector by the rotation matrix
+const result = vec3.create();
+vec3.transformMat4(result, vector, rotationMatrix);
+
+// Print the result
+console.log(result); // The transformed vector
+
+In the above code, we use the vec3 and mat4 functions provided by gl-matrix to create a vector and a rotation matrix, respectively. The vec3.transformMat4 function is used to multiply the vector by the rotation matrix, and the transformed vector is stored in the result variable.
+
+Note that you'll need to have the gl-matrix library included in your project for this code to work. If you don't have gl-matrix, you can download it from the official repository or use a different math library that provides similar functionality.

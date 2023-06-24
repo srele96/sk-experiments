@@ -1,0 +1,140 @@
+i have this function
+
+  // Convert angle to radians
+  const angleRad = angle * (Math.PI / 180);
+
+  // Create the rotation quaternion
+  const axis = [1, 0, 0]; // X-axis
+  const halfAngle = angleRad / 2;
+  const sinHalfAngle = Math.sin(halfAngle);
+  const cosHalfAngle = Math.cos(halfAngle);
+
+  const rotationQuaternion = [
+    cosHalfAngle,
+    axis[0] * sinHalfAngle,
+    axis[1] * sinHalfAngle,
+    axis[2] * sinHalfAngle
+  ];
+
+  // Convert the input vector to a quaternion
+  const vectorQuaternion = [0, vector[0], vector[1], vector[2]];
+
+  console.log({ vectorQuaternion, rotationQuaternion });
+
+  // Quaternion multiplication helper function
+  function multiplyQuaternions(q1, q2) {
+    const result = [];
+    result[0] = q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2] - q1[3] * q2[3];
+    result[1] = q1[0] * q2[1] + q1[1] * q2[0] + q1[2] * q2[3] - q1[3] * q2[2];
+    result[2] = q1[0] * q2[2] - q1[1] * q2[3] + q1[2] * q2[0] + q1[3] * q2[1];
+    result[3] = q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1] + q1[3] * q2[0];
+    return result;
+  }
+
+  const rotatedQuaternion = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternion, vectorQuaternion),
+    [
+      rotationQuaternion[0],
+      -rotationQuaternion[1],
+      -rotationQuaternion[2],
+      -rotationQuaternion[3]
+    ]
+  );
+
+  // Convert the rotated quaternion back to a vector
+  const rotatedVector = [
+    rotatedQuaternion[1],
+    rotatedQuaternion[2],
+    rotatedQuaternion[3]
+  ];
+
+  return toString(rotatedVector);
+
+it rotates vector only acros x axis, how to rotate it acros all 3 axes, i want to pass 3 parameters, angleX, angleY, angleZ, currently i pass one angle and rotate it around X axis only
+ChatGPT
+
+To rotate a vector around all three axes (X, Y, and Z), you can modify the existing code by introducing rotations around the Y and Z axes. Here's an updated version of the code that incorporates the additional rotations:
+
+javascript
+
+// Convert angles to radians
+const angleRadX = angleX * (Math.PI / 180);
+const angleRadY = angleY * (Math.PI / 180);
+const angleRadZ = angleZ * (Math.PI / 180);
+
+// Create rotation quaternions for each axis
+const axisX = [1, 0, 0];
+const axisY = [0, 1, 0];
+const axisZ = [0, 0, 1];
+
+const halfAngleX = angleRadX / 2;
+const halfAngleY = angleRadY / 2;
+const halfAngleZ = angleRadZ / 2;
+
+const sinHalfAngleX = Math.sin(halfAngleX);
+const sinHalfAngleY = Math.sin(halfAngleY);
+const sinHalfAngleZ = Math.sin(halfAngleZ);
+
+const cosHalfAngleX = Math.cos(halfAngleX);
+const cosHalfAngleY = Math.cos(halfAngleY);
+const cosHalfAngleZ = Math.cos(halfAngleZ);
+
+const rotationQuaternionX = [
+  cosHalfAngleX,
+  axisX[0] * sinHalfAngleX,
+  axisX[1] * sinHalfAngleX,
+  axisX[2] * sinHalfAngleX
+];
+
+const rotationQuaternionY = [
+  cosHalfAngleY,
+  axisY[0] * sinHalfAngleY,
+  axisY[1] * sinHalfAngleY,
+  axisY[2] * sinHalfAngleY
+];
+
+const rotationQuaternionZ = [
+  cosHalfAngleZ,
+  axisZ[0] * sinHalfAngleZ,
+  axisZ[1] * sinHalfAngleZ,
+  axisZ[2] * sinHalfAngleZ
+];
+
+// Convert the input vector to a quaternion
+const vectorQuaternion = [0, vector[0], vector[1], vector[2]];
+
+// Quaternion multiplication helper function
+function multiplyQuaternions(q1, q2) {
+  const result = [];
+  result[0] = q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2] - q1[3] * q2[3];
+  result[1] = q1[0] * q2[1] + q1[1] * q2[0] + q1[2] * q2[3] - q1[3] * q2[2];
+  result[2] = q1[0] * q2[2] - q1[1] * q2[3] + q1[2] * q2[0] + q1[3] * q2[1];
+  result[3] = q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1] + q1[3] * q2[0];
+  return result;
+}
+
+// Apply rotations around X, Y, and Z axes
+const rotatedQuaternion = multiplyQuaternions(
+  multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionX, rotationQuaternionY),
+    rotationQuaternionZ
+  ),
+  multiplyQuaternions(
+    multiplyQuaternions(
+      rotationQuaternionX,
+      rotationQuaternionY.map((component) => -component)
+    ),
+    rotationQuaternionZ.map((component) => -component)
+  )
+);
+
+// Convert the rotated quaternion back to a vector
+const rotatedVector = [
+  rotatedQuaternion[1],
+  rotatedQuaternion[2],
+  rotatedQuaternion[3]
+];
+
+return toString(rotatedVector);
+
+In this updated code, you create rotation quaternions for each axis (X, Y, and Z) based on the provided angles. Then, the quaternion multiplication is performed for each rotation quaternion, combining them into a single rotation transformation. Finally, the rotated quaternion is converted back to a vector representation.

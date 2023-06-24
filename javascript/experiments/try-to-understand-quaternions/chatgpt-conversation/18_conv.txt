@@ -1,0 +1,113 @@
+const vector = [3, 3, 3]; // Input vector
+const angle = 53; // Rotation angle in degrees
+
+// Convert angle to radians
+const angleRad = angle * (Math.PI / 180);
+
+// Create the rotation quaternion
+const axis = [1, 0, 0]; // X-axis
+const halfAngle = angleRad / 2;
+const sinHalfAngle = Math.sin(halfAngle);
+const cosHalfAngle = Math.cos(halfAngle);
+
+const rotationQuaternion = [
+  cosHalfAngle,
+  axis[0] * sinHalfAngle,
+  axis[1] * sinHalfAngle,
+  axis[2] * sinHalfAngle
+];
+
+// Convert the input vector to a quaternion
+const vectorQuaternion = [0, vector[0], vector[1], vector[2]];
+
+// Quaternion multiplication helper function
+function multiplyQuaternions(q1, q2) {
+  const result = [];
+  result[0] = q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2] - q1[3] * q2[3];
+  result[1] = q1[0] * q2[1] + q1[1] * q2[0] + q1[2] * q2[3] - q1[3] * q2[2];
+  result[2] = q1[0] * q2[2] - q1[1] * q2[3] + q1[2] * q2[0] + q1[3] * q2[1];
+  result[3] = q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1] + q1[3] * q2[0];
+  return result;
+}
+
+// Perform the quaternion multiplication
+const rotatedQuaternion = multiplyQuaternions(
+  multiplyQuaternions(rotationQuaternion, vectorQuaternion),
+  [cosHalfAngle, -axis[0] * sinHalfAngle, -axis[1] * sinHalfAngle, -axis[2] * sinHalfAngle]
+);
+
+// Convert the rotated quaternion back to a vector
+const rotatedVector = [rotatedQuaternion[1], rotatedQuaternion[2], rotatedQuaternion[3]];
+
+console.log(rotatedVector);
+
+
+this code rotates vector using quaternion correctly, can you explain why does it need to perform multiplication twice? it first multiplies rotation with regular quaternion, then multiplies result of that with that array, pls help me understand why
+ChatGPT
+
+The code performs the quaternion multiplication twice in order to rotate the input vector using a rotation quaternion.
+
+Let's break down the steps to understand why the multiplication is performed twice:
+
+    First, the input vector [3, 3, 3] is converted to a quaternion by adding a zero as the first element: [0, 3, 3, 3]. This is done because quaternion multiplication involves a scalar component.
+
+    Next, the rotation quaternion is created using the provided angle and axis. The rotation quaternion represents the desired rotation in 3D space.
+
+    The first quaternion multiplication is performed by multiplying the rotation quaternion with the vector quaternion. This operation combines the rotation information with the input vector.
+
+    The result of the first multiplication represents the rotated vector in quaternion form.
+
+    Finally, the second quaternion multiplication is performed by multiplying the result of the first multiplication with another quaternion that is the conjugate of the rotation quaternion. The conjugate quaternion is obtained by negating the vector part of the rotation quaternion.
+
+The second multiplication is necessary to "undo" the rotation introduced by the first multiplication. This step ensures that the resulting quaternion represents the rotated vector relative to the original coordinate system.
+
+After the second multiplication, the resulting quaternion is converted back to a vector by discarding the scalar component (the first element). The resulting vector is the rotated version of the original input vector.
+
+In summary, the two quaternion multiplications are performed to combine the rotation information with the input vector and then undo the rotation to obtain the rotated vector in the original coordinate system.
+User
+so the second multiplication is multiplication by conjugated?
+ChatGPT
+
+Yes, that's correct. The second multiplication is performed by multiplying the result of the first multiplication with the conjugate of the rotation quaternion.
+
+In quaternion algebra, the conjugate of a quaternion is obtained by negating the vector part (the last three elements) of the quaternion while keeping the scalar part (the first element) unchanged.
+
+By multiplying the result of the first multiplication with the conjugate quaternion, we effectively "undo" the rotation introduced by the first multiplication. This step ensures that the resulting quaternion represents the rotated vector relative to the original coordinate system.
+
+So, the second multiplication is indeed the multiplication by the conjugate quaternion.
+User
+i saw on stackexchange that it's called hamiltonian product that code is doing, it multiples result with rotation quaternion's conjugate, the result of rotation and quaternion has w component which is non zero, and the guy said that only quaternions with w component equal to zero are the real vector quaternions where we can extract x,y,z,
+
+i saw in my code that result of first multiplication is non zero w component quaternion, why? why does multiplying it with rotation quaternion then by inverse quaternion makes the w component zero but others are properly rotated? i can't visualize it
+ChatGPT
+
+I apologize for any confusion caused. It seems there may be a misunderstanding in the explanation provided.
+
+In quaternion multiplication, the resulting quaternion does not necessarily have the scalar (w) component equal to zero. The scalar component of the resulting quaternion depends on the specific multiplication operation and the values of the input quaternions.
+
+The purpose of multiplying the result of the first multiplication with the conjugate quaternion is not to make the scalar component zero, but rather to "undo" the rotation introduced by the first multiplication.
+
+The conjugate quaternion is obtained by negating the vector part of the rotation quaternion while keeping the scalar part unchanged. Multiplying the result of the first multiplication with the conjugate quaternion cancels out the rotation component, leaving only the effect of the initial rotation on the input vector.
+
+The resulting quaternion after the second multiplication still contains the scalar component (w) and represents the rotated vector in quaternion form. To obtain the rotated vector in 3D space, the scalar component is discarded, and the vector part (x, y, z) is extracted.
+
+So, the multiplication with the conjugate quaternion is not about making the scalar component zero, but about canceling out the rotation and obtaining the rotated vector in quaternion form.
+User
+yes, it undoes rotation, but when i extract x,y,z the vector is rotated
+ChatGPT
+
+Apologies for any confusion caused. Let's clarify the process:
+
+The code provided rotates a 3D vector using quaternion multiplication. After performing the two quaternion multiplications, the resulting quaternion represents the rotated vector in quaternion form. To extract the rotated vector in 3D space, you need to consider the vector part (x, y, z) of the quaternion while discarding the scalar component (w).
+
+In the given code, the resulting quaternion after the second multiplication is stored in the variable rotatedQuaternion, and the rotated vector is extracted from this quaternion in the following line:
+
+javascript
+
+const rotatedVector = [rotatedQuaternion[1], rotatedQuaternion[2], rotatedQuaternion[3]];
+
+The rotatedVector variable contains the rotated vector after the quaternion operations.
+
+If you observe that the extracted rotatedVector appears to be rotated, there might be an error in the code or a discrepancy in how you're visualizing the result. It's important to ensure that the initial vector, angle, and axis are correctly defined and that the quaternion operations are performed accurately.
+
+If you can provide specific input values and the expected result, I can help you debug the code or assist with further clarification.

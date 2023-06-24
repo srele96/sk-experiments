@@ -1,0 +1,56 @@
+i've read that we never use quaternions inside glsl code, is that true, if yes, why?
+ChatGPT
+
+The statement that "we never use quaternions inside GLSL code" is not entirely accurate. While it is true that quaternions are not a built-in data type in GLSL (OpenGL Shading Language), you can still use quaternions in GLSL by implementing them manually.
+
+GLSL provides built-in data types and functions for vectors and matrices, which are the foundation for performing geometric transformations in graphics programming. Quaternions, on the other hand, are a specialized mathematical construct primarily used for efficient rotation calculations. While quaternions can represent rotations, they are not a fundamental data type in GLSL like vectors and matrices.
+
+However, you can still use quaternions within GLSL by representing them as either vectors or matrices and implementing the necessary operations yourself. For example, you can use a vec4 to represent a quaternion's components (x, y, z, w) and define your own functions for quaternion operations, such as multiplication, conjugation, normalization, and interpolation.
+
+The reason quaternions are not built into GLSL as a distinct data type is primarily due to the fact that they are not commonly used for most basic graphics calculations. Vectors and matrices are more versatile and widely applicable for tasks like transformations, coordinate systems, and linear algebra operations.
+
+That being said, if your specific use case requires quaternion operations within your GLSL code, you can certainly implement them manually using vectors or matrices.
+User
+they said we transform quaternion to a rotation matrix
+ChatGPT
+
+Yes, transforming a quaternion to a rotation matrix is a common approach when working with quaternions in graphics programming, including GLSL. Converting a quaternion to a matrix allows you to apply the rotation represented by the quaternion to a vector or a set of vertices.
+
+The transformation from a quaternion to a rotation matrix involves constructing a 3x3 matrix that represents the rotation. Here's a typical conversion process:
+
+Given a quaternion q = (x, y, z, w), you can construct the corresponding rotation matrix M as follows:
+
+makefile
+
+M = | 1 - 2y² - 2z²   2xy - 2zw       2xz + 2yw     |
+    | 2xy + 2zw        1 - 2x² - 2z²   2yz - 2xw     |
+    | 2xz - 2yw        2yz + 2xw       1 - 2x² - 2y² |
+
+Once you have the rotation matrix, you can use it to transform vectors or vertices within your GLSL code. For example, to rotate a vector v by the quaternion q, you can multiply the vector by the rotation matrix M as follows:
+
+java
+
+vec3 rotatedVector = M * v;
+
+By using the rotation matrix derived from a quaternion, you can apply quaternion-based rotations to vectors or vertices within your GLSL code. This approach allows you to utilize quaternion-based rotations in graphics computations even if quaternions are not directly supported as a built-in data type in GLSL.
+User
+so if i want to rotate vector on all 3 axes, how would i do it using quaternion and make them to a rotation matrix, then pass the matrix to glsl
+ChatGPT
+
+If you want to rotate a vector on all three axes (X, Y, and Z) using quaternions and pass the resulting rotation matrix to GLSL, you would follow these general steps:
+
+    Create three separate quaternions, each representing a rotation around a specific axis (X, Y, or Z). Let's say you have quaternions qx, qy, and qz representing rotations around the X, Y, and Z axes, respectively.
+
+    Combine the three quaternions to obtain the final quaternion representing the desired rotation. You can achieve this by multiplying the quaternions together in the desired order. The order of multiplication depends on the desired rotation behavior. For example, if you want to apply the rotations in the order of X, Y, and then Z, you would multiply the quaternions as qFinal = qx * qy * qz.
+
+    Convert the final quaternion to a rotation matrix. You can use the conversion process mentioned earlier to obtain the rotation matrix M from the quaternion qFinal.
+
+    Pass the rotation matrix M to your GLSL shader code. You can pass it as a uniform variable or via other mechanisms depending on your specific GLSL setup.
+
+Once you have the rotation matrix in your GLSL code, you can use it to rotate vectors or vertices by multiplying them with the matrix, as described previously:
+
+glsl
+
+vec3 rotatedVector = M * originalVector;
+
+By following these steps, you can use quaternions to perform rotations around multiple axes and pass the resulting rotation matrix to your GLSL code for transforming vectors or vertices accordingly.
