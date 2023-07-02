@@ -4,6 +4,10 @@ Srecko Kostic's collection of experiments and reading topic wishlist in form of 
 
 I start to like this repository. It serves as a history and a tool to reflect. I can see how much I've improved.
 
+## Course
+
+[A reminder to work through - Harvard CS50 Course](https://learning.edx.org/course/course-v1:HarvardX+CS50+X/block-v1:HarvardX+CS50+X+type@sequential+block@a8730f85a9a94d41a784a58c4b6d8bdc/block-v1:HarvardX+CS50+X+type@vertical+block@31304400fd444ea9860a8833cce5c248)
+
 ## Algorithmic problems
 
 - [LeetCode - srele96](https://leetcode.com/srele96/)

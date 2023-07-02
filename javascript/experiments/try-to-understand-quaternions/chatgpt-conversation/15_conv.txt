@@ -1,0 +1,114 @@
+rotate vector (3,3,3) around it's x axis by angleX degrees, y axis by angleY degrees, z axis by angleZ, by using javascript code, use quaternion's and convert result back to vector, without any libraries, i wanna learn quaternions
+ChatGPT
+
+To rotate a vector using quaternions in JavaScript, you can follow these steps:
+
+    Define the vector and the rotation angles:
+
+javascript
+
+var vector = [3, 3, 3]; // Original vector
+var angleX = 45; // Rotation angle around x-axis in degrees
+var angleY = 60; // Rotation angle around y-axis in degrees
+var angleZ = 90; // Rotation angle around z-axis in degrees
+
+    Convert the rotation angles from degrees to radians:
+
+javascript
+
+var radianX = angleX * (Math.PI / 180);
+var radianY = angleY * (Math.PI / 180);
+var radianZ = angleZ * (Math.PI / 180);
+
+    Create quaternions for each rotation axis:
+
+javascript
+
+var qx = [Math.sin(radianX / 2), 0, 0, Math.cos(radianX / 2)]; // Quaternion for x-axis rotation
+var qy = [0, Math.sin(radianY / 2), 0, Math.cos(radianY / 2)]; // Quaternion for y-axis rotation
+var qz = [0, 0, Math.sin(radianZ / 2), Math.cos(radianZ / 2)]; // Quaternion for z-axis rotation
+
+    Define the quaternion multiplication function:
+
+javascript
+
+function multiplyQuaternions(q1, q2) {
+  var result = [];
+  result[0] = q1[3] * q2[0] + q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1];
+  result[1] = q1[3] * q2[1] - q1[0] * q2[2] + q1[1] * q2[3] + q1[2] * q2[0];
+  result[2] = q1[3] * q2[2] + q1[0] * q2[1] - q1[1] * q2[0] + q1[2] * q2[3];
+  result[3] = q1[3] * q2[3] - q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2];
+  return result;
+}
+
+    Rotate the vector using quaternions:
+
+javascript
+
+var rotatedQuaternion = multiplyQuaternions(qz, multiplyQuaternions(qy, multiplyQuaternions(qx, [0].concat(vector))));
+
+    Convert the rotated quaternion back to a vector:
+
+javascript
+
+var rotatedVector = rotatedQuaternion.slice(1);
+
+Now, rotatedVector will contain the result of rotating the original vector [3, 3, 3] around the x-axis by angleX degrees, the y-axis by angleY degrees, and the z-axis by angleZ degrees using quaternions.
+User
+awesome solution, can you explain me more on why the rotation axes quaternions look like that? i am beginning so i am trying to learn
+ChatGPT
+
+Certainly! I'll explain the reasoning behind the structure of the rotation axis quaternions.
+
+Quaternions are a mathematical tool used to represent rotations in three-dimensional space. They consist of four components: a scalar part (also known as the real part) and a vector part (also known as the imaginary part).
+
+In the case of rotations, the vector part of a quaternion represents the axis of rotation, and the scalar part represents the amount of rotation around that axis. So, to perform a rotation, we need to define a quaternion that represents the desired axis and angle of rotation.
+
+Let's take a closer look at each rotation axis quaternion:
+
+    Quaternion for x-axis rotation (qx):
+        The x-axis quaternion represents a rotation around the x-axis.
+        Since we are only rotating around the x-axis, the vector part of qx is [1, 0, 0], indicating that the rotation is happening solely around the x-axis.
+        The scalar part of qx is computed using the half-angle formula: cos(angleX / 2), where angleX is the desired rotation angle around the x-axis.
+
+    Quaternion for y-axis rotation (qy):
+        The y-axis quaternion represents a rotation around the y-axis.
+        Similar to qx, the vector part of qy is [0, 1, 0] to indicate that the rotation is around the y-axis.
+        The scalar part of qy is computed using the half-angle formula: cos(angleY / 2), where angleY is the desired rotation angle around the y-axis.
+
+    Quaternion for z-axis rotation (qz):
+        The z-axis quaternion represents a rotation around the z-axis.
+        Like qx and qy, the vector part of qz is [0, 0, 1] to indicate the rotation around the z-axis.
+        The scalar part of qz is computed using the half-angle formula: cos(angleZ / 2), where angleZ is the desired rotation angle around the z-axis.
+
+By multiplying these quaternions together in the order qz * qy * qx, we combine the rotations around the different axes to obtain the final composite rotation. The order of multiplication is significant because quaternion multiplication is non-commutative.
+
+Finally, to apply the rotation to a vector, we convert the vector to a quaternion by appending a scalar part of 0. Then, we multiply the rotated quaternion by the vector quaternion, and extract the vector part of the result to obtain the rotated vector.
+
+This approach allows us to represent complex rotations using quaternions and apply them to vectors efficiently. Quaternions provide a compact and numerically stable representation for rotations, making them a popular choice in computer graphics and 3D applications.
+User
+what about conjugate?
+ChatGPT
+
+The conjugate of a quaternion plays an important role in quaternion operations, including rotation calculations. The conjugate of a quaternion is obtained by negating the vector part of the quaternion while keeping the scalar part unchanged.
+
+In the context of rotations, the conjugate quaternion is used to reverse the rotation effect. When you apply a rotation quaternion to a vector, you can undo the rotation by multiplying the conjugate of that quaternion to the rotated vector.
+
+To find the conjugate of a quaternion, you simply change the sign of the vector part. Given a quaternion q with components [w, x, y, z], the conjugate quaternion q* is [w, -x, -y, -z].
+
+In the code example I provided earlier, where we rotated the vector using quaternions, if you want to obtain the original vector from the rotated vector, you can apply the conjugate of the rotated quaternion to it. Here's how you can modify the code to include the conjugate operation:
+
+javascript
+
+// Rotate the vector using quaternions
+var rotatedQuaternion = multiplyQuaternions(qz, multiplyQuaternions(qy, multiplyQuaternions(qx, [0].concat(vector))));
+
+// Find the conjugate of the rotated quaternion
+var conjugateQuaternion = [rotatedQuaternion[0], -rotatedQuaternion[1], -rotatedQuaternion[2], -rotatedQuaternion[3]];
+
+// Apply the conjugate quaternion to the rotated vector
+var originalVector = multiplyQuaternions(rotatedQuaternion, conjugateQuaternion).slice(1);
+
+By multiplying the rotated quaternion by its conjugate, we effectively cancel out the rotation and obtain the original vector.
+
+The conjugate operation is useful in scenarios where you want to reverse a rotation or interpolate between two rotations using spherical linear interpolation (slerp). It helps maintain consistency and reversibility in quaternion-based rotation calculations.

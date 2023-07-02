@@ -1,0 +1,162 @@
+  // Convert angles to radians
+  const angleRadX = angleX * (Math.PI / 180);
+  const angleRadY = angleY * (Math.PI / 180);
+  const angleRadZ = angleZ * (Math.PI / 180);
+
+  // Create rotation quaternions for each axis
+  const axisX = [1, 0, 0];
+  const axisY = [0, 1, 0];
+  const axisZ = [0, 0, 1];
+
+  const halfAngleX = angleRadX / 2;
+  const halfAngleY = angleRadY / 2;
+  const halfAngleZ = angleRadZ / 2;
+
+  const sinHalfAngleX = Math.sin(halfAngleX);
+  const sinHalfAngleY = Math.sin(halfAngleY);
+  const sinHalfAngleZ = Math.sin(halfAngleZ);
+
+  const cosHalfAngleX = Math.cos(halfAngleX);
+  const cosHalfAngleY = Math.cos(halfAngleY);
+  const cosHalfAngleZ = Math.cos(halfAngleZ);
+
+  const rotationQuaternionX = [
+    cosHalfAngleX,
+    axisX[0] * sinHalfAngleX,
+    axisX[1] * sinHalfAngleX,
+    axisX[2] * sinHalfAngleX
+  ];
+
+  const rotationQuaternionY = [
+    cosHalfAngleY,
+    axisY[0] * sinHalfAngleY,
+    axisY[1] * sinHalfAngleY,
+    axisY[2] * sinHalfAngleY
+  ];
+
+  const rotationQuaternionZ = [
+    cosHalfAngleZ,
+    axisZ[0] * sinHalfAngleZ,
+    axisZ[1] * sinHalfAngleZ,
+    axisZ[2] * sinHalfAngleZ
+  ];
+
+  // Convert the input vector to a quaternion
+  const vectorQuaternion = [0, vector[0], vector[1], vector[2]];
+
+  // Quaternion multiplication helper function
+  function multiplyQuaternions(q1, q2) {
+    const result = [];
+    result[0] = q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2] - q1[3] * q2[3];
+    result[1] = q1[0] * q2[1] + q1[1] * q2[0] + q1[2] * q2[3] - q1[3] * q2[2];
+    result[2] = q1[0] * q2[2] - q1[1] * q2[3] + q1[2] * q2[0] + q1[3] * q2[1];
+    result[3] = q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1] + q1[3] * q2[0];
+    return result;
+  }
+
+  function conjugate(__quaternion) {
+    const [first, ...rest] = __quaternion;
+    return [first, ...rest.map((q) => (q !== 0 ? -q : q))];
+  }
+
+  const x = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionX, vectorQuaternion),
+    conjugate(rotationQuaternionX)
+  );
+
+  const y = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionY, x),
+    conjugate(rotationQuaternionY)
+  );
+
+  const z = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionZ, y),
+    conjugate(rotationQuaternionZ)
+  );
+
+vec4 takes X,Y,Z,W in that order, my code uses W as the first component, consider that
+uses quaternions to perform rotation on vector, i need glsl code for javascript in the browser to perform that, here is my current glsl
+
+const quaternionRotation = `
+  attribute vec4 position;
+
+  varying lowp vec4 color;
+
+  uniform float angleX;
+  uniform float angleY;
+  uniform float angleZ;
+
+  void main() {
+    gl_Position = result;
+    color = result;
+  }
+`;
+ChatGPT
+
+To perform quaternion rotation in GLSL code, you can use the following shader code:
+
+glsl
+
+attribute vec4 position;
+
+varying lowp vec4 color;
+
+uniform float angleX;
+uniform float angleY;
+uniform float angleZ;
+
+// Quaternion multiplication helper function
+vec4 multiplyQuaternions(vec4 q1, vec4 q2) {
+  vec4 result;
+  result.w = q1.w * q2.w - dot(q1.xyz, q2.xyz);
+  result.xyz = q1.w * q2.xyz + q2.w * q1.xyz + cross(q1.xyz, q2.xyz);
+  return result;
+}
+
+void main() {
+  // Convert angles to radians
+  float angleRadX = angleX * (3.14159 / 180.0);
+  float angleRadY = angleY * (3.14159 / 180.0);
+  float angleRadZ = angleZ * (3.14159 / 180.0);
+
+  // Create rotation quaternions for each axis
+  vec3 axisX = vec3(1.0, 0.0, 0.0);
+  vec3 axisY = vec3(0.0, 1.0, 0.0);
+  vec3 axisZ = vec3(0.0, 0.0, 1.0);
+
+  float halfAngleX = angleRadX / 2.0;
+  float halfAngleY = angleRadY / 2.0;
+  float halfAngleZ = angleRadZ / 2.0;
+
+  vec4 rotationQuaternionX = vec4(cos(halfAngleX), axisX * sin(halfAngleX));
+  vec4 rotationQuaternionY = vec4(cos(halfAngleY), axisY * sin(halfAngleY));
+  vec4 rotationQuaternionZ = vec4(cos(halfAngleZ), axisZ * sin(halfAngleZ));
+
+  // Convert the input vector to a quaternion
+  vec4 vectorQuaternion = vec4(0.0, position.xyz);
+
+  // Perform quaternion rotations
+  vec4 x = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionX, vectorQuaternion),
+    vec4(-rotationQuaternionX.xyz, rotationQuaternionX.w)
+  );
+
+  vec4 y = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionY, x),
+    vec4(-rotationQuaternionY.xyz, rotationQuaternionY.w)
+  );
+
+  vec4 result = multiplyQuaternions(
+    multiplyQuaternions(rotationQuaternionZ, y),
+    vec4(-rotationQuaternionZ.xyz, rotationQuaternionZ.w)
+  );
+
+  gl_Position = position;
+  color = result;
+}
+
+In this code, the quaternion rotation is performed inside the main() function. The quaternion multiplication is implemented using the multiplyQuaternions() helper function. The rotation is applied to the input vertex position stored in the position attribute.
+
+The resulting rotated position is assigned to gl_Position, and the quaternion rotation result is stored in the color variable for further use if needed.
+
+Note: Make sure to replace the 3.14159 value with Math.PI if you are using this code within a JavaScript environment outside of the GLSL context.

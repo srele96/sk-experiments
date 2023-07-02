@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/3.4.2/gl-matrix-min.js"></script>
+    <!-- I used this file to practice calculations because programming language
+      can show me results as i change values of the equations. -->
+    <script>
+      console.clear();
+
+      // Resources
+      // https://academo.org/demos/3d-vector-plotter/
+      // https://math.stackexchange.com/questions/40164/how-do-you-rotate-a-vector-by-a-unit-quaternion
+      // https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
+      // https://en.wikipedia.org/wiki/Quaternion#Hamilton_product
+      // https://stackoverflow.com/questions/24741050/recommended-way-to-approach-rotations-in-opengl
+      // http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-17-quaternions/
+      // https://github.com/toji/gl-matrix/blob/master/dist/gl-matrix.js#L3256
+      // https://www.npmjs.com/package/gl-matrix
+      // https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniformMatrix
+      // https://learnopengl.com/In-Practice/Debugging
+
+      function first() {
+        class Vector {
+          constructor(x, y, z) {
+            this.x = x;
+            this.y = y;
+            this.z = y;
+          }
+        }
+
+        class Quaternion {
+          constructor(w, x, y, z) {
+            this.w = w;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+          }
+
+          multiply(other) {
+            const w1 = this.w;
+            const x1 = this.x;
+            const y1 = this.y;
+            const z1 = this.z;
+
+            const w2 = other.w;
+            const x2 = other.x;
+            const y2 = other.y;
+            const z2 = other.z;
+
+            const resultW = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2;
+            const resultX = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2;
+            const resultY = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2;
+            const resultZ = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2;
+
+            return new Quaternion(resultW, resultX, resultY, resultZ);
+          }
+
+          conjugate() {
+            return new Quaternion(this.w, -this.x, -this.y, -this.z);
+          }
+        }
+
+        class Converter {
+          static ToVector(quaternion) {
+            return new Vector(quaternion.x, quaternion.y, quaternion.z);
+          }
+
+          static ToQuaternion(vector) {
+            return new Quaternion(0, vector.x, vector.y, vector.z);
+          }
+
+          static ToRotationQuaternion(theta, vector) {
+            return new Quaternion(
+              Math.cos(theta / 2),
+              Math.sin(theta / 2) * vector.x,
+              Math.sin(theta / 2) * vector.y,
+              Math.sin(theta / 2) * vector.z
+            );
+          }
+        }
+
+        function createRotationQuaternion(theta, v) {
+          return new Quaternion(
+            Math.cos(theta / 2),
+            Math.sin(theta / 2) * v.x,
+            Math.sin(theta / 2) * v.y,
+            Math.sin(theta / 2) * v.z
+          );
+        }
+
+        function toRadians(degree) {
+          return (degree * Math.PI) / 180;
+        }
+
+        const degrees = 180;
+        const radians = toRadians(degrees);
+        const rotationAxis = new Vector(1, 0, 0);
+        const rotationQuaternion = Converter.ToRotationQuaternion(
+          radians,
+          rotationAxis
+        );
+
+        const vector = new Vector(3, 3, 3);
+        const quaternion = Converter.ToQuaternion(vector);
+        console.log({ rotationQuaternion, quaternion });
+
+        const result = quaternion.multiply(rotationQuaternion);
+        const finalResult = result.multiply(rotationQuaternion.conjugate());
+        console.log({ result, finalResult });
+
+        console.log(
+          Converter.ToVector(quaternion),
+          Converter.ToVector(finalResult)
+        );
+      }
+
+      first();
+
+      // ----------
+
+      // Easier comparison using string output here:
+      // https://academo.org/demos/3d-vector-plotter/
+      function toString(vector) {
+        return '(' + vector.join(',') + ')';
+      }
+
+      function rotateUsingQuaternions(
+        vector,
+        angleX = 0,
+        angleY = 0,
+        angleZ = 0
+      ) {
+        // Convert angles to radians
+        const angleRadX = angleX * (Math.PI / 180);
+        const angleRadY = angleY * (Math.PI / 180);
+        const angleRadZ = angleZ * (Math.PI / 180);
+
+        // Create rotation quaternions for each axis
+        const axisX = [1, 0, 0];
+        const axisY = [0, 1, 0];
+        const axisZ = [0, 0, 1];
+
+        const halfAngleX = angleRadX / 2;
+        const halfAngleY = angleRadY / 2;
+        const halfAngleZ = angleRadZ / 2;
+
+        const sinHalfAngleX = Math.sin(halfAngleX);
+        const sinHalfAngleY = Math.sin(halfAngleY);
+        const sinHalfAngleZ = Math.sin(halfAngleZ);
+
+        const cosHalfAngleX = Math.cos(halfAngleX);
+        const cosHalfAngleY = Math.cos(halfAngleY);
+        const cosHalfAngleZ = Math.cos(halfAngleZ);
+
+        const rotationQuaternionX = [
+          cosHalfAngleX,
+          axisX[0] * sinHalfAngleX,
+          axisX[1] * sinHalfAngleX,
+          axisX[2] * sinHalfAngleX,
+        ];
+
+        const rotationQuaternionY = [
+          cosHalfAngleY,
+          axisY[0] * sinHalfAngleY,
+          axisY[1] * sinHalfAngleY,
+          axisY[2] * sinHalfAngleY,
+        ];
+
+        const rotationQuaternionZ = [
+          cosHalfAngleZ,
+          axisZ[0] * sinHalfAngleZ,
+          axisZ[1] * sinHalfAngleZ,
+          axisZ[2] * sinHalfAngleZ,
+        ];
+
+        // Convert the input vector to a quaternion
+        const vectorQuaternion = [0, vector[0], vector[1], vector[2]];
+
+        // Quaternion multiplication helper function
+        function multiplyQuaternions(q1, q2) {
+          const result = [];
+          result[0] =
+            q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2] - q1[3] * q2[3];
+          result[1] =
+            q1[0] * q2[1] + q1[1] * q2[0] + q1[2] * q2[3] - q1[3] * q2[2];
+          result[2] =
+            q1[0] * q2[2] - q1[1] * q2[3] + q1[2] * q2[0] + q1[3] * q2[1];
+          result[3] =
+            q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1] + q1[3] * q2[0];
+          return result;
+        }
+
+        function conjugate(__quaternion) {
+          const [first, ...rest] = __quaternion;
+          return [first, ...rest.map((q) => (q !== 0 ? -q : q))];
+        }
+
+        const x = multiplyQuaternions(
+          multiplyQuaternions(rotationQuaternionX, vectorQuaternion),
+          conjugate(rotationQuaternionX)
+        );
+
+        const y = multiplyQuaternions(
+          multiplyQuaternions(rotationQuaternionY, x),
+          conjugate(rotationQuaternionY)
+        );
+
+        const z = multiplyQuaternions(
+          multiplyQuaternions(rotationQuaternionZ, y),
+          conjugate(rotationQuaternionZ)
+        );
+
+        // Convert the rotated quaternion back to a vector
+        const rotatedVector = [z[1], z[2], z[3]];
+
+        return toString(rotatedVector);
+      }
+
+      function rotateUsingMatrices(vector, angleX = 0, angleY = 0, angleZ = 0) {
+        // Convert the angles to radians
+        const radiansX = (Math.PI / 180) * angleX;
+        const radiansY = (Math.PI / 180) * angleY;
+        const radiansZ = (Math.PI / 180) * angleZ;
+
+        // Create the rotation matrices for each axis
+        const rotationMatrixX = [
+          [1, 0, 0],
+          [0, Math.cos(radiansX), -Math.sin(radiansX)],
+          [0, Math.sin(radiansX), Math.cos(radiansX)],
+        ];
+
+        const rotationMatrixY = [
+          [Math.cos(radiansY), 0, Math.sin(radiansY)],
+          [0, 1, 0],
+          [-Math.sin(radiansY), 0, Math.cos(radiansY)],
+        ];
+
+        const rotationMatrixZ = [
+          [Math.cos(radiansZ), -Math.sin(radiansZ), 0],
+          [Math.sin(radiansZ), Math.cos(radiansZ), 0],
+          [0, 0, 1],
+        ];
+
+        // Perform matrix multiplication
+        const intermediateVector = [
+          rotationMatrixX[0][0] * vector[0] +
+            rotationMatrixX[0][1] * vector[1] +
+            rotationMatrixX[0][2] * vector[2],
+          rotationMatrixX[1][0] * vector[0] +
+            rotationMatrixX[1][1] * vector[1] +
+            rotationMatrixX[1][2] * vector[2],
+          rotationMatrixX[2][0] * vector[0] +
+            rotationMatrixX[2][1] * vector[1] +
+            rotationMatrixX[2][2] * vector[2],
+        ];
+
+        const intermediateVector2 = [
+          rotationMatrixY[0][0] * intermediateVector[0] +
+            rotationMatrixY[0][1] * intermediateVector[1] +
+            rotationMatrixY[0][2] * intermediateVector[2],
+          rotationMatrixY[1][0] * intermediateVector[0] +
+            rotationMatrixY[1][1] * intermediateVector[1] +
+            rotationMatrixY[1][2] * intermediateVector[2],
+          rotationMatrixY[2][0] * intermediateVector[0] +
+            rotationMatrixY[2][1] * intermediateVector[1] +
+            rotationMatrixY[2][2] * intermediateVector[2],
+        ];
+
+        const rotatedVector = [
+          rotationMatrixZ[0][0] * intermediateVector2[0] +
+            rotationMatrixZ[0][1] * intermediateVector2[1] +
+            rotationMatrixZ[0][2] * intermediateVector2[2],
+          rotationMatrixZ[1][0] * intermediateVector2[0] +
+            rotationMatrixZ[1][1] * intermediateVector2[1] +
+            rotationMatrixZ[1][2] * intermediateVector2[2],
+          rotationMatrixZ[2][0] * intermediateVector2[0] +
+            rotationMatrixZ[2][1] * intermediateVector2[1] +
+            rotationMatrixZ[2][2] * intermediateVector2[2],
+        ];
+
+        return toString(rotatedVector);
+      }
+
+      const vector = [3, 3, 3];
+
+      const angleX = 360;
+      const angleY = 360;
+      const angleZ = 180;
+
+      console.log(
+        rotateUsingQuaternions(vector, angleX, angleY, angleZ),
+        '\n',
+        rotateUsingMatrices(vector, angleX, angleY, angleZ)
+      );
+
+      (() => {
+        console.log(glMatrix);
+
+        // Create a quaternion
+        const quat = glMatrix.quat.create();
+        const pitch = 360,
+          yaw = 360,
+          roll = 180;
+        glMatrix.quat.fromEuler(quat, pitch, yaw, roll);
+        console.log({ quat });
+
+        // Create a rotation matrix from the quaternion
+        const mat = glMatrix.mat4.create();
+        glMatrix.mat4.fromQuat(mat, quat);
+        console.log({ mat });
+
+        // Create a vector
+        const vector = glMatrix.vec4.create();
+        // Set the values of the vector
+        const x = 3,
+          y = 3,
+          z = 3,
+          w = 0;
+        glMatrix.vec4.set(vector, x, y, z, w);
+        console.log({ vector });
+
+        const result = glMatrix.vec4.create();
+        // Multiply the vector by the matrix
+        glMatrix.mat4.multiply(result, mat, vector);
+
+        console.log({ quat, mat, vector, result });
+      })();
+    </script>
+  </body>
+</html>

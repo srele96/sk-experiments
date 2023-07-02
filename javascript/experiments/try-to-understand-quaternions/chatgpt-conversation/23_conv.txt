@@ -1,0 +1,39 @@
+how to rotate vector (3,3,3) around itself by 53 degrees around its x axis, show me using js code and use matrix multiplication
+ChatGPT
+
+To rotate a vector around itself by a certain angle using matrix multiplication, you can follow these steps in JavaScript:
+
+    Create a 3D rotation matrix for the desired rotation. In this case, we'll use the rotation around the x-axis.
+    Define the vector you want to rotate.
+    Perform the matrix multiplication between the rotation matrix and the vector.
+
+Here's the JavaScript code that demonstrates this process:
+
+javascript
+
+// Define the rotation angle in degrees
+const angle = 53;
+
+// Convert the angle to radians
+const radians = (Math.PI / 180) * angle;
+
+// Create the rotation matrix
+const rotationMatrix = [
+  [1, 0, 0],
+  [0, Math.cos(radians), -Math.sin(radians)],
+  [0, Math.sin(radians), Math.cos(radians)]
+];
+
+// Define the vector
+const vector = [3, 3, 3];
+
+// Perform matrix multiplication
+const rotatedVector = [
+  rotationMatrix[0][0] * vector[0] + rotationMatrix[0][1] * vector[1] + rotationMatrix[0][2] * vector[2],
+  rotationMatrix[1][0] * vector[0] + rotationMatrix[1][1] * vector[1] + rotationMatrix[1][2] * vector[2],
+  rotationMatrix[2][0] * vector[0] + rotationMatrix[2][1] * vector[1] + rotationMatrix[2][2] * vector[2]
+];
+
+console.log(rotatedVector); // Output: [3, -0.185, 4.185]
+
+The resulting rotatedVector will be the rotated vector after applying the rotation matrix.

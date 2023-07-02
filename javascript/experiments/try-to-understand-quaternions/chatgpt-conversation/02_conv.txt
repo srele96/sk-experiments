@@ -1,0 +1,85 @@
+User
+what does it mean to create a quaternion from euler?
+ChatGPT
+
+Creating a quaternion from Euler angles refers to the process of converting rotations represented by Euler angles into a quaternion representation. Quaternions are a mathematical construct used to represent 3D rotations.
+
+Euler angles describe a rotation by specifying three angles, typically denoted as roll, pitch, and yaw. These angles represent rotations around the three primary axes (X, Y, and Z) of a coordinate system. However, Euler angles suffer from a problem known as "gimbal lock," where certain combinations of angles can result in a loss of one degree of freedom, leading to unexpected behavior.
+
+On the other hand, quaternions provide a more robust and efficient way to represent rotations. A quaternion is a four-dimensional vector that consists of a scalar part (w) and a three-dimensional vector part (x, y, z). By converting Euler angles to quaternions, you can avoid issues like gimbal lock and easily interpolate between rotations.
+
+The process of creating a quaternion from Euler angles depends on the specific Euler angle convention being used (e.g., XYZ, ZYX, etc.), as different conventions define different sequences of rotations. Here is a general outline of the process:
+
+    Determine the Euler angle convention being used (e.g., XYZ, ZYX, etc.) and the order of rotations specified by the convention.
+    Convert each Euler angle to a quaternion that represents the corresponding rotation around the respective axis.
+    Multiply the quaternions in the order specified by the Euler angle convention to obtain the final quaternion representation of the combined rotation.
+
+The exact mathematical formulas for converting Euler angles to quaternions vary depending on the convention and the coordinate system used. It's important to consult the specific conventions and formulas relevant to your application or programming library to perform the conversion accurately.
+
+Keep in mind that once you have a quaternion representation, you can easily convert it back to Euler angles if needed, using appropriate conversion formulas specific to your chosen convention.
+User
+show me math that creates rotation quaternion from yaw, pitch, roll
+ChatGPT
+
+To create a rotation quaternion from yaw, pitch, and roll angles, we'll assume the convention XYZ, where the rotations are applied in the order of yaw (rotation around the Z-axis), pitch (rotation around the Y-axis), and roll (rotation around the X-axis). Here's the math to create the quaternion:
+
+    Start by dividing each angle by 2 and converting them to radians:
+
+    yaw_radians = yaw_angle_degrees * (pi / 180) / 2
+    pitch_radians = pitch_angle_degrees * (pi / 180) / 2
+    roll_radians = roll_angle_degrees * (pi / 180) / 2
+
+    Compute the sine and cosine of each half angle:
+
+    yaw_cos = cos(yaw_radians)
+    yaw_sin = sin(yaw_radians)
+
+    pitch_cos = cos(pitch_radians)
+    pitch_sin = sin(pitch_radians)
+
+    roll_cos = cos(roll_radians)
+    roll_sin = sin(roll_radians)
+
+    Construct the quaternion:
+
+    quaternion_w = roll_cos * pitch_cos * yaw_cos + roll_sin * pitch_sin * yaw_sin
+    quaternion_x = roll_sin * pitch_cos * yaw_cos - roll_cos * pitch_sin * yaw_sin
+    quaternion_y = roll_cos * pitch_sin * yaw_cos + roll_sin * pitch_cos * yaw_sin
+    quaternion_z = roll_cos * pitch_cos * yaw_sin - roll_sin * pitch_sin * yaw_cos
+
+The resulting quaternion (quaternion_w, quaternion_x, quaternion_y, quaternion_z) represents the rotation described by the yaw, pitch, and roll angles in the XYZ convention.
+
+Remember to use the appropriate trigonometric functions and units (degrees or radians) depending on the programming language or library you are working with. Additionally, be aware that other conventions may use different orders of rotations and, therefore, different conversion formulas.
+User
+show me math that creates rotation quaternion from x,y,z
+ChatGPT
+
+To create a rotation quaternion from Euler angles represented as X, Y, and Z rotations, we'll assume the convention XYZ, where the rotations are applied in the order of X (rotation around the X-axis), Y (rotation around the Y-axis), and Z (rotation around the Z-axis). Here's the math to create the quaternion:
+
+    Start by dividing each angle by 2 and converting them to radians:
+
+    x_radians = x_angle_degrees * (pi / 180) / 2
+    y_radians = y_angle_degrees * (pi / 180) / 2
+    z_radians = z_angle_degrees * (pi / 180) / 2
+
+    Compute the sine and cosine of each half angle:
+
+    x_cos = cos(x_radians)
+    x_sin = sin(x_radians)
+
+    y_cos = cos(y_radians)
+    y_sin = sin(y_radians)
+
+    z_cos = cos(z_radians)
+    z_sin = sin(z_radians)
+
+    Construct the quaternion:
+
+    quaternion_w = x_cos * y_cos * z_cos + x_sin * y_sin * z_sin
+    quaternion_x = x_sin * y_cos * z_cos - x_cos * y_sin * z_sin
+    quaternion_y = x_cos * y_sin * z_cos + x_sin * y_cos * z_sin
+    quaternion_z = x_cos * y_cos * z_sin - x_sin * y_sin * z_cos
+
+The resulting quaternion (quaternion_w, quaternion_x, quaternion_y, quaternion_z) represents the rotation described by the X, Y, and Z angles in the XYZ convention.
+
+It's important to note that the order of rotations and the specific convention used may vary in different contexts. Make sure to consult the appropriate convention and adjust the formulas accordingly if you're working with a different convention or order of rotations.

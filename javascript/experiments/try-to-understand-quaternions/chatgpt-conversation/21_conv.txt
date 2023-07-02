@@ -1,0 +1,50 @@
+User
+      // result[0] = q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2] - q1[3] * q2[3];
+      // result[1] = q1[0] * q2[1] + q1[1] * q2[0] + q1[2] * q2[3] - q1[3] * q2[2];
+      // result[2] = q1[0] * q2[2] - q1[1] * q2[3] + q1[2] * q2[0] + q1[3] * q2[1];
+      // result[3] = q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1] + q1[3] * q2[0];
+
+this calculation uses quaternion [w,x,y,z] , i want calculation here
+
+rewrite this:
+
+      const w1 = this.w;
+      const x1 = this.x;
+      const y1 = this.y;
+      const z1 = this.z;
+
+      const w2 = other.w;
+      const x2 = other.x;
+      const y2 = other.y;
+      const z2 = other.z;
+
+to use
+
+      const resultW =
+      const resultX =
+      const resultY =
+      const resultZ =
+
+can you assign to this result?
+ChatGPT
+
+Certainly! Based on the provided code snippet, you can rewrite it to assign the result to the variables resultW, resultX, resultY, and resultZ as follows:
+
+javascript
+
+const w1 = this.w;
+const x1 = this.x;
+const y1 = this.y;
+const z1 = this.z;
+
+const w2 = other.w;
+const x2 = other.x;
+const y2 = other.y;
+const z2 = other.z;
+
+const resultW = w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2;
+const resultX = w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2;
+const resultY = w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2;
+const resultZ = w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2;
+
+Now the calculated values will be assigned to the variables resultW, resultX, resultY, and resultZ respectively.

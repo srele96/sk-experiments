@@ -2,6 +2,10 @@
 
 The Sandbox is a collection of module and sample units which allow me to do everything I want using C++ and its ecosystem.
 
+## Find packages available to `vcpkg`
+
+[vcpkg.link](https://vcpkg.link/)
+
 ## Building `sandbox` samples and modules
 
 Delete `build` directory if it exists. This step helps avoid any conflicts with previously generated build directory.
