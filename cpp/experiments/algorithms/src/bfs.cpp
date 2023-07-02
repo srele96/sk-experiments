@@ -26,7 +26,7 @@ struct FindVal {
 
 class CleanUp {
  private:
-  void m_collect_children(TreeNode*, queue<TreeNode*>&, deque<TreeNode*>&);
+  void m_collect(TreeNode*, queue<TreeNode*>&, deque<TreeNode*>&);
 
  public:
   void operator()(TreeNode*);
@@ -77,15 +77,15 @@ void FindVal::operator()(TreeNode* r, int val, ostream& os) {
   }
 }
 
-void CleanUp::m_collect_children(TreeNode* n, queue<TreeNode*>& q,
-                                 deque<TreeNode*>& out) {
+void CleanUp::m_collect(TreeNode* n, queue<TreeNode*>& q,
+                        deque<TreeNode*>& out) {
   out.push_back(n);
   if (n->left != nullptr) q.push(n->left);
   if (n->right != nullptr) q.push(n->right);
   if (!q.empty()) {
     TreeNode* t{q.front()};
     q.pop();
-    m_collect_children(t, q, out);
+    m_collect(t, q, out);
   }
 }
 
@@ -93,7 +93,7 @@ void CleanUp::operator()(TreeNode* r) {
   queue<TreeNode*> q;
   deque<TreeNode*> deq;
 
-  m_collect_children(r, q, deq);
+  m_collect(r, q, deq);
 
   while (!deq.empty()) {
     TreeNode* n{deq.back()};
