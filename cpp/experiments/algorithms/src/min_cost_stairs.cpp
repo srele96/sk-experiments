@@ -93,6 +93,78 @@ mcs(c):
     else return 0
   return min(mc(0), mc(1))
 
+
+
+f(n):
+  if n == 0 return
+  f(n - 1)
+
+
+
+f(n):
+  if n == 0 return
+  f(n - 1)
+  f(n - 1)
+
+
+
+                    n
+         n-1                   n-1
+    n-1       n-1        n-1        n-1
+n-1   n-1  n-1  n-1   n-1   n-1  n-1   n-1
+
+
+count calls on each level
+
+
+f(n)    1
+f(n-1)  2
+f(n-2)  4
+f(n-3)  8
+
+
+
+f(n):
+  if n == 0 return
+
+  f(n - 1)
+  f(n - 1)
+  f(n - 1)
+
+
+                                                n
+
+      n - 1                                   n - 1                             n - 1
+
+n - 1      n - 1      n - 1        n - 1      n - 1      n - 1       n - 1      n - 1      n - 1
+
+count calls on each level
+
+f(n)       1
+f(n-1)     3
+f(n-2)     9
+f(n-3)     27
+f(n-4)     81
+f(n-5)     242
+
+current level has 3 * calls of previous level
+so for n = 1, we have 1
+for n = 2, we have 3 * 1 calls, equal 3
+for n = 3, we have 3 * (3 * 1) calls, equal 9
+for n = 4, we have 3 * (3 * (3 * 1)), equal 27
+for n = 5, we have 3 * (3 * (3 * (3 * 1))), equal 81
+
+from that we can observe that for each level we have the number of calls for
+one function which is 3, is repeated n-1 times,
+for level 2, we have number 3 appear 1 time
+for level 3, we have number 3 appear 2 times
+for level 4, we have number 3 appear 3 times
+for level 5, we have number 3 appear 4 times
+
+therefore for level n, we have number 3 appear n-1 times
+
+
+
 */
 
 // class Solution {
