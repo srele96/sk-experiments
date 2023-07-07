@@ -1,6 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// Don't break the tree structure because the line is too long.
+// clang-format off
+
 /*
 
 
@@ -134,9 +137,9 @@ f(n):
 
                                                 n
 
-      n - 1                                   n - 1                             n - 1
+           n - 1                              n - 1                             n - 1
 
-n - 1      n - 1      n - 1        n - 1      n - 1      n - 1       n - 1      n - 1      n - 1
+n - 1      n - 1      n - 1        n - 1      n - 1      n - 1       n - 1      n - 1       n - 1
 
 count calls on each level
 
@@ -166,6 +169,8 @@ therefore for level n, we have number 3 appear n-1 times
 
 
 */
+
+// clang-format on
 
 // class Solution {
 // public:
