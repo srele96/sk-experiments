@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body,
+      #root {
+        width: 100%;
+        height: 100%;
+      }
+
+      #root {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        overflow: hidden;
+      }
+
+      .container::after {
+        content: '';
+        display: block;
+        padding-bottom: 100%;
+      }
+
+      .container__item {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .rotator {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        height: 0;
+      }
+
+      .rotator__translator {
+        width: 100%;
+        height: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .button {
+        cursor: pointer;
+        border: 0;
+        display: flex;
+        border-radius: 50%;
+        position: relative;
+        box-shadow: 0 0 3px 1px black;
+      }
+
+      .button:hover {
+        box-shadow: 0 0 6px 2px black;
+      }
+
+      .button::after {
+        content: '';
+        display: flex;
+        padding-bottom: 100%;
+      }
+
+      .button__content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .animate {
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .picture {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"
+      crossorigin=""
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"
+      crossorigin=""
+    ></script>
+    <script>
+      (() => {
+        const { createElement: e, useState } = React;
+        const { createRoot } = ReactDOM;
+
+        function App() {
+          const midElementWidth = 40;
+          const sideElementWidth = 20;
+          const padding = 5;
+          const midElementRadius = 0;
+          const sideElementRadius =
+            sideElementWidth / 2 + padding + sideElementWidth;
+
+          const defaultMidElementKey = 'a';
+          const [midElementKey, setMidElementKey] =
+            useState(defaultMidElementKey);
+          const [elements, setElements] = useState({
+            [defaultMidElementKey]: {
+              width: midElementWidth,
+              radius: midElementRadius,
+              degree: 0,
+              src: 'https://cdn.oneesports.gg/cdn-data/2022/03/JujutsuKaisen0_YutaOkkotsuRikaOrimoto.jpg',
+            },
+            b: {
+              width: sideElementWidth,
+              radius: sideElementRadius,
+              degree: 45,
+              src: 'https://static.zerochan.net/Sukuna.%28Jujutsu.Kaisen%29.full.3187836.jpg',
+            },
+            c: {
+              width: sideElementWidth,
+              radius: sideElementRadius,
+              degree: 90,
+              src: 'https://www.tocanvas.net/wp-content/uploads/2022/11/Who-is-Megumi-Fushiguro-rotated.jpg',
+            },
+            d: {
+              width: sideElementWidth,
+              radius: sideElementRadius,
+              degree: 135,
+              src: 'https://butwhytho.net/wp-content/uploads/2022/03/jujutsu-kaisen-0-But-Why-Tho-2.jpg',
+            },
+            e: {
+              width: sideElementWidth,
+              radius: sideElementRadius,
+              degree: 180,
+              src: 'https://www.tocanvas.net/wp-content/uploads/2022/06/gojo-jjk.jpg',
+            },
+            f: {
+              width: sideElementWidth,
+              radius: sideElementRadius,
+              degree: 225,
+              src: 'https://thicc-af.mywaifulist.moe/waifus/satoru-gojo-sorcery-fight/2rXp8SOkdeuC7TIGn92nYVbgFU8Q2WkssrMTFfN1.png?class=thumbnail',
+            },
+            g: {
+              width: sideElementWidth,
+              radius: sideElementRadius,
+              degree: 270,
+              src: 'https://cdn.oneesports.gg/cdn-data/2022/03/JujutsuKaisen0_charactersSuguruGeto.webp',
+            },
+            h: {
+              width: sideElementWidth,
+              radius: sideElementRadius,
+              degree: 315,
+              src: 'https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2022/03/Yuta-okkotsu-Jujustu-kaisen-cosplay.jpg',
+            },
+            i: {
+              width: sideElementWidth,
+              radius: sideElementRadius,
+              degree: 360,
+              src: 'https://staticg.sportskeeda.com/editor/2023/03/a0af5-16797644845725-1920.jpg',
+            },
+          });
+
+          function switchWithMainElement(key) {
+            return function () {
+              setElements((prevState) => {
+                const midElement = prevState[midElementKey];
+                const sideElement = prevState[key];
+
+                // Swap only values responsible for movement.
+                //
+                // IMPORTANT! TWO ELEMENTS THAT ARE BEING SWAPPED MUST KEEP KEEP
+                // THE SAME ANGLE. THE ELEMENT THAT BECOMES NEW MID ELEMENT MUST
+                // MOVE TO THE MIDDLE FROM THE CURRENT ANGLE TO ZERO RADIUS.
+                // ROTATION DOES NOT AFFECT THE MIDDLE ELEMENT, SO WE CAN KEEP
+                // THE ANGLE ON THE NEW MID ELEMENT.
+                const newState = {
+                  ...prevState,
+                  [midElementKey]: {
+                    ...midElement,
+                    width: sideElement.width,
+                    radius: sideElement.radius,
+                    // TELL THE MID ELEMENT WHAT IS HIS NEW POSITION IN DEGREES
+                    // IN THE CIRCLE.
+                    degree: sideElement.degree,
+                  },
+                  [key]: {
+                    ...sideElement,
+                    width: midElement.width,
+                    radius: midElement.radius,
+                    // KEEP THE POSITION AS IS SO THE SIDE ELEMENT MOVES FROM
+                    // CURRENT POSITION TO THE CENTER.
+                  },
+                };
+
+                return newState;
+              });
+
+              setMidElementKey(key);
+            };
+          }
+
+          return e(
+            'div',
+            { className: 'container' },
+            e(
+              'div',
+              { className: 'container__item' },
+              Object.keys(elements).map((key) => {
+                const element = elements[key];
+
+                return e(
+                  'div',
+                  {
+                    key,
+                    className: 'rotator',
+                    style: {
+                      transform: `rotate(${element.degree}deg)`,
+                    },
+                    'data-key': key,
+                  },
+                  e(
+                    'div',
+                    {
+                      className: 'rotator__translator animate',
+                      style: {
+                        transform: `translate(${element.radius}%, 0)`,
+                      },
+                    },
+                    e(
+                      'button',
+                      {
+                        className: 'button',
+                        style: {
+                          width: `${element.width}%`,
+                        },
+                        onClick: switchWithMainElement(key),
+                      },
+                      e(
+                        'span',
+                        {
+                          className: 'button__content',
+                          style: {
+                            // Negate the parent element rotation so the image
+                            // appears straight.
+                            transform: `rotate(${-element.degree}deg)`,
+                          },
+                        },
+                        e('img', { className: 'picture', src: element.src })
+                      )
+                    )
+                  )
+                );
+              })
+            )
+          );
+        }
+
+        createRoot(document.getElementById('root')).render(e(App));
+      })();
+    </script>
+  </body>
+</html>
