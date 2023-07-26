@@ -61,23 +61,32 @@
         align-items: center;
       }
 
+      .box {
+        position: relative;
+        border-radius: 50%;
+      }
+
+      .box::after {
+        content: '';
+        display: flex;
+        padding-bottom: 100%;
+      }
+
       .button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         cursor: pointer;
+        border-radius: 50%;
         border: 0;
         display: flex;
-        border-radius: 50%;
-        position: relative;
         box-shadow: 0 0 3px 1px black;
       }
 
       .button:hover {
         box-shadow: 0 0 6px 2px black;
-      }
-
-      .button::after {
-        content: '';
-        display: flex;
-        padding-bottom: 100%;
       }
 
       .button__content {
@@ -124,68 +133,41 @@
           const sideElementWidth = 20;
           const padding = 5;
           const midElementRadius = 0;
+          const two = 2;
           const sideElementRadius =
-            sideElementWidth / 2 + padding + sideElementWidth;
+            sideElementWidth / two + padding + sideElementWidth;
 
-          const defaultMidElementKey = 'a';
+          const sources = [
+            'https://cdn.oneesports.gg/cdn-data/2022/03/JujutsuKaisen0_YutaOkkotsuRikaOrimoto.jpg',
+            'https://static.zerochan.net/Sukuna.%28Jujutsu.Kaisen%29.full.3187836.jpg',
+            'https://www.tocanvas.net/wp-content/uploads/2022/11/Who-is-Megumi-Fushiguro-rotated.jpg',
+            'https://butwhytho.net/wp-content/uploads/2022/03/jujutsu-kaisen-0-But-Why-Tho-2.jpg',
+            'https://www.tocanvas.net/wp-content/uploads/2022/06/gojo-jjk.jpg',
+            'https://thicc-af.mywaifulist.moe/waifus/satoru-gojo-sorcery-fight/2rXp8SOkdeuC7TIGn92nYVbgFU8Q2WkssrMTFfN1.png?class=thumbnail',
+            'https://cdn.oneesports.gg/cdn-data/2022/03/JujutsuKaisen0_charactersSuguruGeto.webp',
+            'https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2022/03/Yuta-okkotsu-Jujustu-kaisen-cosplay.jpg',
+            'https://staticg.sportskeeda.com/editor/2023/03/a0af5-16797644845725-1920.jpg',
+          ];
+          const defaultMidElementKey = '0';
           const [midElementKey, setMidElementKey] =
             useState(defaultMidElementKey);
-          const [elements, setElements] = useState({
-            [defaultMidElementKey]: {
-              width: midElementWidth,
-              radius: midElementRadius,
-              degree: 0,
-              src: 'https://cdn.oneesports.gg/cdn-data/2022/03/JujutsuKaisen0_YutaOkkotsuRikaOrimoto.jpg',
-            },
-            b: {
-              width: sideElementWidth,
-              radius: sideElementRadius,
-              degree: 45,
-              src: 'https://static.zerochan.net/Sukuna.%28Jujutsu.Kaisen%29.full.3187836.jpg',
-            },
-            c: {
-              width: sideElementWidth,
-              radius: sideElementRadius,
-              degree: 90,
-              src: 'https://www.tocanvas.net/wp-content/uploads/2022/11/Who-is-Megumi-Fushiguro-rotated.jpg',
-            },
-            d: {
-              width: sideElementWidth,
-              radius: sideElementRadius,
-              degree: 135,
-              src: 'https://butwhytho.net/wp-content/uploads/2022/03/jujutsu-kaisen-0-But-Why-Tho-2.jpg',
-            },
-            e: {
-              width: sideElementWidth,
-              radius: sideElementRadius,
-              degree: 180,
-              src: 'https://www.tocanvas.net/wp-content/uploads/2022/06/gojo-jjk.jpg',
-            },
-            f: {
-              width: sideElementWidth,
-              radius: sideElementRadius,
-              degree: 225,
-              src: 'https://thicc-af.mywaifulist.moe/waifus/satoru-gojo-sorcery-fight/2rXp8SOkdeuC7TIGn92nYVbgFU8Q2WkssrMTFfN1.png?class=thumbnail',
-            },
-            g: {
-              width: sideElementWidth,
-              radius: sideElementRadius,
-              degree: 270,
-              src: 'https://cdn.oneesports.gg/cdn-data/2022/03/JujutsuKaisen0_charactersSuguruGeto.webp',
-            },
-            h: {
-              width: sideElementWidth,
-              radius: sideElementRadius,
-              degree: 315,
-              src: 'https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2022/03/Yuta-okkotsu-Jujustu-kaisen-cosplay.jpg',
-            },
-            i: {
-              width: sideElementWidth,
-              radius: sideElementRadius,
-              degree: 360,
-              src: 'https://staticg.sportskeeda.com/editor/2023/03/a0af5-16797644845725-1920.jpg',
-            },
-          });
+          function createElements() {
+            return sources.reduce((accumulate, src, i) => {
+              const key = `${i}`;
+              const angle = 45;
+              const degree = i * angle;
+              const defaultMidKey = '0';
+              const isMid = key === defaultMidElementKey;
+              accumulate[key] = {
+                src,
+                degree,
+                width: isMid ? midElementWidth : sideElementWidth,
+                radius: isMid ? midElementRadius : sideElementRadius,
+              };
+              return accumulate;
+            }, {});
+          }
+          const [elements, setElements] = useState(createElements());
 
           function switchWithMainElement(key) {
             return function () {
@@ -254,25 +236,32 @@
                       },
                     },
                     e(
-                      'button animate',
+                      'div',
                       {
-                        className: 'button',
+                        className: 'box animate',
                         style: {
                           width: `${element.width}%`,
                         },
-                        onClick: switchWithMainElement(key),
                       },
                       e(
-                        'span',
+                        'button',
                         {
-                          className: 'button__content',
-                          style: {
-                            // Negate the parent element rotation so the image
-                            // appears straight.
-                            transform: `rotate(${-element.degree}deg)`,
-                          },
+                          className: 'button',
+                          style: {},
+                          onClick: switchWithMainElement(key),
                         },
-                        e('img', { className: 'picture', src: element.src })
+                        e(
+                          'span',
+                          {
+                            className: 'button__content',
+                            style: {
+                              // Negate the parent element rotation so the image
+                              // appears straight.
+                              transform: `rotate(${-element.degree}deg)`,
+                            },
+                          },
+                          e('img', { className: 'picture', src: element.src })
+                        )
                       )
                     )
                   )
