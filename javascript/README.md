@@ -41,3 +41,5 @@ The root directory for JavaScript experiments.
 - [Count images](./experiments/count-images/)
 - [JSONP](./experiments/jsonp/)
 - [ESLint custom rule](./experiments/eslint-custom-rules/)
+- [Try to understand Quaternions](./experiments/try-to-understand-quaternions/)
+- [Elements animated](./experiments/elements-animated/)
