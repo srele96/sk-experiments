@@ -1,0 +1,20 @@
+{
+  "name": "@flexos/generate-elements",
+  "version": "0.1.0",
+  "description": "Generate an object of elements from one or more arrays.",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "dependencies": {
+    "jest": "^29.6.1"
+  },
+  "scripts": {
+    "test": "jest --watchAll"
+  }
+}
