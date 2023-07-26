@@ -4,7 +4,7 @@ Available on [CodePen Flexos96](https://codepen.io/Flexos96/pen/NWELEgq?editors=
 
 Cards available on [Codepen Flexos96](https://codepen.io/Flexos96/pen/abQjEEb?editors=0010).
 
-https://codepen.io/Flexos96/pen/NWELEgq?editors=0010Awesome! Lately I've been digging anime and decided to play more with animated picture animations in the style that allows me to interact with them.
+Awesome! Lately I've been digging anime and decided to play more with animated picture animations in the style that allows me to interact with them.
 
 ## Pictures
 
