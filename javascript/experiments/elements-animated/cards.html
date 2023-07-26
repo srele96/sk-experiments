@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    :root {
+      --gray: #3e3e3e;
+      --light: #f5f5f5;
+    }
+
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    #root {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      background-color: var(--light);
+    }
+
+    .responsive {
+      width: 100%;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .responsive::after {
+      content: '';
+      display: block;
+      padding-bottom: 100%;
+    }
+
+    .responsive-child {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .shadow-hover {
+      transition: 0.1s ease-in-out;
+    }
+
+    .shadow-hover:hover {
+      box-shadow: 0 0 2px 1px var(--gray);
+    }
+
+    p {
+      padding: 5px;
+    }
+  </style>
+  <body>
+    <div id="root"></div>
+    <p>
+      Love this song...
+      <a
+        href="https://www.youtube.com/watch?v=Q0GeviBZA8A&list=RDlzG91CHPz-A&index=25"
+      >
+        Juice WRLD - Pain Pills [Prod.RockyRoadz x Alzbeats]</a
+      >
+    </p>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"
+      crossorigin=""
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"
+      crossorigin=""
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@flexos/elements@0.1.1/dist/flexos-elements.umd.js"
+      crossorigin=""
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+      (() => {
+        function createLayers(mainElement) {
+          const pictures = [
+            'https://butwhytho.net/wp-content/uploads/2023/07/Jujutsu-Kaisen-Season-2-Episode-1-But-Why-Tho.jpg',
+            'https://www.dexerto.com/cdn-cgi/image/width=3840,quality=75,format=auto/https://editors.dexerto.com/wp-content/uploads/2023/05/10/jujutsu-kaisen-season-2-key-visual.jpeg',
+            'https://www.hdwallpapers.in/download/toji_fushiguro_hd_jujutsu_kaisen_2-1920x1080.jpg',
+            'https://w0.peakpx.com/wallpaper/376/655/HD-wallpaper-black-hair-boy-girl-jujutsu-kaisen-riko-amanai-satoru-gojo-white-hair-jujutsu-kaisen.jpg',
+            'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/441e6fbb-a8f3-4ba5-b78b-1333af5ac917/de6gzj3-b2840b37-5a5e-4c05-9e8d-430103f70546.jpg/v1/fill/w_1280,h_1009,q_75,strp/satoru_gojo_x_riko_amanai_by_dika_cchi_de6gzj3-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTAwOSIsInBhdGgiOiJcL2ZcLzQ0MWU2ZmJiLWE4ZjMtNGJhNS1iNzhiLTEzMzNhZjVhYzkxN1wvZGU2Z3pqMy1iMjg0MGIzNy01YTVlLTRjMDUtOWU4ZC00MzAxMDNmNzA1NDYuanBnIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.ahcllnCXLYGih_PXxpHowQZa6cpC5Ozo46h-AMSvzD4',
+            'https://sportshub.cbsistatic.com/i/2023/06/28/55d5b394-4f41-4c14-9d0d-69b2d5cd2604/jujutsu-kaisen-season-2-gojo-geto-shoko-anime-art.jpg',
+            'https://www.mundodeportivo.com/alfabeta/hero/2023/06/satoru-gojo-popularidad-jujutsu-kaisen.jpg?width=1200',
+          ];
+
+          let i = 0;
+
+          const layers = FlexosElements.get_elements({
+            length: pictures.length,
+            callback: (element) => {
+              const e = { ...element, data: pictures[i], number: i };
+              ++i;
+              return e;
+            },
+          })(mainElement);
+
+          return layers;
+        }
+
+        const { useState } = React;
+
+        function App() {
+          const initialMainElement = 4;
+          const [mainElement, setMainElement] = useState(initialMainElement);
+          const layers = createLayers(mainElement);
+
+          return (
+            <div className="responsive">
+              <div className="responsive-child">
+                <div
+                  style={{
+                    // Don't cause the page to make overflow.
+                    width: '43%',
+                    height: '43%',
+                    position: 'relative',
+                  }}
+                >
+                  {layers.map((layer, i) => {
+                    return (
+                      <div
+                        key={layer.number}
+                        style={{
+                          transition: 'transform 0.1s ease-in-out',
+                          transformOrigin: 'bottom center',
+                          transform: `rotate(${layer.order * 10}deg)`,
+                          position: 'absolute',
+                          top: '0',
+                          left: '0',
+                          width: '100%',
+                          height: '100%',
+                          // Keep the Z index positive so the elements are clickable.
+                          zIndex: -Math.abs(layer.order) + layers.length,
+                        }}
+                      >
+                        <button
+                          className="shadow-hover"
+                          onClick={() => setMainElement(i + 1)}
+                          style={{
+                            position: 'absolute',
+                            width: '100%',
+                            height: '100%',
+                            padding: '0',
+                            border: '1px solid var(--gray)',
+                            cursor: 'pointer',
+                            backgroundColor: 'var(--light)',
+                          }}
+                        >
+                          <img
+                            src={layer.data}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              display: 'block',
+                              objectFit: 'contain',
+                            }}
+                          ></img>
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        const root = document.getElementById('root');
+        ReactDOM.createRoot(root).render(<App />);
+      })();
+    </script>
+  </body>
+</html>

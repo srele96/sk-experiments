@@ -42,3 +42,4 @@ The root directory for JavaScript experiments.
 - [JSONP](./experiments/jsonp/)
 - [ESLint custom rule](./experiments/eslint-custom-rules/)
 - [Try to understand Quaternions](./experiments/try-to-understand-quaternions/)
+- [Elements animated](./experiments/elements-animated/)
