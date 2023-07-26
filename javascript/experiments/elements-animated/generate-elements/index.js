@@ -1,4 +1,8 @@
 function generateElements(option) {
+  if (!option) {
+    throw new Error('option is required');
+  }
+
   function assertDataValuesAreSameLength() {
     if (!option.data) {
       throw new Error('option.data is required');
@@ -66,6 +70,10 @@ function generateElements(option) {
     modifyEachElement();
   }
 
+  // Bad idea to silently ignore received invalid key because a user has to
+  // waste lots of time figuring out whether he or the library is wrong.
+  //
+  // Alert user of invalid behavior.
   const validModifyOptions =
     option.modify &&
     option.modify.keyA &&

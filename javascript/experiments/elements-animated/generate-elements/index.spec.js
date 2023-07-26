@@ -1,6 +1,10 @@
 const { generateElements } = require('./index');
 
 describe('generateElements', () => {
+  test('should throw an error if option is not provided', () => {
+    expect(() => generateElements()).toThrow();
+  });
+
   test('should throw an error if data or data values are not provided', () => {
     expect(() => generateElements()).toThrow();
   });
