@@ -668,7 +668,9 @@
 // }
 
 // the function should take two generic parameters
-// the first one explicitly specifies the shape of data he is going to provide, where the type must be key value type, where each value must be an array of some type
+// the first one explicitly specifies the shape of data he is going to provide,
+// where the type must be key value type, where each value must be an array of
+// some type
 
 // for example:
 // fn({
@@ -691,9 +693,11 @@
 //   - provide the first type parameter
 //   - provide both type parameters
 
-// the option of the function takes mandatory `data` object, optional modifier function `each`, and optional object `modify`
+// the option of the function takes mandatory `data` object, optional modifier
+// function `each`, and optional object `modify`
 
-// our function first reshapes the data object and stores it in an object where from our previous example, we have:
+// our function first reshapes the data object and stores it in an object where
+// from our previous example, we have:
 // const acc = {
 //   '0': {
 //     first: 'a',
@@ -721,10 +725,14 @@
 // interface TempAcc { [key: string]: Reshaped }
 // if we received only data function
 
-// then we will iterate through each key and value, where key is a key of TempAcc and value is Reshaped
-// the option.each will receive the key: keyof TempAcc and value: Reshaped, and it returns a value
-// if the option.each is not provided, the object we accumulated TempAcc on stays the same
-// otherwise, option.each returns a type, that type will be stored instead of Reshaped type we currently have
+// then we will iterate through each key and value, where key is a key of
+// TempAcc and value is Reshaped
+// the option.each will receive the key: keyof TempAcc and value: Reshaped, and
+// it returns a value
+// if the option.each is not provided, the object we accumulated TempAcc on
+// stays the same
+// otherwise, option.each returns a type, that type will be stored instead of
+// Reshaped type we currently have
 // so let's say that option.each returns type CustomReshaped
 // we will end up with:
 // interface CustomReshaped { [key: string]: CustomReshaped }
