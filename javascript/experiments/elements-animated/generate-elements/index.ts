@@ -548,81 +548,469 @@
 //   const d = result['0'].d;
 // }
 
-interface KeyedCollection {
-  [key: string | number]: unknown;
+// interface KeyedCollection {
+//   [key: string | number]: unknown;
+// }
+
+// type Data<T extends KeyedCollection> = {
+//   [K in keyof T]: T[K] extends Array<infer U> ? Array<U> : never;
+// };
+
+// type DefaultResult<T extends KeyedCollection> = {
+//   [K in keyof T]: T[K] extends Array<infer U> ? U : never;
+// };
+
+// interface EachReturn<T> {
+//   key: string | number;
+//   value: T;
+// }
+
+// type EachCallback<R> = (key: string, value: R) => EachReturn<R>;
+
+// type ModifyReturn<R> = { keyA: R; keyB: R };
+
+// type ModifyCallback<R> = (valueA: R, valueB: R) => ModifyReturn<R>;
+
+// interface Option<T extends KeyedCollection, R> {
+//   data: Data<T>;
+//   each?: EachCallback<R>;
+//   modify?: {
+//     keyA: string;
+//     keyB: string;
+//     cb: ModifyCallback<R>;
+//   };
+// }
+
+// interface KeyValue<T extends KeyedCollection, R = unknown> {
+//   // if R is provided then use it, otherwise use default result
+//   [key: string]: R extends unknown ? DefaultResult<T> : R;
+// }
+
+// function fn<T extends KeyedCollection, R = unknown>(
+//   option: Option<T, R>
+// ): KeyValue<T, R> {
+//   return {};
+// }
+
+// {
+//   const result = fn<
+//     {
+//       a: number[];
+//     },
+//     {
+//       a: number;
+//     }
+//   >({
+//     data: {
+//       a: [1, 2],
+//     },
+//   });
+
+//   result['0'].a;
+//   result['1'].b;
+// }
+
+// {
+//   const result = fn<{
+//     a: number[];
+//     b: string[];
+//   }>({
+//     data: {
+//       a: [],
+//       b: [],
+//     },
+//   });
+
+//   result['0'].a;
+//   result['0'].b;
+
+//   type R = typeof result['0'];
+// }
+
+// First define the test cases, then write implementation...
+
+// function fn<T, E = any>(option: any) {}
+
+// {
+//   // Should error
+
+//   fn({
+//     data: {},
+//   });
+
+//   fn({});
+
+//   fn({
+//     data: {
+//       a: 1,
+//     },
+//   });
+
+//   fn({
+//     data: {
+//       a: 'a',
+//     },
+//   });
+
+//   fn({
+//     data: {
+//       a: [],
+//       b: 1,
+//     },
+//   });
+
+//   fn<{}>({
+//     data: {
+//       a: [],
+//       b: [],
+//     },
+//   });
+// }
+
+// the function should take two generic parameters
+// the first one explicitly specifies the shape of data he is going to provide, where the type must be key value type, where each value must be an array of some type
+
+// for example:
+// fn({
+//   data: {
+//     first: ['a', 'b', 'c'], // string[]
+//     second: [1, 2, 3], // number[]
+//     third: [[1, 2], [3, 4], [5, 6]] // number[][]
+//   }
+// })
+// which means that object we expect should be constrained to:
+// { key: [string | number]: Array<of something user specified, hopefully deducible> }
+
+// the second parameter is the explicit return type of the value on the object
+
+// for example:
+// { [key: string]: T }
+
+// user may:
+//   - not provide any type parameters
+//   - provide the first type parameter
+//   - provide both type parameters
+
+// the option of the function takes mandatory `data` object, optional modifier function `each`, and optional object `modify`
+
+// our function first reshapes the data object and stores it in an object where from our previous example, we have:
+// const acc = {
+//   '0': {
+//     first: 'a',
+//     second: 1,
+//     third: [1, 2]
+//   },
+//   '1': {
+//     first: 'b',
+//     second: 2,
+//     third: [3, 4]
+//   },
+//   '2': {
+//     first: 'c',
+//     second: 3,
+//     third: [5, 6]
+//   }
+// }
+// which means that our object will be:
+// { [key: string]: /* extract the type array for value on this key contains */ }
+// so if we receive:
+// { a: number[], b: string[], c: number[][] }
+// we will reshape it to:
+// interface Reshaped { a: number, b: string, c: number[] }
+// and place it on to another object:
+// interface TempAcc { [key: string]: Reshaped }
+// if we received only data function
+
+// then we will iterate through each key and value, where key is a key of TempAcc and value is Reshaped
+// the option.each will receive the key: keyof TempAcc and value: Reshaped, and it returns a value
+// if the option.each is not provided, the object we accumulated TempAcc on stays the same
+// otherwise, option.each returns a type, that type will be stored instead of Reshaped type we currently have
+// so let's say that option.each returns type CustomReshaped
+// we will end up with:
+// interface CustomReshaped { [key: string]: CustomReshaped }
+// now the return type of our function is CustomReshaped
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// Attempt to provide the type again and write type test cases to validate the
+// type behavior.
+
+interface KeyValue {
+  [key: string | number]: unknown[];
 }
 
-type Data<T extends KeyedCollection> = {
+type Data<T extends KeyValue> = {
   [K in keyof T]: T[K] extends Array<infer U> ? Array<U> : never;
 };
 
-type DefaultResult<T extends KeyedCollection> = {
+type DefaultMapping<T extends KeyValue> = {
   [K in keyof T]: T[K] extends Array<infer U> ? U : never;
 };
 
-interface EachReturn<T> {
-  key: string | number;
-  value: T;
+interface CustomMapping<T> {
+  [key: string]: T;
 }
 
-type EachCallback<R> = (key: string, value: R) => EachReturn<R>;
-
-type ModifyReturn<R> = { keyA: R; keyB: R };
-
-type ModifyCallback<R> = (valueA: R, valueB: R) => ModifyReturn<R>;
-
-interface Option<T extends KeyedCollection, R> {
+interface Option<T extends KeyValue, E> {
   data: Data<T>;
-  each?: EachCallback<R>;
+  each?: (key: string, value: DefaultMapping<T>) => { key: string; value: E };
   modify?: {
     keyA: string;
     keyB: string;
-    cb: ModifyCallback<R>;
+    cb: (valueA: E, valueB: E) => { keyA: E; keyB: E };
   };
 }
 
-interface KeyValue<T extends KeyedCollection, R = unknown> {
-  // if R is provided then use it, otherwise use default result
-  [key: string]: R extends unknown ? DefaultResult<T> : R;
-}
-
-function fn<T extends KeyedCollection, R = unknown>(
-  option: Option<T, R>
-): KeyValue<T, R> {
+function fn<T extends KeyValue, E = unknown>(
+  option: Option<T, E>
+): DefaultMapping<T> | CustomMapping<E> {
   return {};
 }
 
 {
-  const result = fn<
-    {
-      a: number[];
-    },
-    {
-      a: number;
-    }
-  >({
+  fn({});
+  fn({ data: {} });
+  fn({ data: { a: [] } });
+  fn({ data: { a: [1] } });
+  fn<{ a: number[] }>({ data: { a: [] } });
+  fn<{ a: number[] }>({ data: { a: [1] } });
+  fn<{ a: number[] }>({ data: { a: [''] } });
+  fn<{ a: number[] }>({ data: { a: [1, 2], b: [] } });
+  fn<{}>({ data: { a: [1, 2], b: [] } });
+  fn<{ a: number[] }>({ data: { a: [1, 2], b: [] } });
+
+  fn<{
+    a: string;
+  }>({
     data: {
       a: [1, 2],
     },
   });
 
-  result['0'].a;
-  result['1'].b;
-}
-
-{
-  const result = fn<{
-    a: number[];
-    b: string[];
+  fn<{
+    a: string;
   }>({
     data: {
-      a: [],
-      b: [],
+      a: '',
     },
   });
 
-  result['0'].a;
-  result['0'].b;
+  fn<{ a: number[] }>({
+    data: { a: [1, 2], b: [] },
+    each: () => {
+      return { key: '', value: 1 };
+    },
+  });
 
-  type R = typeof result['0'];
+  fn({
+    data: {},
+    each: () => {
+      return { key: '', value: 1 };
+    },
+  });
+
+  fn<{ a: number[] }>({
+    data: { a: [1, 2], b: [] },
+  });
+
+  fn({
+    data: {
+      a: [[1], ['']],
+    },
+  });
+
+  fn<{
+    a: number[][];
+  }>({
+    data: {
+      a: [[1]],
+    },
+  });
+
+  fn({
+    data: {
+      a: [1],
+    },
+    each: (key, value) => {
+      const a = value.a;
+      const b = value.b;
+      const c = value.c;
+      return { key, value: 1 };
+    },
+  });
+
+  fn({
+    data: {
+      a: [1],
+      b: ['a'],
+    },
+    each: (key, value) => {
+      const a = value.a;
+      const b = value.b;
+      const c = value.c;
+      return { key, value: 1 };
+    },
+  });
+
+  fn<{
+    a: number[];
+  }>({
+    data: {
+      a: [1],
+    },
+    each: (key, value) => {
+      const a = value.a;
+      const b = value.b;
+      const c = value.c;
+      return { key, value: 1 };
+    },
+  });
+
+  fn<{}>({
+    data: {
+      a: [1],
+    },
+    modify: {
+      keyA: 'a',
+      keyB: 'b',
+      cb: (valueA, valueB) => {
+        return { keyA: 1, keyB: 2 };
+      },
+    },
+  });
+
+  fn({
+    data: {
+      a: [1],
+    },
+    modify: {
+      keyA: 'a',
+      keyB: 'b',
+      cb: (valueA, valueB) => {
+        return { keyA: 1, keyB: 2 };
+      },
+    },
+  });
+
+  fn<
+    {
+      a: number[];
+    },
+    number
+  >({
+    data: {
+      a: [1],
+    },
+    modify: {
+      keyA: 'a',
+      keyB: 'b',
+      cb: (valueA, valueB) => {
+        return { keyA: '', keyB: 2 };
+      },
+    },
+  });
+
+  fn<
+    {
+      a: number[];
+    },
+    { a: number }
+  >({
+    data: {
+      a: [1],
+    },
+    each: (key, value) => {
+      return { key, value: { a: 1 } };
+    },
+  });
+
+  fn<
+    {
+      a: number[];
+    },
+    { a: number }
+  >({
+    data: {
+      a: [1],
+    },
+    each: (key, value) => {
+      return { key, value };
+    },
+  });
+
+  fn<{ a: number[] }, { a: number }>({
+    data: {
+      a: [2, 3],
+    },
+    each: (key, value) => {
+      return { key, value: { a: 'error' } };
+    },
+    modify: {
+      keyA: 'a',
+      keyB: 'b',
+      cb: (valueA, valueB) => {
+        return { keyA: { a: 1 }, keyB: { a: 'error' } };
+      },
+    },
+  });
+}
+
+{
+  const result = fn({
+    data: {
+      a: [1],
+      b: [2],
+    },
+  });
+  type Result = typeof result;
+}
+
+{
+  const result = fn<{ a: number[] }, { a: number }>({
+    data: {
+      a: [2, 3],
+    },
+    each: (key, value) => {
+      return { key, value: { a: 'error' } };
+    },
+    modify: {
+      keyA: 'a',
+      keyB: 'b',
+      cb: (valueA, valueB) => {
+        return { keyA: { a: 1 }, keyB: { a: 'error' } };
+      },
+    },
+  });
+
+  const a = result.a;
+  const b = result.b;
+}
+
+{
+  interface DataShape {
+    a: number[];
+  }
+
+  const result = fn<DataShape, { a: number; b: string }>({
+    data: {
+      a: [2, 3],
+    },
+    each: (key, value) => {
+      return { key, value: { a: 5, b: 'works' } };
+    },
+    modify: {
+      keyA: 'a',
+      keyB: 'b',
+      cb: (valueA, valueB) => {
+        return { keyA: valueB, keyB: { a: 10, b: 'works' } };
+      },
+    },
+  });
+
+  const a = result.a;
+  const b = result.b;
+
+  type D = DefaultMapping<DataShape>;
 }
