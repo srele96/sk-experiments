@@ -32,6 +32,51 @@ class Solution {
 
 namespace Iterative {
 
+/*
+
+   7
+ 2   6
+1 3 4 5
+
+7
+2
+1
+print(1)
+2
+print(2)
+3
+print(3)
+7
+print(7)
+6
+4
+print(4)
+6
+print(6)
+5
+print(5)
+
+second visit or leaf? ...
+
+
+i observed that each printed node is visited twice except leafs so i created
+a map that counts visits and condition to print current node if it is visited
+twice or has no leafs, however
+
+
+       3
+     /  \
+  null   2
+        /
+       1
+
+yields incorrect results because print order is: 1 2 3, and for inorder it
+should be: 3 1 2
+
+i failed to see beyond the case that i handled
+
+*/
+
 class Solution {
  public:
   vector<int> preorderTraversal(TreeNode *root) {
@@ -70,6 +115,70 @@ class Solution {
 
     return result;
   }
+
+  vector<int> inorderTraversal(TreeNode *root) {
+    vector<int> result;
+    unordered_set<TreeNode *> visited_node;
+    unordered_map<TreeNode *, TreeNode *> previous_node;
+    unordered_map<TreeNode *, int> visited_count;
+    unordered_set<TreeNode *> used;
+
+    TreeNode *current_node{root};
+
+    while (current_node != nullptr) {
+      ++visited_count[current_node];
+      visited_node.insert(current_node);
+
+      // Implementing in-order traversal here is non trivial because of how
+      // recursive implementation works. Recursive implementation prints the
+      // current node after returning from the next node. Leaf node value is
+      // printed after it enters null value, then goes back and print leaf, then
+      // goes back to parent and prints parent, enters right child, enters right
+      // child left null, goes back from right child null and prints the right
+      // child, goes back to parent, goes to parent's parent...
+      //
+      // Since the current iterative implementation builds up on top of behavior
+      // of recursion and has straightforward way to do preorder and postorder,
+      // however it doesn't mimic going to the next node and back. The
+      // replacement for that is a map to keep track of parents of each node so
+      // we can go to parent from any node at any point in time.
+      //
+      // Maybe potential in-order traversal can be implemented based on that
+      // map? A node is printed once it goes back from the first node it
+      // entered, however that behavior does not apply here. Also if we have no
+      // left node, we print the current node. So maybe if current node is leaf
+      // or visited twice or has no left child?
+      //
+      // I observed that properties of node that we should print are that it is
+      // leaf, visited second time or has no left child, however any node that
+      // has no left child would be printed more than once. Therefore we keep
+      // track of the printed nodes...
+
+      TreeNode *left{current_node->left};
+      TreeNode *right{current_node->right};
+
+      const bool is_leaf{left == nullptr && right == nullptr};
+      const bool is_second_visit{visited_count[current_node] == 2};
+      const bool has_no_left_child{left == nullptr};
+      const bool should_use{is_leaf || is_second_visit || has_no_left_child};
+      if (should_use && !used.count(current_node)) {
+        used.insert(current_node);
+        result.push_back(current_node->val);
+      }
+
+      if (left != nullptr && !visited_node.count(left)) {
+        previous_node[left] = current_node;
+        current_node = left;
+      } else if (right != nullptr && !visited_node.count(right)) {
+        previous_node[right] = current_node;
+        current_node = right;
+      } else {
+        current_node = previous_node[current_node];
+      }
+    }
+
+    return result;
+  }
 };
 
 }  // namespace Iterative
@@ -99,6 +208,12 @@ int main() {
   cout << "\n";
 
   for (const int v : Iterative::Solution{}.preorderTraversal(root)) {
+    cout << v << " ";
+  }
+
+  cout << "\n";
+
+  for (const int v : Iterative::Solution{}.inorderTraversal(root)) {
     cout << v << " ";
   }
 
