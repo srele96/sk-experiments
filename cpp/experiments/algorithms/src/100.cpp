@@ -24,8 +24,8 @@ class Solution {
         return;
       }
 
-      dfs(p->left, q->left);
-      dfs(p->right, q->right);
+      dfs(p == nullptr ? nullptr : p->left, q == nullptr ? nullptr : q->left);
+      dfs(p == nullptr ? nullptr : p->right, q == nullptr ? nullptr : q->right);
     }
   }
 
