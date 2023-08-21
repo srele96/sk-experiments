@@ -2,6 +2,10 @@
 
 This experiment groups the C++ implementation of various algorithms.
 
+## Books
+
+- ["Algorithmic Problem Solving" by Roland Backhouse](https://books.google.rs/books?id=84VZLWMnKrQC&printsec=frontcover&redir_esc=y#v=onepage&q&f=false)
+
 ## How to run
 
 Windows operating system.
