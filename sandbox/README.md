@@ -2,6 +2,14 @@
 
 The Sandbox is a collection of module and sample units which allow me to do everything I want using C++ and its ecosystem.
 
+## Problems of globals
+
+I don't see the future of sandbox alive in the long run. One of the pros I had in mind, I don't have to setup dependencies for each sample. It is beginning to feel faster to setup a new experiment in C++ experiments than messing around with global dependencies and making them work... Investigate.
+
+- Slow build times. I have only four samples and there are 144 dependencies which I have to wait to download and build. I don't see it maintainable in the long run.
+- Build breaks. All samples depending on dependencies which are globally available... If a dependency has specific setup requirements it will create chaos.
+- Using different dependency version. Since all samples use global dependencies, version upgrade will be difficult.
+
 ## Find packages available to `vcpkg`
 
 [vcpkg.link](https://vcpkg.link/)
