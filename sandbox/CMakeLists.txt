@@ -11,6 +11,7 @@ project(sandbox)
 
 # Find Boost package installed by vcpkg.
 find_package(Boost REQUIRED)
+find_package(wxWidgets CONFIG REQUIRED)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

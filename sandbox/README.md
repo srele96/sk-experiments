@@ -20,8 +20,10 @@ Make sure you are in `sk-experiments/sandbox` directory.
 
 Generate build directory and use `vcpkg` to install dependencies. The `-B` flag specifies generation location. The `-S` flag specifies where is project CMakeLists.txt. The `-DCMAKE_TOOLCHAIN_FILE` is from the `vcpkg` documentation.
 
+Specify the triplet flag `-DVCPKG_TARGET_TRIPLET=x64-mingw-static` because I had linking errors when using windows triplet, as documented [here](./docs/unresolved-reference-errors.md). For some other reason, `wxwidgets` failed to build with `x64-mingw-dynamic` triplet.
+
 ```powershell
-cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:\src\vcpkg\scripts\buildsystems\vcpkg.cmake
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:\src\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static
 ```
 
 Build the project.

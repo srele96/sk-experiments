@@ -11,6 +11,10 @@
     {
       "name": "boost-system",
       "version>=": "1.82.0"
+    },
+    {
+      "name": "wxwidgets",
+      "version>=": "3.2.2.1"
     }
   ],
   "builtin-baseline": "6d69bbacd2fbeae957f034dbbd2b454b5e3941fe"
