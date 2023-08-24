@@ -34,6 +34,8 @@ Running the samples: _(If you managed to build, you should be able to run them. 
 
 Generated executables mimic path from `sandbox`, search for them inside `build` directory. _(Temporary solution until I find a better one.)_
 
+[How to diagnose **Unresolved Reference Errors**](./docs/unresolved-reference-errors.md)
+
 ## Note
 
 **The reason for _Sandbox_ to be right below the root directory is to allow _SANDBOXING (pun intended)_ of the sandbox directory. Everything in related to `CI/CD` for _Sandbox_ should try to isolate itself from the other parts of _sk-experiments_. The same goes for anything else related to _Sandbox_ that's outside of it.**
