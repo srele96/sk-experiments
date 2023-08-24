@@ -1,3 +1,3 @@
-# Docs
+# General sandbox documentation
 
-Documentation directory.
+The collection of research results, findings, and more...
