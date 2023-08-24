@@ -4,6 +4,15 @@ Srecko Kostic's collection of learning, practice, and self-reflection.
 
 My self-improvement history. I am generally curious.
 
+## Experiments
+
+- [JavaScript](./javascript)
+- [C++](./cpp)
+- [Python](./python)
+- [PowerShell](./powershell)
+- [Docker](./docker)
+- [Sandbox](./sandbox)
+
 ## Advices
 
 - [Data Structures and Algorithms advice](https://qr.ae/pylUlM)
@@ -25,15 +34,6 @@ Every time I thought how something is stupid, ridiculous, makes no sense, or any
 
 - [LeetCode - srele96](https://leetcode.com/srele96/)
 - [CodeForces - flexos96](https://codeforces.com/profile/flexos96)
-
-## Experiments
-
-- [JavaScript](./javascript)
-- [C++](./cpp)
-- [Python](./python)
-- [PowerShell](./powershell)
-- [Docker](./docker)
-- [Sandbox](./sandbox)
 
 ## Motivation
 
