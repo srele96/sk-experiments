@@ -9,13 +9,12 @@ In `settings.json` for Visual Studio Code with `clang-tidy` extension _(Modify t
 ```json
 {
   "clang-tidy.compilerArgs": [
-    // Add library for experiments to shut up the clang-tidy and tell it where it can find includes
     "-IC:/Users/Srecko/Documents/MyProjects/Private/container-sk-experiments/sk-experiments/sandbox/build/vcpkg_installed/x64-mingw-static/include"
   ]
 }
 ```
 
-## Problems of globals
+## Problems of global dependencies
 
 I don't see the future of sandbox alive in the long run. One of the pros I had in mind, I don't have to setup dependencies for each sample. It is beginning to feel faster to setup a new experiment in C++ experiments than messing around with global dependencies and making them work... Investigate.
 
