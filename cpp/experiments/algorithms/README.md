@@ -22,6 +22,20 @@ Use `run.bat` to run programs using strict flags.
 run graphs
 ```
 
+## Improve autocomplete
+
+Make sure to use clang-tidy extension with Visual Studio code.
+
+Add the following to `settings.json` to tell clang-tidy where to find includes for gtest. Adjust absolute path to the one on your machine.
+
+```json
+{
+  "clang-tidy.compilerArgs": [
+    "-IC:/Users/Srecko/Documents/MyProjects/Private/container-sk-experiments/sk-experiments/cpp/experiments/algorithms/build/vcpkg_installed/x64-mingw-dynamic/include"
+  ]
+}
+```
+
 ## How to run tests
 
 Generate project:
