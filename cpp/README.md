@@ -30,3 +30,4 @@ The root directory for C++ experiments.
 - [Try boost::asio](./experiments/try_boost_asio/)
 - [Initialization types](./experiments/initialization_types/)
 - [TCP Socket server](./experiments/tcp_socket_server/)
+- [Load dynamic library](./experiments/load_dynamic_library/)
