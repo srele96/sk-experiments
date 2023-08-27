@@ -1,3 +1,5 @@
 build
 *.exe
 *.o
+*.dll
+*.lib
