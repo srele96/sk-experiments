@@ -41,3 +41,7 @@ C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experim
 059 00000380 SECT1  notype ()    External     | library_setint
 186 00001020 SECT1  notype ()    External     | __mingw_enum_import_library_names
 ```
+
+## Resources
+
+- [LoadLibrary](https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya)
