@@ -7,7 +7,8 @@ Write a dynamic library to figure out the essence of the concept.
 
 Add ChatGPT discussion that helped me understand how to implement the concept.
 
-- [ChatGPT discussion](./chatgpt_discussion)
+- [ChatGPT discussion Part 1](./chatgpt_discussion_1.txt)
+- [ChatGPT discussion Part 2](./chatgpt_discussion_2.txt)
 
 ## Self-Reflection
 
