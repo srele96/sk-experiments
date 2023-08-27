@@ -7,7 +7,7 @@ Build a dynamic library and write loading code manually inside the `main.cpp` fi
 Build dynamic library:
 
 ```powershell
-clang++ -fPIC -shared Library.cpp -o Library.dll
+clang++ -fPIC -shared Library/Library.cpp -o Library.dll
 ```
 
 Compile the executable:
