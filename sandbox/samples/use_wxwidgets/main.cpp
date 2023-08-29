@@ -60,21 +60,58 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
 
   wxImage::AddHandler(new wxPNGHandler);
 
+  wxFileName exe_path{wxStandardPaths::Get().GetExecutablePath()};
+
   // https://stackoverflow.com/questions/13360475/wxwidgets-are-there-functions-for-a-path-manipulation-split-to-subdirs-join
-  wxFileName exePath{wxStandardPaths::Get().GetExecutablePath()};
-  wxFileName girlPath;
-  girlPath.SetPath(exePath.GetPath());
-  girlPath.AppendDir("image");
-  girlPath.SetName("girl");
-  girlPath.SetExt("png");
+  wxFileName girl_path;
+  girl_path.SetPath(exe_path.GetPath());
+  girl_path.AppendDir("image");
+  girl_path.SetName("girl");
+  girl_path.SetExt("png");
 
-  wxBitmap bitmap{girlPath.GetFullPath(), wxBITMAP_TYPE_PNG};
+  wxImage girl_image;
 
-  if (bitmap.Ok()) {
-    new wxStaticBitmap(panel, wxID_ANY, bitmap, wxPoint(150, 150),
-                       wxSize(bitmap.GetWidth(), bitmap.GetHeight()));
+  if (girl_image.LoadFile(girl_path.GetFullPath(), wxBITMAP_TYPE_PNG)) {
+    constexpr float percent{0.5};
+    const int width{
+        static_cast<int>(static_cast<float>(girl_image.GetWidth()) * percent)};
+    const int height{
+        static_cast<int>(static_cast<float>(girl_image.GetHeight()) * percent)};
+
+    girl_image.Rescale(width, height);
+
+    wxBitmap girl_bitmap(girl_image);
+
+    new wxStaticBitmap(panel, wxID_ANY, girl_bitmap, wxPoint(150, 150),
+                       wxSize(girl_bitmap.GetWidth(), girl_bitmap.GetHeight()));
   } else {
-    wxMessageBox("Failed to load " + girlPath.GetFullName(), "Error",
+    wxMessageBox(wxT("Failed to load ") + girl_path.GetFullName(), wxT("Error"),
+                 wxOK | wxICON_ERROR);
+  }
+
+  wxFileName guy_path;
+  guy_path.SetPath(exe_path.GetPath());
+  guy_path.AppendDir("image");
+  guy_path.SetName("guy");
+  guy_path.SetExt("png");
+
+  wxImage guy_image;
+
+  if (guy_image.LoadFile(guy_path.GetFullPath(), wxBITMAP_TYPE_PNG)) {
+    constexpr float percent{0.1};
+    const int width{
+        static_cast<int>(static_cast<float>(guy_image.GetWidth()) * percent)};
+    const int height{
+        static_cast<int>(static_cast<float>(guy_image.GetHeight()) * percent)};
+
+    guy_image.Rescale(width, height);
+
+    wxBitmap guy_bitmap{guy_image};
+
+    new wxStaticBitmap(panel, wxID_ANY, guy_bitmap, wxPoint(50, 100),
+                       wxSize(guy_bitmap.GetWidth(), guy_bitmap.GetHeight()));
+  } else {
+    wxMessageBox(wxT("Failed to load ") + guy_path.GetFullName(), wxT("Error"),
                  wxOK | wxICON_ERROR);
   }
 
