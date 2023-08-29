@@ -35,10 +35,10 @@ auto MyApp::OnInit() -> bool {
   return true;
 }
 
-MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
+MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxT("Hello World")) {
   wxMenu *menuFile{new wxMenu};
-  menuFile->Append(static_cast<int>(ID::Hello), "&Hello...\tCtrl-H",
-                   "Help string shown in status bar for this menu item");
+  menuFile->Append(static_cast<int>(ID::Hello), wxT("&Hello...\tCtrl-H"),
+                   wxT("Help string shown in status bar for this menu item"));
   menuFile->AppendSeparator();
   menuFile->Append(wxID_EXIT);
 
@@ -52,11 +52,11 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
   SetMenuBar(menuBar);
 
   CreateStatusBar();
-  SetStatusText("Welcome to wxWidgets!");
+  SetStatusText(wxT("Welcome to wxWidgets!"));
 
   wxPanel *panel{new wxPanel(this, wxID_ANY)};
 
-  wxButton *btn{new wxButton(panel, wxID_ANY, "Click Me", wxPoint(50, 50))};
+  wxButton *btn{new wxButton(panel, wxID_ANY, wxT("Click Me"), wxPoint(50, 50))};
 
   wxImage::AddHandler(new wxPNGHandler);
 
@@ -126,14 +126,14 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
 void MyFrame::OnExit(wxCommandEvent &event) { Close(true); }
 
 void MyFrame::OnAbout(wxCommandEvent &event) {
-  wxMessageBox("This is a wxWidgets Hello World example", "About Hello World",
+  wxMessageBox(wxT("This is a wxWidgets Hello World example"), wxT("About Hello World"),
                wxOK | wxICON_INFORMATION);
 }
 
 void MyFrame::OnHello(wxCommandEvent &event) {
-  wxLogMessage("Hello world from wxWidgets!");
+  wxLogMessage(wxT("Hello world from wxWidgets!"));
 }
 
 void MyFrame::OnClick(wxCommandEvent &event) {
-  wxMessageBox("Button Clicked!", "Information", wxOK | wxICON_INFORMATION);
+  wxMessageBox(wxT("Button Clicked!"), wxT("Information"), wxOK | wxICON_INFORMATION);
 }
