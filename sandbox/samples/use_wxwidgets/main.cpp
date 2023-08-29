@@ -60,6 +60,8 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
 
   wxImage::AddHandler(new wxPNGHandler);
 
+  // Use path to the executable because it is easier to manage image location
+  // relative to the binary.
   wxFileName exe_path{wxStandardPaths::Get().GetExecutablePath()};
 
   // https://stackoverflow.com/questions/13360475/wxwidgets-are-there-functions-for-a-path-manipulation-split-to-subdirs-join
