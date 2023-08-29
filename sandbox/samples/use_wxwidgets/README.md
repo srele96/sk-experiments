@@ -6,6 +6,7 @@ Do something using wxWidgets...
 
 ## Resources
 
+- [wxWidgets Book](https://www.wxwidgets.org/docs/book/Cross-Platform%20GUI%20Programming%20with%20wxWidgets.pdf)
 - [wxFileName reference](https://docs.wxwidgets.org/trunk/classwx_file_name.html)
 - [wxWidgets forums](https://forums.wxwidgets.org/viewtopic.php?t=19583)
 
