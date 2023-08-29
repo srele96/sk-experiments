@@ -77,6 +77,8 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
                  wxOK | wxICON_ERROR);
   }
 
+  // TODO: Load two pictures, see how to position and animate them.
+
   Bind(wxEVT_BUTTON, &MyFrame::OnClick, this);
   Bind(wxEVT_MENU, &MyFrame::OnHello, this, static_cast<int>(ID::Hello));
   Bind(wxEVT_MENU, &MyFrame::OnAbout, this, wxID_ABOUT);
