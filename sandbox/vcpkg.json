@@ -3,6 +3,17 @@
   "name": "sandbox",
   "version": "0.1.0",
   "description": "A collection of module and sample units.",
+  "$global-dependencies": [
+    "Array allows me to break down the comment to multiple lines.",
+    "Global dependencies allowed me to setup a library once and reuse it in ",
+    "multiple samples or modules. The problems are obvious:",
+    "1. How to use different versions?",
+    "2. Global configuration conflicts - We don't know what affects what.",
+    "It was difficult for me to setup new experiment using C++ with new ",
+    "libraries. The sandbox solves it through using global configuration. ",
+    "Setup once and use multiple times.",
+    "TODO: Reconsider the solution."
+  ],
   "dependencies": [
     {
       "name": "boost-asio",
