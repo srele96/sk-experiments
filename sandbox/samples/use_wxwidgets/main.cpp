@@ -30,22 +30,22 @@ enum class ID { Hello = 1 };
 wxIMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit() {
-  MyFrame *frame = new MyFrame();
+  MyFrame *frame{new MyFrame()};
   frame->Show(true);
   return true;
 }
 
 MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
-  auto *menuFile = new wxMenu;
+  auto *menuFile{new wxMenu};
   menuFile->Append(static_cast<int>(ID::Hello), "&Hello...\tCtrl-H",
                    "Help string shown in status bar for this menu item");
   menuFile->AppendSeparator();
   menuFile->Append(wxID_EXIT);
 
-  auto *menuHelp = new wxMenu;
+  auto *menuHelp{new wxMenu};
   menuHelp->Append(wxID_ABOUT);
 
-  auto *menuBar = new wxMenuBar;
+  auto *menuBar{new wxMenuBar};
   menuBar->Append(menuFile, "&File");
   menuBar->Append(menuHelp, "&Help");
 
@@ -54,9 +54,9 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
   CreateStatusBar();
   SetStatusText("Welcome to wxWidgets!");
 
-  wxPanel *panel{new wxPanel(this, wxID_ANY)};
+  auto *panel{new wxPanel(this, wxID_ANY)};
 
-  wxButton *btn{new wxButton(panel, wxID_ANY, "Click Me", wxPoint(50, 50))};
+  auto *btn{new wxButton(panel, wxID_ANY, "Click Me", wxPoint(50, 50))};
 
   wxImage::AddHandler(new wxPNGHandler);
 
