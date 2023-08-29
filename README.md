@@ -4,6 +4,8 @@ Srecko Kostic's collection of learning, practice, and self-reflection.
 
 My self-improvement history. I am generally curious.
 
+I have not committed to a specific domain because I am still searching for one to fire me up.
+
 ## Experiments
 
 - [JavaScript](./javascript)
