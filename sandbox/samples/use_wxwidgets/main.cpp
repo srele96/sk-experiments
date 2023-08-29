@@ -35,17 +35,17 @@ bool MyApp::OnInit() {
   return true;
 }
 
-MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Hello World") {
-  wxMenu *menuFile = new wxMenu;
+MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
+  auto *menuFile = new wxMenu;
   menuFile->Append(static_cast<int>(ID::Hello), "&Hello...\tCtrl-H",
                    "Help string shown in status bar for this menu item");
   menuFile->AppendSeparator();
   menuFile->Append(wxID_EXIT);
 
-  wxMenu *menuHelp = new wxMenu;
+  auto *menuHelp = new wxMenu;
   menuHelp->Append(wxID_ABOUT);
 
-  wxMenuBar *menuBar = new wxMenuBar;
+  auto *menuBar = new wxMenuBar;
   menuBar->Append(menuFile, "&File");
   menuBar->Append(menuHelp, "&Help");
 
