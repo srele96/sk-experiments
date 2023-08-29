@@ -7,6 +7,10 @@
 #include "wx/wx.h"
 #endif
 
+#include "wx/filename.h"
+#include "wx/statbmp.h"
+#include "wx/stdpaths.h"
+
 class MyApp : public wxApp {
 public:
   virtual bool OnInit();
@@ -20,6 +24,7 @@ private:
   void OnHello(wxCommandEvent &event);
   void OnExit(wxCommandEvent &event);
   void OnAbout(wxCommandEvent &event);
+  void OnClick(wxCommandEvent &event);
 };
 
 enum { ID_Hello = 1 };
@@ -51,6 +56,30 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Hello World") {
   CreateStatusBar();
   SetStatusText("Welcome to wxWidgets!");
 
+  wxPanel *panel{new wxPanel(this, wxID_ANY)};
+
+  wxButton *btn{new wxButton(panel, wxID_ANY, "Click Me", wxPoint(50, 50))};
+
+  wxImage::AddHandler(new wxPNGHandler);
+
+  wxBitmap bitmap;
+  // https://stackoverflow.com/questions/13360475/wxwidgets-are-there-functions-for-a-path-manipulation-split-to-subdirs-join
+  wxFileName exePath{wxStandardPaths::Get().GetExecutablePath()};
+  wxFileName girlPath;
+  girlPath.SetPath(exePath.GetPath());
+  girlPath.AppendDir("image");
+  girlPath.SetName("girl");
+  girlPath.SetExt("png");
+
+  if (bitmap.LoadFile(girlPath.GetFullPath(), wxBITMAP_TYPE_PNG)) {
+    new wxStaticBitmap(panel, wxID_ANY, bitmap, wxPoint(150, 150),
+                       wxSize(bitmap.GetWidth(), bitmap.GetHeight()));
+  } else {
+    wxMessageBox("Failed to load " + girlPath.GetFullName(), "Error",
+                 wxOK | wxICON_ERROR);
+  }
+
+  Bind(wxEVT_BUTTON, &MyFrame::OnClick, this);
   Bind(wxEVT_MENU, &MyFrame::OnHello, this, ID_Hello);
   Bind(wxEVT_MENU, &MyFrame::OnAbout, this, wxID_ABOUT);
   Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
@@ -65,4 +94,8 @@ void MyFrame::OnAbout(wxCommandEvent &event) {
 
 void MyFrame::OnHello(wxCommandEvent &event) {
   wxLogMessage("Hello world from wxWidgets!");
+}
+
+void MyFrame::OnClick(wxCommandEvent &event) {
+  wxMessageBox("Button Clicked!", "Information", wxOK | wxICON_INFORMATION);
 }
