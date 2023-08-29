@@ -60,7 +60,6 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
 
   wxImage::AddHandler(new wxPNGHandler);
 
-  wxBitmap bitmap;
   // https://stackoverflow.com/questions/13360475/wxwidgets-are-there-functions-for-a-path-manipulation-split-to-subdirs-join
   wxFileName exePath{wxStandardPaths::Get().GetExecutablePath()};
   wxFileName girlPath;
@@ -69,7 +68,9 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, "Hello World") {
   girlPath.SetName("girl");
   girlPath.SetExt("png");
 
-  if (bitmap.LoadFile(girlPath.GetFullPath(), wxBITMAP_TYPE_PNG)) {
+  wxBitmap bitmap{girlPath.GetFullPath(), wxBITMAP_TYPE_PNG};
+
+  if (bitmap.Ok()) {
     new wxStaticBitmap(panel, wxID_ANY, bitmap, wxPoint(150, 150),
                        wxSize(bitmap.GetWidth(), bitmap.GetHeight()));
   } else {
