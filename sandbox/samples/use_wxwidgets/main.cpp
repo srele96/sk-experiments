@@ -1,8 +1,6 @@
-// wxWidgets "Hello World" Program
-
-// For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
+// For compilers that support precompilation, includes "wx/wx.h".
 #ifndef WX_PRECOMP
 #include "wx/wx.h"
 #endif
@@ -13,7 +11,7 @@
 
 class MyApp : public wxApp {
 public:
-  virtual bool OnInit();
+  auto OnInit() -> bool override;
 };
 
 class MyFrame : public wxFrame {
@@ -27,7 +25,7 @@ private:
   void OnClick(wxCommandEvent &event);
 };
 
-enum { ID_Hello = 1 };
+enum class ID { Hello = 1 };
 
 wxIMPLEMENT_APP(MyApp);
 
@@ -39,7 +37,7 @@ bool MyApp::OnInit() {
 
 MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Hello World") {
   wxMenu *menuFile = new wxMenu;
-  menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",
+  menuFile->Append(static_cast<int>(ID::Hello), "&Hello...\tCtrl-H",
                    "Help string shown in status bar for this menu item");
   menuFile->AppendSeparator();
   menuFile->Append(wxID_EXIT);
@@ -80,7 +78,7 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Hello World") {
   }
 
   Bind(wxEVT_BUTTON, &MyFrame::OnClick, this);
-  Bind(wxEVT_MENU, &MyFrame::OnHello, this, ID_Hello);
+  Bind(wxEVT_MENU, &MyFrame::OnHello, this, static_cast<int>(ID::Hello));
   Bind(wxEVT_MENU, &MyFrame::OnAbout, this, wxID_ABOUT);
   Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
 }
