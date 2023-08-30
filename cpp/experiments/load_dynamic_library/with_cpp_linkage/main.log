@@ -1,0 +1,132 @@
+Microsoft (R) COFF/PE Dumper Version 14.36.32532.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file main.exe
+
+File Type: EXECUTABLE IMAGE
+
+  Section contains the following imports:
+
+    libgcc_s_seh-1.dll
+             1400082B0 Import Address Table
+             140008078 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                           F _Unwind_Resume
+
+    KERNEL32.dll
+             1400082C0 Import Address Table
+             140008088 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                         119 DeleteCriticalSection
+                         13D EnterCriticalSection
+                         274 GetLastError
+                         2E5 GetStartupInfoA
+                         37A InitializeCriticalSection
+                         3D6 LeaveCriticalSection
+                         56F SetUnhandledExceptionFilter
+                         57F Sleep
+                         5A2 TlsGetValue
+                         5D1 VirtualProtect
+                         5D3 VirtualQuery
+
+    msvcrt.dll
+             140008320 Import Address Table
+             1400080E8 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                          38 __C_specific_handler
+                          52 __getmainargs
+                          53 __initenv
+                          54 __iob_func
+                          62 __set_app_type
+                          64 __setusermatherr
+                          74 _acmdln
+                          7C _amsg_exit
+                          8E _cexit
+                          9E _commode
+                          FF _fmode
+                         14B _initterm
+                         267 _onexit
+                         41F abort
+                         421 calloc
+                         42E exit
+                         442 fprintf
+                         449 free
+                         456 fwrite
+                         486 malloc
+                         48E memcpy
+                         4AE signal
+                         4C5 strlen
+                         4C8 strncmp
+                         4EC vfprintf
+
+    libstdc++-6.dll
+             1400083F0 Import Address Table
+             1400081B8 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                         43E _ZNKSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE7_M_dataEv
+                         66D _ZNSaIcEC1Ev
+                         66E _ZNSaIcEC2ERKS_
+                         670 _ZNSaIcED1Ev
+                         671 _ZNSaIcED2Ev
+                         777 _ZNSolsEi
+                        1127 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv
+                        112A _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE11_M_capacityEy
+                        1136 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE13_M_local_dataEv
+                        1137 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE13_M_set_lengthEy
+                        113A _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE13_S_copy_charsEPcPKcS7_
+                        116D _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE7_M_dataEPc
+                        118C _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERyy
+                        1197 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC1ERKS4_
+                        11B3 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEED1Ev
+                        1433 _ZNSt8ios_base4InitC1Ev
+                        1435 _ZNSt8ios_base4InitD1Ev
+                        153C _ZSt19__throw_logic_errorPKc
+                        1562 _ZSt4cout
+                        15AC _ZSt9terminatev
+                        15DA _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+                        15E5 _ZStlsIcSt11char_traitsIcESaIcEERSt13basic_ostreamIT_T0_ES7_RKNSt7__cxx1112basic_stringIS4_S5_T1_EE
+                        1A11 __cxa_begin_catch
+                        1A35 __gxx_personality_seh0
+
+    Library.dll
+             1400084B8 Import Address Table
+             140008280 Import Name Table
+                     0 time date stamp
+                     0 Index of first forwarder reference
+
+                           0 _Z11library_addii
+                           1 _ZN7Library1X3strENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+                           2 _ZN7Library1XC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+                           4 _ZN7Library3AddEii
+                           5 _ZNK7Library1X3strB5cxx11Ev
+
+  Summary
+
+        1000 .CRT
+        1000 .bss
+        1000 .data
+        2000 .debug_abbrev
+        1000 .debug_aranges
+        1000 .debug_frame
+        A000 .debug_info
+        2000 .debug_line
+        2000 .debug_line_str
+        2000 .debug_loclists
+        1000 .debug_rnglists
+        1000 .debug_str
+        1000 .idata
+        1000 .pdata
+        1000 .rdata
+        1000 .reloc
+        2000 .text
+        1000 .tls
+        1000 .xdata
