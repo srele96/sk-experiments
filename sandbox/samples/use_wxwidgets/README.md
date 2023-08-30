@@ -59,12 +59,12 @@ I am drilling down hard and looking for alternative use cases of the function, m
 
 ## Why does it feel so easy?
 
-Other than figuring out how `wxWidgets` manages this and that and putting together a solution, I know it conceptually. I have a general conceptual high level idea of how the components need to work. We could say I have a conceptual algorithm that I am simply looking for a way to implement using `wxWidgets`. I am going from an existing solution in my mind, a conceptual one, to implementing it using `C++` and library `wxWidgets`.
+I know it conceptually, other than figuring out how `wxWidgets` manages this and that and putting together a solution. I have a general conceptual high-level idea of how the components must work. We could say I have a conceptual algorithm that I am simply looking for a way to implement using `wxWidgets.` I am going from an existing solution in my mind, a conceptual one, to implementing it using `C++` and the library `wxWidgets`.
 
-Now, that is awesome because I can practice C++, wxWidgets, and GUI programming while not having to worry about the complexity of solving a problem and investigating how to solve it. I started from a solution instead of a problem. A problem I wouldn't be able to solve at the moment would be for example: _"Perhaps a music player?"_. I would have to go out and learn how are music players implemented? How do they handle the sound? Where would I store the sound? Etc... Or even more challenging: _"A software for the sound analysis and pattern recognition."_ How the hell do I do that?
+Now, that is awesome because I can practice C++, wxWidgets, and GUI programming while not worrying about the complexity of solving a problem and investigating how to solve it. I started with a solution instead of a problem. A problem I wouldn't be able to solve now would be, for example: _"Perhaps a music player?"_. I would have to go out and learn how to implement a music player. How do they handle the sound? Where would I store the sound? Etc. Or even more challenging: _"A sound analysis and pattern recognition software."_ How the hell do I do that?
 
-However, maybe a programming language would not be an issue in that case? Developing an efficient algorithm would probably be challenging as hell?
+However, a programming language would not be an issue in that case. Developing an efficient algorithm would probably be challenging as hell.
 
-I don't really understand. Maybe I should look for something that is just incredibly challenging and difficult to do?
+I don't understand. Maybe I should look for something incredibly challenging and difficult to do.
 
-The problem that I have is that solutions feel like the pour in my mind and that I have a feeling of flow unlike when I'm trying to internalize some complex concepts. I feel like algorithmic problem solving at this point is really going to challenge my thinking process properly.
+My problem is that solutions feel like they pour into my mind and that I have a feeling of flow, unlike when I'm trying to internalize some complex concepts. I feel like algorithmic problem-solving at this point is going to challenge my thinking process properly.
