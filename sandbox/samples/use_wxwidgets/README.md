@@ -33,3 +33,26 @@ I don't feel the difficulty of learning how to do this. The worst part is debugg
 There are some unfamiliar concepts such as bitmaps, but it seems I don't need to know them to use them, obviously!
 
 I am eager to ramp up the difficulty. The only challenge I have so far is creating mental representations of how these things work together. I am eager to put together a graphical app similar to the ones that I've done on [CodePen](https://codepen.io/Flexos96/pen/NWELEgq).
+
+## Observation
+
+A practice of exponential difficulty increases to drill down by questioning the structure, every function, method, class, etc. It potentially yields some good skill. However, I am unsure which one, so I can't label it.
+
+While looking for a good conceptual way to create a modular slider component using wxWidgets on the conceptual, abstract level, I had a thought: _"It feels so much easier to get it to work not having to drill down every detail. `wxWidget` say that to handle events, we may use `wxDECLARE_EVENT_TABLE()` macro, and I don't think about so many things."_
+
+I don't have to worry about questions like:
+
+- Why `wxDECLARE_EVENT_TABLE()` macro?
+- Is using `wxDECLARE_EVENT_TABLE()` macro a good practice?
+- Should I use a different macro?
+- Is there a different practice and when to use one or the other?
+- If there are more than or equal to three practices, which one to use and when?
+- If my use case fits more than one when to use which?
+- Should I simply focus on getting it to work?
+- Is it a good idea to use an index and an array? Is there a better solution to handle animations in `wxWidgets`?
+- How will my solution affect the code later?
+- Will my code be modular?
+- Will my code be maintainable?
+- Will I have a chain reaction when adding a feature because of technical debt?
+
+I am drilling down hard and looking for alternative use cases of the function, method, class, or something else I'm trying to use and how my solution fits the philosophy library, framework, or whatever. Every library has best practices, and I don't know them when starting out.
