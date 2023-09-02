@@ -31,11 +31,11 @@ std::vector<Permutation_And_Sum> Calculate_Graph_Permutations(
         visited.insert(vertex);
         if (/* last vertex */) {
           std::vector<Permutation_And_Sum> permutations;
-          for (int color : colors[vertex]) {
+          for (int color{0}; color < colors[vertex].size(); ++color) {
             Permutation permutation;
             permutation[vertex] = color;
             Permutation_And_Sum permutation_and_sum =
-                make_pair(permutation, color);
+                make_pair(permutation, colors[vertex][color]);
             permutations.push_back(permutation_and_sum);
           }
           return permutations;
