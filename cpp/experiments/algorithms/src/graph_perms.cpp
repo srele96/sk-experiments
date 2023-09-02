@@ -15,6 +15,46 @@ combine current with the rest
 
 namespace Solution {
 
+/*
+
+I keep generating new versions of the algorithm because the old one does not
+seem to work, i am very not confident in my coded solutions and debugging them
+feels like it takes much more time than creating a new procedure from the
+scratch
+
+how do i practice to rectify that error?
+
+how do i practice to create solutions to various problems?
+
+*/
+
+/*
+
+I am getting annoyed, tempted to try different approaches:
+
+try to solve each of the problems independently as a completely independent
+solution
+
+---
+
+does the dfs currently work properly with the visited set?
+
+check if the current vertex is the last one
+
+what is the order of recursion calls and how do the connected vertices look in
+the recursion
+
+the permutations on the recursion, are they correct?
+
+getting the connected vertex to the current one, did i get that right?
+
+copying the current permutation in the recursive case
+  creating the two new ones from one permutation
+
+does the algorithm work? find out why it doesn't work, it
+
+*/
+
 using Permutation = std::unordered_map<int, int>;
 using Permutation_And_Sum = std::pair<Permutation, int>;
 
@@ -29,6 +69,7 @@ std::vector<Permutation_And_Sum> Calculate_Graph_Permutations(
   std::function<std::vector<Permutation_And_Sum>(int)> Graph_Permutations{
       [&](int vertex) {
         visited.insert(vertex);
+
         if (/* last vertex */) {
           std::vector<Permutation_And_Sum> permutations;
           for (int color{0}; color < colors[vertex].size(); ++color) {
