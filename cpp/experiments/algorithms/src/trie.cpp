@@ -46,8 +46,6 @@ class Trie {
         } else {
           return node->end;
         }
-
-        return true;
       }
     };
 
@@ -122,8 +120,6 @@ bool data_structure::trie::search(const std::string& string) {
       } else {
         return node->end;
       }
-
-      return true;
     }
   };
 
