@@ -92,17 +92,40 @@ class trie {
 
 }  // namespace data_structure
 
+namespace test {
+
+class runner {
+ private:
+  data_structure::trie* trie;
+
+ public:
+  runner() { trie = data_structure::trie::allocate(); }
+  runner(const runner& other) = delete;
+  runner& operator=(const runner& other) = delete;
+  runner(runner&& other) = delete;
+  runner& operator=(runner&& other) = delete;
+  ~runner() { data_structure::trie::deallocate(trie); }
+
+  void run_and_print(std::ostream& os) {
+    trie->insert("app");
+    trie->insert("apple");
+
+    os << trie->search("apple") << "\n";
+    os << trie->search("app") << "\n";
+    os << trie->starts_with("app") << "\n";
+    os << trie->search("app") << "\n";
+    os << trie->search("foo") << "\n";
+    trie->insert("foo");
+    os << trie->search("foo") << "\n";
+  }
+};
+
+}  // namespace test
+
 int main() {
-  data_structure::trie* trie{data_structure::trie::allocate()};
+  test::runner runner;
 
-  trie->insert("app");
-  trie->insert("apple");
-  std::cout << trie->search("apple") << "\n";
-  std::cout << trie->search("app") << "\n";
-  std::cout << trie->starts_with("app") << "\n";
-  std::cout << trie->search("app");
-
-  data_structure::trie::deallocate(trie);
+  runner.run_and_print(std::cout);
 
   return 0;
 }
