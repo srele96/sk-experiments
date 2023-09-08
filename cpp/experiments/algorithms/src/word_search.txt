@@ -1,0 +1,539 @@
+https://leetcode.com/problems/word-search-ii/
+
+move(i, j, node):
+  if (i >= 0 && i < n && j >= 0 && j < m):
+    child = new node
+    node->children[board[i][j]] = child
+
+    move(i-1, j-1, child)
+    move(i-1, j, child)
+    move(i-1, j+1, child)
+    move(i, j+1, child)
+    move(i+1, j+1, child)
+    move(i+1, j, child)
+    move(i+1, j-1, child)
+    move(i, j-1, child)
+
+trie = new trie
+for i = 0; i < n; ++i:
+  for j = 0; j < m; ++j;
+    move(i, j, trie)
+
+vector<string> result;
+
+for word : words
+  if trie->find(word)
+    result.push_back(word)
+
+return result;
+
+
+backtracking
+non-backtracking
+dynamic programming
+
+which led me to
+
+```cpp
+class Solution {
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        struct trie {
+            unordered_map<string, trie*> children;
+            bool is_end = false;
+            bool find(const string& word) {
+                struct inner_find {
+                    bool operator()(const string& word, trie* node, int i = 0) {
+                        if (i < word.size()) {
+                            // cout << word << " " << word[i] << "\n";
+                            string key = string{word[i]};
+                            if (node->children.find(key) == node->children.end()) {
+                                return false;
+                            }
+                            return (*this)(word, node->children.at(key), i + 1);
+                        } else {
+                            return node->is_end;
+                        }
+                    }
+                };
+                return inner_find{}(word, this);
+            }
+        };
+        trie* root = new trie;
+        struct create {
+            vector<vector<char>>& board;
+            vector<vector<bool>> visited;
+            create(int n, int m, vector<vector<char>>& _board):
+                board{_board},
+                visited{vector<vector<bool>>(n, vector<bool>(m, false))}
+            {
+                // cout << n << " " << m << "\n";
+            }
+            void operator()(int i, int j, trie* node) {
+                if (i >= 0 && i < board.size() && j >= 0 && j < board[i].size() && !visited[i][j]) {
+                    visited[i][j] = true;
+                    trie* child_node = new trie;
+                    string c = string{board[i][j]};
+                    cout << c << "\n";
+                    node->children[c] = child_node;
+
+                    (*this)(i-1,j-1, child_node);
+                    (*this)(i-1,j, child_node);
+                    (*this)(i-1,j+1, child_node);
+                    (*this)(i,j+1, child_node);
+                    (*this)(i+1,j+1, child_node);
+                    (*this)(i+1,j, child_node);
+                    (*this)(i+1,j-1, child_node);
+                    (*this)(i,j-1, child_node);
+                }
+            }
+        };
+        for(int i = 0; i < board.size(); ++i) {
+            for(int j = 0; j < board[i].size(); ++j) {
+                create(board.size(), board[i].size(), board)(i, j, root);
+            }
+        }
+        vector<string> result;
+        for(auto& word : words) {
+            if (root->find(word)) {
+                result.push_back(word);
+            }
+        }
+        return result;
+    }
+};
+```
+
+the problem
+
+i thought that infinite recursion from the implementation of:
+
+```cpp
+struct create {
+  vector<vector<char>>& board;
+  vector<vector<bool>> visited;
+  create(int n, int m, vector<vector<char>>& _board):
+    board{_board},
+    visited{vector<vector<bool>>(n, vector<bool>(m, false))}
+  {
+    // cout << n << " " << m << "\n";
+  }
+  void operator()(int i, int j, trie* node) {
+    if (i >= 0 && i < board.size() && j >= 0 && j < board[i].size() && !visited[i][j]) {
+      visited[i][j] = true;
+      trie* child_node = new trie;
+      string c = string{board[i][j]};
+      cout << c << "\n";
+      node->children[c] = child_node;
+
+      (*this)(i-1,j-1, child_node);
+      (*this)(i-1,j, child_node);
+      (*this)(i-1,j+1, child_node);
+      (*this)(i,j+1, child_node);
+      (*this)(i+1,j+1, child_node);
+      (*this)(i+1,j, child_node);
+      (*this)(i+1,j-1, child_node);
+      (*this)(i,j-1, child_node);
+    }
+  }
+};
+```
+
+is solvable marking each cell as visited, however it isnt
+because of overlapping strings for example
+
+o a a n
+e t a e
+
+valid are
+
+o a a n
+      e
+
+o a a
+      e
+
+however because the previous run marked that `e` as visited, it won't visit it
+
+so i need to find a fix for it in the current solution as my current solution also uses (n*m)^2 memory
+
+um_nik from codeforces said that i should have pattern for solving a problem because patterns are the fastest way to solve a problem and i believe he has more than enough experience to teach me
+
+i don't know, the problem is
+
+
+
+
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+
+TALKING TO CHATGPT ABOUT THE PROBLEM ... I DON'T KNOW WHEN WOULD
+I HAVE IT OUT ON MY OWN, I WAS CONSTANTLY CIRCLING AROUND THE
+CORRECT SOLUTION, FUCK
+
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+
+
+me
+
+
+if i have NM grid, i can from a cell move top, right, left, down, top right, top  left, down left, down right, how can i generate a tree that starts from each node using such movements? i think it is a combinatorial problem
+
+----
+
+chatgpt
+
+If you have an NMNM grid and are considering 8 possible movements from each cell (top, right, bottom, left, top-right, top-left, bottom-left, bottom-right), and you want to generate a tree from each node using such movements, then this task might need some further specification. Here's why:
+
+Typically, trees have the property that there are no cycles, meaning you can't start at one node and follow a series of edges to eventually return to the same node. However, with the movements you've specified on a grid, it's very easy to form cycles (e.g., move right then move left, and you're back to where you started).
+
+You can create a tree from each cell in the grid, but you'll need to make sure you don't revisit any cells (nodes) once they've been visited.
+
+Here's a simple approach to generate such a tree starting from a specific node:
+
+    Start at the chosen cell (node).
+    Check all 8 possible movements. If the movement leads to a valid cell on the grid that hasn't been visited before, add it as a child node.
+    Recursively do the same for each child node.
+
+However, keep in mind that with this approach:
+
+    The resulting "tree" will be more of a forest structure. Each cell starts a tree, but not every cell will be reachable from every other cell without breaking the tree properties.
+    The tree will be quite sparse. Many nodes (especially those near the edge) will have less than 8 children.
+    The depth of the tree depends on the size of the grid and the starting node. Nodes near the center of the grid can lead to deeper trees, while nodes near the edge will have shallower trees.
+
+If you intend to form a tree structure without revisiting nodes, this approach will work. However, if you need a more combinatorial approach to count possibilities or analyze paths, that would be a different problem entirely.
+
+----
+
+me
+
+i see why the problem is difficult, i never considered the cycles, this is the issue i encountered:
+
+lets say we have grid
+
+1 2 3
+4 5 6
+7 8 9
+
+we can do this set of movements:
+
+1->2->3->6->9->8->7->4->5
+
+and then:
+
+1->2->6->9->8->7->4->5->3
+
+as you see, it's kinda difficult because i can't say 'i visited this cell' because both are subtrees of 1->2
+
+one thing i saw but i don't know how to implement is backtracking, i spotted that
+
+1->2->3->6->9->8->7->4->5
+
+can lead to:
+
+1->2->3->6->9->8->7->5->4
+
+and i spot that pattern in this too:
+
+1 2
+3 4
+
+1->2 -> 4 -> 3
+1->2 -> 3 -> 4
+1->3->2->4
+1->3->4->2
+1->4->3->2
+1->4->2->3
+
+etc for each other cell...
+
+does that make problem more clear? ask for clarification whats expected output or whatever to continue
+
+----
+
+chatgpt
+
+Ah, I see now. You're looking to find all possible paths through the grid, using all grid cells exactly once, starting from each cell. This is a variation of the Hamiltonian Path problem. The difference is that you have added diagonal moves.
+
+The Hamiltonian Path problem is NP-hard, but given the relatively small size of your grid (even larger ones, say 5x5), it is feasible to solve using backtracking. Here's a clearer picture of what's expected:
+
+You start at a cell. You then move to an adjacent cell (using your eight possible movements) that hasn't been visited in the current path. You continue moving to unvisited cells until you've visited every cell exactly once or no moves are possible. If you've visited every cell exactly once, you've found a valid path.
+
+For your 2x2 grid example:
+
+Starting from cell 1, you have:
+
+    1 -> 2 -> 4 -> 3
+    1 -> 2 -> 3 -> 4
+    1 -> 3 -> 2 -> 4
+    1 -> 3 -> 4 -> 2
+    1 -> 4 -> 3 -> 2
+    1 -> 4 -> 2 -> 3
+
+... and similarly for starting from cells 2, 3, and 4.
+
+Backtracking works here because you're essentially trying all possible paths. When you hit a dead-end (no more valid moves), you backtrack to a previous state and try a different path.
+
+Here's a simplified version of what the backtracking algorithm might look like:
+
+    Start from a cell.
+    Move to an unvisited adjacent cell.
+    Mark the cell as visited and add it to the current path.
+    Check if the path includes all cells:
+        If yes, save/store this path.
+        If no, recursively repeat steps 2-4.
+    If no moves are possible, backtrack by marking the current cell as unvisited and removing it from the current path. Return to the previous cell and continue.
+    Once all possible paths have been explored from the starting cell, move to the next cell and repeat.
+
+This will generate all possible paths through the grid, starting from each cell.
+
+However, it's important to note that even with efficient backtracking, the problem can quickly become computationally intensive as the grid size increases. For instance, a 5x5 grid might already push the boundaries of what's feasible in a reasonable amount of time.
+
+----
+
+me
+
+yeah my max size i can get is 12x12, no wonder i couldn't solve it or whatever, i was not familiar with hamiltonian path problem
+
+----
+
+chatgpt
+
+A 12×1212×12 grid, even with backtracking, will pose a significant computational challenge. In fact, with 144144 cells and considering all possible paths, the number of potential combinations is astronomically high. Even with optimizations and pruning (i.e., stopping explorations that are clearly not going to yield a solution), it's likely to be computationally prohibitive to enumerate all paths on a grid of that size.
+
+The Hamiltonian Path problem is one of those classic computational problems that is simple to understand but difficult to solve efficiently. On a 2D grid with the possibility of backtracking, its complexity becomes even more pronounced.
+
+If you need to handle a 12×1212×12 grid or anything close to that, you might have to consider some approximations, heuristics, or specialized algorithms that are designed for such situations. In some cases, you might also consider parallelizing the task, as each starting cell's paths can be computed independently.
+
+If the problem you're tackling is from a competitive programming contest or similar venue, often there's a clever insight or trick that significantly reduces the search space or complexity. In such situations, understanding the problem's deeper intricacies is key.
+
+If this is for a real-world application, then a heuristic or approximate approach might be more appropriate, depending on the exact requirements and constraints.
+
+----
+
+me
+
+User
+Constraints:
+
+    m == board.length
+    n == board[i].length
+    1 <= m, n <= 12
+    board[i][j] is a lowercase English letter.
+    1 <= words.length <= 3 * 104
+    1 <= words[i].length <= 10
+    words[i] consists of lowercase English letters.
+    All the strings of words are unique.
+
+these are constraints, is it feasable with thses constraints?
+
+----
+
+chatgpt
+
+Given the constraints you've provided, it appears you're referring to a variation of the classic "Word Search" problem, often known as "Boggle", where the objective is to find specific words in a 2D grid of letters.
+
+Here's a breakdown of the problem's constraints:
+
+    The board size is at most 12×1212×12.
+    Each cell of the board contains a lowercase English letter.
+    There are at most 3×1043×104 words to find.
+    Each word is unique and at most 10 letters long.
+
+Given these constraints, it's feasible to solve the problem using a combination of backtracking and Trie data structure:
+
+    Trie Construction: First, construct a Trie (prefix tree) from the given list of words. This will allow for efficient querying when searching for words on the board.
+    Backtracking Search: For each cell on the board, perform a backtracking search to find words that match with the Trie:
+        Start the search from the current cell.
+        Use the Trie to determine if the current path on the board corresponds to a prefix of any word in the list. If not, backtrack immediately (this is where you gain efficiency).
+        If the current path on the board matches a word in the Trie, add the word to the result.
+        Continue the search in all valid directions (given the 8 movements you specified).
+        Mark cells as visited during the search and unmark them when backtracking.
+
+The Trie ensures that the backtracking search is pruned effectively whenever the current path does not lead to a valid word, making the solution efficient. For instance, if the current path on the board is "abc" and no word in the list starts with "abc", the search is pruned immediately.
+
+Given the constraints, this approach should work efficiently:
+
+    The board size, even at its maximum of 12×1212×12, is manageable with backtracking, especially when combined with the pruning offered by the Trie.
+    The maximum word length of 10 further limits the depth of the backtracking search.
+    The Trie construction takes O(W×L)O(W×L) time, where WW is the number of words and LL is the maximum length of a word. Given the constraints, this is 3×104×103×104×10, which is feasible.
+
+In essence, the combined use of backtracking (for searching the board) and Trie (for efficient word lookups and pruning) makes the problem solvable within the given constraints.
+
+
+----
+
+
+me
+
+you just said that backtracking won't give efficient solution, i don't understand why, so please clarify how come that's optimal, i already thought of that, so give further explanations
+
+----
+
+
+chatgpt
+
+Certainly, let's delve deeper.
+
+The difference lies in the nature of the problems:
+
+    Hamiltonian Path Problem: When you wanted all paths that traverse all nodes exactly once, you were essentially trying to solve a variation of the Hamiltonian Path problem. For a 12×1212×12 grid, attempting to enumerate all such paths is an exponential operation that can become infeasible due to the sheer number of possibilities.
+
+    Word Search Problem: However, in the Word Search (or Boggle-like) problem, you're not trying to enumerate all possible paths, but rather you're trying to find paths that correspond to words in a given list. The key insight here is that many paths can be pruned early in the search if they don't lead to a valid word. This pruning makes the problem more tractable.
+
+For the Word Search problem, backtracking with a Trie is efficient due to several factors:
+
+    Pruning with Trie: As you search the board and form word candidates, you can quickly check if the current path corresponds to a prefix of any word in your list. If the current path on the board (say, "abc") doesn't match any prefix in the Trie, you can terminate that branch of the search immediately. This means you're not blindly exploring all paths but rather only paths that have the potential to form valid words.
+
+    Word Length Limit: The maximum word length is 10. This means any search path that exceeds this length without matching a word can be pruned.
+
+    Unique Words: Since all words in the list are unique, once you find a valid word on the board, you don't have to consider it again.
+
+    Board Boundaries: Even though there are 8 possible moves from each cell, in practice, many of those moves will be invalid due to board boundaries, especially for cells near the edges. This reduces the branching factor.
+
+In contrast, for the Hamiltonian Path problem, you would need to explore a vast number of potential paths without much opportunity for pruning, making it much more computationally intensive.
+
+In summary, the feasibility of backtracking depends heavily on the specifics of the problem. In the Word Search scenario, the combination of the problem constraints and the ability to prune search paths using a Trie makes backtracking a suitable and efficient approach.
+
+----
+
+
+me
+
+i don't understand, should i construct a trie initially from the board where trie stores all possible words or is there a more efficient way?
+
+----
+
+chatgpt
+
+Let's break it down step-by-step for the Word Search problem using backtracking and a Trie:
+
+    Constructing the Trie: The Trie should be constructed from the given list of words, not from the board. This Trie will represent all the words you need to find, and as you search the board, you'll use this Trie to check if the current path of characters is a prefix of any word in the list.
+
+    Backtracking Search:
+
+    a. Start your backtracking search from a specific cell on the board.
+
+    b. At each step of the search, check the current sequence of characters (from the starting cell to the current cell) against the Trie:
+    - If the sequence is a valid prefix (i.e., it matches the start of some words), continue searching.
+    - If the sequence matches a full word in the Trie, add it to your results.
+    - If the sequence does not match any prefix or word, then you can terminate (or prune) that specific search path.
+
+    c. Mark the current cell as "visited" so you don't revisit it in this particular path.
+
+    d. Explore all neighboring cells that have not been visited yet (given the 8 possible directions).
+
+    e. Once you've explored all paths from the current cell, backtrack by marking the current cell as "not visited" and move back to the previous cell in the path.
+
+    Repeat the backtracking search for every cell on the board as the starting point.
+
+The key efficiency gain here is the Trie. By using it, you can immediately determine if the current search path has the potential to form a word in the list. If it doesn't, you can stop that search path early, preventing unnecessary exploration. This is the "pruning" step, and it's what makes the backtracking approach feasible for this problem.
+
+So, in essence, you:
+
+    Build the Trie from the list of words you're looking for.
+    Use backtracking to search the board, using the Trie to guide and prune your search.
+
+
+----
+
+me
+
+FUCK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! i decided to construct a fucking trie from the board and it did not even cross my mind to construct it from the words and that it was much faster solvable... FUCKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+
+
+---
+
+chatgpt
+
+I understand your frustration, and I'm sorry to hear that you faced this issue. Competitive programming and algorithmic challenges can sometimes be like that; a small oversight or missing insight can make all the difference. It's also part of the learning curve. Many of us have been there, facing such moments of realization.
+
+Take a deep breath and remember: every mistake is an opportunity to learn. You've now gained a deeper understanding of the problem and the solution, which will serve you well in the future. Often, the problems we struggle with the most are the ones we remember the best.
+
+If you have any more questions or need further clarifications, I'm here to help!
+
+---
+
+me
+
+yes, anders ericson sayd meaning means memory, painful long tasks often create strong meaning
+
+
+---
+
+
+chatgpt
+
+Absolutely. Anders Ericsson, renowned for his research on expertise and deliberate practice, highlighted the importance of meaningful, deliberate efforts in mastering any skill. It's often through our challenges and mistakes that we experience the most growth. Those difficult moments, when faced with the right mindset, can be valuable lessons that imprint themselves deeply in our memory.
+
+The phrase "meaning means memory" emphasizes that when something holds significance or emotional weight, we're more likely to remember it. Painful or challenging experiences, while difficult at the moment, often lead to stronger memories and deeper understanding because of the strong emotions tied to them.
+
+This is true in many fields, not just programming. Mistakes and challenges are a natural part of the learning journey. Embracing them and using them as learning opportunities can make us better in the long run. Keep pushing forward! Every setback is just a setup for a comeback.
+
+
+---
+
+me
+
+i had the absolutely correct idea for everything right off the bat... construct a trie, search the board, however the essence i got freakin wrong was the construction of trie from the board, even though i can do that, i still had complex algorithm to implement, hamiltonian path, or even backtracking on the grid... i wish i could find a solution using that because i still feel like even if i construct trie from the board, it will be huge memory hog trie, compared to words, comparing words will be efficient i think, however ill try it out!!! by myself
+
+
+---
+
+
+chatgpt
+
+Absolutely, experimenting on your own can sometimes lead to valuable insights and learning experiences. It's great to hear you're willing to explore further!
+
+If you decide to construct a trie from the board, it'll indeed be much larger than constructing it from the words. This is because the board can produce a combinatorial explosion of possible words, even if most of them are nonsensical. However, using the board to produce a trie might have its unique applications or insights.
+
+When you compare this method to constructing the trie from the words, the latter is definitely more efficient in the context of the Word Search problem. But experimenting with both methods can be a valuable exercise in understanding the nuances of each approach.
+
+No matter which way you choose, remember that the process itself is invaluable. Good luck with your experiments! If you need more assistance or want to discuss further, feel free to reach out.
+
+
+----
+
+
+me
+
+
+my logic started with thought that i don't know which letter is where in the grid and that it is more efficient and easier to construct a trie from a grid because of that, was it an error?
+
+
+----
+
+
+chatgpt
+
+Your logic was not inherently flawed; it was based on a natural line of thinking given the problem's constraints. The idea that, since the grid's layout is unknown, building a trie from the board seems like a direct approach. It's an attempt to catalog all possibilities upfront. This line of thinking isn't uncommon, especially when you're first analyzing a problem and trying to figure out how to approach it.
+
+However, for this specific problem, there are a few reasons why constructing a trie from the words is more efficient:
+
+    Size: As you've noted, the trie constructed from the board can be a huge memory hog. There can be an exponential number of paths in the grid, whereas the number of words and their lengths are bounded.
+
+    Pruning: Constructing the trie from the words allows for efficient pruning during the search. When you search the board and traverse the trie, you can quickly eliminate paths that don't match any prefix in the trie. This drastically reduces the search space and avoids unnecessary exploration.
+
+    Goal-Oriented: Since the goal is to find words from a given list, it's more direct to start with the list of words. By building a trie from the words, you're directly encoding your search goals into the data structure.
+
+That said, the process of exploring and trying different approaches is part of the problem-solving journey. Sometimes an approach seems promising at first but turns out to be suboptimal. This process helps sharpen your intuition over time and helps you quickly identify the most efficient strategies in future problems.
+
+In summary, while your initial approach had its logical basis, the problem's nature made another strategy more efficient. The key is to learn from this experience and use it to enhance your problem-solving skills in the future.
+
+
+
