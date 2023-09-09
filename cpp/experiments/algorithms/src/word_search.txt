@@ -537,3 +537,279 @@ In summary, while your initial approach had its logical basis, the problem's nat
 
 
 
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+I DEBUGGED BY PASTING HERE LEVELS AND CHARACTER AT EACH LEVEL... I
+REALIZED A CHARACTER IS MISSING AND REMEMBERED THAT I ONCE OVERWROTE
+THE NODE BY CREATING A NEW ONE WITHOUT CHECKING IF A NODE FOR THE
+CHARACTER ALREADY EXISTS...
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+
+
+a , level = 0
+f , level = 1
+g , level = 2
+d , level = 3
+e , level = 4
+a , level = 5
+a , level = 6
+b , level = 7
+c , level = 8
+b , level = 5
+a , level = 6
+a , level = 7
+c , level = 6
+c , level = 4
+b , level = 5
+a , level = 6
+a , level = 7
+e , level = 8
+e , level = 6
+a , level = 7
+a , level = 8
+e , level = 2
+a , level = 3
+a , level = 4
+b , level = 5
+c , level = 6
+d , level = 7
+g , level = 8
+d , level = 3
+g , level = 4
+c , level = 4
+b , level = 5
+a , level = 6
+a , level = 7
+b , level = 3
+a , level = 4
+a , level = 5
+c , level = 4
+d , level = 5
+g , level = 6
+a , level = 1
+e , level = 2
+f , level = 3
+g , level = 4
+d , level = 5
+c , level = 6
+b , level = 7
+a , level = 8
+d , level = 3
+g , level = 4
+f , level = 5
+c , level = 4
+b , level = 5
+a , level = 6
+b , level = 3
+a , level = 4
+c , level = 4
+d , level = 5
+g , level = 6
+f , level = 7
+a , level = 2
+b , level = 3
+e , level = 4
+f , level = 5
+g , level = 6
+d , level = 7
+c , level = 8
+d , level = 5
+g , level = 6
+f , level = 7
+c , level = 6
+c , level = 4
+d , level = 5
+e , level = 6
+f , level = 7
+g , level = 8
+g , level = 6
+f , level = 7
+e , level = 8
+
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+EXPLANATION OF THE REASON WHY BACKTRACKING WORKS TO GENERATE ALL TREE
+PATHS FROM THE GRID BY GOING THROUGH DIRECTIONS...
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+---------------------------------------------------------------------
+
+
+the code that im trying to understand how it works in and out...
+
+```cpp
+struct create {
+    vector<vector<char>>& board;
+    vector<vector<bool>> visited;
+    create(int n, int m, vector<vector<char>>& _board):
+        board{_board},
+        visited{vector<vector<bool>>(n, vector<bool>(m, false))}
+    {
+        // cout << n << " " << m << "\n";
+    }
+    int left(int j = 0) { return j - 1; }
+    int right(int j = 0) { return j + 1; }
+    int up(int i = 0) { return i - 1; }
+    int down(int i = 0) { return i + 1; }
+    bool can_visit(int i, int j) {
+        return i >= 0 && i < board.size() && j >= 0 && j < board[0].size();
+    }
+    bool can_visit_node(int i, int j) {
+        return can_visit(i, j) && !visited[i][j];
+    }
+    void operator()(int i, int j, trie* node) {
+        //from a node, for each other node that i can visit and did not visit, visit it
+        //if i can not visit any of the other nodes, unvisit the current one and go back
+        visited[i][j] = true;
+        trie* child_node = new trie;
+        string c = string{board[i][j]};
+        cout << i << " " << j << "\n";
+        node->children[c] = child_node;
+
+        if(can_visit_node(up(i), left(j))) {
+            (*this)(up(i), left(j), child_node);
+        }
+        if(can_visit_node(up(i), j)) {
+            (*this)(up(i), j, child_node);
+        }
+        if(can_visit_node(up(i), right(j))) {
+            (*this)(up(i), right(j), child_node);
+        }
+        if(can_visit_node(i, right(j))) {
+            (*this)(i, right(j), child_node);
+        }
+        if(can_visit_node(down(i), right(j))) {
+            (*this)(down(i), right(j), child_node);
+        }
+        if(can_visit_node(down(i), j)) {
+            (*this)(down(i), j, child_node);
+        }
+        if(can_visit_node(down(i), left(j))) {
+            (*this)(down(i), left(j), child_node);
+        }
+        if(can_visit_node(i, left(j))) {
+            (*this)(i, left(j), child_node);
+        }
+        visited[i][j] = false;
+    }
+};
+```
+
+
+hmmm in the current state i think it works because of backtracking logic, not sure why
+
+my backtracking logic is, mark current node as visited
+visit each unvisited neighbour that's within grid bounds
+at this point i have no neighbours to visit, which means i visited every node, unvisit current node, go to the previous node
+
+why does it not visit one neighbour twice? because of the way i phrased it?
+it empties the visited state by the end of the run, the current solution is very similar to my previous one, in the previous one i missed two things
+one is to keep track of visited cells and to backtrack
+second is that i revisited the node i was at previously
+
+why does it not visit same neighbour twice? well, let's say that we have grid
+
+directions = [
+  [up(),left()],
+  [up(), stay()],
+  [up(), right()],
+  [stay(), right()],
+  [down(), right()],
+  [down(), stay()],
+  [down(), left()],
+  [stay(), left()]
+]
+
+0,0 0,1
+1,0 1,1
+
+visit(i, j):
+  visited[0][0] = true
+
+  // do operations ...
+
+  for [move_i, move_j] : directions
+    new_i = i + move_i
+    new_j = j + move_j
+    if can_visit(new_i, new_j) && !visited[new_i][new_j]
+      visit(new_i, new_j)
+
+  visited[i][j] = false
+
+this recursion specifies that after each movement has been visited, there's nothing more ot visit, so let's observe the state
+
+visit(0, 0)
+visited[0][0] = true
+we are going to visit the next one, because we have not visited that one and its within bounds
+visit(0, 1)
+visited[0][1] = true
+we are going to visit the next one, be cause we have not visited that one, it will also try to visit 0,0 which is [stay(), left()], but it is marked visited
+visit(1, 1)
+visited[1][1] = true
+we are going to visit the next one, because it will try to visit [up(), left()], which is [0,0] but it's visited, it will try to visit [up(), stay()] which is [0, 1], but it's marked visited
+visit(1, 0)
+visited[1][0] = true
+at this point, it will try to visit [up(), stay()], [up(), right()], and [stay(), right()], however all those are visited: [0,0], [0, 1], [1, 1]
+this means that we can not go anywhere from here, we are going to mark the current node as unvisited
+visited[1][0] = false
+and we are going to go back to the previous state
+
+------
+
+the recursion does not have linear flow and it's not describeable in the notepad... here we go back to the state
+where we called visit(1, 1), i will copy it here
+
+```
+visit(1, 1)
+visited[1][1] = true
+we are going to visit the next one, because it will try to visit [up(), left()], which is [0,0] but it's visited, it will try to visit [up(), stay()] which is [0, 1], but it's marked visited
+```
+
+here, we returned from the point where we visited visit(1, 0), however in directions array, the last one is [left(), stay()], and from i=1,j=1, to move i left and j stay, we get i=1, j=0
+that means that we have nowhere else to go, we won't select the same 1,0 again, we finished states on the node 1,1, and we can mark now node 1,1 as unvisited because we exit from that state
+
+visited[1][1] = false
+
+this means our visited state is now at the:
+
+visited = [[true, true], [false, false]]
+
+and now we go back...
+
+
+      ------
+        at this point, we went back to the state where we called visit(0, 1), here is the status of that state
+
+        ```
+        we are going to visit the next one, because we have not visited that one and its within bounds
+        visit(0, 1)
+        visited[0][1] = true
+        ```
+
+        at this point, we have visited the node 1,1, and the next one in the directions list is the [down(), left()], which means i would visit from node 0,1 -> 1,0
+        etc... from here we can follow the execution to the end for each of the cells, and we can observe that for some reason we STILL execute everything correctly
+        we generate all possible paths in the grid
+      ------
+------
+
+------------------------------------------------
+
+i made a mistake, i considered diagonal movement because i DID NOT UNDERSTAND, I INTERPRETED SOMETHING IN THE PROBLEM STATEMENT AS DIAGONAL... I INTERPRETED VERTICAL AS DIAGONAL MOVEMENT!!!
+
+i should move horisontally and vertically only...
+
+hence i believe i was solving more difficult problem because of that...
+
+oh my god, again i created a problem because i overwrote the node without checking if its already created
+
