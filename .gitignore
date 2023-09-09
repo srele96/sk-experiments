@@ -1,0 +1,5 @@
+# Ignore vim temporary and swap files to avoid accidental commits which clutter
+# the repo.
+*~
+*.swp
+*.swo
