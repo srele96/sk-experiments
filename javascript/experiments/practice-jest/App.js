@@ -36,7 +36,32 @@ function Second() {
 }
 
 function Third() {
-  return createElement('p', null, 'Third');
+  const { register } = useFormContext();
+
+  const items = [
+    { value: 'sk-experiments', label: 'sk-experiments' },
+    { value: 'sk-engine', label: 'sk-engine' },
+    { value: 'sk-learning', label: 'sk-learning' },
+  ];
+
+  return createElement(
+    'fieldset',
+    null,
+    createElement('legend', null, 'Third'),
+    createElement('p', null, 'group'),
+    items.map((item) => {
+      return createElement(
+        'label',
+        null,
+        createElement('input', {
+          ...register('group'),
+          type: 'radio',
+          value: item.value,
+        }),
+        item.label
+      );
+    })
+  );
 }
 
 function App() {
