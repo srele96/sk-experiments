@@ -44,10 +44,10 @@ function Third() {
     null,
     e('legend', null, 'Third'),
     e('p', null, 'group'),
-    items.map((item) => {
+    items.map((item, i) => {
       return e(
         'label',
-        null,
+        { key: i },
         e('input', {
           ...register('group'),
           type: 'radio',
