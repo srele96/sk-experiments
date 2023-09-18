@@ -69,7 +69,47 @@ function App() {
       'form',
       {
         onSubmit: methods.handleSubmit(
-          (data, event) => {
+          async (data, event) => {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            // open modal
+
+            // retrieve the status of the first check in the modal
+
+            // update the status of the first check in the modal
+
+            // if the status of the first check failed
+
+            // show the error message
+            // show user message to try again
+
+            // retrieve the status of the second check in the modal
+
+            // update the status of the second check in the modal
+
+            // if the status of the second check failed
+
+            // show the error message
+            // show user message to try again
+
+            // retrieve the status of the third check in the modal
+
+            // update the status of the third check in the modal
+
+            // if the status of the third check failed
+
+            // show the error message
+            // show user message to try again
+
+            // retrieve the status of the fourth check in the modal
+
+            // update the status of the fourth check in the modal
+
+            // if the status of the fourth check failed
+
+            // show the error message
+            // show user message to try again
+
             console.log({ data, event });
           },
           (error) => {
