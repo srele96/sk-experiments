@@ -1,36 +1,31 @@
-import { createElement } from 'react';
+import { createElement as e } from 'react';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 
 function First() {
   const { register } = useFormContext();
 
-  return createElement(
+  return e(
     'fieldset',
     null,
-    createElement('legend', null, 'First'),
-    createElement(
-      'label',
-      null,
-      'foo ',
-      createElement('input', { ...register('first') })
-    )
+    e('legend', null, 'First'),
+    e('label', null, 'foo ', e('input', { ...register('first') }))
   );
 }
 
 function Second() {
   const { register } = useFormContext();
 
-  return createElement(
+  return e(
     'fieldset',
     null,
 
-    createElement('legend', null, 'Second'),
+    e('legend', null, 'Second'),
 
-    createElement(
+    e(
       'label',
       null,
       'bar ',
-      createElement('input', { type: 'checkbox', ...register('bar') })
+      e('input', { type: 'checkbox', ...register('bar') })
     )
   );
 }
@@ -44,16 +39,16 @@ function Third() {
     { value: 'sk-learning', label: 'sk-learning' },
   ];
 
-  return createElement(
+  return e(
     'fieldset',
     null,
-    createElement('legend', null, 'Third'),
-    createElement('p', null, 'group'),
+    e('legend', null, 'Third'),
+    e('p', null, 'group'),
     items.map((item) => {
-      return createElement(
+      return e(
         'label',
         null,
-        createElement('input', {
+        e('input', {
           ...register('group'),
           type: 'radio',
           value: item.value,
@@ -67,10 +62,10 @@ function Third() {
 function App() {
   const methods = useForm();
 
-  return createElement(
+  return e(
     FormProvider,
     { ...methods },
-    createElement(
+    e(
       'form',
       {
         onSubmit: methods.handleSubmit(
@@ -82,10 +77,10 @@ function App() {
           }
         ),
       },
-      createElement(First),
-      createElement(Second),
-      createElement(Third),
-      createElement('button', { type: 'submit' }, 'Submit')
+      e(First),
+      e(Second),
+      e(Third),
+      e('button', { type: 'submit' }, 'Submit')
     )
   );
 }
