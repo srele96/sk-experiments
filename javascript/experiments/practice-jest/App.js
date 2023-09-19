@@ -1,5 +1,10 @@
 import { createElement as e } from 'react';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import {
+  Controller,
+  FormProvider,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 
 function First() {
   const { register } = useFormContext();
@@ -59,7 +64,7 @@ function Third() {
   );
 }
 
-function App() {
+function ReactHookForm() {
   const methods = useForm();
 
   return e(
@@ -120,6 +125,71 @@ function App() {
       e(First),
       e(Second),
       e(Third),
+      e('button', { type: 'submit' }, 'Submit')
+    )
+  );
+}
+
+function App() {
+  const methods = useForm();
+
+  console.log({ methods });
+
+  const defaultCheckboxValue = false;
+  const checkboxValue = methods.watch('checkbox', defaultCheckboxValue);
+
+  const defaultSomethingValue = '';
+  const somethingValue = methods.watch('something', defaultSomethingValue);
+
+  return e(
+    'div',
+    null,
+    e(ReactHookForm),
+    e(
+      'form',
+      {
+        onSubmit: methods.handleSubmit((data, event) => {
+          console.log({ data, event });
+        }),
+      },
+
+      e(
+        'label',
+        null,
+        e(Controller, {
+          control: methods.control,
+          name: 'something',
+          defaultValue: '',
+          render: (param) => {
+            // console.log({ param });
+
+            return e('input', { type: 'text', ...param.field });
+          },
+        }),
+        e('p', null, "Something's value is `" + somethingValue + '`')
+      ),
+
+      // controller can be somewhere inside... somewhere... down? Yet it still
+      // requires `methods.control`...
+
+      e(
+        'label',
+        null,
+        e(Controller, {
+          control: methods.control,
+          name: 'checkbox',
+          defaultValue: defaultCheckboxValue,
+          render({ field }) {
+            return e('input', { type: 'checkbox', ...field });
+          },
+        }),
+        e(
+          'p',
+          null,
+          'Checkbox is ' + checkboxValue ? 'checked!' : 'not checked!'
+        )
+      ),
+
       e('button', { type: 'submit' }, 'Submit')
     )
   );
