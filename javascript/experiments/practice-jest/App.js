@@ -173,11 +173,11 @@ function App() {
             },
           },
           render: ({ field, fieldState }) => {
-            console.log(
-              { field, fieldState },
-              fieldState.invalid,
-              fieldState.error?.message
-            );
+            // console.log(
+            //   { field, fieldState },
+            //   fieldState.invalid,
+            //   fieldState.error?.message
+            // );
 
             const style = fieldState.invalid
               ? { border: '1px solid red', color: 'red' }
