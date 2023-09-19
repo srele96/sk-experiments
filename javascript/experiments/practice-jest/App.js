@@ -133,7 +133,7 @@ function ReactHookForm() {
 function App() {
   const methods = useForm();
 
-  console.log({ methods });
+  // console.log({ methods });
 
   const defaultCheckboxValue = false;
   const checkboxValue = methods.watch('checkbox', defaultCheckboxValue);
