@@ -148,9 +148,14 @@ function App() {
     e(
       'form',
       {
-        onSubmit: methods.handleSubmit((data, event) => {
-          console.log({ data, event });
-        }),
+        onSubmit: methods.handleSubmit(
+          (data, event) => {
+            console.log({ data, event });
+          },
+          (error) => {
+            console.error({ error });
+          }
+        ),
       },
 
       e(
@@ -160,10 +165,30 @@ function App() {
           control: methods.control,
           name: 'something',
           defaultValue: '',
-          render: (param) => {
-            // console.log({ param });
+          rules: {
+            required: 'Must not be empty!!!',
+            pattern: {
+              value: /^[a-z]+$/i,
+              message: 'Only letters are allowed',
+            },
+          },
+          render: ({ field, fieldState }) => {
+            console.log(
+              { field, fieldState },
+              fieldState.invalid,
+              fieldState.error?.message
+            );
 
-            return e('input', { type: 'text', ...param.field });
+            const style = fieldState.invalid
+              ? { border: '1px solid red', color: 'red' }
+              : {};
+
+            return e(
+              'span',
+              null,
+              e('input', { style, type: 'text', ...field }),
+              fieldState.invalid && e('span', null, fieldState.error?.message)
+            );
           },
         }),
         e('p', null, "Something's value is `" + somethingValue + '`')
