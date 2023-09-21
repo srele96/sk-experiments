@@ -1,6 +1,9 @@
 import { render, waitFor } from '@testing-library/react';
 import { createElement as e } from 'react';
 import { App } from './App';
+import { Provider } from 'react-redux';
+import { combineReducers, createStore } from 'redux';
+import { foo, bar } from './reducer';
 
 // TODO: https://jestjs.io/docs/expect#expectextendmatchers
 // TODO: https://jestjs.io/docs/timer-mocks
@@ -23,7 +26,7 @@ expect.extend({
     };
   },
   toGetMoar(...args) {
-    console.log({ args: JSON.stringify(args) });
+    // console.log({ args: JSON.stringify(args) });
 
     return {
       pass: true,
@@ -33,11 +36,13 @@ expect.extend({
 });
 
 // Extended here!
-console.log({ expect });
+// console.log({ expect });
 
 describe('', () => {
   it('should run waitFor many times', async () => {
-    render(e(App)); // Do I even need to render?
+    render(
+      e(Provider, { store: createStore(combineReducers({ foo, bar })) }, e(App))
+    ); // Do I even need to render?
 
     let count = 0;
 
@@ -55,7 +60,7 @@ describe('', () => {
     ).rejects.toThrow();
 
     // Allow us to see the count once the test passes.
-    console.log(`waitFor ran ${count} times`);
+    // console.log(`waitFor ran ${count} times`);
   });
 
   it('should prove why i can await expect.rejects()', () => {
