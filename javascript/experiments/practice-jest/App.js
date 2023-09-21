@@ -1,10 +1,11 @@
-import { createElement as e } from 'react';
+import { createElement as e, useEffect } from 'react';
 import {
   Controller,
   FormProvider,
   useForm,
   useFormContext,
 } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 
 function First() {
   const { register } = useFormContext();
@@ -130,7 +131,7 @@ function ReactHookForm() {
   );
 }
 
-function App() {
+function MoreSamples() {
   const methods = useForm();
 
   // console.log({ methods });
@@ -142,80 +143,104 @@ function App() {
   const somethingValue = methods.watch('something', defaultSomethingValue);
 
   return e(
+    'form',
+    {
+      onSubmit: methods.handleSubmit(
+        (data, event) => {
+          console.log({ data, event });
+        },
+        (error) => {
+          console.error({ error });
+        }
+      ),
+    },
+
+    e(
+      'label',
+      null,
+      e(Controller, {
+        control: methods.control,
+        name: 'something',
+        defaultValue: '',
+        rules: {
+          required: 'Must not be empty!!!',
+          pattern: {
+            value: /^[a-z]+$/i,
+            message: 'Only letters are allowed',
+          },
+        },
+        render: ({ field, fieldState }) => {
+          // console.log(
+          //   { field, fieldState },
+          //   fieldState.invalid,
+          //   fieldState.error?.message
+          // );
+
+          const style = fieldState.invalid
+            ? { border: '1px solid red', color: 'red' }
+            : {};
+
+          return e(
+            'span',
+            null,
+            e('input', { style, type: 'text', ...field }),
+            fieldState.invalid && e('span', null, fieldState.error?.message)
+          );
+        },
+      }),
+      e('p', null, "Something's value is `" + somethingValue + '`')
+    ),
+
+    // controller can be somewhere inside... somewhere... down? Yet it still
+    // requires `methods.control`...
+
+    e(
+      'label',
+      null,
+      e(Controller, {
+        control: methods.control,
+        name: 'checkbox',
+        defaultValue: defaultCheckboxValue,
+        render({ field }) {
+          return e('input', { type: 'checkbox', ...field });
+        },
+      }),
+      e('p', null, 'Checkbox is ' + checkboxValue ? 'checked!' : 'not checked!')
+    ),
+
+    e('button', { type: 'submit' }, 'Submit')
+  );
+}
+
+function App() {
+  const dispatch = useDispatch();
+  const store = useSelector((store) => store);
+
+  useEffect(() => {
+    dispatch({ type: 'foo/add', payload: 'foo' });
+    dispatch({ type: 'bar/add', payload: 'bar' });
+  }, [dispatch]);
+
+  return e(
     'div',
     null,
     e(ReactHookForm),
+    e(MoreSamples),
+    e('h2', null, 'Redux Store'),
     e(
-      'form',
-      {
-        onSubmit: methods.handleSubmit(
-          (data, event) => {
-            console.log({ data, event });
-          },
-          (error) => {
-            console.error({ error });
+      'pre',
+      null,
+      JSON.stringify(
+        store,
+        (_, value) => {
+          if (value instanceof Set) {
+            return [...value];
           }
-        ),
-      },
 
-      e(
-        'label',
-        null,
-        e(Controller, {
-          control: methods.control,
-          name: 'something',
-          defaultValue: '',
-          rules: {
-            required: 'Must not be empty!!!',
-            pattern: {
-              value: /^[a-z]+$/i,
-              message: 'Only letters are allowed',
-            },
-          },
-          render: ({ field, fieldState }) => {
-            // console.log(
-            //   { field, fieldState },
-            //   fieldState.invalid,
-            //   fieldState.error?.message
-            // );
-
-            const style = fieldState.invalid
-              ? { border: '1px solid red', color: 'red' }
-              : {};
-
-            return e(
-              'span',
-              null,
-              e('input', { style, type: 'text', ...field }),
-              fieldState.invalid && e('span', null, fieldState.error?.message)
-            );
-          },
-        }),
-        e('p', null, "Something's value is `" + somethingValue + '`')
-      ),
-
-      // controller can be somewhere inside... somewhere... down? Yet it still
-      // requires `methods.control`...
-
-      e(
-        'label',
-        null,
-        e(Controller, {
-          control: methods.control,
-          name: 'checkbox',
-          defaultValue: defaultCheckboxValue,
-          render({ field }) {
-            return e('input', { type: 'checkbox', ...field });
-          },
-        }),
-        e(
-          'p',
-          null,
-          'Checkbox is ' + checkboxValue ? 'checked!' : 'not checked!'
-        )
-      ),
-
-      e('button', { type: 'submit' }, 'Submit')
+          return value;
+        },
+        2
+      )
     )
   );
 }
