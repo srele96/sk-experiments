@@ -20,8 +20,10 @@ Make sure you are in `sk-experiments/sandbox` directory.
 
 Generate build directory and use `vcpkg` to install dependencies. The `-B` flag specifies generation location. The `-S` flag specifies where is project CMakeLists.txt. The `-DCMAKE_TOOLCHAIN_FILE` is from the `vcpkg` documentation.
 
+Linking doesn't work without `-DVCPKG_TARGET_TRIPLET=x64-mingw-static` flag, I assumed it is compiler mismatch issue, a better solution is to specify [custom triplet](https://learn.microsoft.com/en-us/vcpkg/users/triplets).
+
 ```powershell
-cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:\src\vcpkg\scripts\buildsystems\vcpkg.cmake
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:\src\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static
 ```
 
 Build the project.
