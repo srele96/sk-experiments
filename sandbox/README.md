@@ -22,6 +22,8 @@ Generate build directory and use `vcpkg` to install dependencies. The `-B` flag 
 
 Linking doesn't work without `-DVCPKG_TARGET_TRIPLET=x64-mingw-static` flag, I assumed it is compiler mismatch issue, a better solution is to specify [custom triplet](https://learn.microsoft.com/en-us/vcpkg/users/triplets).
 
+It seems on Windows I have to use `mingw-static` to make [linking boost while using clang++ compiler](https://stackoverflow.com/questions/54155266/how-to-link-vcpkg-boost-with-mingw) work.
+
 ```powershell
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:\src\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static
 ```
