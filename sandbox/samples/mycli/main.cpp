@@ -16,9 +16,10 @@
 auto main(int argc, char **argv) -> int {
   namespace po = boost::program_options;
   po::options_description desc("Allowed options");
-  desc.add_options()("help, h", "produce help message")
+  desc.add_options()("help, h", "Help me to use `mycli`!")
       // TODO: Learn the pattern to construct<type>()
-      ("file, f", po::value<std::string>(), "the file to process");
+      ("file, f", po::value<std::string>(),
+       "Do stuff with a file on this path.");
 
   po::variables_map v_map;
 
@@ -28,7 +29,6 @@ auto main(int argc, char **argv) -> int {
 
     if (v_map.count("help") != 0 || argc == 1) {
       std::cout << desc << "\n";
-      return 1;
     }
 
     if (v_map.count("file") != 0) {
