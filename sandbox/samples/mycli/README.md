@@ -79,3 +79,17 @@ Compile and run `mycli` program with `test-file.txt` as an argument.
 ```powershell
 cmake --build build; ./build/samples/mycli/mycli.exe --file ".\samples\mycli\test-file.txt"
 ```
+
+## Add mongo database functionality
+
+The idea is to use the c++ command line interface to interface with the mongo database. The mongo database runs inside docker which exposes the port to host machine.
+
+Docker is supposed to make it easier to use mongodb on the machine.
+
+Start the mongo database inside docker.
+
+```powershell
+docker-compose up -d
+```
+
+For more information, refer to: [MongoDB conversation with ChatGPT](./mongo.conversation.txt) which helped me set it up.

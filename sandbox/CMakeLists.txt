@@ -24,6 +24,10 @@ project(sandbox)
 # library collection, and it will set up the necessary variables for linking.
 find_package(Boost REQUIRED COMPONENTS program_options)
 
+# mongo-cxx-driver
+find_package(bsoncxx CONFIG REQUIRED)
+find_package(mongocxx CONFIG REQUIRED)
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # The simplest way I could find to get the current directory name.

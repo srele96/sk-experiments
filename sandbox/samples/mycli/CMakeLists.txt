@@ -29,6 +29,10 @@ target_link_libraries(
   ${PROJECT_NAME}
   PRIVATE
   Boost::program_options
+
+  # Taken from: https://vcpkg.link/ports/mongo-cxx-driver/v/3.8.0/0
+  $<IF:$<TARGET_EXISTS:mongo::bsoncxx_static>,mongo::bsoncxx_static,mongo::bsoncxx_shared>
+  $<IF:$<TARGET_EXISTS:mongo::mongocxx_static>,mongo::mongocxx_static,mongo::mongocxx_shared>
 )
 
 message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")

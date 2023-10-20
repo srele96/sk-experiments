@@ -15,7 +15,11 @@
     {
       "name": "boost-program-options",
       "version>=": "1.82.0"
+    },
+    {
+      "name": "mongo-cxx-driver",
+      "version>=": "3.8.0"
     }
   ],
-  "builtin-baseline": "6d69bbacd2fbeae957f034dbbd2b454b5e3941fe"
+  "builtin-baseline": "da7048d0d95bab69c9ff8da3f34a1fbe160b0c0b"
 }
