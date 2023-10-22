@@ -319,7 +319,7 @@ class error : public base<error> {
 
 int main() {
   const auto separator{[](const std::string& label) {
-    return "--------\n" + label + "\n--------\n\n";
+    return "\n--------\n" + label + "\n--------\n\n";
   }};
 
   std::cout << separator("a");
