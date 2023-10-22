@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <typeinfo>
 
 namespace curiously_recurring_template_pattern {
 
@@ -423,6 +424,16 @@ int main() {
   // enables. The base class method log is able to call the log_impl method of
   // the derived class, even though it only has a pointer to the base class,
   // because of the static_cast to T*, where T is the derived class.
+
+  std::cout << separator("typeid");
+
+  const std::type_info& derived_a_info{typeid(derived_a)};
+  const std::type_info& derived_b_info{typeid(derived_b)};
+
+  std::cout << "name: " << derived_a_info.name() << "\n";
+  std::cout << "hash_code: " << derived_a_info.hash_code() << "\n";
+  std::cout << "`derived_a_info.before(derived_b_info)`: "
+            << derived_a_info.before(derived_b_info) << "\n";
 
   return 0;
 }
