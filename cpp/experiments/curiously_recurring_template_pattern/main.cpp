@@ -1,7 +1,9 @@
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <typeinfo>
 #include <utility>
+#include <vector>
 
 namespace curiously_recurring_template_pattern {
 
@@ -547,6 +549,68 @@ void run_example() { f<t> f_t; }
 
 }  // namespace template_parameter
 
+namespace sfinae {
+
+// std::enable_if_t is a type trait in C++ that is used to conditionally remove
+// or enable a function or a type based on a compile-time condition. It is a
+// part of the <type_traits> header. It's a shorthand for typename
+// std::enable_if<B, T>::type where B is a boolean constant expression, and T is
+// the type that gets enabled if B is true. If B is false, the type
+// std::enable_if_t is not defined, leading to a substitution failure, which
+// helps in SFINAE (Substitution Failure Is Not An Error) scenarios.
+//
+// Here is a simplified explanation of how std::enable_if_t works:
+//
+//     Conditionally Enabling Functions:
+//         std::enable_if_t can be used to conditionally enable or disable
+//         function overloads based on certain compile-time conditions.
+//
+//     Type Trait:
+//         It is a template that generates a type (or nothing) based on a
+//         condition.
+//
+//     SFINAE:
+//         It is often used in conjunction with SFINAE to create template
+//         specializations that are only valid under certain conditions.
+//
+// Here's a simple example illustrating the usage of std::enable_if_t:
+
+template <typename E, typename T, typename = void>
+struct Executor {
+  // Test out variations of these assertions.
+  static_assert(sizeof(E) == 0,
+                "Executor requires a specialization to be used.");
+};
+
+template <typename E, typename T>
+struct Executor<E, T,
+                std::enable_if_t<!std::is_same_v<
+                    void, decltype(std::declval<T>()(std::declval<E>()))>>> {
+  static void execute(std::vector<E>& elements, T cb) {
+    for (std::size_t i{0}; i < elements.size(); ++i) {
+      elements[i] = cb(elements[i]);
+    }
+  }
+};
+
+template <typename E, typename T>
+struct Executor<E, T,
+                std::enable_if_t<std::is_same_v<
+                    void, decltype(std::declval<T>()(std::declval<E>()))>>> {
+  static void execute(std::vector<E>& elements, T cb) {
+    for (std::size_t i{0}; i < elements.size(); ++i) {
+      cb(elements[i]);
+    }
+  }
+};
+
+template <typename E, typename T>
+void execute(std::vector<E>& elements, T cb) {
+  Executor<E, T>::execute(elements, cb);
+}
+
+}  // namespace sfinae
+
 int main() {
   const auto separator{[](const std::string& label) {
     return "\n--------\n" + label + "\n--------\n\n";
@@ -684,6 +748,24 @@ int main() {
   std::cout << separator("template_parameter::run_example()");
 
   template_parameter::run_example();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << separator("sfinae");
+
+  std::vector<int> v1{1, 2, 3, 4};
+  sfinae::execute(v1, [](int n) {
+    std::cout << n << " ";
+
+    return n + 1;
+  });
+
+  std::cout << "\n";
+  std::for_each(v1.begin(), v1.end(), [](int n) { std::cout << n << " "; });
+
+  std::vector<int> v2{5, 6, 7, 8};
+  std::cout << "\n";
+  sfinae::execute(v2, [](int n) { std::cout << n << " "; });
 
   return 0;
 }
