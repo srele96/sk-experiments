@@ -552,6 +552,7 @@ int main() {
     return "\n--------\n" + label + "\n--------\n\n";
   }};
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   std::cout << separator("a");
 
   curiously_recurring_template_pattern::a::derived derived_a;
