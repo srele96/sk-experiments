@@ -655,6 +655,8 @@ int main() {
   // the derived class, even though it only has a pointer to the base class,
   // because of the static_cast to T*, where T is the derived class.
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   std::cout << separator("typeid");
 
   const std::type_info& derived_a_info{typeid(derived_a)};
@@ -665,6 +667,8 @@ int main() {
   std::cout << "`derived_a_info.before(derived_b_info)`: "
             << derived_a_info.before(derived_b_info) << "\n";
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   std::cout << separator("crtp_static_method - a");
 
   curiously_recurring_template_pattern::crtp_static_method::derived
@@ -672,6 +676,8 @@ int main() {
 
   derived_a_crtp_static_method.log();
   derived_a_crtp_static_method.log_static();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   std::cout << separator("template_parameter::run_example()");
 
