@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <typeinfo>
+#include <utility>
 
 namespace curiously_recurring_template_pattern {
 
@@ -315,7 +316,236 @@ class error : public base<error> {
 
 }  // namespace logger
 
+namespace crtp_static_method {
+
+// is there even a need for crtp when calling child static method? it can still
+// reuse the functionality between derived classes, but it feels different now?
+// ----------------------------------------------------------------------------
+// However, as you've pointed out, when you're only dealing with static methods,
+// the entire setup might feel a bit contrived. After all, if you're not making
+// use of instance-specific behavior, then the need to use inheritance at all
+// becomes debatable. Instead, one might argue for a more modular or
+// traits-based approach where shared behavior is defined in utility classes or
+// functions, and individual types aggregate or use these utilities as needed.
+//
+// The CRTP shines when you want to mix instance-specific behavior of derived
+// classes with shared functionality in a base class, leveraging the
+// compile-time polymorphism it offers. If you're only using static methods,
+// then you're right: the benefits of CRTP in such a context may seem
+// diminished.
+
+template <class derived>
+class base {
+ public:
+  // ----------------------------------------------------------------------------
+  // i don't quite understand why does method marked const require me to cast
+  // this to const derived*?
+  //
+  // the const method means it doesn't modify the value it points to... however
+  // the cast to pointer ah... i think i see, does it mean
+  //
+  // method is marked as const, it can only call const methods
+  //
+  // we call methods through this pointer, the type of pointer determines which
+  // methods we can call, if this pointer is non const, it can call non const
+  // methods, if this pointer is const, it can not call non const methods?
+  //
+  // ----------------------------------------------------------------------------
+  //
+  // Yes, you're on the right track. Let me elaborate further:
+  //
+  //     const Member Function: When a member function is marked as const, it
+  //     means that it promises not to modify the state of the object on which
+  //     it is called. In other words, it cannot modify any data members and can
+  //     only call other const member functions.
+  //
+  //     this Pointer: Inside a member function, the this pointer is an implicit
+  //     pointer that points to the object on which the member function is
+  //     called. The type of the this pointer is:
+  //         T* const inside non-const member functions of class T.
+  //         const T* const inside const member functions of class T.
+  //
+  //     This means that in a const member function, the this pointer points to
+  //     a const object, ensuring the function doesn't modify the object.
+  //
+  //     Static Casting: When you do a static_cast, you're explicitly
+  //     instructing the compiler to treat the expression in a certain way. If
+  //     you try to static_cast a const pointer to a non-const pointer, you're
+  //     attempting to remove the const-ness. This is not allowed because it
+  //     violates the promise of const-correctness.
+  //
+  // So in the context of your log function, since it's marked const, the this
+  // pointer is of type const base<derived>*. When you do the static_cast, you
+  // need to cast to a pointer that is also const to match the type and the
+  // promises you've made via the const qualifier.
+  //
+  // Your understanding in the latter part of your question is correct. The type
+  // of the this pointer determines which methods you can call. If it's a const
+  // pointer, you can only call const methods on it. If it's a non-const
+  // pointer, you can call any method.
+  // ----------------------------------------------------------------------------
+
+  // OK
+  // void log() noexcept { static_cast<derived*>(this)->log_impl(); }
+
+  // NOK
+  // void log() const noexcept { static_cast<derived*>(this)->log_impl(); }
+
+  // OK
+  void log() const noexcept {
+    static_cast<const derived*>(this)->log_impl(
+        " static_cast<const derived*>(this)->log_impl(/* ... */);\n");
+  }
+
+  void log_static() const noexcept {
+    derived::log_impl(" derived::log_impl(/* ... */);\n");
+  }
+};
+
+class derived : public base<derived> {
+ public:
+  static void log_impl(const std::string& label) noexcept {
+    std::cout << "derived:" << label;
+  }
+};
+
+}  // namespace crtp_static_method
+
 }  // namespace curiously_recurring_template_pattern
+
+// A template takes type as a parameter and inside a class we can instantiate a
+// value of the type parameter. Which means we can copy, move, assign, etc.
+//
+// We can perform various operations on the type parameter.
+namespace template_parameter {
+
+// whose responsible for calling move, destructor, copy, at runtime? at compile
+// time it's compiler, but at runtime? is there code inserted to do that? or
+// what?
+// ----------------------------------------------------------------------------
+//
+// In C++, the sequence of operations, including copy/move constructors,
+// destructors, and other member functions, is determined at compile-time by the
+// compiler. However, the actual execution of these operations occurs at
+// runtime. Here's a bit more detail:
+//
+//     Compile-time:
+//         The compiler determines where to insert calls to constructors,
+//         destructors, assignment operators, etc., based on the code you write.
+//         For example, if you return a local object from a function, the
+//         compiler will decide whether to use the move constructor (if it's
+//         available and appropriate) or the copy constructor. Another example
+//         is that the compiler inserts calls to the destructor for
+//         automatic-duration objects when they go out of scope.
+//
+//     Runtime:
+//         When the program is executed, the runtime environment (the
+//         combination of the operating system, the loader, and the runtime
+//         system that comes with your C++ compiler) takes care of executing the
+//         machine instructions corresponding to the calls determined by the
+//         compiler. The actual functions (like constructors or destructors) are
+//         called, memory gets allocated or deallocated, resources are acquired
+//         or released, and so forth.
+//
+// It's essential to understand that by "the compiler determines," we mean the
+// compiler writes out machine instructions in the generated binary that
+// correspond to these calls. At runtime, it's the processor executing these
+// machine instructions that "calls" the appropriate functions, but the decision
+// of when and where to make these calls was made by the compiler.
+//
+// To visualize this, you can think of the compiler as a director who writes a
+// script (the machine code). In contrast, the runtime system and hardware are
+// the actors who perform it, following the script's instructions.
+//
+// ----------------------------------------------------------------------------
+//
+// ah so the compiler simply puts the appropriate method of a class? if we have
+//
+// util::f f;
+// util::f f_c = f;
+//
+// the compiler will insert this:
+//
+//
+// util::f f; // default ctor
+// util::f f_c = f; // copy ctor
+//
+// so they run at runtime, but compiler determines which one to call?
+//
+// ----------------------------------------------------------------------------
+//
+// Yes, exactly!
+//
+// Your C++ source code is a high-level representation of what you want the
+// program to do. The compiler's job is to translate that into lower-level
+// machine instructions that can be executed by the CPU.
+//
+// The compiler understands your intent and generates the necessary machine
+// instructions to:
+//
+//     Call the default constructor for f.
+//     Call the copy constructor for f_c using f as the argument.
+//
+// At runtime, the program (following the machine instructions laid out by the
+// compiler) will execute those constructors in the appropriate sequence. The
+// constructors' actual functionality (what they do) will then be carried out,
+// such as memory allocation, setting initial values, copying values, etc.
+//
+// This distinction between compile-time decision making and runtime execution
+// is fundamental in understanding many aspects of C++. The compiler determines
+// which functions/methods to call based on the types and context, but the
+// actual function's operations are executed at runtime.
+// ----------------------------------------------------------------------------
+
+template <class t>
+struct f {
+  t m_t;
+
+  f() : m_t{t{}} {
+    std::cout << m_t.v << "\n";
+
+    t sth = std::move(m_t);
+
+    std::cout << m_t.v << "\n";
+
+    std::cout << sth.v << "\n";
+  }
+};
+
+struct t {
+  int v{5};
+
+  t() { std::cout << "t()\n"; }
+
+  t(const t& other) : v{other.v} { std::cout << "t(const t& other)\n"; }
+
+  t& operator=(const t& other) {
+    if (this != &other) {
+      v = other.v;
+      std::cout << "operator=(const t& other)\n";
+    }
+
+    return *this;
+  }
+
+  // Understand why does move operation require noexcept
+  t(t&& other) noexcept : v{std::exchange(other.v, 0)} {
+    std::cout << "t(t&& other)\n";
+  }
+
+  // Understand why does move operation require noexcept
+  t& operator=(t&& other) noexcept {
+    std::cout << "operator=(t&& other)\n";
+
+    return *this;
+  }
+
+  ~t() { std::cout << "~t()\n"; }
+};
+
+void run_example() { f<t> f_t; }
+
+}  // namespace template_parameter
 
 int main() {
   const auto separator{[](const std::string& label) {
@@ -434,6 +664,18 @@ int main() {
   std::cout << "hash_code: " << derived_a_info.hash_code() << "\n";
   std::cout << "`derived_a_info.before(derived_b_info)`: "
             << derived_a_info.before(derived_b_info) << "\n";
+
+  std::cout << separator("crtp_static_method - a");
+
+  curiously_recurring_template_pattern::crtp_static_method::derived
+      derived_a_crtp_static_method;
+
+  derived_a_crtp_static_method.log();
+  derived_a_crtp_static_method.log_static();
+
+  std::cout << separator("template_parameter::run_example()");
+
+  template_parameter::run_example();
 
   return 0;
 }
