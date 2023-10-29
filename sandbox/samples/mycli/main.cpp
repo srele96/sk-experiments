@@ -47,6 +47,56 @@ auto operator>>(std::istream &istream, date &p_date) -> std::istream & {
     throw std::runtime_error("Failed to read the day.");
   }
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // What happened?
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // I was receiving an error in the terminal. It occurred sometimes. The error
+  // was `the argument ('1111:11:32') for option '--date' is invalid`. I thought
+  // that:
+  // - I overloaded the `operator>>` operator incorrectly.
+  // - The boost invoked my `operator>>` operator incorrectly.
+  // - The reading from the terminal was incorrect.
+  // - I googled the error, thought the result was relevant
+  //   https://stackoverflow.com/questions/19814393/using-custom-types-with-boost-program-options
+  //   and tried to implement the solution. Did not work. I thought I
+  //   implemented it incorrectly. I had no fast way to verify if I did it
+  //   right.
+  //
+  // In the end after an hour and a half of debugging I decided to stop. I was
+  // doing the logic with while(std::getline(/* ... */)). ChatGPT told me it was
+  // possible the stream was over-consumed. I added loggings for eof, fail and
+  // bad. I didn't deduce anything from them.
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // What did I do right?
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //
+  // I checked relevant ideas. I tried to investigate if each of the ideas was
+  // correct. I was on the right track.
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // What did I do wrong?
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //
+  // I did not correctly validate whether I read from input stream correctly.
+  // That was the problem. I read the input stream with 3 if statements. I saw
+  // that the third one read the first token of the next date.
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // What can I learn from this?
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //
+  // I should find ways to practice getting on the right track and validating
+  // the correctness of my ideas. I had the right idea. I can't remember whether
+  // it was first or some of the later ones. The thoughts occur really fast and
+  // it takes significant conscious cognitive effort to validate them. I should
+  // find a way to build skill to improve speed and correctness of unconscious
+  // deduction.
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   // Leave logging because boost repeatedly printed error:
   // the argument ('1111:11:32') for option '--date' is invalid
   // In the end I made it work using three if statements.
