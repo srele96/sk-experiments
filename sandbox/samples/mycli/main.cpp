@@ -87,13 +87,15 @@ auto main(int argc, char **argv) -> int {
       /**/
       ("db-test", "Test the database connection.")
       /**/
-      ("date", po::value<mycli::date>(), "Set a file in the format YYYY-MM-DD")
+      ("date", po::value<mycli::date>(),
+       "Print the user provided date in the format YYYY-MM-DD")
       /**/
       ("dates", po::value<std::vector<mycli::date>>(),
-       "Set a sequence of dates");
+       "Print the user provided dates in the format YYYY-MM-DD.");
 
   po::variables_map v_map;
 
+  // Parse args and run the logic for each provided option.
   try {
     po::store(po::parse_command_line(argc, argv, desc), v_map);
     po::notify(v_map);
@@ -102,6 +104,7 @@ auto main(int argc, char **argv) -> int {
       std::cout << desc << "\n";
     }
 
+    // Print the file information.
     if (v_map.count("file") != 0) {
       const std::string filename{v_map["file"].as<std::string>()};
       // TODO: Disable red underline
@@ -138,6 +141,7 @@ auto main(int argc, char **argv) -> int {
       }
     }
 
+    // Connect, create, read and notify the user on success or failure.
     if (v_map.count("db-test") != 0) {
       auto test_connection{[](const std::string &label) {
         return "Test database connection -- " + label + "\n";
