@@ -609,6 +609,44 @@ void execute(std::vector<E>& elements, T cb) {
   Executor<E, T>::execute(elements, cb);
 }
 
+namespace template_parameter {
+
+template <std::size_t T>
+void f_size_t() {
+  std::cout << "f_size_t() " << T << "\n";
+}
+
+template <bool B>
+void f_bool() {
+  std::cout << "f_bool() " << B << "\n";
+}
+
+template <typename T>
+void f_type() {
+  std::cout << "f_type() " << typeid(T).name() << "\n";
+}
+
+// a map that stored the key pair of command line argument and it's value
+// the class holds the map of key/value pairs and allows user
+// to retrieve the value by key and cast it to the desired type using .as<T>()
+
+class cli_argument {
+ private:
+  // map of key/value pairs
+ public:
+  template <typename As>
+  As as() {
+    // parse the resource...
+  }
+};
+
+template <typename As>
+As as() {
+  // Todo...
+}
+
+}  // namespace template_parameter
+
 }  // namespace sfinae
 
 int main() {
@@ -735,7 +773,7 @@ int main() {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  std::cout << separator("crtp_static_method - a");
+  std::cout << separator("crtp_static_method");
 
   curiously_recurring_template_pattern::crtp_static_method::derived
       derived_a_crtp_static_method;
@@ -766,6 +804,25 @@ int main() {
   std::vector<int> v2{5, 6, 7, 8};
   std::cout << "\n";
   sfinae::execute(v2, [](int n) { std::cout << n << " "; });
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << separator("template_parameter::f_size_t");
+  sfinae::template_parameter::f_size_t<5>();
+  const std::size_t four{4};
+  sfinae::template_parameter::f_size_t<four>();
+  sfinae::template_parameter::f_size_t<four + 1>();
+  sfinae::template_parameter::f_bool<true>();
+  sfinae::template_parameter::f_bool<false>();
+  sfinae::template_parameter::f_type<int>();
+  sfinae::template_parameter::f_type<double>();
+  typedef struct {
+  } stuct_type;
+  sfinae::template_parameter::f_type<stuct_type>();
+  struct struct_type_2 {};
+  sfinae::template_parameter::f_type<struct_type_2>();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   return 0;
 }
