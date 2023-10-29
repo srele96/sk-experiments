@@ -34,30 +34,25 @@ struct date {
 };
 
 auto operator>>(std::istream &istream, date &p_date) -> std::istream & {
-  std::string token;
-
   // Ignore erroneous logic and missed cases. This sample only practices the
   // custom types in boost::program_options.
 
-  if (std::getline(istream, token, DATE_DELIMITER)) {
-    p_date.year = token;
-  } else {
+  if (!std::getline(istream, p_date.year, DATE_DELIMITER)) {
     throw std::runtime_error("Failed to read the year.");
   }
-  if (std::getline(istream, token, DATE_DELIMITER)) {
-    p_date.month = token;
-  } else {
+  if (!std::getline(istream, p_date.month, DATE_DELIMITER)) {
     throw std::runtime_error("Failed to read the month.");
   }
-  if (std::getline(istream, token, DATE_DELIMITER)) {
-    p_date.day = token;
-  } else {
+  if (!std::getline(istream, p_date.day)) {
     throw std::runtime_error("Failed to read the day.");
   }
 
   // Leave logging because boost repeatedly printed error:
   // the argument ('1111:11:32') for option '--date' is invalid
   // In the end I made it work using three if statements.
+  //
+  // I greedily read from the stream. Last std::getline read the year of the
+  // next date and triggered the error.
   if (istream.eof()) {
     std::cout << "End of file reached.\n";
   } else if (istream.fail()) {
@@ -92,7 +87,10 @@ auto main(int argc, char **argv) -> int {
       /**/
       ("db-test", "Test the database connection.")
       /**/
-      ("date", po::value<mycli::date>(), "Set a file in the format YYYY-MM-DD");
+      ("date", po::value<mycli::date>(), "Set a file in the format YYYY-MM-DD")
+      /**/
+      ("dates", po::value<std::vector<mycli::date>>(),
+       "Set a sequence of dates");
 
   po::variables_map v_map;
 
@@ -187,6 +185,17 @@ auto main(int argc, char **argv) -> int {
       const mycli::date date{v_map["date"].as<mycli::date>()};
 
       std::cout << "Date: " << date << "\n";
+    }
+
+    if (v_map.count("dates") != 0) {
+      const std::vector<mycli::date> dates{
+          v_map["dates"].as<std::vector<mycli::date>>()};
+
+      std::cout << "Dates: ";
+      for (const auto &date : dates) {
+        std::cout << date << " ";
+      }
+      std::cout << "\n";
     }
 
   } catch (const po::error &exception) {
