@@ -19,14 +19,80 @@
 
 // TODO: Write unit tests for this...
 
+namespace mycli {
+
+const char DATE_DELIMITER{':'};
+
+struct date {
+  std::string year;
+  std::string month;
+  std::string day;
+
+  friend auto operator>>(std::istream &istream, date &p_date) -> std::istream &;
+  friend auto operator<<(std::ostream &ostream, const date &p_date)
+      -> std::ostream &;
+};
+
+auto operator>>(std::istream &istream, date &p_date) -> std::istream & {
+  std::string token;
+
+  // Ignore erroneous logic and missed cases. This sample only practices the
+  // custom types in boost::program_options.
+
+  if (std::getline(istream, token, DATE_DELIMITER)) {
+    p_date.year = token;
+  } else {
+    throw std::runtime_error("Failed to read the year.");
+  }
+  if (std::getline(istream, token, DATE_DELIMITER)) {
+    p_date.month = token;
+  } else {
+    throw std::runtime_error("Failed to read the month.");
+  }
+  if (std::getline(istream, token, DATE_DELIMITER)) {
+    p_date.day = token;
+  } else {
+    throw std::runtime_error("Failed to read the day.");
+  }
+
+  // Leave logging because boost repeatedly printed error:
+  // the argument ('1111:11:32') for option '--date' is invalid
+  // In the end I made it work using three if statements.
+  if (istream.eof()) {
+    std::cout << "End of file reached.\n";
+  } else if (istream.fail()) {
+    std::cout << "Failed to read the date.\n";
+  } else if (istream.bad()) {
+    std::cout << "Bad stream.\n";
+  }
+
+  return istream;
+}
+
+auto operator<<(std::ostream &ostream, const date &p_date) -> std::ostream & {
+  ostream << p_date.year << DATE_DELIMITER << p_date.month << DATE_DELIMITER
+          << p_date.day;
+
+  return ostream;
+}
+
+} // namespace mycli
+
 auto main(int argc, char **argv) -> int {
   namespace po = boost::program_options;
   po::options_description desc("Allowed options");
-  desc.add_options()("help, h", "Help me to use `mycli`!")
-      // TODO: Learn the pattern to construct<type>()
+  desc.add_options()
+      /**/
+      ("help, h", "Help me to use `mycli`!")
+      /*
+       * TODO: Learn the pattern to construct<type>()
+       */
       ("file, f", po::value<std::string>(),
-       "Do stuff with a file on this path.")("db-test",
-                                             "Test the database connection.");
+       "Do stuff with a file on this path.")
+      /**/
+      ("db-test", "Test the database connection.")
+      /**/
+      ("date", po::value<mycli::date>(), "Set a file in the format YYYY-MM-DD");
 
   po::variables_map v_map;
 
@@ -115,6 +181,12 @@ auto main(int argc, char **argv) -> int {
       }
 
       std::cout << test_connection("END");
+    }
+
+    if (v_map.count("date") != 0) {
+      const mycli::date date{v_map["date"].as<mycli::date>()};
+
+      std::cout << "Date: " << date << "\n";
     }
 
   } catch (const po::error &exception) {
