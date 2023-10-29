@@ -80,6 +80,16 @@ Compile and run `mycli` program with `test-file.txt` as an argument.
 cmake --build build; ./build/samples/mycli/mycli.exe --file ".\samples\mycli\test-file.txt"
 ```
 
+List of options:
+
+| Option                                | Description                                             |
+| ------------------------------------- | ------------------------------------------------------- |
+| `--help`                              | Help me to use `mycli`!                                 |
+| `--file, f=<file_path>`               | Do stuff with a file on this path.                      |
+| `--db-test`                           | Test the database connection.                           |
+| `--date=<YYYY-MM-DD>`                 | Print the user provided date in the format YYYY-MM-DD   |
+| `--dates="<YYYY-MM-DD> <YYYY-MM-DD>"` | Print the user provided dates in the format YYYY-MM-DD. |
+
 ## Add mongo database functionality
 
 The idea is to use the c++ command line interface to interface with the mongo database. The mongo database runs inside docker which exposes the port to host machine.
