@@ -197,7 +197,6 @@ auto main(int argc, char **argv) -> int {
       }
       std::cout << "\n";
     }
-
   } catch (const po::error &exception) {
     std::cerr << exception.what() << "\n";
     return EXIT_FAILURE;
