@@ -1,8 +1,11 @@
 #include <algorithm>
+#include <functional>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <typeinfo>
 #include <utility>
+#include <variant>
 #include <vector>
 
 namespace curiously_recurring_template_pattern {
@@ -649,6 +652,150 @@ As as() {
 
 }  // namespace sfinae
 
+namespace deduce_type {
+
+namespace use_decltype {
+
+struct result {
+  int value;
+
+  result() : value{1} {}
+  explicit result(int p_value) : value{p_value} {}
+
+  // Define the operators
+  auto operator+(const result& other) const -> result {
+    return result{value + other.value};
+  }
+  auto operator*(const result& other) const -> result {
+    return result{value * other.value};
+  }
+  auto operator/(const result& other) const -> result {
+    return result{value / other.value};
+  }
+};
+
+struct callable_a {
+  auto operator()() -> result {
+    result one{1};
+    result two{2};
+
+    return one + two;
+  }
+};
+
+struct callable_b {
+  auto operator()() -> result {
+    result one{1};
+    result two{2};
+
+    return one * two;
+  }
+};
+
+template <typename T, typename E>
+void typeinfo_of_decltype(
+    std::ostream& ostream, T& callback_a, E& callback_b,
+    const std::function<
+        // Use std::variant because I don't have a way to reuse the type because
+        // of decltype.
+        void(const std::variant<decltype(callback_a() + callback_b()),
+                                decltype(callback_a() * callback_b()),
+                                decltype(callback_a() / callback_b())>&)>&
+        on_result) {
+  // - Can overload operators for these containers
+  // - The return type of callback_a and callback_b must be what to be able to
+  // do these operations?
+  using type_addition = decltype(callback_a() + callback_b());
+  using type_multiplication = decltype(callback_a() * callback_b());
+  using type_division = decltype(callback_a() / callback_b());
+
+  // Does typeid work on deduced type of an expression by decltype?
+  ostream << typeid(decltype(callback_a() + callback_b())).name() << "\n";
+  ostream << typeid(type_addition).name() << "\n";
+  ostream << typeid(type_multiplication).name() << "\n";
+  ostream << typeid(type_division).name() << "\n";
+
+  const std::string separator{"  ---  \n"};
+  ostream << separator;
+
+  // Check for ambiguity: If two types within a std::variant have a common type
+  // they can be converted to, assigning or emplacing can be ambiguous. To test,
+  // try storing each type separately in individual variants to ensure there's
+  // no ambiguity:
+  //
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //
+  // does variant work correctly if all 3 variants are the same type? named
+  // differently?
+  //
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //
+  // Yes, std::variant can hold multiple alternatives of the same type, but
+  // there's an important nuance to consider.
+  //
+  // If you have a std::variant with multiple instances of the same type, you'll
+  // have to use index-based access and emplacement, because the variant
+  // wouldn't be able to distinguish between them based on type alone.
+  std::variant<type_addition, type_multiplication, type_division> result;
+
+  // What is the result's type?
+  // Use default constructor of each deduced type.
+  type_addition _ta;
+  result.template emplace<0>(_ta);
+  on_result(result);
+  ostream << separator;
+
+  type_multiplication _tm;
+  result.template emplace<1>(_tm);
+  on_result(result);
+  ostream << separator;
+
+  type_division _td;
+  result.template emplace<2>(_td);
+  on_result(result);
+  ostream << separator;
+
+  result.template emplace<0>(callback_a() + callback_b());
+  on_result(result);
+  ostream << separator;
+
+  result.template emplace<1>(callback_a() * callback_b());
+  on_result(result);
+  ostream << separator;
+
+  result.template emplace<2>(callback_a() / callback_b());
+  on_result(result);
+  ostream << separator;
+}
+
+void run() {
+  callable_a callback_a;
+  callable_b callback_b;
+
+  typeinfo_of_decltype(std::cout, callback_a, callback_b,
+                       // Now I have a problem to explicitly declare the type
+                       // because I use decltype() to deduce type.
+                       [](const auto& result) {
+                         // Retrieve all variants
+                         std::visit(
+                             [](const auto& val) {
+                               std::cout << typeid(val).name() << " -- "
+                                         << val.value << "\n";
+                             },
+                             result);
+                       });
+}
+
+}  // namespace use_decltype
+
+namespace use_declval {
+
+// Try it out...
+
+}
+
+}  // namespace deduce_type
+
 int main() {
   const auto separator{[](const std::string& label) {
     return "\n--------\n" + label + "\n--------\n\n";
@@ -821,6 +968,12 @@ int main() {
   sfinae::template_parameter::f_type<stuct_type>();
   struct struct_type_2 {};
   sfinae::template_parameter::f_type<struct_type_2>();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << separator("deduce_type::use_decltype::run()");
+
+  deduce_type::use_decltype::run();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
