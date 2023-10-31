@@ -796,6 +796,172 @@ namespace use_declval {
 
 }  // namespace deduce_type
 
+namespace variadic_template {
+
+template <typename T, typename... Args>
+void run(std::ostream& ostream, T arg, Args... args) {
+  ostream << arg;
+
+  run(ostream, args...);
+}
+
+template <typename T, typename... Args>
+void log(T t, Args... args) {
+  std::cout << t << ", ";  // Print the current argument and a comma-space
+  log(args...);            // Recur with the remaining arguments
+}
+
+// How does our mind go from not being able to come up with a solution
+// To learning one solution, such as me learning a variadic template args
+// To being able to come up with variety of different solutions
+// That's a great idea to explore
+// Print each Arg of Args
+template <typename... Args>
+void print_each_typeid_name(Args... args) {
+  // ChatGPT
+  //
+  // The key to understanding this is to realize that the compiler is able to
+  // deduce the types of the variadic arguments at compile time. This is
+  // possible because the types of the arguments are known at the call site.
+  //
+  // For example, in your code, you're calling print_each_typeid_name with
+  // arguments of type int, double, and std::string. The compiler knows this
+  // because you're passing in the actual values, not variables of unknown type.
+  // This means that the compiler can deduce the types of the arguments and
+  // instantiate the template accordingly.
+  //
+  // The compiler will then generate code for each of the types in the template
+  // parameter pack. In your example, it will generate code for:
+  //
+  //     print_each_typeid_name<int, double, std::string>(int, double,
+  //     std::string);
+  //
+  // This is why you're seeing the typeid output for each of the types in the
+  // pack.
+}
+
+// Base case
+template <typename T>
+void print(T t) {
+  std::cout << t << "\n";
+}
+
+// Recursive case
+template <typename T, typename... Args>
+void print(T t, Args... args) {
+  std::cout << t << " ";  // Print the current argument and a space
+  print(args...);         // Recur with the remaining arguments
+}
+
+namespace resource_logger {
+
+namespace util {
+
+std::string ctor(const std::string& label) { return label + " - ctor\n"; }
+std::string ctor_copy(const std::string& label) {
+  return label + " - ctor copy\n";
+}
+std::string ctor_move(const std::string& label) {
+  return label + " - ctor move\n";
+}
+std::string copy(const std::string& label) { return label + " - copy\n"; }
+std::string move(const std::string& label) { return label + " - move\n"; }
+std::string dtor(const std::string& label) { return label + " - dtor\n"; }
+std::string print(const std::string& label) { return label + " - print\n"; }
+
+}  // namespace util
+
+struct a {
+  a() { std::cout << util::ctor("a"); }
+  a(const a& other) { std::cout << util::ctor_copy("a"); }
+  a(a&& other) noexcept { std::cout << util::ctor_move("a"); }
+
+  a& operator=(const a& other) {
+    std::cout << util::copy("a");
+    return *this;
+  }
+  a& operator=(a&& other) noexcept {
+    std::cout << util::move("a");
+    return *this;
+  }
+
+  ~a() { std::cout << util::dtor("a"); }
+
+  friend std::ostream& operator<<(std::ostream& ostream, const a& a) {
+    ostream << util::print("a");
+    return ostream;
+  }
+};
+
+struct b {
+  b() { std::cout << util::ctor("b"); }
+  b(const b& other) { std::cout << util::ctor_copy("b"); }
+  b(b&& other) noexcept { std::cout << util::ctor_move("b"); }
+
+  b& operator=(const b& other) {
+    std::cout << util::copy("b");
+    return *this;
+  }
+  b& operator=(b&& other) noexcept {
+    std::cout << util::move("b");
+    return *this;
+  }
+
+  ~b() { std::cout << util::dtor("b"); }
+
+  friend std::ostream& operator<<(std::ostream& ostream, const b& b) {
+    ostream << util::print("b");
+    return ostream;
+  }
+};
+
+struct c {
+  c() { std::cout << util::ctor("c"); }
+  c(const c& other) { std::cout << util::ctor_copy("c"); }
+  c(c&& other) noexcept { std::cout << util::ctor_move("c"); }
+
+  c& operator=(const c& other) {
+    std::cout << util::copy("c");
+    return *this;
+  }
+  c& operator=(c&& other) noexcept {
+    std::cout << util::move("c");
+    return *this;
+  }
+
+  ~c() { std::cout << util::dtor("c"); }
+
+  friend std::ostream& operator<<(std::ostream& ostream, const c& c) {
+    ostream << util::print("c");
+    return ostream;
+  }
+};
+}  // namespace resource_logger
+
+template <typename... Args>
+void fold(Args... args) {
+  std::cout << "Fold\n";
+  auto _print{[](const auto& arg) { std::cout << arg << " "; }};
+  (_print(args), ...);  // Requires lambda to print space after each argument
+  std::cout << "\n";
+}
+
+template <typename... Args>
+void fold_ref(const Args&... args) {
+  std::cout << "Fold ref\n";
+
+  auto _print{[](const auto& arg) { std::cout << arg << " "; }};
+  (_print(args), ...);
+
+  std::cout << "\n --- \n";
+
+  auto _print_typeid{
+      [](const auto& arg) { std::cout << typeid(arg).name() << "\n"; }};
+  (_print_typeid(args), ...);
+}
+
+}  // namespace variadic_template
+
 int main() {
   const auto separator{[](const std::string& label) {
     return "\n--------\n" + label + "\n--------\n\n";
@@ -974,6 +1140,28 @@ int main() {
   std::cout << separator("deduce_type::use_decltype::run()");
 
   deduce_type::use_decltype::run();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << separator("variadic_template::run()");
+
+#ifdef __cpp_variadic_templates
+  std::cout << "`__cpp_variadic_templates` is defined\n\n";
+#else
+  std::cout << "`__cpp_variadic_templates` is not defined\n\n";
+#endif
+
+  variadic_template::print(1, 2.0, "three");
+  variadic_template::fold(1, 2.0, "three");
+
+  {  // Scope namespace
+    using namespace variadic_template::resource_logger;
+    // Copy operations invoked?
+    variadic_template::print(a{}, b{}, c{});
+    variadic_template::fold(a{}, b{}, c{});
+
+    variadic_template::fold_ref(a{}, b{}, c{});
+  }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
