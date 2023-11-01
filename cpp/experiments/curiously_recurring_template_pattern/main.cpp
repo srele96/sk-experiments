@@ -554,6 +554,8 @@ void run_example() { f<t> f_t; }
 
 namespace sfinae {
 
+namespace executor {
+
 // std::enable_if_t is a type trait in C++ that is used to conditionally remove
 // or enable a function or a type based on a compile-time condition. It is a
 // part of the <type_traits> header. It's a shorthand for typename
@@ -612,6 +614,24 @@ void execute(std::vector<E>& elements, T cb) {
   Executor<E, T>::execute(elements, cb);
 }
 
+void run() {
+  std::vector<int> v1{1, 2, 3, 4};
+  execute(v1, [](int n) {
+    std::cout << n << " ";
+
+    return n + 1;
+  });
+
+  std::cout << "\n";
+  std::for_each(v1.begin(), v1.end(), [](int n) { std::cout << n << " "; });
+
+  std::vector<int> v2{5, 6, 7, 8};
+  std::cout << "\n";
+  execute(v2, [](int n) { std::cout << n << " "; });
+}
+
+}  // namespace executor
+
 namespace template_parameter {
 
 template <std::size_t T>
@@ -646,6 +666,22 @@ class cli_argument {
 template <typename As>
 As as() {
   // Todo...
+}
+
+void run() {
+  f_size_t<5>();
+  const std::size_t four{4};
+  f_size_t<four>();
+  f_size_t<four + 1>();
+  f_bool<true>();
+  f_bool<false>();
+  f_type<int>();
+  f_type<double>();
+  typedef struct {
+  } stuct_type;
+  f_type<stuct_type>();
+  struct struct_type_2 {};
+  f_type<struct_type_2>();
 }
 
 }  // namespace template_parameter
@@ -1369,38 +1405,15 @@ int main() {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  std::cout << separator("sfinae");
+  std::cout << separator("sfinae::executor::run()");
 
-  std::vector<int> v1{1, 2, 3, 4};
-  sfinae::execute(v1, [](int n) {
-    std::cout << n << " ";
-
-    return n + 1;
-  });
-
-  std::cout << "\n";
-  std::for_each(v1.begin(), v1.end(), [](int n) { std::cout << n << " "; });
-
-  std::vector<int> v2{5, 6, 7, 8};
-  std::cout << "\n";
-  sfinae::execute(v2, [](int n) { std::cout << n << " "; });
+  sfinae::executor::run();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  std::cout << separator("template_parameter::f_size_t");
-  sfinae::template_parameter::f_size_t<5>();
-  const std::size_t four{4};
-  sfinae::template_parameter::f_size_t<four>();
-  sfinae::template_parameter::f_size_t<four + 1>();
-  sfinae::template_parameter::f_bool<true>();
-  sfinae::template_parameter::f_bool<false>();
-  sfinae::template_parameter::f_type<int>();
-  sfinae::template_parameter::f_type<double>();
-  typedef struct {
-  } stuct_type;
-  sfinae::template_parameter::f_type<stuct_type>();
-  struct struct_type_2 {};
-  sfinae::template_parameter::f_type<struct_type_2>();
+  std::cout << separator("sfinae::template_parameter::run()");
+
+  sfinae::template_parameter::run();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
