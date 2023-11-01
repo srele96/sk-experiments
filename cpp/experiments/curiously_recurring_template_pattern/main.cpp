@@ -419,18 +419,15 @@ class derived : public base<derived> {
 namespace share_config {
 
 /**
- * Problem Statement (CRTP-focused):
+ * Do not try to understand the WHY this is the way it is. It just is.
  *
- * The smart home system needs to monitor the energy consumption of its devices
- * and give real-time feedback on their statuses. To avoid the overhead of
- * dynamic polymorphism (using virtual functions), you opt for CRTP, which will
- * allow each device to provide its energy consumption and status at
- * compile-time.
+ * I am using CRTP and Attorney pattern because I want to use them lol.
  */
 
-typedef struct {
-  enum class mode { eco, regular };
-} config;
+struct config {
+  std::function<void(const std::string&, std::ostream&)> callback_one;
+  std::function<void(const std::string&, std::ostream&)> callback_two;
+};
 
 // https://stackoverflow.com/questions/56314295/crtp-can-i-make-a-private-method
 // https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Friendship_and_the_Attorney-Client
@@ -440,39 +437,74 @@ class attorney;
 template <typename T>
 class device {
  private:
-  config m_config;
+  config m_create_config() const {
+    return config{[](const std::string& label, std::ostream& ostream) {
+                    ostream << label << "\n";
+                  },
+                  [](const std::string& label, std::ostream& ostream) {
+                    ostream << label << "\n";
+                  }};
+  }
 
  public:
-  int get_energy_consumption() {
-    return attorney<T>::m_get_energy_consumption(*static_cast<T*>(this));
+  void configure() {
+    attorney<T>::m_configure(*static_cast<T*>(this), m_create_config());
   }
 };
 
 class smart_light : public device<smart_light> {
  private:
+  // Shut up linter that method can be made static. I hope it makes sense now.
+  std::ostream& m_ostream_one;
+  std::ostream& m_ostream_two;
+
   friend class attorney<smart_light>;
 
-  int m_get_energy_consumption() const { return 1; }
+  void m_configure(const config& config) const {
+    // All this work just to print something to the console?
+    // Are you alright?
+    // Sure you got all sheeps in the herd?
+    config.callback_one("smart-light, one", m_ostream_one);
+    config.callback_two("smart-light, two", m_ostream_two);
+  }
 
  public:
+  smart_light(std::ostream& ostream_one, std::ostream& ostream_two)
+      : m_ostream_one{ostream_one}, m_ostream_two{ostream_two} {}
 };
 
 class smart_heater : public device<smart_heater> {
  private:
   friend class attorney<smart_heater>;
+  // Shut up linter that method can be made static. I hope it makes sense now.
+  std::ostream& m_ostream_one;
+  std::ostream& m_ostream_two;
 
-  int m_get_energy_consumption() const { return 2; }
+  void m_configure(const config& config) const {
+    config.callback_one("smart-heater, one", m_ostream_one);
+    config.callback_two("smart-heater, two", m_ostream_two);
+  }
 
  public:
+  smart_heater(std::ostream& ostream_one, std::ostream& ostream_two)
+      : m_ostream_one{ostream_one}, m_ostream_two{ostream_two} {}
 };
 
 class smart_door : public device<smart_door> {
  private:
   friend class attorney<smart_door>;
+  // Shut up linter that method can be made static. I hope it makes sense now.
+  std::ostream& m_ostream_one;
+  std::ostream& m_ostream_two;
 
-  int m_get_energy_consumption() const { return 3; }
+  void m_configure(const config& config) const {
+    config.callback_one("smart-door, one", m_ostream_one);
+    config.callback_two("smart-door, two", m_ostream_two);
+  }
 
  public:
+  smart_door(std::ostream& ostream_one, std::ostream& ostream_two)
+      : m_ostream_one{ostream_one}, m_ostream_two{ostream_two} {}
 };
 
 // Hide private members of concrete devices from the base device. Alternatively
@@ -483,21 +515,24 @@ class attorney {
  private:
   friend class device<Derived>;
 
-  static int m_get_energy_consumption(Derived& derived) {
-    return derived.m_get_energy_consumption();
+  static void m_configure(const Derived& derived, const config& config) {
+    derived.m_configure(config);
   }
 };
 
 void run() {
-  // each user does something
-  // and can reuse shared configuration on exactly the same behavior
-  smart_light light;
-  smart_heater heater;
-  smart_door door;
+  smart_light light{std::cout, std::cout};
+  smart_heater heater{std::cout, std::cout};
+  smart_door door{std::cout, std::cout};
 
-  std::cout << light.get_energy_consumption() << "\n"
-            << heater.get_energy_consumption() << "\n"
-            << door.get_energy_consumption() << "\n";
+  // We could pretend to be smart, erase the type, and pretend that each object
+  // has configure method and invoke it.
+  //
+  // Do it as a potential challenge.
+
+  light.configure();
+  heater.configure();
+  door.configure();
 }
 
 }  // namespace share_config
