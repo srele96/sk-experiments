@@ -4,6 +4,8 @@ Started as a directory to explore curiously recurring template pattern (CRTP) in
 
 ## Resource
 
+Resource used to learn in this directory.
+
 ### Source
 
 - [`decltype_type_deduction`](./decltype_type_deduction.conversation.txt)
