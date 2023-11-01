@@ -416,6 +416,132 @@ class derived : public base<derived> {
 
 }  // namespace crtp_static_method
 
+void run() {
+  const auto indent{[](const std::string& label) {
+    return "\n    - (Indent): " + label + "\n\n";
+  }};
+
+  std::cout << indent("a");
+
+  a::derived derived_a;
+  // Both call derived implementation.
+  //
+  // Derived class calls an interface method of the base
+  // class which is compile time polymorphism. Which calls
+  // the interface from base class which casts (this) to the
+  // templated parameter to call the member method.
+  //
+  // derived_a.interface();
+  derived_a.implementation();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << indent("b");
+
+  b::derived derived_b;
+  derived_b.interface();
+  derived_b.implementation();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << indent("typeid");
+
+  const std::type_info& derived_a_info{typeid(derived_a)};
+  const std::type_info& derived_b_info{typeid(derived_b)};
+
+  std::cout << "name: " << derived_a_info.name() << "\n";
+  std::cout << "hash_code: " << derived_a_info.hash_code() << "\n";
+  std::cout << "`derived_a_info.before(derived_b_info)`: "
+            << derived_a_info.before(derived_b_info) << "\n";
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << indent("c");
+
+  c::derived derived_c;
+  derived_c.interface();
+  derived_c.implementation();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << indent("d");
+
+  d::derived derived_d;
+  derived_d.implementation();
+
+  // Try to determine the called method at runtime.
+  d::base* base_ptr{&derived_d};
+  base_ptr->implementation();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << indent("e");
+
+  e::derived derived_e;
+  derived_e.implementation();
+
+  // Try to determine the called method at runtime.
+  e::base* base_ptr_e{&derived_e};
+  base_ptr_e->implementation();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << indent("f");
+
+  f::derived_a derived_a_f;
+  derived_a_f.a();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << indent("logger");
+
+  // Try with and without pointers. Does it work the same?
+
+  logger::info info;
+  logger::warn warn;
+  logger::error error;
+
+  info.log(std::cout);
+  warn.log(std::cout);
+  error.log(std::cout);
+
+  logger::base<logger::info>* base_ptr_info{&info};
+  logger::base<logger::warn>* base_ptr_warn{&warn};
+  logger::base<logger::error>* base_ptr_error{&error};
+
+  base_ptr_info->log(std::cout);
+  base_ptr_warn->log(std::cout);
+  base_ptr_error->log(std::cout);
+
+  // Here you're storing pointers to the base class template instantiated with
+  // the derived types in base_ptr_info, base_ptr_warn, and base_ptr_error.
+  // Since the log method is defined in the base class, you can call it on these
+  // pointers. The CRTP ensures that the correct log_impl method is called for
+  // the actual type of the object pointed to by the base pointer, due to the
+  // static_cast used in the log method.
+  //
+  // This is an important aspect of the CRTP: it allows you to write code in the
+  // base class that can work with the derived type, without needing runtime
+  // polymorphism (virtual functions and a vtable). The correct function to call
+  // is determined at compile time based on the template parameter, which is the
+  // derived type itself.
+  //
+  // So yes, both approaches work, but they work because of the mechanics of the
+  // CRTP, and they demonstrate the compile-time polymorphism that the CRTP
+  // enables. The base class method log is able to call the log_impl method of
+  // the derived class, even though it only has a pointer to the base class,
+  // because of the static_cast to T*, where T is the derived class.
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << indent("crtp_static_method");
+
+  crtp_static_method::derived derived_a_crtp_static_method;
+
+  derived_a_crtp_static_method.log();
+  derived_a_crtp_static_method.log_static();
+}
+
 }  // namespace curiously_recurring_template_pattern
 
 // A template takes type as a parameter and inside a class we can instantiate a
@@ -1267,135 +1393,18 @@ void run() {}
 
 int main() {
   const auto separator{[](const std::string& label) {
-    return "\n--------\n" + label + "\n--------\n\n";
+    return "\n----------------------------------------------------------------"
+           "\n" +
+           label +
+           "\n----------------------------------------------------------------"
+           "\n\n";
   }};
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  std::cout << separator("a");
+  std::cout << separator("curiously_recurring_template_pattern::run()");
 
-  curiously_recurring_template_pattern::a::derived derived_a;
-  // Both call derived implementation.
-  //
-  // Derived class calls an interface method of the base
-  // class which is compile time polymorphism. Which calls
-  // the interface from base class which casts (this) to the
-  // templated parameter to call the member method.
-  //
-  // derived_a.interface();
-  derived_a.implementation();
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  std::cout << separator("b");
-
-  curiously_recurring_template_pattern::b::derived derived_b;
-  derived_b.interface();
-  derived_b.implementation();
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  std::cout << separator("c");
-
-  curiously_recurring_template_pattern::c::derived derived_c;
-  derived_c.interface();
-  derived_c.implementation();
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  std::cout << separator("d");
-
-  curiously_recurring_template_pattern::d::derived derived_d;
-  derived_d.implementation();
-
-  // Try to determine the called method at runtime.
-  curiously_recurring_template_pattern::d::base* base_ptr{&derived_d};
-  base_ptr->implementation();
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  std::cout << separator("e");
-
-  curiously_recurring_template_pattern::e::derived derived_e;
-  derived_e.implementation();
-
-  // Try to determine the called method at runtime.
-  curiously_recurring_template_pattern::e::base* base_ptr_e{&derived_e};
-  base_ptr_e->implementation();
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  std::cout << separator("f");
-
-  curiously_recurring_template_pattern::f::derived_a derived_a_f;
-  derived_a_f.a();
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  std::cout << separator("logger");
-
-  // Try with and without pointers. Does it work the same?
-
-  curiously_recurring_template_pattern::logger::info info;
-  curiously_recurring_template_pattern::logger::warn warn;
-  curiously_recurring_template_pattern::logger::error error;
-
-  info.log(std::cout);
-  warn.log(std::cout);
-  error.log(std::cout);
-
-  curiously_recurring_template_pattern::logger::base<
-      curiously_recurring_template_pattern::logger::info>* base_ptr_info{&info};
-  curiously_recurring_template_pattern::logger::base<
-      curiously_recurring_template_pattern::logger::warn>* base_ptr_warn{&warn};
-  curiously_recurring_template_pattern::logger::base<
-      curiously_recurring_template_pattern::logger::error>* base_ptr_error{
-      &error};
-
-  base_ptr_info->log(std::cout);
-  base_ptr_warn->log(std::cout);
-  base_ptr_error->log(std::cout);
-
-  // Here you're storing pointers to the base class template instantiated with
-  // the derived types in base_ptr_info, base_ptr_warn, and base_ptr_error.
-  // Since the log method is defined in the base class, you can call it on these
-  // pointers. The CRTP ensures that the correct log_impl method is called for
-  // the actual type of the object pointed to by the base pointer, due to the
-  // static_cast used in the log method.
-  //
-  // This is an important aspect of the CRTP: it allows you to write code in the
-  // base class that can work with the derived type, without needing runtime
-  // polymorphism (virtual functions and a vtable). The correct function to call
-  // is determined at compile time based on the template parameter, which is the
-  // derived type itself.
-  //
-  // So yes, both approaches work, but they work because of the mechanics of the
-  // CRTP, and they demonstrate the compile-time polymorphism that the CRTP
-  // enables. The base class method log is able to call the log_impl method of
-  // the derived class, even though it only has a pointer to the base class,
-  // because of the static_cast to T*, where T is the derived class.
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  std::cout << separator("typeid");
-
-  const std::type_info& derived_a_info{typeid(derived_a)};
-  const std::type_info& derived_b_info{typeid(derived_b)};
-
-  std::cout << "name: " << derived_a_info.name() << "\n";
-  std::cout << "hash_code: " << derived_a_info.hash_code() << "\n";
-  std::cout << "`derived_a_info.before(derived_b_info)`: "
-            << derived_a_info.before(derived_b_info) << "\n";
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  std::cout << separator("crtp_static_method");
-
-  curiously_recurring_template_pattern::crtp_static_method::derived
-      derived_a_crtp_static_method;
-
-  derived_a_crtp_static_method.log();
-  derived_a_crtp_static_method.log_static();
+  curiously_recurring_template_pattern::run();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
