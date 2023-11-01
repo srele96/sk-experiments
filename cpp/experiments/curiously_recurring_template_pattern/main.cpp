@@ -1060,19 +1060,7 @@ void pointers(std::ostream& ostream, T* ptr_t, Args*... args) {
 
 namespace sfinae_attempt {
 
-template <typename T>
-struct is_vector : std::false_type {};
-
-template <typename T, typename A>
-struct is_vector<std::vector<T, A>> : std::true_type {};
-
-template <typename T>
-constexpr bool is_vector_v = is_vector<T>::value;
-
-template <typename T>
-struct is_vector2 {
-  static constexpr bool value{false};
-};
+namespace one {
 
 // the problem
 // substitution failure is not an error
@@ -1134,7 +1122,7 @@ struct get_float {
   using type = void;  // Default when other one fails to substitute.
 };
 
-// WELP
+// welp... my head is spinning!
 //
 // It makes no sense to simply extract a type if the member method does not
 // exist.
@@ -1187,6 +1175,14 @@ void run() {
             << "\n"
             << typeid(std::vector<int>).name()
             << " has size: " << has_size<std::vector<int>>::value << "\n";
+}
+
+}  // namespace one
+
+namespace two {
+
+// Ready, Stary, Go!
+
 }
 
 }  // namespace sfinae_attempt
@@ -1417,9 +1413,9 @@ int main() {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  std::cout << separator("sfinae_attempt::run()");
+  std::cout << separator("sfinae_attempt::one::run()");
 
-  sfinae_attempt::run();
+  sfinae_attempt::one::run();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
