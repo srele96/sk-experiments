@@ -418,7 +418,19 @@ class derived : public base<derived> {
 
 namespace share_config {
 
-class config {};
+/**
+ * Problem Statement (CRTP-focused):
+ *
+ * The smart home system needs to monitor the energy consumption of its devices
+ * and give real-time feedback on their statuses. To avoid the overhead of
+ * dynamic polymorphism (using virtual functions), you opt for CRTP, which will
+ * allow each device to provide its energy consumption and status at
+ * compile-time.
+ */
+
+typedef struct {
+  enum class mode { eco, regular };
+} config;
 
 // https://stackoverflow.com/questions/56314295/crtp-can-i-make-a-private-method
 // https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Friendship_and_the_Attorney-Client
@@ -428,15 +440,12 @@ class attorney;
 template <typename T>
 class device {
  private:
-  // maintain the shared configuration
-  // the shared configuration may contain lambda, and some settings...
+  config m_config;
 
  public:
   int get_energy_consumption() {
     return attorney<T>::m_get_energy_consumption(*static_cast<T*>(this));
   }
-  // provide each user with the shared configuration
-  // the method that whoever uses these classes sees and it's public interface
 };
 
 class smart_light : public device<smart_light> {
@@ -444,9 +453,7 @@ class smart_light : public device<smart_light> {
   friend class attorney<smart_light>;
 
   int m_get_energy_consumption() const { return 1; }
-  // implement the doing something
-  // a private interface that receives what the whoever uses classes provides
-  // AND the shared configuration that the base maintains for reusability
+
  public:
 };
 
@@ -455,9 +462,7 @@ class smart_heater : public device<smart_heater> {
   friend class attorney<smart_heater>;
 
   int m_get_energy_consumption() const { return 2; }
-  // implement the doing something
-  // a private interface that receives what the whoever uses classes provides
-  // AND the shared configuration that the base maintains for reusability
+
  public:
 };
 
@@ -466,13 +471,13 @@ class smart_door : public device<smart_door> {
   friend class attorney<smart_door>;
 
   int m_get_energy_consumption() const { return 3; }
-  // implement the doing something
-  // a private interface that receives what the whoever uses classes provides
-  // AND the shared configuration that the base maintains for reusability
+
  public:
 };
 
-// Allows each device to hide implementation details through private methods.
+// Hide private members of concrete devices from the base device. Alternatively
+// don't use attorney technique and use two way friendship between device and
+// concrete device.
 template <typename Derived>
 class attorney {
  private:
