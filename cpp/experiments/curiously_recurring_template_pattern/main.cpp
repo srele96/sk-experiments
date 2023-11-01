@@ -960,6 +960,90 @@ void fold_ref(const Args&... args) {
   (_print_typeid(args), ...);
 }
 
+namespace {
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// hmm its still accessible through detail namespace, what about anonymous
+// namespace?
+//
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Yes, the detail namespace still technically makes the functions accessible,
+// though it sends a clear message to developers that they shouldn't use it
+// directly. If you want to further restrict access, using an anonymous
+// namespace is a good idea. Functions and types inside an anonymous namespace
+// have internal linkage, which means they can only be accessed within the same
+// translation unit.
+//
+// Using an anonymous namespace in a header file with templates can be tricky
+// because of how templates are instantiated. It can lead to multiple versions
+// of the same function or type being generated in different translation units.
+// However, since the goal here is to hide the helper function, this can be an
+// acceptable trade-off.
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+template <typename T>
+void pointers_counter(std::ostream& ostream, const std::size_t count,
+                      T* ptr_t) {
+  ostream << "(" << count << ")" << *ptr_t;
+}
+
+template <typename T, typename... Args>
+void pointers_counter(std::ostream& ostream, const std::size_t count, T* ptr_t,
+                      Args*... args) {
+  ostream << "(" << count << ")" << *ptr_t;
+  pointers_counter(ostream, count + 1, args...);
+}
+
+}  // namespace
+
+template <typename T, typename... Args>
+void pointers(std::ostream& ostream, T* ptr_t, Args*... args) {
+  pointers_counter(ostream, 1, ptr_t, args...);
+}
+
+/*
+namespace hide_impl {
+
+template <typename T, typename... Args>
+void pointers(std::ostream& ostream, T* ptr_t, Args*... args) {
+  // Potential TODO: Figure out how to handle this case.
+  //
+  // The error you're encountering stems from the fact that both versions of
+  // operator() deduce to the same function signature after template
+  // instantiation. This causes ambiguity during function resolution.
+  //
+  // To better understand why this happens, consider the scenario where you call
+  // the operator() with just one argument of type T*. Both the single-argument
+  // and the variadic versions of the function are potential matches, and the
+  // compiler can't decide which one to pick, leading to the error.
+  //
+  // main.cpp:986:5: error: templates cannot be declared inside of a local class
+  //   template <typename E>
+  //   ^~~~~~~~~~~~~~~~~~~~~
+  // main.cpp:991:5: error: templates cannot be declared inside of a local class
+  //     template <typename E, typename... Rest>
+  //     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  struct pointers_impl {
+    void operator()(std::ostream& ostream, const std::size_t order, T* ptr_t) {
+      ostream << "(" << order << ")" << *ptr_t << "\n";
+    }
+
+    void operator()(std::ostream& ostream, const std::size_t order, T* ptr_t,
+                    Args*... args) {
+      ostream << "(" << order << ")" << *ptr_t << "\n";
+      (*this)(ostream, order + 1, args...);
+    }
+  };
+
+  constexpr std::size_t initial_order{1};
+  pointers_impl{}(ostream, initial_order, ptr_t, args...);
+}
+
+}  // namespace hide_impl
+*/
+
 }  // namespace variadic_template
 
 int main() {
@@ -1155,12 +1239,35 @@ int main() {
   variadic_template::fold(1, 2.0, "three");
 
   {  // Scope namespace
-    using namespace variadic_template::resource_logger;
+    namespace rl = variadic_template::resource_logger;
     // Copy operations invoked?
-    variadic_template::print(a{}, b{}, c{});
-    variadic_template::fold(a{}, b{}, c{});
+    variadic_template::print(rl::a{}, rl::b{}, rl::c{});
+    variadic_template::fold(rl::a{}, rl::b{}, rl::c{});
 
-    variadic_template::fold_ref(a{}, b{}, c{});
+    variadic_template::fold_ref(rl::a{}, rl::b{}, rl::c{});
+  }
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << separator("variadic_template::run()");
+
+  {  // Pointers...
+    namespace rl = variadic_template::resource_logger;
+    rl::a* ptr_a{new rl::a{}};
+    rl::b* ptr_b{new rl::b{}};
+    rl::c* ptr_c{new rl::c{}};
+
+    std::cout << "\n";
+    variadic_template::pointers(std::cout, ptr_a);
+    std::cout << "\n";
+    variadic_template::pointers(std::cout, ptr_a, ptr_b);
+    std::cout << "\n";
+    variadic_template::pointers(std::cout, ptr_a, ptr_b, ptr_c);
+    std::cout << "\n";
+
+    delete ptr_a;
+    delete ptr_b;
+    delete ptr_c;
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
