@@ -452,11 +452,15 @@ class device {
   }
 };
 
+struct ostreams {
+  std::reference_wrapper<std::ostream> ostream_one;
+  std::reference_wrapper<std::ostream> ostream_two;
+};
+
 class smart_light : public device<smart_light> {
  private:
   // Shut up linter that method can be made static. I hope it makes sense now.
-  std::ostream& m_ostream_one;
-  std::ostream& m_ostream_two;
+  ostreams m_ostreams;
 
   friend class attorney<smart_light>;
 
@@ -464,47 +468,42 @@ class smart_light : public device<smart_light> {
     // All this work just to print something to the console?
     // Are you alright?
     // Sure you got all sheeps in the herd?
-    config.callback_one("smart-light, one", m_ostream_one);
-    config.callback_two("smart-light, two", m_ostream_two);
+    config.callback_one("smart-light, one", m_ostreams.ostream_one.get());
+    config.callback_two("smart-light, two", m_ostreams.ostream_two.get());
   }
 
  public:
-  smart_light(std::ostream& ostream_one, std::ostream& ostream_two)
-      : m_ostream_one{ostream_one}, m_ostream_two{ostream_two} {}
+  explicit smart_light(ostreams p_ostreams) : m_ostreams{p_ostreams} {}
 };
 
 class smart_heater : public device<smart_heater> {
  private:
   friend class attorney<smart_heater>;
   // Shut up linter that method can be made static. I hope it makes sense now.
-  std::ostream& m_ostream_one;
-  std::ostream& m_ostream_two;
+  ostreams m_ostreams;
 
   void m_configure(const config& config) const {
-    config.callback_one("smart-heater, one", m_ostream_one);
-    config.callback_two("smart-heater, two", m_ostream_two);
+    config.callback_one("smart-heater, one", m_ostreams.ostream_one.get());
+    config.callback_two("smart-heater, two", m_ostreams.ostream_two.get());
   }
 
  public:
-  smart_heater(std::ostream& ostream_one, std::ostream& ostream_two)
-      : m_ostream_one{ostream_one}, m_ostream_two{ostream_two} {}
+  explicit smart_heater(ostreams p_ostreams) : m_ostreams{p_ostreams} {}
 };
 
 class smart_door : public device<smart_door> {
  private:
   friend class attorney<smart_door>;
   // Shut up linter that method can be made static. I hope it makes sense now.
-  std::ostream& m_ostream_one;
-  std::ostream& m_ostream_two;
+  ostreams m_ostreams;
 
   void m_configure(const config& config) const {
-    config.callback_one("smart-door, one", m_ostream_one);
-    config.callback_two("smart-door, two", m_ostream_two);
+    config.callback_one("smart-door, one", m_ostreams.ostream_one.get());
+    config.callback_two("smart-door, two", m_ostreams.ostream_two.get());
   }
 
  public:
-  smart_door(std::ostream& ostream_one, std::ostream& ostream_two)
-      : m_ostream_one{ostream_one}, m_ostream_two{ostream_two} {}
+  explicit smart_door(ostreams p_ostreams) : m_ostreams{p_ostreams} {}
 };
 
 // Hide private members of concrete devices from the base device. Alternatively
@@ -521,9 +520,13 @@ class attorney {
 };
 
 void run() {
-  smart_light light{std::cout, std::cout};
-  smart_heater heater{std::cout, std::cout};
-  smart_door door{std::cout, std::cout};
+  const ostreams light_ostreams{std::ref(std::cout), std::ref(std::cout)};
+  const ostreams heater_ostreams{std::ref(std::cout), std::ref(std::cout)};
+  const ostreams door_ostreams{std::ref(std::cout), std::ref(std::cout)};
+
+  smart_light light{light_ostreams};
+  smart_heater heater{heater_ostreams};
+  smart_door door{door_ostreams};
 
   // We could pretend to be smart, erase the type, and pretend that each object
   // has configure method and invoke it.
