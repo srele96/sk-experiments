@@ -540,6 +540,8 @@ void run() {
   light.configure();
   heater.configure();
   door.configure();
+
+  // An idea. Try to plug in inner dispatcher system between devices.
 }
 
 }  // namespace share_config
