@@ -1003,6 +1003,18 @@ void pointers(std::ostream& ostream, T* ptr_t, Args*... args) {
 }
 
 /*
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+NOTE!
+
+I DIDN'T WANT TO SPEND MORE TIME FIGURING OUT HOW TO MAKE THIS WORK.
+THE PROBLEM IS FOREIGN TO ME AND I DO NOT UNDERSTAND WHAT IS GOING ON WITH
+COMPILER, GENERATED CODE, STRUCT WITHIN A FUNCTION, WHEN DO THE SIGNATURES
+OVERLAP, HOW TO AVOID OVERLAPPING, ETC...
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 namespace hide_impl {
 
 template <typename T, typename... Args>
