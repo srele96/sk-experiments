@@ -416,6 +416,87 @@ class derived : public base<derived> {
 
 }  // namespace crtp_static_method
 
+namespace share_config {
+
+class config {};
+
+// https://stackoverflow.com/questions/56314295/crtp-can-i-make-a-private-method
+// https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Friendship_and_the_Attorney-Client
+template <typename T>
+class attorney;
+
+template <typename T>
+class device {
+ private:
+  // maintain the shared configuration
+  // the shared configuration may contain lambda, and some settings...
+
+ public:
+  int get_energy_consumption() {
+    return attorney<T>::m_get_energy_consumption(*static_cast<T*>(this));
+  }
+  // provide each user with the shared configuration
+  // the method that whoever uses these classes sees and it's public interface
+};
+
+class smart_light : public device<smart_light> {
+ private:
+  friend class attorney<smart_light>;
+
+  int m_get_energy_consumption() const { return 1; }
+  // implement the doing something
+  // a private interface that receives what the whoever uses classes provides
+  // AND the shared configuration that the base maintains for reusability
+ public:
+};
+
+class smart_heater : public device<smart_heater> {
+ private:
+  friend class attorney<smart_heater>;
+
+  int m_get_energy_consumption() const { return 2; }
+  // implement the doing something
+  // a private interface that receives what the whoever uses classes provides
+  // AND the shared configuration that the base maintains for reusability
+ public:
+};
+
+class smart_door : public device<smart_door> {
+ private:
+  friend class attorney<smart_door>;
+
+  int m_get_energy_consumption() const { return 3; }
+  // implement the doing something
+  // a private interface that receives what the whoever uses classes provides
+  // AND the shared configuration that the base maintains for reusability
+ public:
+};
+
+// Allows each device to hide implementation details through private methods.
+template <typename Derived>
+class attorney {
+ private:
+  friend class device<Derived>;
+
+  static int m_get_energy_consumption(Derived& derived) {
+    return derived.m_get_energy_consumption();
+  }
+};
+
+void run() {
+  // each user does something
+  // and can reuse shared configuration on exactly the same behavior
+  smart_light light;
+  smart_heater heater;
+  smart_door door;
+
+  std::cout << light.get_energy_consumption() << "\n"
+            << heater.get_energy_consumption() << "\n"
+            << door.get_energy_consumption() << "\n";
+}
+
+}  // namespace share_config
+
 void run() {
   const auto indent{[](const std::string& label) {
     return "\n    - (Indent): " + label + "\n\n";
@@ -540,6 +621,12 @@ void run() {
 
   derived_a_crtp_static_method.log();
   derived_a_crtp_static_method.log_static();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << indent("share_config::run()");
+
+  share_config::run();
 }
 
 }  // namespace curiously_recurring_template_pattern
