@@ -1058,6 +1058,139 @@ void pointers(std::ostream& ostream, T* ptr_t, Args*... args) {
 
 }  // namespace variadic_template
 
+namespace sfinae_attempt {
+
+template <typename T>
+struct is_vector : std::false_type {};
+
+template <typename T, typename A>
+struct is_vector<std::vector<T, A>> : std::true_type {};
+
+template <typename T>
+constexpr bool is_vector_v = is_vector<T>::value;
+
+template <typename T>
+struct is_vector2 {
+  static constexpr bool value{false};
+};
+
+// the problem
+// substitution failure is not an error
+// SFINAE
+// if a condition is true, use this overload
+// otherwise use the other overload
+//
+
+template <typename T>
+struct has_size {
+  // should have a member which is true or false whether type T has size
+  static constexpr bool value =
+      false;  // Which means that I need to retrieve value `true` or `false` at
+              // compile time
+              //
+              // The member size can be a method or a public member and if it
+              // exists no matter the type or value i should have a true here
+              //
+              // Is there something else that I need to know about this problem
+              // to solve it?
+  // the problem is that we have a type T
+  // the type T at runtime can be substituted for
+  // int
+  // std::vector<int>
+  // std::vector<string>
+  // bool
+  // char
+  // int*
+};
+
+// which means what
+// T::size
+// that member is either there or it is not
+// compile time checking whether T::size
+// exists or not
+// because it will be replaced with
+// int::size
+// std::vector<int>::size
+// std::vector<string>::size
+// int*::size
+// would it even work for int*::size
+//
+// what is the problem there
+// do we have a compile time technique to check for presence of ::size on the
+// type T
+//
+// what of the known constructs for me can i use to solve this problem?
+// ...
+//
+// a
+
+template <typename T>
+struct get_int {
+  using type = decltype(std::declval<T>().get_int());
+};
+
+template <typename T, typename = void>
+struct get_float {
+  using type = void;  // Default when other one fails to substitute.
+};
+
+// WELP
+//
+// It makes no sense to simply extract a type if the member method does not
+// exist.
+// The error in my thoughts is the output that I wanted by this solution. I
+// realized that it does not make sense to extract a type if the member does not
+// exist.
+// However I might want to specify a default type if a member does not exist.
+template <typename T>
+struct get_float<
+    T, std::enable_if_t<true, decltype(std::declval<T>().get_float())>> {
+  using type = decltype(std::declval<T>().get_float());
+};
+
+void run() {
+  struct rip {
+    rip() = delete;  // Not constructible
+
+    int get_int() {
+      constexpr int some_int{5};
+      return some_int;
+    }
+  };
+
+  // The error you're seeing is because std::declval is a utility designed
+  // specifically for use within the context of decltype to query the type of an
+  // expression involving objects of incomplete types or non-constructed types.
+  // It's not intended for use in regular executable code. In particular,
+  // std::declval can't be used to actually call functions or instantiate
+  // objects.
+  /*
+  std::cout << "Call method of non constructible type: "
+            << std::declval<rip>().get_int();
+   */
+
+  std::cout << "Type of the returned type of rip::get_int(): "
+            << typeid(decltype(std::declval<rip>().get_int())).name() << "\n";
+
+  // Surprising. It doesn't work. It works within templates.
+  /*
+  std::cout << "Type of the returned type of rip::get_float(): "
+            << typeid(decltype(std::declval<rip>().get_float())).name() << "\n";
+   */
+
+  std::cout << "Type of the rip::get_float(): "
+            << typeid(get_float<rip>::type).name() << "\n";
+
+  std::cout << typeid(int).name() << " has size: " << has_size<int>::value
+            << "\n"
+            << typeid(bool).name() << " has size: " << has_size<bool>::value
+            << "\n"
+            << typeid(std::vector<int>).name()
+            << " has size: " << has_size<std::vector<int>>::value << "\n";
+}
+
+}  // namespace sfinae_attempt
+
 int main() {
   const auto separator{[](const std::string& label) {
     return "\n--------\n" + label + "\n--------\n\n";
@@ -1281,6 +1414,12 @@ int main() {
     delete ptr_b;
     delete ptr_c;
   }
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << separator("sfinae_attempt::run()");
+
+  sfinae_attempt::run();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
