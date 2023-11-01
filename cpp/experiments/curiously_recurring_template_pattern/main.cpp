@@ -1002,6 +1002,48 @@ void pointers(std::ostream& ostream, T* ptr_t, Args*... args) {
   pointers_counter(ostream, 1, ptr_t, args...);
 }
 
+void run() {
+#ifdef __cpp_variadic_templates
+  std::cout << "`__cpp_variadic_templates` is defined\n\n";
+#else
+  std::cout << "`__cpp_variadic_templates` is not defined\n\n";
+#endif
+
+  print(1, 2.0, "three");
+  fold(1, 2.0, "three");
+
+  {  // Scope namespace
+    namespace rl = variadic_template::resource_logger;
+    // Copy operations invoked?
+    variadic_template::print(resource_logger::a{}, resource_logger::b{},
+                             resource_logger::c{});
+    variadic_template::fold(resource_logger::a{}, resource_logger::b{},
+                            resource_logger::c{});
+
+    variadic_template::fold_ref(resource_logger::a{}, resource_logger::b{},
+                                resource_logger::c{});
+  }
+
+  {  // Pointers...
+    namespace rl = variadic_template::resource_logger;
+    resource_logger::a* ptr_a{new resource_logger::a{}};
+    resource_logger::b* ptr_b{new resource_logger::b{}};
+    resource_logger::c* ptr_c{new resource_logger::c{}};
+
+    std::cout << "\n";
+    variadic_template::pointers(std::cout, ptr_a);
+    std::cout << "\n";
+    variadic_template::pointers(std::cout, ptr_a, ptr_b);
+    std::cout << "\n";
+    variadic_template::pointers(std::cout, ptr_a, ptr_b, ptr_c);
+    std::cout << "\n";
+
+    delete ptr_a;
+    delete ptr_b;
+    delete ptr_c;
+  }
+}
+
 /*
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1181,11 +1223,9 @@ void run() {
 
 namespace two {
 
-void run() {
+void run() {}
 
-}
-
-}
+}  // namespace two
 
 }  // namespace sfinae_attempt
 
@@ -1372,46 +1412,7 @@ int main() {
 
   std::cout << separator("variadic_template::run()");
 
-#ifdef __cpp_variadic_templates
-  std::cout << "`__cpp_variadic_templates` is defined\n\n";
-#else
-  std::cout << "`__cpp_variadic_templates` is not defined\n\n";
-#endif
-
-  variadic_template::print(1, 2.0, "three");
-  variadic_template::fold(1, 2.0, "three");
-
-  {  // Scope namespace
-    namespace rl = variadic_template::resource_logger;
-    // Copy operations invoked?
-    variadic_template::print(rl::a{}, rl::b{}, rl::c{});
-    variadic_template::fold(rl::a{}, rl::b{}, rl::c{});
-
-    variadic_template::fold_ref(rl::a{}, rl::b{}, rl::c{});
-  }
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-  std::cout << separator("variadic_template::run()");
-
-  {  // Pointers...
-    namespace rl = variadic_template::resource_logger;
-    rl::a* ptr_a{new rl::a{}};
-    rl::b* ptr_b{new rl::b{}};
-    rl::c* ptr_c{new rl::c{}};
-
-    std::cout << "\n";
-    variadic_template::pointers(std::cout, ptr_a);
-    std::cout << "\n";
-    variadic_template::pointers(std::cout, ptr_a, ptr_b);
-    std::cout << "\n";
-    variadic_template::pointers(std::cout, ptr_a, ptr_b, ptr_c);
-    std::cout << "\n";
-
-    delete ptr_a;
-    delete ptr_b;
-    delete ptr_c;
-  }
+  variadic_template::run();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
