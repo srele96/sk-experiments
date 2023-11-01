@@ -520,10 +520,14 @@ class attorney {
 };
 
 void run() {
+  // Reference wrapper is an interesting concept. So much effort for type
+  // safety.
   const ostreams light_ostreams{std::ref(std::cout), std::ref(std::cout)};
   const ostreams heater_ostreams{std::ref(std::cout), std::ref(std::cout)};
   const ostreams door_ostreams{std::ref(std::cout), std::ref(std::cout)};
 
+  // Trivially copyable. It is worth exploring why it's trivially copyable and
+  // how did they avoid using raw references.
   smart_light light{light_ostreams};
   smart_heater heater{heater_ostreams};
   smart_door door{door_ostreams};
