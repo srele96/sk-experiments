@@ -1181,7 +1181,9 @@ void run() {
 
 namespace two {
 
-// Ready, Stary, Go!
+void run() {
+
+}
 
 }
 
@@ -1414,6 +1416,12 @@ int main() {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   std::cout << separator("sfinae_attempt::one::run()");
+
+  sfinae_attempt::one::run();
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  std::cout << separator("sfinae_attempt::two::run()");
 
   sfinae_attempt::one::run();
 
