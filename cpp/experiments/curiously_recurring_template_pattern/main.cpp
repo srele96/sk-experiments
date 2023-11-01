@@ -674,7 +674,7 @@ struct t {
   ~t() { std::cout << "~t()\n"; }
 };
 
-void run_example() { f<t> f_t; }
+void run() { f<t> f_t; }
 
 }  // namespace template_parameter
 
@@ -1408,9 +1408,9 @@ int main() {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  std::cout << separator("template_parameter::run_example()");
+  std::cout << separator("template_parameter::run()");
 
-  template_parameter::run_example();
+  template_parameter::run();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
