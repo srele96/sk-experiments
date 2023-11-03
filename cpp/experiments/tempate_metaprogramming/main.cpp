@@ -2,6 +2,7 @@
 #include <array>
 #include <iostream>
 #include <type_traits>
+#include <utility>
 
 constexpr int sum(const int n) {
   int sum{0};
@@ -84,6 +85,54 @@ struct compile_constructible {
   // }
 };
 
+template <int n>
+struct loop {
+  static const int value = loop<n - 1>::value;
+};
+
+template <>
+struct loop<0> {
+  static const int value = 0;
+};
+
+/*
+
+template <int n>
+struct s {
+  constexpr static int index{s<n - 1>::index + 1};
+  std::array<int, n> result{};
+
+  constexpr s() { result[index] = index; }
+};
+
+template <>
+struct s<3> {
+  constexpr static int index{1 + 1};
+  std::array<int, 1> result{};
+  // result[2] = 2
+};
+
+template <>
+struct s<2> {
+  constexpr static int index{0 + 1};
+  std::array<int, 1> result{};
+  // result[index] = 1
+};
+
+template <>
+struct s<1> {
+  constexpr static int index{-1 + 1};
+  std::array<int, 1> result{};
+  // result[index] = index
+};
+
+template <>
+struct s<0> {
+  constexpr static int index{0};
+};
+
+*/
+
 int main() {
   {
     constexpr int end{10};
@@ -124,6 +173,16 @@ int main() {
                     // std::cout << value.m_one << " " << value.m_two << "\n";
                   });
   }
+
+  { std::cout << "loop<3>::value ( " << loop<3>::value << " )\n"; }
+
+  // {
+  //   s<3> seq;
+  //   for (const auto& val : seq.result) {
+  //     std::cout << val << " ";
+  //   }
+  //   std::cout << s<3>::index << "\n";
+  // }
 
   return 0;
 }
