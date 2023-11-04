@@ -62,6 +62,22 @@ Generated executables mimic path from `sandbox`, search for them inside `build` 
 
 **The reason for _Sandbox_ to be right below the root directory is to allow _SANDBOXING (pun intended)_ of the sandbox directory. Everything in related to `CI/CD` for _Sandbox_ should try to isolate itself from the other parts of _sk-experiments_. The same goes for anything else related to _Sandbox_ that's outside of it.**
 
+### Experience after using sandbox concept for a while
+
+As to everything, there are pros and cons.
+
+#### Reusability of libraries does not bring me benefits
+
+Build takes longer because of libraries i'm not using. For example wx-widgets requires let's say 50 dependencies. And other library requires another 50 dependencies. I'm building a third project that doesn't require all those dependencies. I am waiting for the build to complete pointlessly.
+
+Now that I learned common issues when setting up `vcpkg` and `cmake` it feels easier to set up a new vcpkg and cmake project for each directory than using sandbox directory concept.
+
+Dedicated directory per sample or module shaves off global dependencies which are pure nightmare to manage.
+
+#### I did not have a need for module yet
+
+I created a directory for modules which are shared among samples. I did not make any yet.
+
 ## Goals
 
 I want to Evolve and avoid following any binding restrictions. Some of the goals:
