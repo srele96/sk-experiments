@@ -459,10 +459,10 @@ struct ostreams {
 
 class smart_light : public device<smart_light> {
  private:
+  friend class attorney<smart_light>;
+
   // Shut up linter that method can be made static. I hope it makes sense now.
   ostreams m_ostreams;
-
-  friend class attorney<smart_light>;
 
   void m_configure(const config& config) const {
     // All this work just to print something to the console?
@@ -479,6 +479,7 @@ class smart_light : public device<smart_light> {
 class smart_heater : public device<smart_heater> {
  private:
   friend class attorney<smart_heater>;
+
   // Shut up linter that method can be made static. I hope it makes sense now.
   ostreams m_ostreams;
 
@@ -494,6 +495,7 @@ class smart_heater : public device<smart_heater> {
 class smart_door : public device<smart_door> {
  private:
   friend class attorney<smart_door>;
+
   // Shut up linter that method can be made static. I hope it makes sense now.
   ostreams m_ostreams;
 
