@@ -10,7 +10,8 @@ I wrote a basic assertion to assert equality of two strings and two integers.
 Then decided to play with observable design pattern and implement it.
 Decided to use `std::make_shared_from_this` and used `cppreference` for it.
 Decided to use an interface with virtual methods to implement observables.
-Linter threw warning and I decided not to, I do not understand the problem of virtual destructor requirement.
+Linter threw warning and I decided not to, I do not understand the problem of
+virtual destructor requirement.
 I implemented observer and subject and decided to test them.
 Wrote a program, subject, three observers, notify them, assert the notification.
 How to assert?
@@ -23,7 +24,8 @@ I write a new method.
 It is a concrete implementation.
 Write an interface, make method virtual, can not have templated virtual method.
 What then?
-One alternative, easiest of the four ChatGPT suggested, create data medium to handle templated data...
+One alternative, easiest of the four ChatGPT suggested, create data medium to
+handle templated data...
 GOD!
 Enough is enough.
 I do not want to discover any further.
