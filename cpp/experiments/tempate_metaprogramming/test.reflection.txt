@@ -1,0 +1,55 @@
+###############################################################################
+# What happened?
+###############################################################################
+
+I thought:
+`C++ tests are bundled in an executable. Wrapped in Googletest library.`.
+I need to see the test executable by myself. It is a new concept.
+
+I wrote a basic assertion to assert equality of two strings and two integers.
+Then decided to play with observable design pattern and implement it.
+Decided to use `std::make_shared_from_this` and used `cppreference` for it.
+Decided to use an interface with virtual methods to implement observables.
+Linter threw warning and I decided not to, I do not understand the problem of virtual destructor requirement.
+I implemented observer and subject and decided to test them.
+Wrote a program, subject, three observers, notify them, assert the notification.
+How to assert?
+Not so easily.
+I have to mock the objects.
+Googletest requires programming to interfaces to test it.
+I do not have na interface.
+I can not mock overloaded `void operator()()`.
+I write a new method.
+It is a concrete implementation.
+Write an interface, make method virtual, can not have templated virtual method.
+What then?
+One alternative, easiest of the four ChatGPT suggested, create data medium to handle templated data...
+GOD!
+Enough is enough.
+I do not want to discover any further.
+Stop.
+Take notes.
+Do something else.
+
+###############################################################################
+# What did I do wrong?
+###############################################################################
+
+I kept getting side-tracked with very important details.
+I did not get the end result done.
+I focused on learning absolutely as many concepts as possible.
+My goal was to use Googletest features.
+I did not because I did not have testable code.
+
+###############################################################################
+# What did I do right?
+###############################################################################
+
+I found a lot of topics, techniques, learning resources, etc...
+
+###############################################################################
+# What can I learn from this?
+###############################################################################
+
+  - Programming to interfaces is important (C++, Googletest Mocks)
+  - Programming to interfaces requires dynamic memory allocation and pointers
