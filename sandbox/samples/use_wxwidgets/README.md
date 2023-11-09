@@ -68,3 +68,19 @@ However, a programming language would not be an issue in that case. Developing a
 I don't understand. Maybe I should look for something incredibly challenging and difficult to do.
 
 My problem is that solutions feel like they pour into my mind and that I have a feeling of flow, unlike when I'm trying to internalize some complex concepts. I feel like algorithmic problem-solving at this point is going to challenge my thinking process properly.
+
+### 11.09.2023 Animation using `wxTimer`
+
+![Blue and Red panels](docs/panel_wont_show.png)
+
+I added two panels to the wxFrame, but only one was visible. I was trying to figure out why. I thought if I could simply color the two in different color I would see what's up. So I did! One panel covered the whole screen.
+
+Now I can figure out why the two panels won't play together within a frame.
+
+![Equal panels](docs/equal_panels.png)
+
+It seems that the panels didn't play well together without the sizer.
+
+![Animated](docs/animated.gif)
+
+There it goes! I managed to understand the problem and find the solution on how to do it. I will refine the solution on the go. I'm having fun seeing the animation work!

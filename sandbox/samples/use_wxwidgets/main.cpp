@@ -8,6 +8,46 @@
 #include "wx/filename.h"
 #include "wx/statbmp.h"
 #include "wx/stdpaths.h"
+#include "wx/timer.h"
+
+class MovingImagePanel : public wxPanel {
+public:
+  MovingImagePanel(wxWindow *parent, const wxBitmap &bitmap)
+      : wxPanel{parent}, bitmap_{bitmap} {
+    Bind(wxEVT_PAINT, &MovingImagePanel::OnPaint, this);
+    Bind(wxEVT_TIMER, &MovingImagePanel::OnTimer, this);
+
+    timer_.SetOwner(this);
+    timer_.Start(interval_);
+  }
+
+private:
+  void OnPaint(wxPaintEvent &event) {
+    wxPaintDC dc{this};
+    dc.DrawBitmap(bitmap_, xCoord, 0);
+  }
+
+  void OnTimer(wxTimerEvent &event) {
+    if (xCoord + bitmap_.GetWidth() >= GetSize().GetWidth()) {
+      direction_ = Direction::Left;
+    }
+
+    if (xCoord <= 0) {
+      direction_ = Direction::Right;
+    }
+
+    xCoord += static_cast<int>(direction_);
+
+    Refresh();
+  }
+
+  enum class Direction { Left = -1, Right = 1 };
+  Direction direction_{Direction::Right};
+  wxBitmap bitmap_;
+  int xCoord{0};
+  int interval_{10};
+  wxTimer timer_;
+};
 
 class MyApp : public wxApp {
 public:
@@ -56,7 +96,8 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxT("Hello World")) {
 
   wxPanel *panel{new wxPanel(this, wxID_ANY)};
 
-  wxButton *btn{new wxButton(panel, wxID_ANY, wxT("Click Me"), wxPoint(50, 50))};
+  wxButton *btn{
+      new wxButton(panel, wxID_ANY, wxT("Click Me"), wxPoint(50, 50))};
 
   wxImage::AddHandler(new wxPNGHandler);
 
@@ -117,6 +158,21 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxT("Hello World")) {
                  wxOK | wxICON_ERROR);
   }
 
+  // Wrap in lambda to make the functionality more distinguishable and make it
+  // easier for removal.
+  auto splitAndAnimate{[this, &panel, &girl_image]() {
+    wxBoxSizer *sizer{new wxBoxSizer(wxHORIZONTAL)};
+    MovingImagePanel *movingImagePanel{
+        new MovingImagePanel{this, wxBitmap{girl_image}}};
+
+    sizer->Add(movingImagePanel, 1, wxEXPAND | wxALL, 5);
+    sizer->Add(panel, 1, wxEXPAND | wxALL, 5);
+
+    this->SetSizer(sizer);
+  }};
+
+  splitAndAnimate();
+
   Bind(wxEVT_BUTTON, &MyFrame::OnClick, this);
   Bind(wxEVT_MENU, &MyFrame::OnHello, this, static_cast<int>(ID::Hello));
   Bind(wxEVT_MENU, &MyFrame::OnAbout, this, wxID_ABOUT);
@@ -126,8 +182,8 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxT("Hello World")) {
 void MyFrame::OnExit(wxCommandEvent &event) { Close(true); }
 
 void MyFrame::OnAbout(wxCommandEvent &event) {
-  wxMessageBox(wxT("This is a wxWidgets Hello World example"), wxT("About Hello World"),
-               wxOK | wxICON_INFORMATION);
+  wxMessageBox(wxT("This is a wxWidgets Hello World example"),
+               wxT("About Hello World"), wxOK | wxICON_INFORMATION);
 }
 
 void MyFrame::OnHello(wxCommandEvent &event) {
@@ -135,5 +191,6 @@ void MyFrame::OnHello(wxCommandEvent &event) {
 }
 
 void MyFrame::OnClick(wxCommandEvent &event) {
-  wxMessageBox(wxT("Button Clicked!"), wxT("Information"), wxOK | wxICON_INFORMATION);
+  wxMessageBox(wxT("Button Clicked!"), wxT("Information"),
+               wxOK | wxICON_INFORMATION);
 }
