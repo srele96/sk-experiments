@@ -12,6 +12,7 @@
 
 class MovingImagePanel : public wxPanel {
 public:
+  // wxWidgets library uses wxWindow* to refer to a window.
   MovingImagePanel(wxWindow *parent, const wxBitmap &bitmap)
       : wxPanel{parent}, bitmap_{bitmap} {
     Bind(wxEVT_PAINT, &MovingImagePanel::OnPaint, this);
@@ -23,20 +24,23 @@ public:
 
 private:
   void OnPaint(wxPaintEvent &event) {
+    // Bitmaps are drawable according to ChatGPT
     wxPaintDC dc{this};
     dc.DrawBitmap(bitmap_, xCoord, 0);
   }
 
-  void OnTimer(wxTimerEvent &event) {
+  void OnTimer(wxTimerEvent &event) { // Update offset and redraw
+    // The right edge of the bitmap touched the right edge of the window.
     if (xCoord + bitmap_.GetWidth() >= GetSize().GetWidth()) {
       direction_ = Direction::Left;
     }
 
+    // The left edge of the bitmap touched the left edge of the window.
     if (xCoord <= 0) {
       direction_ = Direction::Right;
     }
 
-    xCoord += static_cast<int>(direction_);
+    xCoord += static_cast<int>(direction_); // Move
 
     Refresh();
   }
@@ -162,9 +166,11 @@ MyFrame::MyFrame() : wxFrame(nullptr, wxID_ANY, wxT("Hello World")) {
   // easier for removal.
   auto splitAndAnimate{[this, &panel, &girl_image]() {
     wxBoxSizer *sizer{new wxBoxSizer(wxHORIZONTAL)};
+    // Image is convertible to bitmap
     MovingImagePanel *movingImagePanel{
         new MovingImagePanel{this, wxBitmap{girl_image}}};
 
+    // Make the panels play together nicely
     sizer->Add(movingImagePanel, 1, wxEXPAND | wxALL, 5);
     sizer->Add(panel, 1, wxEXPAND | wxALL, 5);
 
