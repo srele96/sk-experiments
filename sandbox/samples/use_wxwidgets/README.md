@@ -84,3 +84,25 @@ It seems that the panels didn't play well together without the sizer.
 ![Animated](docs/animated.gif)
 
 There it goes! I managed to understand the problem and find the solution on how to do it. I will refine the solution on the go. I'm having fun seeing the animation work!
+
+### How I made myself continue
+
+A brief reflection on how I made myself resume working with `wxWidgets`.
+
+#### What happened
+
+I thought about what to do next. I thought about what do I want to learn. I had options to do algorithms, c++, wxwidgets, template metaprogramming, etc... I thought about how I really wanted to have software to interact with anime I just watched. I felt difficulty resuming work with `wxWidgets` as I felt there was no reward. The work would be tedious because I don't know how to use `wxWidgets`. I thought that I should start thinking about wxWidgets. I thought about the end result and it hyped me up.
+
+While working on the project with `wxWidgets` I felt like I want to quit. While debugging issues, I realized, what if I stop focusing on the end result? What if I can focus on now? If what I'm doing now, debugging, is fine, not tedious, i do not anticipate finishing, debugging is not an issue. Anticipation of finishing makes me frustrated when I debug because it's a hindrance.
+
+#### What did I do right
+
+I noticed that I felt annoyed and pushed through. I reflected on what happened, so I should remember good and bad. Rehearsing the situation like this, helps me objectively measure it. I finished the part of the project, I got the animation.
+
+#### What did I do wrong
+
+I went into stuff like naming convention, reading side thing such as benefits and drawbacks of instantiating `std::shared_ptr` with `new`.
+
+#### What can I learn from this
+
+Being self aware during the process can be great. I should attempt to just get stuff done regardless of my satisfaction. I might get satisfaction from getting stuff done, rather than feeling it's perfect.
