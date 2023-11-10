@@ -26,31 +26,31 @@ private:
   void OnPaint(wxPaintEvent &event) {
     // Bitmaps are drawable according to ChatGPT
     wxPaintDC dc{this};
-    dc.DrawBitmap(bitmap_, xCoord, 0);
+    dc.DrawBitmap(bitmap_, xCoord_, 0);
   }
 
   void OnTimer(wxTimerEvent &event) { // Update offset and redraw
     // The right edge of the bitmap touched the right edge of the window.
-    if (xCoord + bitmap_.GetWidth() >= GetSize().GetWidth()) {
+    if (xCoord_ + bitmap_.GetWidth() >= GetSize().GetWidth()) {
       direction_ = Direction::Left;
     }
 
     // The left edge of the bitmap touched the left edge of the window.
-    if (xCoord <= 0) {
+    if (xCoord_ <= 0) {
       direction_ = Direction::Right;
     }
 
-    xCoord += static_cast<int>(direction_); // Move
+    xCoord_ += static_cast<int>(direction_); // Move
 
     Refresh();
   }
 
   enum class Direction { Left = -1, Right = 1 };
   Direction direction_{Direction::Right};
-  wxBitmap bitmap_;
-  int xCoord{0};
+  int xCoord_{0};
   int interval_{10};
   wxTimer timer_;
+  wxBitmap bitmap_;
 };
 
 class MyApp : public wxApp {
