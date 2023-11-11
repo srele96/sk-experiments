@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+namespace ObserverDesignPattern {
+
 // Problem: Stock Price Alert System
 //
 // Description:
@@ -227,8 +229,10 @@ void RunStockMarket() {
   });
 }
 
+}  // namespace ObserverDesignPattern
+
 auto main() -> int {
-  RunStockMarket();
+  ObserverDesignPattern::RunStockMarket();
 
   return 0;
 }
