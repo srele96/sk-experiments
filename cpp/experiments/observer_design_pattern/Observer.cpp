@@ -123,6 +123,8 @@ class Stock : public ISubject<Stock> {
     observers_.push_back(observer);
   }
 
+  friend std::ostream &operator<<(std::ostream &ostream, const Stock &stock);
+
   // Thanks to the observable pattern we can observe constructing, copying,
   // moving, assigning, destroying, etc... of the Stock class.
 };
@@ -130,17 +132,22 @@ class Stock : public ISubject<Stock> {
 constexpr int InitialIDCounter = 1;
 int Stock::IDCounter = InitialIDCounter;
 
-class DisplayBoard : public IObserver<Stock> {
+std::ostream &operator<<(std::ostream &ostream, const Stock &stock) {
+  ostream << stock.ID() << ": " << stock.Name() << " - " << stock.Price()
+          << "\n";
+
+  return ostream;
+}
+
+template <typename T>
+class DisplayBoard : public IObserver<T> {
  private:
   std::reference_wrapper<std::ostream> display_;
 
  public:
   explicit DisplayBoard(std::ostream &display) : display_{display} {}
 
-  void OnUpdate(const Stock &stock) override {
-    display_.get() << stock.ID() << ": " << stock.Name() << " - "
-                   << stock.Price() << "\n";
-  }
+  void OnUpdate(const T &data) override { display_.get() << data; }
 };
 
 class AlertSystem : public IObserver<Stock> {
@@ -188,9 +195,9 @@ void RunStockMarket() {
   stocks.push_back(std::make_unique<Stock>("Google", googleStockPrice));
 
   std::shared_ptr<IObserver<Stock>> displayToCout{
-      std::make_shared<DisplayBoard>(std::cout)};
+      std::make_shared<DisplayBoard<Stock>>(std::cout)};
   std::shared_ptr<IObserver<Stock>> displayToCerr{
-      std::make_shared<DisplayBoard>(std::cerr)};
+      std::make_shared<DisplayBoard<Stock>>(std::cerr)};
 
   constexpr int threshold{150};
   std::shared_ptr<IObserver<Stock>> alertSystem{
