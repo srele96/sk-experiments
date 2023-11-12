@@ -160,6 +160,26 @@ class AlertSystem : public IObserver<Stock> {
       : threshold_{threshold}, out_{out} {}
 
   void OnUpdate(const Stock &stock) override {
+    // if we do not want to impose any restrictions to the type T, but we want
+    // to make sure it's above threshold AND retrieve it's data, this method has
+    // to know or make an assumptions on how to do those checks
+    //
+    // maybe if a data was polymorphic type which would have methods overloaded
+    // to check if it's above threshold and to retrieve the data
+    //
+    // since we do not know the data, we can use polymorphic thing for that as
+    // well
+    //
+    // using pointers and smart pointers to achieve that is causing new set of
+    // problems, all because i wanted polymorphic behavior to avoid tightly
+    // binding the data
+    //
+    // the question is, is it worth it? what alternatives do i have? how can we
+    // achieve flexibility where AlertSystem is not bound to what's received due
+    // to IObserver?
+    //
+    // seek to understand the problem better
+
     if (stock.Price() > threshold_) {
       out_.get() << stock.ID() << ": "
                  << "(Alert!) " << stock.Name() << " - " << stock.Price()
