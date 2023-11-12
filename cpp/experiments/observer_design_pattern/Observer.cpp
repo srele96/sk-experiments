@@ -147,7 +147,11 @@ class DisplayBoard : public IObserver<T> {
  public:
   explicit DisplayBoard(std::ostream &display) : display_{display} {}
 
-  void OnUpdate(const T &data) override { display_.get() << data; }
+  void OnUpdate(const T &data) override {
+    // A type of generality where we assume type T overloads operator<< and we
+    // use it to retrieve the data.
+    display_.get() << data;
+  }
 };
 
 class AlertSystem : public IObserver<Stock> {
