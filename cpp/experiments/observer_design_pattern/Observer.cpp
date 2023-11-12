@@ -47,8 +47,6 @@ namespace ObserverDesignPattern {
 // the display, and the AlertSystem should check if the new price crosses a
 // predefined threshold and, if so, trigger an alert.
 
-class Stock;
-
 // However, this rule does not always apply neatly to abstract classes
 // (interfaces) in C++, especially when you're dealing with polymorphic base
 // classes like IObserver and ISubject in your case. These classes are designed
@@ -68,20 +66,24 @@ class Stock;
 // of a general guideline and may not apply to every situation, particularly in
 // cases involving polymorphic base classes like yours.
 
+template <typename T>
 class IObserver {
  public:
-  virtual void OnUpdate(const Stock &stock) = 0;
+  virtual void OnUpdate(const T &) = 0;
   virtual ~IObserver() = default;
 };
 
+template <typename T>
 class ISubject {
- public:
-  virtual void AddObserver(const std::shared_ptr<IObserver> &observer) = 0;
+ private:
   virtual void NotifyObservers() = 0;
+
+ public:
+  virtual void AddObserver(const std::shared_ptr<IObserver<T>> &observer) = 0;
   virtual ~ISubject() = default;
 };
 
-class Stock : public ISubject {
+class Stock : public ISubject<Stock> {
  private:
   static int IDCounter;
 
@@ -89,12 +91,20 @@ class Stock : public ISubject {
   int price_;
   std::string name_;
 
-  std::vector<std::weak_ptr<IObserver>> observers_;
+  std::vector<std::weak_ptr<IObserver<Stock>>> observers_;
+
+  void NotifyObservers() override {
+    for (std::weak_ptr<IObserver<Stock>> &observer : observers_) {
+      if (std::shared_ptr<IObserver<Stock>> ptr_observer = observer.lock()) {
+        ptr_observer->OnUpdate(*this);
+      }
+    }
+  }
 
  public:
   Stock() : id_{IDCounter++} {}
   Stock(std::string name, int price)
-      : id_{IDCounter++}, name_{std::move(name)}, price_{price} {}
+      : id_{IDCounter++}, price_{price}, name_{std::move(name)} {}
 
   auto ID() const -> int { return id_; }
 
@@ -109,16 +119,8 @@ class Stock : public ISubject {
 
   auto Price() const -> int { return price_; }
 
-  void AddObserver(const std::shared_ptr<IObserver> &observer) override {
+  void AddObserver(const std::shared_ptr<IObserver<Stock>> &observer) override {
     observers_.push_back(observer);
-  }
-
-  void NotifyObservers() override {
-    for (std::weak_ptr<IObserver> &observer : observers_) {
-      if (std::shared_ptr<IObserver> ptr_observer = observer.lock()) {
-        ptr_observer->OnUpdate(*this);
-      }
-    }
   }
 
   // Thanks to the observable pattern we can observe constructing, copying,
@@ -128,7 +130,7 @@ class Stock : public ISubject {
 constexpr int InitialIDCounter = 1;
 int Stock::IDCounter = InitialIDCounter;
 
-class DisplayBoard : public IObserver {
+class DisplayBoard : public IObserver<Stock> {
  private:
   std::reference_wrapper<std::ostream> display_;
 
@@ -141,7 +143,7 @@ class DisplayBoard : public IObserver {
   }
 };
 
-class AlertSystem : public IObserver {
+class AlertSystem : public IObserver<Stock> {
  private:
   int threshold_;
   std::reference_wrapper<std::ostream> out_;
@@ -185,13 +187,13 @@ void RunStockMarket() {
   stocks.push_back(std::make_unique<Stock>("Apple", appleStockPrice));
   stocks.push_back(std::make_unique<Stock>("Google", googleStockPrice));
 
-  std::shared_ptr<IObserver> displayToCout{
+  std::shared_ptr<IObserver<Stock>> displayToCout{
       std::make_shared<DisplayBoard>(std::cout)};
-  std::shared_ptr<IObserver> displayToCerr{
+  std::shared_ptr<IObserver<Stock>> displayToCerr{
       std::make_shared<DisplayBoard>(std::cerr)};
 
   constexpr int threshold{150};
-  std::shared_ptr<IObserver> alertSystem{
+  std::shared_ptr<IObserver<Stock>> alertSystem{
       std::make_shared<AlertSystem>(threshold, std::cout)};
 
   StockMarket stockMarket;
@@ -218,8 +220,7 @@ void RunStockMarket() {
     }
   });
 
-  stockMarket.RemoveStock(
-      [&stocks](const Stock &stock) { return stock.ID() == 1; });
+  stockMarket.RemoveStock([](const Stock &stock) { return stock.ID() == 1; });
 
   stockMarket.UpdateStock([&stocks](Stock &stock) {
     if (stock.ID() == stocks[1]->ID()) {
