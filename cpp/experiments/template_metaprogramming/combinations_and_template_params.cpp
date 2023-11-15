@@ -157,6 +157,62 @@ std::vector<std::vector<int>> combinations(int n,
   return combinations;
 }
 
+// ----------------------------------------------------------------------------
+// constexpr loop has iteration limits as well as recursion.
+
+// constexpr std::size_t factorial(const std::size_t n) {
+//   std::size_t result{1};
+
+//   for (std::size_t i{2}; i <= n; ++i) {
+//     result *= i;
+//   }
+
+//   return result;
+// }
+
+// constexpr std::size_t combinations_size(const std::size_t n,
+//                                         const std::size_t r) {
+//   // Calculate the total amount of combinations using mathematical formula
+//   // based on desired size of each combination and values:
+//   //
+//   // n! / r!(n-r)!
+//   return factorial(n) / (factorial(r) * factorial(n - r));
+// }
+
+// template <typename type, std::size_t r, std::size_t n>
+// constexpr auto combinations(const std::array<type, n>& array)
+//     -> std::array<std::array<type, r>, combinations_size(n, r)> {
+//   constexpr std::array<std::array<type, r>, combinations_size(n, r)>
+//       combinations{};
+
+//   std::cout << "\n" << combinations_size(2, 5) << "\n";
+
+//   // the problem as always, with functional programing, we don't
+//   // have a way to
+//   // push and pop
+
+//   // therefore i'd need an alternative
+
+//   // if we have collected all the values, store them to the current
+//   // combination,
+//   // exit
+
+//   // for each index, take value from that index, start from next one,
+//   // backtrack
+
+//   // try to use function template specialization?
+
+//   // that way we recursively at compile time store the index of the start,
+//   // index
+//   // of the resulting array where we add, etc...
+
+//   // the fucking non pure way of programming really got me fucked up
+
+//   return combinations;
+// }
+
+// ----------------------------------------------------------------------------
+
 // Write a template metaprogram that generates combinations at compile-time.
 //
 // Using variadic templates i can store the current amount of values
@@ -168,28 +224,43 @@ std::vector<std::vector<int>> combinations(int n,
 // There should be a mathematical formula for that, right? Are there other ways
 // to calculate how many combinations of N are?
 
-template <std::size_t n>
-struct factorial {
-  constexpr static std::size_t value{factorial<n - 1>::value * n};
-};
+// ------------------------------------
+// Instantiation level goes too deep.
+// Is this an invalid approach or simply unfitting one?
+// Did I use too much recursion?
+// Should I rely on other constructs?
 
-template <>
-struct factorial<1> {
-  constexpr static std::size_t value{1};
-};
+// template <std::size_t n>
+// struct factorial {
+//   constexpr static std::size_t value{factorial<n - 1>::value * n};
+// };
 
-// should backtracking occur on each level?
+// template <>
+// struct factorial<1> {
+//   constexpr static std::size_t value{1};
+// };
 
-template <typename type, std::size_t r, std::size_t n,
-          // Calculate the total amount of combinations using mathematical
-          // formula based on desired size of each combination and values:
-          //
-          // n! / r!(n-r)!
-          std::size_t len = factorial<n>::value /
-                            (factorial<r>::value * factorial<n - r>::value)>
+// // should backtracking occur on each level?
+
+// template <std::size_t n, std::size_t r>
+// struct combinations_size {
+//   static constexpr std::size_t value{
+//       // Calculate the total amount of combinations using mathematical
+//       // formula based on desired size of each combination and values:
+//       //
+//       // n! / r!(n-r)!
+//       factorial<n>::value / (factorial<r>::value * factorial<n - r>::value)};
+// };
+
+// ------------------------------------
+
+template <typename type, std::size_t r, std::size_t n, std::size_t len>
 constexpr auto combinations(const std::array<type, n>& array)
     -> std::array<std::array<type, r>, len> {
   constexpr std::array<std::array<type, r>, len> combinations{};
+
+  // RIP! Instantiation limit exceeded.
+  // std::cout << len << "\n" << combinations_size<2, 3>::value;
 
   // the problem as always, with functional programing, we don't have a way to
   // push and pop
@@ -212,6 +283,85 @@ constexpr auto combinations(const std::array<type, n>& array)
 
   return combinations;
 }
+
+// ----------------------------------------------------------------------------
+
+// Ideas...
+
+// // each time we have n parameters
+// sizeof...(combination)
+
+// // 1, 2, 3, 4, 5
+
+// struct combination<> {}
+
+// struct combination<1> {}
+
+// struct combination<1, 2> {}
+
+// struct combination<1, 2, 3> {}
+
+// struct combination<1, 2> {}
+
+// struct combination<1, 2, 4> {}
+
+// struct combination<1, 2> {}
+
+// struct combination<1, 2, 5> {}
+
+// struct combination<1, 2> {}
+
+// struct combination<1> {}
+
+// struct combination<1, 3> {}
+
+// struct combination<1, 3, 4> {}
+
+// struct combination<1, 3> {}
+
+// struct combination<1, 3, 5> {}
+
+// struct combination<1, 3> {}
+
+// struct combination<1> {}
+
+// struct combination<1, 4> {}
+
+// struct combination<1, 4, 5> {}
+
+// struct combination<1, 4> {}
+
+// struct combination<1> {}
+
+// struct combination<2> {}
+
+// struct combination<2, 3> {}
+
+// struct combination<2, 3, 4> {}
+
+// struct combination<2, 3> {}
+
+// struct combination<2, 3, 5> {}
+
+// struct combination<2, 3> {}
+
+// struct combination<2> {}
+
+// struct combination<> {}
+
+// struct combination<3> {}
+
+// struct combination<3, 4> {}
+
+// struct combination<3, 4, 5> {}
+
+// struct combination<3, 4> {}
+
+// struct combination<3> {}
+
+// struct combination<> {}
+
+// ----------------------------------------------------------------------------
 
 int main() {
   f<g, h> x;
@@ -254,20 +404,26 @@ int main() {
   // Now... Time to write a template metaprogramming algorithm that generates
   // combinations at compile-time.
 
-  static_assert(factorial<3>::value == 6, "3! is not 6");  // Compile time works
+  // // Compile time works
+  // static_assert(factorial<3>::value == 6, "3! is not 6");
 
-  constexpr std::size_t num{5};
-  std::cout << "factorial<" << num << ">::value = " << factorial<num>::value
-            << "\n";
+  // constexpr std::size_t num{5};
+  // std::cout << "factorial<" << num << ">::value = " << factorial<num>::value
+  //           << "\n";
 
-  {
-    for (const auto& combination : combinations<int, 3, 4>({1, 2, 3, 4})) {
-      for (const auto& value : combination) {
-        std::cout << value << " ";
-      }
-      std::cout << "\n";
-    }
-  }
+  // {
+  //   for (const auto& combination : combinations<int, 3, 4>({1, 2, 3, 4})) {
+  //     for (const auto& value : combination) {
+  //       std::cout << value << " ";
+  //     }
+  //     std::cout << "\n";
+  //   }
+  // }
+
+  // // Compile time works
+  // static_assert(
+  //     combinations_size(2, 5) == 10,
+  //     "Total combinations of 2 in a set of 5 not 10.");
 
   return 0;
 }
