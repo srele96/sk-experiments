@@ -262,6 +262,7 @@ constexpr auto combinations(const std::array<type, n>& array)
   // RIP! Instantiation limit exceeded.
   // std::cout << len << "\n" << combinations_size<2, 3>::value;
 
+
   // the problem as always, with functional programing, we don't have a way to
   // push and pop
   //
