@@ -6,6 +6,10 @@
 #include <unordered_set>
 #include <vector>
 
+// Motivated by:
+//
+// https://stackoverflow.com/questions/8498300/allow-for-range-based-for-with-enum-classes
+
 namespace iterable {
 
 /**
