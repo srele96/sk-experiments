@@ -1,6 +1,0 @@
-# https://stackoverflow.com/questions/8237645/how-to-add-linux-executable-files-to-gitignore
-#
-# Ignore all files without extension as executables don't have an extension on Linux.
-*
-!*.*
-!*/
