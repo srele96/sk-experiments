@@ -1,0 +1,1119 @@
+User
+what are cmake modules
+ChatGPT
+
+CMake modules are a way to encapsulate and reuse CMake code across multiple projects. They are essentially script files that define functions, macros, and variables which can be included and used in your CMakeLists.txt files. Modules help in managing complex build configurations and can greatly simplify the CMakeLists.txt files by abstracting repetitive or complex sequences of commands.
+Key Points About CMake Modules
+
+    Purpose: Modules are used for finding libraries, compiler settings, utilities, and more. They can also be used to define common build configurations, custom functions, or macros.
+
+    Standard Modules: CMake comes with a set of pre-defined modules that are used for common tasks like finding popular libraries (e.g., FindBoost, FindOpenGL), setting up testing frameworks (e.g., CTest), and more.
+
+    Custom Modules: You can write your own custom modules to handle specific tasks or configurations unique to your project or organization.
+
+    Usage: To use a module in your CMakeLists.txt file, you typically use the find_package() command for standard modules or the include() command for custom modules.
+
+    Location: Standard CMake modules are located in the CMake installation directory, under the Modules directory. Custom modules can be placed in a designated directory within your project or in a common location that is added to the CMAKE_MODULE_PATH.
+
+Example of Using a Standard CMake Module
+
+cmake
+
+# Find the Boost library
+find_package(Boost REQUIRED)
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+    # Link Boost libraries to your target, etc.
+endif()
+
+Example of a Custom CMake Module
+
+    Create a Custom Module: Write a CMake script (e.g., MyCustomModule.cmake) that defines functions, macros, or settings.
+
+    Use the Custom Module in CMakeLists.txt:
+
+    cmake
+
+    # Add the directory containing your custom modules to the module path
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+
+    # Include your custom module
+    include(MyCustomModule)
+
+    # Use the functions or settings defined in the module
+    my_custom_function()
+
+    Distribute Your Modules: If you have custom modules that are useful across multiple projects, you can distribute them separately and instruct users to add them to their CMAKE_MODULE_PATH.
+
+Best Practices
+
+    Documentation: Clearly document your custom modules, especially if they are used by others or across multiple projects.
+    Modularity: Keep your modules focused on specific tasks or configurations to maintain modularity.
+    Compatibility: Ensure your custom modules are compatible with different platforms and CMake versions, if applicable.
+
+CMake modules are a powerful feature for simplifying and organizing your build configuration, promoting code reuse, and maintaining consistency across projects.
+User
+how do i write cmake module and provide variable such as
+
+a::b or how can i write module that takes in
+
+find_package(foo REQUIRED CONFIG)
+ChatGPT
+
+Creating a CMake module and providing a variable, such as a::b, involves a few steps. Typically, when you write a CMake module, it's either to find and import external libraries or to encapsulate reusable CMake code. Let's go through both scenarios.
+1. Creating a Find Module (e.g., FindFoo.cmake)
+
+To write a module that behaves like find_package(foo REQUIRED), you need to create a find module. This module will locate the library, executable, or files on the system and then set variables and/or imported targets (like a::b) for use in your project.
+
+Here's a basic structure for a find module:
+
+cmake
+
+# FindFoo.cmake
+
+# Set a minimum version, if necessary
+set(Foo_FIND_VERSION 1.0)
+
+# Locate the Foo library and set the FOO_FOUND variable
+find_path(FOO_INCLUDE_DIR NAMES foo.h)
+find_library(FOO_LIBRARY NAMES foo)
+
+include(FindPackageHandleStandardArgs)
+# Handle standard arguments like REQUIRED and QUIET
+find_package_handle_standard_args(Foo DEFAULT_MSG FOO_LIBRARY FOO_INCLUDE_DIR)
+
+# Define an imported target, if found
+if(FOO_FOUND AND NOT TARGET Foo::Foo)
+    add_library(Foo::Foo UNKNOWN IMPORTED)
+    set_target_properties(Foo::Foo PROPERTIES
+        IMPORTED_LOCATION "${FOO_LIBRARY}"
+        INTERFACE_INCLUDE_DIRECTORIES "${FOO_INCLUDE_DIR}")
+endif()
+
+To use this module in your project:
+
+cmake
+
+# In your project's CMakeLists.txt
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake") # Assuming the module is in the cmake/ directory
+find_package(Foo REQUIRED)
+
+2. Creating a Config Module (e.g., FooConfig.cmake)
+
+If you're packaging your own project (Foo) and want to provide a config file for it, you'd create FooConfig.cmake. This is typically placed in the installation directory of your project.
+
+cmake
+
+# FooConfig.cmake
+
+# Include the targets file
+include("${CMAKE_CURRENT_LIST_DIR}/FooTargets.cmake")
+
+# You can set variables or include other necessary files here
+set(Foo_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include")
+
+And a corresponding FooTargets.cmake that might be auto-generated by CMake when you install your targets:
+
+cmake
+
+# FooTargets.cmake
+
+# Create imported targets here
+add_library(Foo::Foo STATIC IMPORTED)
+# Set properties for the imported target
+
+This config file is then used in other projects with find_package(Foo CONFIG).
+3. Using Namespaced Imported Targets
+
+To provide an imported target like a::b, you define an imported target with add_library and set its properties. This is seen in the examples above with Foo::Foo.
+Notes
+
+    Documentation: Always document your modules and what they provide, especially for users who might not be familiar with the specifics of your project or module.
+    Testing: Test your modules in different environments to ensure they work correctly, especially find modules which can be sensitive to different system configurations.
+    Advanced Functionality: As you get more comfortable with CMake, you can add more advanced functionality to your modules, like version checking, dealing with different build types, etc.
+
+Creating CMake modules can become complex depending on the requirements of the library or project you are handling, so start with a basic setup and expand as needed.
+User
+    add_library(Foo::Foo UNKNOWN IMPORTED)
+
+what does
+
+foo::bar
+
+what do :: dots mean?
+ChatGPT
+
+In CMake, the :: notation is used to define or refer to namespaced imported targets. This notation is a convention in CMake to provide a clear distinction between library targets and other variables like paths or options. It helps in better organizing and managing dependencies in a project.
+Understanding Foo::Bar
+
+In the context of Foo::Bar:
+
+    Foo is usually the namespace. It's often the name of the library or package.
+    Bar is the actual target within that namespace. It could be a library, executable, or any other target defined in CMake.
+
+Why Use Namespaced Imported Targets?
+
+    Clarity and Uniqueness: It provides a clear and unique naming convention. This is particularly useful when integrating third-party libraries into a project, as it avoids name clashes.
+
+    Usage Intent: It signifies that Bar is intended to be used in the context of Foo. This is common in projects where multiple targets (libraries, executables, etc.) are defined.
+
+    Encapsulation: It helps in encapsulating targets within a logical group, making the build scripts more organized and easier to understand.
+
+    Modern CMake Practice: Using namespaced targets is considered a best practice in modern CMake. It aligns with the concept of “targets over variables” promoting the usage of target-based commands like target_link_libraries over global directory-based commands.
+
+Example
+
+Let's say you have a project named Foo with a library named Bar. When you install this library, you might create an exported target named Foo::Bar. Other projects that use your library will find it using find_package(Foo) and then link against it using the namespaced target:
+
+cmake
+
+find_package(Foo REQUIRED)
+add_executable(MyApp main.cpp)
+target_link_libraries(MyApp PRIVATE Foo::Bar)
+
+In this case, Foo::Bar is an alias to the library Bar that is provided by the package Foo. This makes it clear that Bar is a library from the Foo package, and it helps CMake to handle the target's properties correctly (like include directories, compile options, etc.).
+In Summary
+
+The :: notation is a CMake convention to signify namespaced targets, making dependencies clear, manageable, and less prone to conflicts in larger projects. It is an integral part of modern CMake practices.
+User
+how is it possible to set namedpaced stuff
+ChatGPT
+
+Creating and using namespaced targets in CMake is a two-part process: defining the namespaced targets when building and installing a library, and then using these targets in other projects.
+Defining Namespaced Targets
+
+When you're creating a library, you can define a namespaced target using add_library and then export it using install(EXPORT) and install(TARGETS) commands. Here’s an example:
+
+cmake
+
+# Define your library
+add_library(Bar SHARED src/bar.cpp)
+
+# Specify the namespace during the installation
+install(TARGETS Bar EXPORT BarTargets
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+)
+
+# Create and install the export set for the targets with the namespace
+install(EXPORT BarTargets
+    FILE BarTargets.cmake
+    NAMESPACE Foo::
+    DESTINATION lib/cmake/Bar
+)
+
+# Optionally, create and install a config file for find_package to use
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file("BarConfigVersion.cmake"
+    VERSION ${Bar_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+install(FILES "BarConfig.cmake" "BarConfigVersion.cmake"
+    DESTINATION lib/cmake/Bar
+)
+
+In this example, Bar is the name of your library, and Foo:: is the namespace you want to use. The install(EXPORT) command creates a CMake file that other projects can use to import your library with the namespaced target Foo::Bar.
+Using Namespaced Targets in Other Projects
+
+Once your library is installed and provides namespaced targets, other projects can find and link against your library like this:
+
+cmake
+
+# Find the package
+find_package(Bar REQUIRED)
+
+# Link against the namespaced target
+add_executable(MyApp main.cpp)
+target_link_libraries(MyApp PRIVATE Foo::Bar)
+
+Here, Foo::Bar is the namespaced target defined by your library.
+Additional Notes
+
+    Namespaced Alias: You can also create an alias for your library within your build tree (useful for testing and subprojects) using add_library(Foo::Bar ALIAS Bar).
+
+    Package Configuration Files: The BarConfig.cmake file should contain the necessary commands to import the targets file and set up the package. This file can be automatically generated or manually written.
+
+    Version File: The version file (BarConfigVersion.cmake) helps ensure that the correct version of your package is found by find_package.
+
+Creating namespaced targets and configuring the installation properly allows for clean and maintainable usage of your libraries in other projects, following the modern CMake practices.
+User
+give me a problem to solve using cmake module, be creative, make its description like leetcode style,
+ChatGPT
+Problem: Generate Project Version Information
+Description
+
+You are tasked with writing a custom CMake module that automatically generates version information for a C++ project. This version information should be accessible both within the CMake build process and in the C++ source code.
+
+The project uses Git for version control, and the version information should be based on the latest Git tag. The version format is v<Major>.<Minor>.<Patch>, for example, v1.2.3.
+
+Your CMake module should:
+
+    Extract the latest Git tag that matches the version format.
+    Generate a header file (Version.h) that defines VERSION_MAJOR, VERSION_MINOR, and VERSION_PATCH macros based on the extracted version.
+    Provide these version components to the CMake build system as well, so they can be used elsewhere in the CMakeLists.txt.
+
+Requirements
+
+    Git Tag Extraction: Write a CMake script to extract the version number from the latest Git tag that matches the required format. If no tags are found, or if the format does not match, default to v0.0.0.
+
+    Header File Generation: Your script should generate a Version.h file in the build directory. The header file should define three macros: VERSION_MAJOR, VERSION_MINOR, and VERSION_PATCH.
+
+    CMake Variables: The script should set CMake variables PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, and PROJECT_VERSION_PATCH based on the extracted version.
+
+    Modularity: The solution should be implemented as a standalone CMake module that can be included in any CMakeLists.txt using the include() function.
+
+Example
+
+Suppose the latest Git tag in the repository is v1.2.3. Your script should generate a Version.h file with the following content:
+
+cpp
+
+#pragma once
+
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 2
+#define VERSION_PATCH 3
+
+In the CMakeLists.txt file, after including your module, the variables PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, and PROJECT_VERSION_PATCH should be set to 1, 2, and 3, respectively.
+Evaluation Criteria
+
+    Correctness: The module correctly extracts version information from Git tags and defaults properly when no suitable tag is found.
+    Robustness: The module handles edge cases gracefully, such as missing Git executable or no tags in the repository.
+    Reusability: The module can be easily reused in different projects without modification.
+    Documentation: The module is well-documented, explaining how to include and use it in a project.
+
+This task tests your ability to integrate CMake with external tools (Git), generate files during the build process, and create reusable CMake modules.
+User
+give me the expected usage of the module
+ChatGPT
+Expected Usage of the Custom CMake Module for Project Versioning
+
+Let's call your module GenerateVersionInfo.cmake. Here's how it is expected to be used in a typical CMake project.
+Step 1: Including the Module in Your Project
+
+    Place the Module: Put GenerateVersionInfo.cmake in a directory within your project, preferably in a place dedicated to CMake modules. For example, in a directory named cmake.
+
+    Include the Module in CMakeLists.txt:
+
+    cmake
+
+    # Assuming your CMakeLists.txt is in the project root and the module is in the cmake/ directory
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+    include(GenerateVersionInfo)
+
+Step 2: Using the Module
+
+Once included, the module will automatically perform its tasks. It should:
+
+    Extract version information from the Git tags.
+    Generate a Version.h file in the specified output directory.
+    Set CMake variables PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, and PROJECT_VERSION_PATCH.
+
+Step 3: Accessing Version Information
+
+    In CMake:
+        You can use the variables PROJECT_VERSION_MAJOR, PROJECT_VERSION_MINOR, and PROJECT_VERSION_PATCH in your CMakeLists.txt for configuring build settings, packaging information, etc.
+        Example:
+
+        cmake
+
+    message("Project Version: ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}")
+
+In C++ Source Code:
+
+    Include Version.h in your C++ source files to use the version macros.
+    Example:
+
+    cpp
+
+        #include "Version.h"
+
+        std::cout << "Version: "
+                  << VERSION_MAJOR << "."
+                  << VERSION_MINOR << "."
+                  << VERSION_PATCH << std::endl;
+
+Step 4: Integrating with Build and Source Control
+
+    Make sure that your Git repository has tags that match the version format (e.g., v1.2.3).
+    The module should be run as part of the CMake configuration step, so each time CMake is run, it should check for the latest version tag and update Version.h accordingly.
+
+Documentation
+
+    Include a README or documentation with the module explaining its purpose, how to include it in a project, and any dependencies (like Git).
+
+By following these steps, any CMake project can leverage your GenerateVersionInfo module to automate the process of version management using Git tags, making the build process smoother and ensuring consistent versioning across the build system and the source code.
+User
+how can i execute git command from cmake, my idea is to execute a git command from within cmake and get the tag of the project, if there is no tag, no version to be extracted, i set a variable TRY_CMAKE_VERSION_FOUND
+ChatGPT
+
+To execute a Git command from within CMake and extract the tag of the project, you can use the execute_process command provided by CMake. This command allows you to run external tools and capture their output. Here's how you can use it to get the latest Git tag and handle the case where there's no tag:
+Step 1: Write the CMake Script
+
+In your CMakeLists.txt or a separate CMake module, you can add the following script:
+
+cmake
+
+# Attempt to get the current Git tag
+execute_process(
+    COMMAND git describe --tags --abbrev=0
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_TAG
+    ERROR_QUIET
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Check if a tag was found
+if(GIT_TAG)
+    message(STATUS "Git tag found: ${GIT_TAG}")
+    # You can further process GIT_TAG here if needed
+    set(PROJECT_VERSION ${GIT_TAG})
+else()
+    message(STATUS "No Git tag found")
+    set(TRY_CMAKE_VERSION_FOUND OFF)
+endif()
+
+Explanation:
+
+    execute_process: This command runs the specified Git command.
+    COMMAND git describe --tags --abbrev=0: This Git command gets the most recent tag that is reachable from the current commit.
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}: This sets the working directory for the command to the source directory of your project.
+    OUTPUT_VARIABLE GIT_TAG: This captures the output of the Git command (the tag) in the variable GIT_TAG.
+    ERROR_QUIET: This option suppresses error messages from the Git command, which is useful if the repository doesn't have any tags yet.
+    OUTPUT_STRIP_TRAILING_WHITESPACE: This strips trailing whitespace from the output, cleaning up the tag string.
+
+The script then checks if a tag was found and sets the PROJECT_VERSION or TRY_CMAKE_VERSION_FOUND variable accordingly.
+Step 2: Include and Use in Your Project
+
+If this script is part of a module, include it in your CMakeLists.txt with include(YourModuleName). If it's directly in your CMakeLists.txt, it will be executed during the configuration process.
+Notes:
+
+    Make sure that Git is installed and available in the system's PATH where you're running CMake. Otherwise, the execute_process command won't be able to find and run Git.
+    The script assumes that you follow a specific tagging format (like semantic versioning). If your tags have a different format, you may need to modify the Git command or the subsequent string processing.
+    This script will get the latest tag reachable from the current commit, not necessarily the latest tag in the repo. This behavior is typically what you want for versioning builds, but it's important to understand the distinction.
+
+User
+execute_process(
+  COMMAND git describe --tags
+  # directory that includes this module or directory provided by user
+  WORKING_DIRECTORY
+  OUTPUT_VARIABLE GIT_TAG
+  ERROR_QUIET
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+ChatGPT
+
+Your execute_process command in CMake is almost correct, but it's missing a few key parts. Here's how to revise it to execute a Git command to get the latest tag and handle its output:
+
+cmake
+
+execute_process(
+    COMMAND git describe --tags
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}  # Or another directory provided by the user
+    OUTPUT_VARIABLE GIT_TAG
+    ERROR_QUIET
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Check if a tag was found
+if("${GIT_TAG}" STREQUAL "")
+    message(STATUS "No Git tag found")
+    set(TRY_CMAKE_VERSION_FOUND OFF)
+else()
+    message(STATUS "Git tag found: ${GIT_TAG}")
+    set(TRY_CMAKE_VERSION_FOUND ON)
+    # Additional processing can be done here
+endif()
+
+Explanation
+
+    WORKING_DIRECTORY: This should be set to ${CMAKE_CURRENT_SOURCE_DIR} to ensure the command runs in the directory where your CMake module or CMakeLists.txt is located. If you want the user to provide a directory, you'll need to set this up as a variable that the user can override.
+    OUTPUT_VARIABLE: This captures the output of the Git command (the tag) in the variable GIT_TAG.
+    ERROR_QUIET: Suppresses error messages from the Git command.
+    OUTPUT_STRIP_TRAILING_WHITESPACE: Removes any trailing whitespace from the output.
+    Check for Tag: The script checks if GIT_TAG is empty to determine if a tag was found. If no tag is found, it sets TRY_CMAKE_VERSION_FOUND to OFF. Otherwise, it's set to ON.
+
+Usage
+
+To use this in a project:
+
+    Include the Module: If this is part of a CMake module, include it in your CMakeLists.txt using include(YourModuleName.cmake).
+
+    Check TRY_CMAKE_VERSION_FOUND: In your CMakeLists.txt, you can check the TRY_CMAKE_VERSION_FOUND variable to decide what to do next based on whether a Git tag was found.
+
+Notes
+
+    Ensure that Git is installed and its path is included in the system's PATH environment variable.
+    This command will get the tag that is closest to the current HEAD. If your project's versioning requires a different approach (like the latest tag in the repo), you might need to adjust the Git command accordingly.
+
+User
+yeah how can i set it up as a variable that user provides, if variable is not set, then use cmake module's current source dir, how can i check if user set
+
+TRY_CMAKE_GIT_ROOT
+ChatGPT
+
+To set up a variable that the user can provide, and to use a default value if the user doesn't set it, you can use CMake's set() function combined with the if() statement to check if the variable is already set.
+
+In your case, you want to allow the user to specify the TRY_CMAKE_GIT_ROOT variable, which determines the working directory for the Git command. If it's not set by the user, you'll default to ${CMAKE_CURRENT_SOURCE_DIR}. Here's how you can implement this:
+Modifying the CMake Script
+
+cmake
+
+# Check if TRY_CMAKE_GIT_ROOT is set by the user, if not, use CMAKE_CURRENT_SOURCE_DIR
+if(NOT TRY_CMAKE_GIT_ROOT)
+    set(TRY_CMAKE_GIT_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
+# Now execute the git command with the user-specified or default directory
+execute_process(
+    COMMAND git describe --tags
+    WORKING_DIRECTORY ${TRY_CMAKE_GIT_ROOT}
+    OUTPUT_VARIABLE GIT_TAG
+    ERROR_QUIET
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Rest of your script...
+
+How to Use
+
+    User-Specified Directory: Users of your module can specify the TRY_CMAKE_GIT_ROOT variable before they include your module. For example, in their CMakeLists.txt:
+
+    cmake
+
+    set(TRY_CMAKE_GIT_ROOT "/path/to/git/repo")
+    include(YourModuleName)
+
+    Default Behavior: If the user does not set TRY_CMAKE_GIT_ROOT, the script uses ${CMAKE_CURRENT_SOURCE_DIR} as the working directory for the Git command.
+
+Additional Tips
+
+    Documentation: Clearly document the purpose of TRY_CMAKE_GIT_ROOT and how users can set it in your module's documentation or comments.
+    Naming Convention: Ensure that your variable names are clear and self-explanatory. In this case, TRY_CMAKE_GIT_ROOT should intuitively indicate its purpose to the users.
+    Fallback Mechanism: The logic here ensures there is always a fallback directory (CMAKE_CURRENT_SOURCE_DIR) if the user does not provide their own, which is a good practice to avoid errors in case of missing configurations.
+
+User
+how can i use logging where i pass a message and only logger knows about verbose and if verbose is provided then it logs otherwise doesn't log, user provides verbose
+
+TRY_CMAKE_VERBOSE
+ChatGPT
+
+To implement a logging mechanism in CMake where verbosity is controlled by a user-defined variable (like TRY_CMAKE_VERBOSE), you can create a function for logging messages. This function will check the value of TRY_CMAKE_VERBOSE and only display the message if verbosity is enabled.
+
+Here's how you can set up such a logging function in CMake:
+Step 1: Define the Logging Function
+
+In your CMake module or CMakeLists.txt, define a function for logging:
+
+cmake
+
+function(log_message message)
+    if(TRY_CMAKE_VERBOSE)
+        message(STATUS "${message}")
+    endif()
+endfunction()
+
+This log_message function takes one argument, message, and prints it using message(STATUS ...) only if TRY_CMAKE_VERBOSE is true.
+Step 2: Allow User to Set Verbosity
+
+The user of your CMake script can set the TRY_CMAKE_VERBOSE variable to enable verbose logging. They should do this before including your module or before the point in CMakeLists.txt where logging is required.
+
+For example:
+
+cmake
+
+# User's CMakeLists.txt
+set(TRY_CMAKE_VERBOSE ON)
+include(YourCMakeModule)
+
+Step 3: Use the Logging Function
+
+Whenever you need to log a message in your module or script, use the log_message function:
+
+cmake
+
+log_message("This is a verbose log message.")
+
+Additional Notes
+
+    Verbosity Level: The example provided is a binary (ON/OFF) approach. You can extend this to support different levels of verbosity if needed.
+    Default Behavior: You might want to set a default behavior (like verbosity OFF) at the beginning of your module. This ensures that logging behaves predictably even if the user doesn't explicitly set TRY_CMAKE_VERBOSE.
+    Documentation: Clearly document how users can enable verbose logging in your module's documentation or comments.
+
+This setup gives users of your CMake script or module the flexibility to control the amount of logging output they receive, which can be particularly useful for debugging complex CMake configurations.
+User
+how can i reuse that function for WARN, ERROR, DEBUG, etc?
+ChatGPT
+
+To extend the logging function in CMake to handle different types of messages such as WARN, ERROR, and DEBUG, you can modify the function to accept an additional parameter that specifies the log level. Based on this parameter, the function can decide how to handle the message.
+
+Here’s how you can create a more versatile logging function:
+Step 1: Define the Enhanced Logging Function
+
+cmake
+
+# Function for advanced logging
+function(advanced_log log_level message)
+    # Check if verbose logging is enabled
+    if(NOT TRY_CMAKE_VERBOSE)
+        return()
+    endif()
+
+    # Handle different log levels
+    if(log_level STREQUAL "WARN")
+        message(WARNING "${message}")
+    elseif(log_level STREQUAL "ERROR")
+        message(SEND_ERROR "${message}")
+    elseif(log_level STREQUAL "DEBUG")
+        message(STATUS "Debug: ${message}")
+    else()  # Default case, typically for general info
+        message(STATUS "${message}")
+    endif()
+endfunction()
+
+Step 2: Usage in CMake
+
+You can now use this function to log messages at different levels:
+
+cmake
+
+# Example usage
+advanced_log("WARN" "This is a warning message.")
+advanced_log("ERROR" "This is an error message.")
+advanced_log("DEBUG" "This is a debug message.")
+advanced_log("INFO" "This is a general info message.")
+
+Step 3: Control Verbosity
+
+The user of your script can enable or disable verbose logging as before:
+
+cmake
+
+# Enable verbose logging
+set(TRY_CMAKE_VERBOSE ON)
+
+Additional Notes
+
+    Log Levels: The function handles different log levels by using different message types in CMake (WARNING, SEND_ERROR, STATUS).
+    Verbosity Check: The function first checks if verbose logging (TRY_CMAKE_VERBOSE) is enabled. If not, it returns early without logging the message.
+    Customization: You can further customize this function according to your needs. For example, you might want to implement more sophisticated log level controls or format the output differently.
+    Error Handling: Note that SEND_ERROR will cause CMake to report an error but will continue processing. If you want to stop processing immediately on errors, you might consider using FATAL_ERROR instead.
+
+With this approach, you have a flexible logging system in your CMake scripts that can handle various types of log messages and can be easily controlled by the user.
+User
+is there a way to reuse something for "DEBUG" "ERROR" "WARN" that's somehow private implementation so i can pass it to logger and use it inside logger?
+ChatGPT
+
+Yes, in CMake you can create a more encapsulated and reusable logging system by defining private implementation details (such as constants for log levels) and passing them to a logging function. This approach enhances modularity and reusability. Here's how you can set it up:
+Step 1: Define Constants for Log Levels
+
+First, define constants for your log levels. You can use CMake's set() function with PARENT_SCOPE to make these constants available in the scope where the module is included.
+
+cmake
+
+# In your logging module (e.g., LoggingModule.cmake)
+
+# Define constants for log levels
+set(LOG_LEVEL_DEBUG "DEBUG" PARENT_SCOPE)
+set(LOG_LEVEL_ERROR "ERROR" PARENT_SCOPE)
+set(LOG_LEVEL_WARN "WARN" PARENT_SCOPE)
+
+Step 2: Create the Logger Function
+
+Now, create a logger function that takes the log level as a parameter. This function will use the constants defined above to determine the log level.
+
+cmake
+
+# Continuation of LoggingModule.cmake
+
+# Function for logging messages with different levels
+function(log_message log_level message)
+    if(NOT TRY_CMAKE_VERBOSE)
+        return()
+    endif()
+
+    if(log_level STREQUAL LOG_LEVEL_WARN)
+        message(WARNING "${message}")
+    elseif(log_level STREQUAL LOG_LEVEL_ERROR)
+        message(SEND_ERROR "${message}")
+    elseif(log_level STREQUAL LOG_LEVEL_DEBUG)
+        message(STATUS "Debug: ${message}")
+    else()
+        message(STATUS "${message}")
+    endif()
+endfunction()
+
+Step 3: Using the Logger in Your CMakeLists.txt
+
+In your CMakeLists.txt, you include the logging module and use the constants and function defined there.
+
+cmake
+
+# In your main CMakeLists.txt
+
+# Include the logging module
+include(LoggingModule)
+
+# Use the log_message function with the predefined log level constants
+log_message(${LOG_LEVEL_DEBUG} "This is a debug message.")
+log_message(${LOG_LEVEL_WARN} "This is a warning message.")
+log_message(${LOG_LEVEL_ERROR} "This is an error message.")
+
+Step 4: Enable or Disable Verbosity
+
+As before, control the verbosity with the TRY_CMAKE_VERBOSE variable.
+
+cmake
+
+# Enable or disable verbose logging
+set(TRY_CMAKE_VERBOSE ON)
+
+Benefits of This Approach
+
+    Encapsulation: By defining the log levels in the logging module, you encapsulate the implementation details. Users of the module only use the constants and the log_message function.
+    Reusability: This module can be reused in different projects or different parts of the same project.
+    Consistency: Using predefined constants for log levels reduces the risk of typos and inconsistencies.
+
+This modular approach makes your CMake scripts more organized and maintainable, especially in larger projects with complex build configurations.
+User
+does message have debug, warning, like log level?
+ChatGPT
+
+In CMake, the message() function does provide different modes to represent various levels of messaging, like notices, warnings, and errors. However, it does not directly provide a "debug" level as seen in traditional logging systems. The modes available in message() are:
+
+    STATUS: Displays a message preceded by --. It's used for informational messages, typically during the configuration process.
+
+    WARNING: Generates a CMake warning. It is displayed on the console but does not stop the processing of CMake.
+
+    AUTHOR_WARNING: Similar to WARNING, but it can be turned off by setting the CMAKE_SUPPRESS_DEVELOPER_WARNINGS variable, which can be useful for messages relevant only to developers of the project.
+
+    SEND_ERROR: Generates an error message and continues processing, but skips generation of the build system.
+
+    FATAL_ERROR: Immediately stops all processing with an error message. This is used for unrecoverable errors.
+
+    DEPRECATION: Used for notifying about deprecated functionality.
+
+For a debug-like level, you would typically use STATUS in combination with a verbosity control variable (like TRY_CMAKE_VERBOSE in your case). This way, you can control the display of debug messages based on the value of this variable. For example:
+
+cmake
+
+if(TRY_CMAKE_VERBOSE)
+    message(STATUS "Debug message: This is a verbose output.")
+endif()
+
+In this setup, the debug message (in this case, a STATUS message) will only be displayed if TRY_CMAKE_VERBOSE is set to TRUE. This mimics the behavior of a debug log level in a more traditional logging system.
+User
+what feature can i add here? give me a requirement - problem, ill ad functionality
+ChatGPT
+Problem: Implement Conditional Logging Based on Log Levels
+Requirement
+
+Enhance your CMake logging system to support conditional logging based on predefined log levels. This feature should allow users of your CMake script to set a specific log level, and the logger should output messages that meet or exceed the severity of this level.
+Log Levels
+
+Define the following log levels:
+
+    DEBUG: Lowest level, for detailed debugging information.
+    INFO: General informational messages.
+    WARN: Warning messages indicating potential issues.
+    ERROR: Error messages indicating critical issues that might not stop the build.
+    FATAL: Severe error messages that should halt the build process.
+
+Functionality
+
+    Log Level Variable: Introduce a new variable, e.g., TRY_CMAKE_LOG_LEVEL, which the user can set to define the desired log level.
+
+    Enhanced Logger Function: Modify the log_message function to accept the log level of the message and compare it with the user-defined TRY_CMAKE_LOG_LEVEL. The function should only output messages that meet or exceed the severity of the set log level.
+
+    Default Log Level: If the user doesn’t set TRY_CMAKE_LOG_LEVEL, default to a specific level (e.g., ERROR).
+
+Example Usage
+
+cmake
+
+# User sets the log level in their CMakeLists.txt
+set(TRY_CMAKE_LOG_LEVEL DEBUG)
+
+# Include your logging module
+include(LoggingModule)
+
+# Various log messages
+log_message(DEBUG "This is a debug message.")
+log_message(INFO "This is an info message.")
+log_message(WARN "This is a warning message.")
+log_message(ERROR "This is an error message.")
+log_message(FATAL "This is a fatal error message.")
+
+In this scenario, all messages should be printed because the log level is set to DEBUG, which is the lowest level.
+Expected Outcome
+
+    When TRY_CMAKE_LOG_LEVEL is set to DEBUG, all messages are logged.
+    When set to INFO, debug messages are ignored, but all others are logged.
+    When set to WARN, debug and info messages are ignored, and so on.
+
+This feature will give users more fine-grained control over the verbosity of the CMake output, making it easier to filter out less important messages during the build configuration process.
+User
+idk something else... like how can i set something that user can use some variables from my module?
+ChatGPT
+
+Certainly! If you want to provide variables from your CMake module that users can utilize in their projects, you can create and set these variables within your module. The key is to make sure these variables are accessible in the scope where your module is included. Here’s a practical problem statement and solution for this:
+Problem: Expose Configuration Variables from a CMake Module
+Requirement
+
+Create a CMake module that defines a set of configuration variables. These variables should be customizable by the user and should be used to configure certain aspects of the build process. For instance, the module could provide variables for setting various build options, paths to dependencies, or feature toggles.
+Example Module: MyConfigModule.cmake
+
+Create a file named MyConfigModule.cmake with the following content:
+
+cmake
+
+# Set default values for the variables
+set(MY_MODULE_BUILD_OPTION "Default" CACHE STRING "Option for building something")
+set(MY_MODULE_DEPENDENCY_PATH "/path/to/dependency" CACHE PATH "Path to a dependency")
+
+# You can also include logic to modify these variables or add additional checks
+# ...
+
+# Make sure to document what each variable is for and how it can be overridden
+
+How Users Can Use These Variables
+
+    Including the Module: Users should include your module in their CMakeLists.txt:
+
+    cmake
+
+include(MyConfigModule)
+
+Overriding Defaults: Before including your module, users can set these variables to customize their configuration:
+
+cmake
+
+set(MY_MODULE_BUILD_OPTION "CustomOption")
+set(MY_MODULE_DEPENDENCY_PATH "/custom/path/to/dependency")
+include(MyConfigModule)
+
+Using Variables in the Build: After including your module, the variables can be used to configure the build process:
+
+cmake
+
+    message("Build option is set to: ${MY_MODULE_BUILD_OPTION}")
+    include_directories(${MY_MODULE_DEPENDENCY_PATH})
+
+Explanation
+
+    CACHE Variables: By using CACHE in the set() command, you make the variable available in the cache, allowing it to be overridden by the user before the module is included. This also keeps the variable value persistent across CMake runs.
+    Documentation: Clearly comment and document each variable in your module for users to understand their purpose and how they can be adjusted.
+    Flexibility: This approach allows users to customize the build process without modifying the module itself, providing flexibility and reusability.
+
+By following this approach, your CMake module can act as a configurable interface for your build process, giving users the ability to easily customize certain aspects of their build configuration.
+User
+show me how can it expose variable with namespace and just variable
+ChatGPT
+
+To expose variables from a CMake module, you can define them either with a namespace (to avoid name clashes and for better organization) or as regular variables. Here's how to set up both in a CMake module:
+Exposing a Namespaced Variable
+
+Namespaced variables are typically prefixed with a unique identifier (like your project or module name) to avoid conflicts with other variables.
+
+    Define a Namespaced Variable in Your Module:
+        Create a file named MyCMakeModule.cmake.
+        Inside this file, define a namespaced variable:
+
+        cmake
+
+    # MyCMakeModule.cmake
+    set(MyModule_MY_VARIABLE "SomeValue" CACHE STRING "Description of my namespaced variable")
+
+Using the Namespaced Variable in CMakeLists.txt:
+
+    In the project's CMakeLists.txt, include the module and use the variable:
+
+    cmake
+
+        include(MyCMakeModule)
+        message(STATUS "The value of MyModule_MY_VARIABLE is: ${MyModule_MY_VARIABLE}")
+
+Exposing a Regular Variable
+
+Regular variables are not prefixed with a namespace and are simpler but have a higher risk of name clashes.
+
+    Define a Regular Variable in Your Module:
+        Still in MyCMakeModule.cmake, define a regular variable:
+
+        cmake
+
+    # Add to MyCMakeModule.cmake
+    set(REGULAR_VARIABLE "RegularValue" CACHE STRING "Description of my regular variable")
+
+Using the Regular Variable in CMakeLists.txt:
+
+    Use the regular variable similarly in your CMakeLists.txt:
+
+    cmake
+
+        include(MyCMakeModule)
+        message(STATUS "The value of REGULAR_VARIABLE is: ${REGULAR_VARIABLE}")
+
+Best Practices
+
+    Namespacing: It's generally a good practice to namespace your variables, especially if you are writing a module that will be used in various projects or by other developers. This prevents potential conflicts.
+    Documentation: Document each variable in your module. This helps users of your module understand what each variable does and how it should be used.
+    Default Values and CACHE: Setting a default value and using the CACHE option makes the variable available in the CMake cache, allowing it to persist across CMake configuration runs and be overridden by the user.
+
+Additional Notes
+
+    Overriding Variables: Users can override these variables in their CMakeLists.txt before including your module. This is useful for customizing the behavior of the module.
+    Scope: Variables set in a module are available in the scope where the module is included and in all subdirectories.
+
+User
+show me how to namespace one variable
+ChatGPT
+
+Namespacing a variable in CMake involves prefixing the variable name with a unique identifier (usually related to your project or module) to avoid name collisions with other variables. This is particularly important for modules or scripts intended for use in multiple projects.
+Example: Namespacing a Variable in a CMake Module
+
+Suppose you are creating a CMake module for a project named "MyProject." Here's how you can namespace a variable:
+Step 1: Create Your CMake Module
+
+Create a file named MyProjectCMakeModule.cmake. Inside this file, you'll define a namespaced variable:
+
+cmake
+
+# MyProjectCMakeModule.cmake
+
+# Define a namespaced variable
+set(MyProject_CONFIG_OPTION "DefaultSetting" CACHE STRING "Configuration option for MyProject")
+
+In this example, MyProject_CONFIG_OPTION is the namespaced variable. The prefix MyProject_ is the namespace, and CONFIG_OPTION is the actual name of the variable.
+Step 2: Using the Namespaced Variable in Your Main CMakeLists.txt
+
+In your main CMakeLists.txt, include the module and use the variable:
+
+cmake
+
+# Include the module
+include(MyProjectCMakeModule)
+
+# Use the namespaced variable
+message(STATUS "MyProject Configuration Option: ${MyProject_CONFIG_OPTION}")
+
+This setup ensures that the variable CONFIG_OPTION is clearly associated with MyProject, reducing the risk of conflicts with similarly named variables in other modules or projects.
+Notes:
+
+    Documentation: It's important to document your namespaced variables, explaining their purpose and usage. This is especially crucial if the module is intended to be used by others.
+
+    Consistency: Be consistent with your namespacing convention across all variables in your module to maintain clarity and organization.
+
+    User Overrides: Users of your module can override these variables in their own CMakeLists.txt files before including your module. This allows for customization and flexibility.
+
+Namespacing in CMake is a simple yet effective way to maintain clarity and avoid conflicts in larger projects or when sharing modules between different projects.
+User
+how can i have these be cached
+
+  set(TRY_CMAKE_PROJECT_VERSION ${GIT_TAG})
+  set(TRY_CMAKE_VERSION_FOUND ON)
+ChatGPT
+
+To cache variables in CMake, you use the set() function with the CACHE option. This makes the variable values persistent across CMake runs and allows them to be modified via command line or CMake GUI. Additionally, you need to specify a type for the cached variables.
+
+Here's how to modify your set() commands to cache the variables:
+
+cmake
+
+# Cache the TRY_CMAKE_PROJECT_VERSION variable
+set(TRY_CMAKE_PROJECT_VERSION ${GIT_TAG} CACHE STRING "Project version based on the latest Git tag")
+
+# Cache the TRY_CMAKE_VERSION_FOUND variable
+set(TRY_CMAKE_VERSION_FOUND ON CACHE BOOL "Flag to indicate if the project version was found")
+
+In this example:
+
+    STRING and BOOL are the types for TRY_CMAKE_PROJECT_VERSION and TRY_CMAKE_VERSION_FOUND, respectively.
+    Descriptive strings are provided as comments, which can be helpful for anyone using the CMake GUI or ccmake interface.
+
+Important Notes:
+
+    Variable Overwriting: When using CACHE, CMake will not overwrite the variable if it already exists in the cache with a different value. If you need to force the variable to update every time, you can use the FORCE option:
+
+    cmake
+
+set(TRY_CMAKE_PROJECT_VERSION ${GIT_TAG} CACHE STRING "Project version based on the latest Git tag" FORCE)
+set(TRY_CMAKE_VERSION_FOUND ON CACHE BOOL "Flag to indicate if the project version was found" FORCE)
+
+Accessing Cached Variables: Once a variable is stored in the cache, you can access it in subsequent CMake runs or other CMakeLists files included later.
+
+User Overrides: Cached variables can be overridden by users via the command line when running CMake. For example:
+
+bash
+
+    cmake -DTRY_CMAKE_PROJECT_VERSION="v1.2.3" -DTRY_CMAKE_VERSION_FOUND=OFF ..
+
+    Initialization: If you use these variables before the point they are set (like in a subdirectory), you might want to initialize them with default values at the beginning of your root CMakeLists.txt.
+
+Using cached variables is particularly useful for settings that you want to persist across multiple CMake configuration runs or for settings that users might want to configure externally.
+User
+how can i parse git version retrieved and stored in
+
+# Retrieve the current version of the project
+execute_process(
+  COMMAND git describe --tags
+  WORKING_DIRECTORY ${TRY_CMAKE_PROJECT_PATH}
+  OUTPUT_VARIABLE GIT_TAG
+  ERROR_QUIET
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+ChatGPT
+
+To parse the Git version retrieved by execute_process in CMake, you'll likely want to extract the major, minor, and patch components from the Git tag. Assuming your tags follow the standard semantic versioning format (e.g., v1.2.3), you can use CMake's string manipulation commands to parse these components.
+
+Here’s a step-by-step guide to parse the version:
+Step 1: Retrieve the Git Tag
+
+You've already got this part in your script:
+
+cmake
+
+execute_process(
+  COMMAND git describe --tags
+  WORKING_DIRECTORY ${TRY_CMAKE_PROJECT_PATH}
+  OUTPUT_VARIABLE GIT_TAG
+  ERROR_QUIET
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+Step 2: Parse the Major, Minor, and Patch Numbers
+
+Now, parse the GIT_TAG variable to extract the version numbers. We'll use the string(REGEX MATCH) command to accomplish this.
+
+cmake
+
+# Check if a tag was found
+if(GIT_TAG)
+    # Parse the version numbers
+    string(REGEX MATCH "v([0-9]+)\\.([0-9]+)\\.([0-9]+)" VERSION_MATCH ${GIT_TAG})
+
+    if(VERSION_MATCH)
+        # Extract the individual version numbers
+        set(VERSION_MAJOR ${CMAKE_MATCH_1})
+        set(VERSION_MINOR ${CMAKE_MATCH_2})
+        set(VERSION_PATCH ${CMAKE_MATCH_3})
+
+        # Cache the version components if needed
+        set(TRY_CMAKE_PROJECT_VERSION_MAJOR ${VERSION_MAJOR} CACHE STRING "Major version" FORCE)
+        set(TRY_CMAKE_PROJECT_VERSION_MINOR ${VERSION_MINOR} CACHE STRING "Minor version" FORCE)
+        set(TRY_CMAKE_PROJECT_VERSION_PATCH ${VERSION_PATCH} CACHE STRING "Patch version" FORCE)
+    else()
+        # Handle the case where the tag doesn't match the expected format
+        message(WARNING "Git tag '${GIT_TAG}' does not match the expected format 'vX.Y.Z'")
+    endif()
+else()
+    message(WARNING "No Git tag found")
+endif()
+
+Explanation
+
+    The string(REGEX MATCH ...) command is used to match the Git tag against the regex pattern "v([0-9]+)\.([0-9]+)\.([0-9]+)". This pattern expects a tag in the format vMajor.Minor.Patch.
+    CMAKE_MATCH_1, CMAKE_MATCH_2, and CMAKE_MATCH_3 will hold the major, minor, and patch version numbers, respectively.
+    These extracted numbers are then set into variables (VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH) and can be cached if needed.
+    The script includes basic error handling for cases where no tag is found or the tag does not match the expected format.
+
+Note
+
+    This script assumes your Git tags strictly follow the vMajor.Minor.Patch format. If your tagging strategy differs, you'll need to adjust the regex pattern accordingly.
+    Ensure that Git is available in the environment where the CMake script is run, and the repository contains the expected tags.
+
+User
+why are all variables available in the parent cmake? i included it as module?
+ChatGPT
+
+In CMake, when you include a module using the include() directive, the variables defined in that module become available in the scope of the including CMakeLists.txt file and all its subdirectories. This is due to CMake's variable scoping rules.
+Understanding Variable Scope in CMake
+
+    Global Scope: Variables in CMake are global by default. When you set a variable using set(), it's available everywhere after the point of definition in the CMake process, unless you explicitly limit its scope.
+
+    Directory Scope: If you want a variable to be limited to the directory and its subdirectories, you can use the PARENT_SCOPE option, but this is more commonly used in functions and macros to set variables in the scope of the caller.
+
+    Cache Variables: Variables can also be set in the cache (CACHE option in set() command), making them persistent across multiple runs of CMake and visible in the CMake GUI. These are global as well.
+
+Why Variables from an Included Module Are Available
+
+When you include a module with include(), the commands in that module are effectively inserted into and run in the context of the including CMakeLists.txt. Therefore, any variables set in the module (without PARENT_SCOPE) behave as if they were set directly in the CMakeLists.txt file.
+Controlling Visibility
+
+If you want to control the visibility or impact of variables set in a module:
+
+    Use set(... PARENT_SCOPE): To set a variable in the scope of the including file without affecting the global scope.
+    Use Cache Variables: If you want the variables to persist across multiple CMake runs and be user-configurable.
+    Use unset(): If you need to clear or limit the visibility of a variable after certain points in your CMake script.
+    Encapsulate in Functions or Macros: Variables created inside functions or macros are local to that scope unless explicitly set with PARENT_SCOPE.
+
+Best Practices
+
+    Documentation: Clearly document the variables your module sets and their intended scope. This helps users of your module understand its effects on their build configuration.
+    Prefix Names: Use a unique prefix for variables in your module to avoid name clashes and make it clear where variables are coming from.
+    Minimal Global Impact: As a best practice, try to minimize the global impact of your modules to avoid unintended side effects on the including project's build configuration.
+
+Understanding and properly managing variable scope is key to writing maintainable and predictable CMake scripts and modules.
+User
+hmmm should i even encapsulate them? i have internal variables such as
+
+set(LOG_LEVEL_VERBOSE "VERBOSE")
+set(LOG_LEVEL_INFO "INFO")
+set(LOG_LEVEL_DEBUG "DEBUG")
+ChatGPT
+
+In CMake, whether or not to encapsulate variables, especially internal ones, depends on the context and scope of their use. For variables like log levels in a logging module, which are essentially constants, encapsulation might not be strictly necessary, but it can still be beneficial. Let's consider both approaches:
+Without Encapsulation
+
+In your current setup, you define log level variables globally:
+
+cmake
+
+set(LOG_LEVEL_VERBOSE "VERBOSE")
+set(LOG_LEVEL_INFO "INFO")
+set(LOG_LEVEL_DEBUG "DEBUG")
+
+These variables are accessible wherever the module is included. It's straightforward but has a few potential downsides:
+
+    Name Clashes: If another script or module defines variables with the same names, it could lead to conflicts.
+    Global Pollution: The global namespace gets populated with these variables, which may not be necessary if they are only meant for internal use within the module.
+
+With Encapsulation
+
+An alternative is to encapsulate these variables within a function or a macro. This approach keeps the global namespace cleaner and reduces the chance of name clashes.
+Using Functions
+
+You can define a function to handle logging, which internally uses these log level variables:
+
+cmake
+
+function(my_log log_level message)
+    set(LOG_LEVEL_VERBOSE "VERBOSE")
+    set(LOG_LEVEL_INFO "INFO")
+    set(LOG_LEVEL_DEBUG "DEBUG")
+
+    # Logging logic here...
+endfunction()
+
+In this case, the log level variables are local to the my_log function. They are set each time the function is called, which is a bit redundant but keeps them encapsulated.
+Using Macros
+
+Macros in CMake don't have their own scope like functions, so variables set within a macro are set in the scope where the macro is called. This can be useful for setting constants:
+
+cmake
+
+macro(define_log_levels)
+    set(LOG_LEVEL_VERBOSE "VERBOSE" PARENT_SCOPE)
+    set(LOG_LEVEL_INFO "INFO" PARENT_SCOPE)
+    set(LOG_LEVEL_DEBUG "DEBUG" PARENT_SCOPE)
+endmacro()
+
+You would call define_log_levels() in the CMakeLists.txt where you want to use these log levels. This approach still introduces the variables into the parent scope but does so in a controlled manner.
+Best Practice
+
+Encapsulation is generally a good practice, especially if the variables are meant for internal use within the module. It enhances readability, maintainability, and reduces potential conflicts. However, for constants or widely used variables that don't change and have clearly unique names, global definition can be acceptable.
+
+In your case, given that log levels are constants and likely to be used across various parts of the build scripts, defining them globally with unique names (perhaps with a prefix specific to your module) is a reasonable approach. Encapsulation would be more critical if these variables were mutable or had generic names that risked conflicts.
