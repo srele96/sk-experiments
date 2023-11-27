@@ -45,3 +45,4 @@ The root directory for JavaScript experiments.
 - [Try to understand Quaternions](./experiments/try-to-understand-quaternions/)
 - [Elements animated](./experiments/elements-animated/)
 - [ssr](./experiments/ssr/)
+- [Practice Jest](./experiments/practice-jest/)
