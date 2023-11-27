@@ -25,6 +25,7 @@ The root directory for JavaScript experiments.
 - [Render Isomorphic React App](./experiments/render-isomorphic-react-app/)
 - [Have Fun Setting SSR](./experiments/have-fun-setting-ssr/)
 - [Proxy to Webpack Dev Server](./experiments/proxy-to-webpack-dev-server/)
+- [Algorithms](./experiments/algorithms/)
 - [Play with types - TypeScript](./experiments/play-with-types/)
 - [Render React on The Server](./experiments/render-react-on-the-server/)
 - [Layers - Album With Cool Scaling and Movement](./experiments/layers/)
