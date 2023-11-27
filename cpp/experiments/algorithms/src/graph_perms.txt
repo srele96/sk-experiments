@@ -1,0 +1,166 @@
+Once I explained it to ChatGPT it became clearer, like rubber duck debugging
+
+User
+
+i have graph permutation problem where amount of permutations of the graph is the result of this recurrence relation:
+
+f(n) = 2 * f(n - 1 ), where f(1) = 3
+
+which means graph of 2 nodes f(2) = 6, f(3) = 12, f(4) = 24, f(5) = 48, f(n) = 2 * f(n - 1)
+
+i am having problems to create an algorithm that can perform that, can this recurrence relation somehow help me out figure out an algorithm since i figured out how the recurrence loks?
+
+User
+
+the problem is that im performing sum of 3 values of each node, graph of 1 node has 3 values on that node and hence f(1) = 3, graph of 2 nodes has 6 versions of that graph
+
+V(1) = {R, G, B} and therefore we may have the following three graphs:
+
+V(1) {R}
+V(1) {G}
+V(1) {B}
+
+if we have two nodes
+
+V(1) = {R, G, B}
+V(2) = {R, G, B}
+E(1, 2)
+
+we have the following six graphs:
+
+V(1) {R}, V(2) {G}
+V(1) {R}, V(2) {B}
+V(1) {G}, V(2) {R}
+V(1) {G}, V(2) {B}
+V(1) {B}, V(2) {R}
+V(1) {B}, V(2) {G}
+
+as you can see, E(1, 2) there 1 and 2 must not have same marker, one of the major issues i have is the determining the marker a node should pick because it related to one neighbour node that already has picked a marker and limits the current one, or current may pick which limits the neighbour, the other thing is generating the permutations, i can imagine that i can express it in form of a recurrence relation where f(n) = 2 * f(n-1) where i for each previous permutation, generate two new ones with two free choices that are not taken in the previous permutation, however i feel like it is fairly complex problem to know what was picked in the previous one
+
+if we have three nodes
+
+V(1) = {R, G, B}
+V(2) = {R, G, B}
+V(3) = {R, G, B}
+E(1, 2)
+E(1, 3)
+
+V(1) {R}, V(2) {G}, V(3) {G} // 3 connects to 1, 1 picked G
+V(1) {R}, V(2) {G}, V(3) {B} // 3 connects to 1, 1 picked B
+V(1) {R}, V(2) {B}, V(3) {G} // 3 connects to 1, 1 picked G
+V(1) {R}, V(2) {B}, V(3) {B} // 3 connects to 1, 1 picked B
+V(1) {G}, V(2) {R}, V(3) {R} // 3 connects to 1, 1 picked R
+V(1) {G}, V(2) {R}, V(3) {B} // 3 connects to 1, 1 picked B
+V(1) {G}, V(2) {B}, V(3) {R} // 3 connects to 1, 1 picked R
+V(1) {G}, V(2) {B}, V(3) {B} // 3 connects to 1, 1 picked B
+V(1) {B}, V(2) {R}, V(3) {R} // 3 connects to 1, 1 picked R
+V(1) {B}, V(2) {R}, V(3) {G} // 3 connects to 1, 1 picked G
+V(1) {B}, V(2) {G}, V(3) {R} // 3 connects to 1, 1 picked R
+V(1) {B}, V(2) {G}, V(3) {G} // 3 connects to 1, 1 picked G
+
+or alternative
+
+V(1) = {R, G, B}
+V(2) = {R, G, B}
+V(3) = {R, G, B}
+E(1, 2)
+E(2, 3)
+
+V(1) {R}, V(2) {G}, V(3) {R} // 3 connects to 2, 2 picked R
+V(1) {R}, V(2) {G}, V(3) {B} // 3 connects to 2, 2 picked B
+V(1) {R}, V(2) {B}, V(3) {R} // 3 connects to 2, 2 picked R
+V(1) {R}, V(2) {B}, V(3) {B} // 3 connects to 2, 2 picked B
+V(1) {G}, V(2) {R}, V(3) {G} // 3 connects to 2, 2 picked G
+V(1) {G}, V(2) {R}, V(3) {B} // 3 connects to 2, 2 picked B
+V(1) {G}, V(2) {B}, V(3) {R} // 3 connects to 2, 2 picked R
+V(1) {G}, V(2) {B}, V(3) {G} // 3 connects to 2, 2 picked G
+V(1) {B}, V(2) {R}, V(3) {G} // 3 connects to 2, 2 picked G
+V(1) {B}, V(2) {R}, V(3) {B} // 3 connects to 2, 2 picked B
+V(1) {B}, V(2) {G}, V(3) {R} // 3 connects to 2, 2 picked R
+V(1) {B}, V(2) {G}, V(3) {B} // 3 connects to 2, 2 picked B
+
+if we have four nodes
+
+V(1) = {R, G, B}
+V(2) = {R, G, B}
+V(3) = {R, G, B}
+V(4) = {R, G, B}
+E(1, 2)
+E(1, 3)
+E(1, 4)
+
+V(1) {R}, V(2) {G}, V(3) {G}, V(4) {G} // 4 connects to 1, 1 picked G
+V(1) {R}, V(2) {G}, V(3) {G}, V(4) {B} // 4 connects to 1, 1 picked B
+V(1) {R}, V(2) {G}, V(3) {B}, V(4) {G} // 4 connects to 1, 1 picked G
+V(1) {R}, V(2) {G}, V(3) {B}, V(4) {B} // 4 connects to 1, 1 picked B
+V(1) {R}, V(2) {B}, V(3) {G}, V(4) {G} // 4 connects to 1, 1 picked G
+V(1) {R}, V(2) {B}, V(3) {G}, V(4) {B} // 4 connects to 1, 1 picked B
+V(1) {R}, V(2) {B}, V(3) {B}, V(4) {G} // 4 connects to 1, 1 picked G
+V(1) {R}, V(2) {B}, V(3) {B}, V(4) {B} // 4 connects to 1, 1 picked B
+V(1) {G}, V(2) {R}, V(3) {R}, V(4) {R} // 4 connects to 1, 1 picked R
+V(1) {G}, V(2) {R}, V(3) {R}, V(4) {B} // 4 connects to 1, 1 picked B
+V(1) {G}, V(2) {R}, V(3) {B}, V(4) {R} // 4 connects to 1, 1 picked R
+V(1) {G}, V(2) {R}, V(3) {B}, V(4) {B} // 4 connects to 1, 1 picked B
+V(1) {G}, V(2) {B}, V(3) {R}, V(4) {R} // 4 connects to 1, 1 picked R
+V(1) {G}, V(2) {B}, V(3) {R}, V(4) {B} // 4 connects to 1, 1 picked B
+V(1) {G}, V(2) {B}, V(3) {B}, V(4) {R} // 4 connects to 1, 1 picked R
+V(1) {G}, V(2) {B}, V(3) {B}, V(4) {B} // 4 connects to 1, 1 picked B
+V(1) {B}, V(2) {R}, V(3) {R}, V(4) {R} // 4 connects to 1, 1 picked R
+V(1) {B}, V(2) {R}, V(3) {R}, V(4) {G} // 4 connects to 1, 1 picked G
+V(1) {B}, V(2) {R}, V(3) {G}, V(4) {R} // 4 connects to 1, 1 picked R
+V(1) {B}, V(2) {R}, V(3) {G}, V(4) {G} // 4 connects to 1, 1 picked G
+V(1) {B}, V(2) {G}, V(3) {R}, V(4) {R} // 4 connects to 1, 1 picked R
+V(1) {B}, V(2) {G}, V(3) {R}, V(4) {G} // 4 connects to 1, 1 picked G
+V(1) {B}, V(2) {G}, V(3) {G}, V(4) {R} // 4 connects to 1, 1 picked R
+V(1) {B}, V(2) {G}, V(3) {G}, V(4) {G} // 4 connects to 1, 1 picked G
+
+or alternative
+
+V(1) = {R, G, B}
+V(2) = {R, G, B}
+V(3) = {R, G, B}
+V(4) = {R, G, B}
+E(1, 2)
+E(1, 3)
+E(2, 4)
+
+V(1) {R}, V(2) {G}, V(3) {R}, V(4) {R} // 4 connects to 2, 2 picked R
+V(1) {R}, V(2) {G}, V(3) {R}, V(4) {B} // 4 connects to 2, 2 picked B
+V(1) {R}, V(2) {G}, V(3) {B}, V(4) {R} // 4 connects to 2, 2 picked R
+V(1) {R}, V(2) {G}, V(3) {B}, V(4) {B} // 4 connects to 2, 2 picked B
+V(1) {R}, V(2) {B}, V(3) {R}, V(4) {R} // 4 connects to 2, 2 picked R
+V(1) {R}, V(2) {B}, V(3) {R}, V(4) {G} // 4 connects to 2, 2 picked G
+V(1) {R}, V(2) {B}, V(3) {B}, V(4) {R} // 4 connects to 2, 2 picked R
+V(1) {R}, V(2) {B}, V(3) {B}, V(4) {G} // 4 connects to 2, 2 picked G
+V(1) {G}, V(2) {R}, V(3) {G}, V(4) {G} // 4 connects to 2, 2 picked G
+V(1) {G}, V(2) {R}, V(3) {G}, V(4) {B} // 4 connects to 2, 2 picked B
+V(1) {G}, V(2) {R}, V(3) {B}, V(4) {G} // 4 connects to 2, 2 picked G
+V(1) {G}, V(2) {R}, V(3) {B}, V(4) {B} // 4 connects to 2, 2 picked B
+V(1) {G}, V(2) {B}, V(3) {G}, V(4) {R} // 4 connects to 2, 2 picked R
+V(1) {G}, V(2) {B}, V(3) {G}, V(4) {G} // 4 connects to 2, 2 picked G
+V(1) {G}, V(2) {B}, V(3) {B}, V(4) {R} // 4 connects to 2, 2 picked R
+V(1) {G}, V(2) {B}, V(3) {B}, V(4) {G} // 4 connects to 2, 2 picked G
+V(1) {B}, V(2) {R}, V(3) {R}, V(4) {G} // 4 connects to 2, 2 picked G
+V(1) {B}, V(2) {R}, V(3) {R}, V(4) {B} // 4 connects to 2, 2 picked B
+V(1) {B}, V(2) {R}, V(3) {G}, V(4) {G} // 4 connects to 2, 2 picked G
+V(1) {B}, V(2) {R}, V(3) {G}, V(4) {B} // 4 connects to 2, 2 picked B
+V(1) {B}, V(2) {G}, V(3) {R}, V(4) {R} // 4 connects to 2, 2 picked R
+V(1) {B}, V(2) {G}, V(3) {R}, V(4) {B} // 4 connects to 2, 2 picked B
+V(1) {B}, V(2) {G}, V(3) {G}, V(4) {R} // 4 connects to 2, 2 picked R
+V(1) {B}, V(2) {G}, V(3) {G}, V(4) {B} // 4 connects to 2, 2 picked B
+
+or alternative
+
+... if there is pattern or property on node selection based on previous ones, maybe i can use it to exploit no space complexity
+
+
+Permutations(Graph, Node, ):
+  for each permutation in Permutations(Graph, Node - 1):
+
+
+void write(char* buf, const size_t size) {
+  ... write to buffer!
+  for(size_t i {0}; i < size; ++i) {
+
+  }
+}
