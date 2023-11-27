@@ -1,3 +1,13 @@
+# https://stackoverflow.com/questions/8237645/how-to-add-linux-executable-files-to-gitignore
+
+# Ignore all files.
+*
+# Don't ignore everything that contains . as it indicates the presence of an extension.
+!*.*
+# Don't ignore directories.
+!*/
+
+# Ignore remaining executables.
 build
 *.exe
 *.o
