@@ -31,3 +31,7 @@ The root directory for C++ experiments.
 - [Initialization types](./experiments/initialization_types/)
 - [TCP Socket server](./experiments/tcp_socket_server/)
 - [Load dynamic library](./experiments/load_dynamic_library/)
+- [Curiously Recurring Template Pattern](./experiments/curiously_recurring_template_pattern/)
+- [Template Metaprogramming](./experiments/template_metaprogramming/)
+- [Algorithms](./experiments/algorithms/)
+- [Raw memory](./experiments/raw_memory/)

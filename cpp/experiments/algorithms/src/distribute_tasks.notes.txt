@@ -1,0 +1,122 @@
+to become good at solving problems in a time period, i need to be solving them within that time period
+learning without a time period is fine, however solving problems should be limited because thats what the test expects of me
+whenever im doing leetcode problems ill be doing them within a time period of 30 minutes and once the time is up, i can look up a solution
+i am not used to solving problems within time frame so maybe i should start doing competitions on leetcode or codeforces?
+i tend to seek perfection, starting new wow hero i must know all i know on dk to start it, starting new programming language, i must know
+  c++ smoothly like javascript to start it, learning algorithms and data structures, i must have perfect time and space complexity... for
+  chsrist sake, just start and practice plenty, you can improvel ater on things you want to...
+
+-------------------------------------------------------------------------------
+
+i don't want to do programs in c++ before i learn c++
+i have to learn web dev before i make website with mousemove effect
+i have to learn to make game engine before i make a game
+i have to learn opengl and c++ before using either of them to build something
+i have to get a job as programmer before i start doing youtube
+
+i have to ___do something i don't want___ before i ___do something i want___
+
+i continually set up myself for failure from the start
+
+the more i think about patterns i do more i realize there is more than i can ever change...
+
+
+
+
+figure out the initial template and execute manually using thought process and
+fix bugs and test code on the go against various cases
+
+-------------------------------------------------------------------------------
+
+to become good at solving problems in a time period, i need to be solving them within that time period
+learning without a time period is fine, however solving problems should be limited because thats what the test expects of me
+whenever im doing leetcode problems ill be doing them within a time period of 30 minutes and once the time is up, i can look up a solution
+i am not used to solving problems within time frame so maybe i should start doing competitions on leetcode or codeforces?
+i tend to seek perfection, starting new wow hero i must know all i know on dk to start it, starting new programming language, i must know
+  c++ smoothly like javascript to start it, learning algorithms and data structures, i must have perfect time and space complexity... for
+  chsrist sake, just start and practice plenty, you can improvel ater on things you want to...
+
+-------------------------------------------------------------------------------
+
+I apologize for misunderstanding your question earlier. It sounds like you're seeking specific strategies to combat perfectionism and the tendency to get stuck in overthinking while attempting tasks. Here are more focused techniques to help you address this issue:
+
+    Set Time Limits:
+    Allocate a specific amount of time to work on a task or problem. Use a timer or alarm to keep yourself accountable. When the time is up, move on, even if the task is not completed.
+
+    Embrace Imperfection:
+    Remind yourself that it's okay to make mistakes and produce imperfect work. Focus on completing the task rather than achieving perfection.
+
+    Prioritize Completion:
+    Shift your focus from making everything perfect to completing tasks. Practice finishing tasks, even if they're not as polished as you'd like.
+
+    Practice Mindfulness:
+    When you notice yourself overthinking, take a deep breath and bring your focus back to the present moment. Mindfulness can help you stay grounded and prevent excessive rumination.
+
+    Set Small Goals:
+    Break tasks into smaller, manageable goals. Celebrate completing each goal, even if it's just a small step toward the larger task.
+
+    Use a Checklist:
+    Create a checklist of tasks that need to be completed. This can help you stay organized and track your progress.
+
+    Limit Research Time:
+    If you find yourself spending excessive time on research, set a time limit for gathering information. After that, commit to applying what you've learned.
+
+    Practice "Good Enough":
+    Aim for a "good enough" result rather than perfection. Understand that perfect is often the enemy of progress.
+
+    Accept Failure as Learning:
+    See failure as an opportunity to learn and improve. Analyze what went wrong and how you can do better next time.
+
+    Practice Rapid Iteration:
+    Instead of spending too much time on a single iteration, focus on making quick iterations. This encourages experimentation and learning through multiple attempts.
+
+    Visualize Completion:
+    Imagine the feeling of accomplishment and satisfaction when you complete a task. Use this visualization to motivate yourself to finish.
+
+    Time-Box Problem Solving:
+    Set a specific time limit for problem-solving. If you can't find a solution within that time, move on to something else and return later with a fresh perspective.
+
+    Celebrate Progress:
+    Celebrate your progress and efforts, not just the end result. Acknowledge the work you've put in, even if the outcome is not perfect.
+
+    Seek Accountability:
+    Share your goals and progress with a friend or mentor who can help hold you accountable for completing tasks.
+
+Remember that overcoming perfectionism is a gradual process. Be patient with yourself and keep practicing these strategies. As you consistently apply them, you'll find it easier to break free from the cycle of overthinking and take action more confidently.
+
+-------------------------------------------------------------------------------
+
+what i was doing in that one year, reversing the problem solving process
+i wasn't figuring out solutions to problems, i was thinking about components and how they play together
+i reversed the problem solving process of programming where i was programming the solution i already knew
+which means that to practice c++ and what i can do with it, i could using pseudo-code go algorithmically
+  through behavior that i want and write some thousands of pseudo code which then i can translate to run
+  using purely C++ without any libraries
+
+  what it would allow is to have a lot of code that's already implemented and i only have to rewrite it
+  or rather figure out how to rewrite it using c++, i should avoid constructs such as first class functions
+  where they are treated like variables
+i can use the same concept of reversing the process by drawing a graph, tree, or some other data structure
+and start figuring out various kinds of behavior, movement, etc, through that data structure
+  * the data structure may be recursive by nature and i could do many recursive patterns using it...
+what it would allow me is to practice some more of c++ and from different angle approach algorithmic design...
+  i wouldn't figure out solutions to problems whose solutions i don't know, i would go through some state
+  for example a graph of a city, a tree describing something, a trie containing various data, etc...
+  figure out a behavior i would like to have in that tree, that way i don't have a problem i figure out a
+  solution in a painless way and practice various activities over data structures which should allow me
+  to increase familiarity, so when a problem comes which may be mapped to my solution,
+also that process would be somewhat easier than cognitive creation of solutions to various problems
+
+question: how do i come up with these ideas? is it talent? these ideas have worked for me
+  - they yielded me great success learning c++ in painless manner
+  - they yielded me great skill using reactjs
+  - they allowed me to figure out a way to learn math and other natural sciences
+  - they allowed me to think of unique ways to do studying which often felt tedious
+  -
+
+-------------------------------------------------------------------------------
+
+* think about one thing i can take out of this book, speach, etc... to improve
+* have i lived it? no, then i don't understand and should apply it to understand
+  * understand before rejecting an idea with an explanation of why it won't work
+
