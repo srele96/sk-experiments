@@ -1,0 +1,938 @@
+GPT-4
+User
+// https://en.cppreference.com/w/cpp/memory/enable_shared_from_this
+class observer : public std::enable_shared_from_this<observer> {
+ public:
+  std::shared_ptr<observer> getptr() { return shared_from_this(); }
+
+  [[nodiscard]] static std::shared_ptr<observer> create() {
+    return std::shared_ptr<observer>(new observer());
+  }
+
+  template <typename T>
+  void operator()(T&& data) const {
+    std::cout << data << "\n";
+  }
+
+ private:
+  observer() = default;
+};
+
+class subject {
+ public:
+  void subscribe(const std::weak_ptr<observer>& p_observer) {
+    m_observers.push_back(p_observer);
+  }
+
+  template <typename T>
+  void notify(T&& data) {
+    std::for_each(m_observers.begin(), m_observers.end(),
+                  [data = std::forward<T>(data)](
+                      std::weak_ptr<observer>& p_observer) mutable {
+                    if (p_observer.lock()) {
+                      // call the observer's operator()
+                    }
+                  });
+  }
+
+ private:
+  std::vector<std::weak_ptr<observer>> m_observers;
+};
+ChatGPT
+
+The given code defines two classes, observer and subject, which implement a basic version of the observer design pattern using std::shared_ptr and std::weak_ptr for memory management.
+
+The observer class:
+
+    Inherits from std::enable_shared_from_this<observer>, which provides a mechanism to retrieve a std::shared_ptr that owns the caller object.
+
+    Has a getptr method that returns a std::shared_ptr<observer> to this object.
+
+    Implements a create static function that returns a std::shared_ptr<observer> created with new. This is a factory method to create observer instances.
+
+    Has a templated function call operator operator() that takes any type T and prints it to the standard output stream.
+
+    Has a private constructor, which means that observer instances can only be created through the create function to ensure they are always managed by a std::shared_ptr.
+
+The subject class:
+
+    Has a subscribe method that takes a std::weak_ptr<observer> and stores it in a vector of weak_ptr called m_observers. This is used to keep a reference to the observer without owning it.
+
+    Has a notify method that takes a template type T and is supposed to notify all subscribed observers with the data. It loops through the m_observers vector and attempts to lock each weak_ptr. If the locking is successful (i.e., the observer is still alive), it should call the observer's function call operator with the data.
+
+However, there is a missing implementation detail in the notify function:
+
+cpp
+
+if (auto sp = p_observer.lock()) {
+  (*sp)(std::forward<T>(data));
+}
+
+This code should replace the comment inside the notify function's lambda. The lock method tries to obtain a shared_ptr that owns the object managed by the weak_ptr. If successful, it then calls the observer's function call operator with the given data.
+
+After these adjustments, the notify method should look like this:
+
+cpp
+
+template <typename T>
+void notify(T&& data) {
+  std::for_each(m_observers.begin(), m_observers.end(),
+                [data = std::forward<T>(data)](std::weak_ptr<observer>& p_observer) mutable {
+                  if (auto sp = p_observer.lock()) {
+                    (*sp)(std::forward<T>(data));
+                  }
+                });
+}
+
+This allows subject to iterate through its observers and notify them if they still exist. The use of std::weak_ptr prevents memory leaks by not extending the lifetime of observer instances beyond their intended scope.
+User
+what does .lock return?
+ChatGPT
+
+The lock method of a std::weak_ptr returns a std::shared_ptr that shares ownership of the object managed by the std::weak_ptr. If the original std::shared_ptr that shared ownership of the object has already expired (i.e., there are no more std::shared_ptr instances owning the object), the lock method will return an empty std::shared_ptr (equivalent to a std::shared_ptr with a nullptr).
+
+Here's how it works:
+
+    If at least one std::shared_ptr that owns the object still exists, lock will create a new std::shared_ptr that also owns the object, and the count of owners will increase by one.
+
+    If no std::shared_ptr owns the object (meaning all have been destroyed or reset), lock will return an empty std::shared_ptr, and the object will not be accessible through this std::shared_ptr.
+
+The lock method is used to safely access the potentially shared object without causing undefined behavior by dereferencing a dangling pointer. It ensures that the object will not be destroyed while you have access to it through the returned std::shared_ptr. If you are able to obtain a std::shared_ptr from lock, you are guaranteed that the object exists for the duration of the std::shared_ptr's lifetime.
+
+Here's a brief example:
+
+cpp
+
+std::shared_ptr<int> sp(new int(42)); // sp owns the object
+std::weak_ptr<int> wp = sp; // wp is constructed from sp, but does not own the object
+
+// Now, sp goes out of scope or is reset
+sp.reset();
+
+// At this point, wp.lock() will return an empty std::shared_ptr<int>
+auto sp2 = wp.lock();
+if (sp2) {
+    // This block will not execute because sp2 is empty
+    std::cout << "Managed object exists, value is " << *sp2 << std::endl;
+} else {
+    // This block will execute
+    std::cout << "Managed object has been destroyed or no longer exists." << std::endl;
+}
+
+This code will print the message indicating that the managed object no longer exists.
+User
+struct printer {
+  int m_a;
+  int m_b;
+  int m_c;
+
+  std::ostream& operator<<(std::ostream& ostream) const {
+    ostream << "(" << m_a << ", " << m_b << ", " << m_c << ")";
+
+    return ostream;
+  }
+};
+
+
+do i overload this correctly?
+ChatGPT
+
+No, the operator you're trying to overload is not implemented correctly. The << operator is typically overloaded as a non-member (free) function rather than a member function when you want to use it with standard streams such as std::ostream. This is because the left-hand operand needs to be the stream (like std::cout), and not the object you are trying to print. Also, the operator should be a friend of the class if it needs to access private or protected members.
+
+Here's how you could correctly overload the << operator for your printer struct:
+
+cpp
+
+#include <iostream>
+
+struct printer {
+  int m_a;
+  int m_b;
+  int m_c;
+
+  // Overload the << operator as a friend function
+  friend std::ostream& operator<<(std::ostream& ostream, const printer& p) {
+    ostream << "(" << p.m_a << ", " << p.m_b << ", " << p.m_c << ")";
+    return ostream;
+  }
+};
+
+int main() {
+  printer p{1, 2, 3};
+  std::cout << p << std::endl;
+  return 0;
+}
+
+In this code:
+
+    The << operator is overloaded as a free function with the friend keyword, which allows it to access the private members m_a, m_b, and m_c of the printer struct.
+    The first parameter is a reference to std::ostream, which allows us to pass the stream to the function.
+    The second parameter is a constant reference to the printer object you want to output.
+    It prints the members of the printer object to the stream and then returns the stream.
+
+This way, you can use the << operator to print printer objects to any output stream (like std::cout).
+User
+struct printer {
+  int m_a;
+  int m_b;
+  int m_c;
+
+  std::ostream& operator<<(std::ostream& ostream) {
+    ostream << "(" << m_a << ", " << m_b << ", " << m_c << ")";
+
+    return ostream;
+  }
+};
+test.cpp:21:15: error: invalid operands to binary expression ('std::ostream' (aka 'basic_ostream<char>') and 'data::printer')
+ChatGPT
+
+The error message you're encountering is due to trying to overload the operator<< as a member function of printer instead of as a non-member function. The left-hand operand of the operator<< when used with streams is the stream object itself (like std::cout), and since member functions implicitly take the object itself (*this) as the left-hand operand, it does not match the usual usage pattern for stream insertion.
+
+Here's how you could correctly define and declare the operator<< for your printer struct as a non-member function:
+
+cpp
+
+#include <iostream>
+
+struct printer {
+  int m_a;
+  int m_b;
+  int m_c;
+};
+
+// Correctly overloaded << operator as a non-member function
+std::ostream& operator<<(std::ostream& ostream, const printer& p) {
+  ostream << "(" << p.m_a << ", " << p.m_b << ", " << p.m_c << ")";
+  return ostream;
+}
+
+int main() {
+  printer p{1, 2, 3};
+  std::cout << p << std::endl;  // This should work correctly now
+  return 0;
+}
+
+With this change, your code should compile and work correctly, printing out the printer object in the format (m_a, m_b, m_c).
+User
+test.cpp:59:17: error: overloaded 'operator<<' must be a binary operator (has 3 parameters)
+
+struct printer {
+  int m_a;
+  int m_b;
+  int m_c;
+
+  std::ostream& operator<<(std::ostream& ostream, const printer& p_printer);
+};
+
+std::ostream& operator<<(std::ostream& ostream, const printer& p_printer) {
+  ostream << "(" << p_printer.m_a << ", " << p_printer.m_b << ", "
+          << p_printer.m_c << ")";
+
+  return ostream;
+}
+ChatGPT
+
+The error message is indicating that your operator<< has the wrong number of parameters for an overload as a member function. However, the declaration inside the printer struct is unnecessary and incorrect. The operator<< should be a non-member function only, and should not be declared inside the struct at all.
+
+Here's the corrected code with the operator<< implemented as a non-member function:
+
+cpp
+
+#include <iostream>
+
+struct printer {
+  int m_a;
+  int m_b;
+  int m_c;
+};
+
+// Correctly overloaded << operator as a non-member function
+std::ostream& operator<<(std::ostream& ostream, const printer& p_printer) {
+  ostream << "(" << p_printer.m_a << ", " << p_printer.m_b << ", " << p_printer.m_c << ")";
+  return ostream;
+}
+
+int main() {
+  printer p{1, 2, 3};
+  std::cout << p << std::endl; // This should work correctly now
+  return 0;
+}
+
+Remove the declaration from inside the printer struct and ensure that the definition of operator<< is outside and after the struct definition. This way, it correctly takes two parameters: the stream (std::ostream&) and a constant reference to the object to be printed (const printer&).
+User
+TEST(HelloTest, BasicAssertions) {
+  design_pattern::subject subject;
+
+  std::shared_ptr<design_pattern::observer> ptr_observer_a{
+      design_pattern::observer::create()};
+  std::shared_ptr<design_pattern::observer> ptr_observer_b{
+      design_pattern::observer::create()};
+  std::shared_ptr<design_pattern::observer> ptr_observer_c{
+      design_pattern::observer::create()};
+
+  subject.subscribe(ptr_observer_a);
+  subject.subscribe(ptr_observer_b);
+  subject.subscribe(ptr_observer_c);
+
+  constexpr int param_a{1};
+  constexpr int param_b{2};
+  constexpr int param_c{3};
+
+  subject.notify(data::printer{param_a, param_b, param_c});
+
+  // assert that each observer operator() was called with received expected
+  // printer
+
+  std::cout << "hello world\n";
+
+  EXPECT_STRNE("hello", "world");
+  EXPECT_EQ(7 * 6, 42);
+}
+ChatGPT
+
+It appears you're attempting to write a test case using the Google Test framework. The TEST macro defines a function that implements a test case with the given name (HelloTest) and test (BasicAssertions).
+
+In your example, you're setting up a subject and three observers (ptr_observer_a, ptr_observer_b, ptr_observer_c) which are instances of a class observer that should adhere to the Observer design pattern. You then subscribe these observers to the subject.
+
+After setting up, you're using subject to notify the observers with a printer object that holds three integers. However, the subject and observer classes from your earlier snippet do not directly support handling printer objects since we have not seen an implementation for them that is compatible with printer.
+
+Additionally, you're trying to assert that the observers' operator() was called with the expected printer. However, with the code provided earlier, there is no tracking mechanism within the observer class to verify if operator() was called or to check the arguments it was called with. In order to make assertions on this behavior, you'd need to modify the observer class to track invocations of operator().
+
+Finally, you're making two basic assertions with EXPECT_STRNE and EXPECT_EQ which are actual Google Test assertions, and they are used correctly to verify that "hello" is not equal to "world" and that 7 * 6 equals 42, respectively.
+
+To incorporate assertions related to the observer pattern, you'd typically have mock objects and use Google Mock (or another mocking framework) to assert that a certain method was called with certain parameters. This is not directly shown in your code.
+
+Here is a pseudo-example of how you might set up such a test:
+
+cpp
+
+// Mock Observer using Google Mock
+class MockObserver : public Observer {
+ public:
+  MOCK_METHOD(void, OnNotify, (const Printer&), (override));
+};
+
+TEST(HelloTest, BasicAssertions) {
+  // ... setup of subject and observers ...
+
+  MockObserver mock_observer;
+  std::shared_ptr<Observer> observer_ptr = std::make_shared<MockObserver>(mock_observer);
+
+  subject.subscribe(observer_ptr);
+
+  // Expect that the OnNotify method will be called with the correct printer.
+  EXPECT_CALL(mock_observer, OnNotify(::testing::_)).Times(1); // Add more matchers as needed
+
+  // ... the rest of your test ...
+}
+
+You would need to implement the OnNotify function or a similar callback in your Observer class that would be called upon notification. The EXPECT_CALL macro is used to set up expectations on the mock object, which are checked by Google Test at the end of the test case.
+User
+im supposed to mock `void operator()(T&& data) const` of the observer // https://en.cppreference.com/w/cpp/memory/enable_shared_from_this
+class observer : public std::enable_shared_from_this<observer> {
+ public:
+  std::shared_ptr<observer> getptr() { return shared_from_this(); }
+
+  [[nodiscard]] static std::shared_ptr<observer> create() {
+    return std::shared_ptr<observer>(new observer());
+  }
+
+  template <typename T>
+  void operator()(T&& data) const {
+    std::cout << data << "\n";
+  }
+
+ private:
+  observer() = default;
+};
+ChatGPT
+
+To mock the operator() of the observer class for testing purposes, you'll need to use Google Mock, which is part of the Google Test framework. You'll create a mock class that inherits from observer and use the MOCK_METHOD macro to mock the operator() function. However, since operator() is a template method, it complicates matters because Google Mock does not directly support mocking templated functions.
+
+Here's an approach you can take by adding a non-templated virtual method to observer that can be overridden and called from the templated operator():
+
+cpp
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+#include <iostream>
+#include <memory>
+
+class observer : public std::enable_shared_from_this<observer> {
+ public:
+  std::shared_ptr<observer> getptr() { return shared_from_this(); }
+
+  [[nodiscard]] static std::shared_ptr<observer> create() {
+    return std::shared_ptr<observer>(new observer());
+  }
+
+  template <typename T>
+  void operator()(T&& data) const {
+    OnCall(std::forward<T>(data));
+  }
+
+  virtual ~observer() = default;
+
+ protected:
+  // New virtual method that can be mocked.
+  virtual void OnCall(const std::string& data) const {
+    std::cout << data << "\n";
+  }
+
+ private:
+  observer() = default;
+};
+
+// Mock class
+class MockObserver : public observer {
+ public:
+  MOCK_METHOD(void, OnCall, (const std::string&), (const, override));
+};
+
+TEST(HelloTest, BasicAssertions) {
+  // Assume 'subject' class is correctly implemented and it calls observers with a string
+  design_pattern::subject subject;
+
+  // Create mock observer
+  auto mock_observer = std::make_shared<MockObserver>();
+
+  // Set up expectations
+  const std::string expected_data = "(1, 2, 3)";
+  EXPECT_CALL(*mock_observer, OnCall(expected_data)).Times(1);
+
+  // Subscribe mock observer to subject
+  subject.subscribe(mock_observer);
+
+  // Notify observers
+  subject.notify(expected_data);
+
+  // Additional Google Test assertions
+  EXPECT_STRNE("hello", "world");
+  EXPECT_EQ(7 * 6, 42);
+
+  // Google Mock will automatically verify expectations when the test ends
+}
+
+Note:
+
+    OnCall is a new virtual method added to observer that can be overridden by MockObserver. It is non-templated and takes a std::string argument. You'll need to convert your data to a string representation for this to work. For non-string data types, you would need to find an appropriate way to pass the data to OnCall or use different mock methods for each data type you intend to pass to operator().
+    In the mock class MockObserver, OnCall is mocked instead of the templated operator().
+    subject and observer are assumed to be in the design_pattern namespace.
+    notify is assumed to be a method that takes a std::string or has an overload that can take a std::string.
+    In the test case, EXPECT_CALL sets the expectation that OnCall will be called exactly once with a specific string.
+    OnCall should be called within the templated operator() method of the observer class to ensure the mock method is invoked during tests.
+
+This approach requires you to adapt your data types to be compatible with the OnCall method, which can be a significant limitation if you're working with a variety of data types. For a more sophisticated approach that preserves type information, you might need to use a type-erasure technique or a variant type that can hold any of the expected types you wish to pass to your observers.
+User
+i will not add a new method on a class for testing purposes, that's out of the question
+ChatGPT
+
+I understand your concern; it is indeed best practice to avoid modifying production code purely for testing purposes. Since Google Mock does not support mocking template member functions directly, one common approach to test templated behaviors is to wrap the templated function call within a non-templated virtual function, which can be mocked. However, you've indicated this isn't an acceptable solution in your case.
+
+Another approach could be to manually create a fake class that implements the interface you want to test and includes instrumentation to verify that the expected calls are made. You won't be using Google Mock's macros in this case, but you can manually check if the function was called with the expected parameters.
+
+Here's an example of how you might do this:
+
+cpp
+
+#include <gtest/gtest.h>
+#include <iostream>
+#include <memory>
+
+// Your observer class remains unchanged
+class observer : public std::enable_shared_from_this<observer> {
+  // ... existing implementation ...
+};
+
+// Create a fake observer
+class FakeObserver : public observer {
+ public:
+  mutable bool wasCalled = false;
+  mutable std::string lastData;
+
+  template <typename T>
+  void operator()(T&& data) const override {
+    wasCalled = true;
+    std::ostringstream os;
+    os << data; // Assuming data can be streamed to an ostringstream
+    lastData = os.str();
+    observer::operator()(std::forward<T>(data)); // Call the base implementation
+  }
+};
+
+TEST(HelloTest, BasicAssertions) {
+  // Set up your subject and fake observer
+  design_pattern::subject subject;
+  auto fake_observer = std::make_shared<FakeObserver>();
+
+  subject.subscribe(fake_observer);
+
+  // Use the subject to notify with some data
+  data::printer printer_data{/*...*/};
+  subject.notify(printer_data);
+
+  // Now you can check if the fake observer was called
+  EXPECT_TRUE(fake_observer->wasCalled);
+  EXPECT_EQ(fake_observer->lastData, /* the expected string representation of printer_data */);
+
+  // Other assertions...
+  EXPECT_STRNE("hello", "world");
+  EXPECT_EQ(7 * 6, 42);
+}
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
+
+This FakeObserver class keeps track of whether it was called and what data it was called with. After you call subject.notify(), you can assert that wasCalled is true and that lastData matches the expected value. This allows you to test the behavior without modifying the original observer class.
+
+In this case, data::printer should be an object that can be converted to a string stream or has an overloaded operator<< for streaming. If data::printer is not directly streamable, you'll need to provide a mechanism to convert the notified data to a string for comparison.
+User
+// https://en.cppreference.com/w/cpp/memory/enable_shared_from_this
+class observer : public std::enable_shared_from_this<observer> {
+ public:
+  std::shared_ptr<observer> getptr() { return shared_from_this(); }
+
+  [[nodiscard]] static std::shared_ptr<observer> create() {
+    return std::shared_ptr<observer>(new observer());
+  }
+
+  template <typename T>
+  void on_data(T&& data) const {
+    std::cout << data << "\n";
+  }
+
+ private:
+  observer() = default;
+};
+
+
+how can i mock on_data method?
+ChatGPT
+
+To mock the on_data method of the observer class, you can inherit from the observer class and override the on_data method. This subclass would act as a mock object in your tests. Here's an example of how you could create such a mock:
+
+cpp
+
+#include <gtest/gtest.h>
+#include <iostream>
+#include <memory>
+
+class MockObserver : public observer {
+public:
+  // Mock method that tracks calls and arguments.
+  mutable bool called = false;
+  mutable std::string last_argument;
+
+  template <typename T>
+  void on_data(T&& data) const override {
+    called = true;
+    // Convert the data to a string and store it.
+    std::ostringstream ss;
+    ss << data;
+    last_argument = ss.str();
+    // You could also perform additional actions here, like calling a fake handler.
+  }
+};
+
+You can then use this mock in your tests as follows:
+
+cpp
+
+TEST(ObserverTest, OnDataCalled) {
+  auto mock_observer = std::make_shared<MockObserver>();
+
+  // Act: Pretend to receive data.
+  int test_data = 42;
+  mock_observer->on_data(test_data);
+
+  // Assert: Check that on_data was called with the correct data.
+  EXPECT_TRUE(mock_observer->called);
+  EXPECT_EQ(mock_observer->last_argument, "42");
+}
+
+This simple mock does not use any advanced features of Google Mock, but it serves the purpose of checking whether on_data was called and with what argument. This is a manual way of mocking that can be used when Google Mock's macros and matchers are not suitable, such as when dealing with template methods.
+
+This approach presumes that the data passed to on_data can be streamed to an std::ostringstream. If T can be more complex types, you'll need to implement an appropriate way to convert T to a std::string. For more complex cases where the type T cannot be easily converted to a string, you might need to employ additional type-specific handlers or use type erasure to handle different types in a uniform manner.
+User
+oh my god these just mumbo jumbo my brain, i have not seen these testing methodologies using jest, javascript testing framework, why do i have to reimplement the class to test a method?
+ChatGPT
+
+Testing in C++ can indeed feel quite different compared to testing in JavaScript with Jest. The difference largely arises from the type systems and the compilation models of the two languages. C++ is statically typed and compiled, which means the types must be known at compile time, and the language offers templates that add a layer of complexity when it comes to testing. JavaScript, on the other hand, is dynamically typed and interpreted, allowing more flexibility with types at runtime, which can make mocking and testing feel more straightforward.
+
+In Jest, you often mock functions or modules using Jest's mocking functions, which are dynamic and don't require you to subclass or reimplement anything. C++ lacks the dynamic runtime capabilities of JavaScript, so in C++ you often end up creating mock objects by inheriting and overriding virtual functions. This is especially true if you're working with class methods that are not virtual, as you can't override them to intercept calls to them.
+
+When you have a templated method like on_data, the typical approach with a tool like Google Mock won't work because Google Mock does not support mocking templated functions directly. Hence, you need to find a workaround.
+
+Here are some key differences:
+
+    Static vs. Dynamic Typing:
+        C++ (Static): Types are checked at compile time, which means the compiler needs to know about every type and every call that can happen.
+        JavaScript (Dynamic): Types are checked at runtime, allowing Jest to intercept and replace functions with mock versions without the type system interfering.
+
+    Templates vs. First-Class Functions:
+        C++ Templates: They are powerful but complex, and each template instantiation is a separate function as far as the compiler is concerned.
+        JavaScript Functions: They are first-class citizens and can be easily replaced or wrapped with mock functions.
+
+    Compilation Model:
+        C++: Requires explicit interfaces for mocking, either by creating a subclass or by defining a virtual wrapper method.
+        JavaScript: Allows runtime replacement of any function with a mock implementation due to its interpreted nature.
+
+In C++, if you want to avoid subclassing for the purpose of creating a mock, you could use tools like Google Mock to mock non-template methods or use interfaces (pure virtual classes in C++) to define a contract for your classes. With interfaces, you can mock out the dependencies without needing to subclass concrete implementations. However, when it comes to templated methods, you may need to either instantiate the template methods you want to test with specific types and mock those or employ the subclassing strategy as demonstrated.
+
+The subclassing strategy for templated methods, while verbose, is straightforward and often the most pragmatic approach without introducing additional complexity or dependencies into your testing strategy. It mimics the behavior of dynamic mocking by creating a specialized version of the class that can track calls to its methods.
+User
+i see, makes sense, then, maybe it doesn't make sense to assert that method was called with parameters, maybe there is a better way to assert that end result works, that each observer was notified after .notify() method
+ChatGPT
+
+You're on the right track. In many cases, especially when dealing with observer patterns, it's more meaningful to verify the end result rather than the invocation of certain methods with specific parameters. This aligns with the principle of testing the observable behavior rather than the implementation details.
+
+Here’s an example of how you might test that each observer was notified:
+
+    Design your observer to produce an observable side effect that you can verify. This could be changing the state of the observer, logging output to a stream, or something similar.
+
+    Execute the notify method on your subject with the observers subscribed.
+
+    Verify the side effects. Check the state of each observer to confirm they were notified.
+
+Here is how you might implement this in a test:
+
+cpp
+
+#include <gtest/gtest.h>
+#include <iostream>
+#include <memory>
+#include <sstream>
+#include <string>
+
+// Assume observer and subject classes are defined elsewhere
+
+class TestObserver : public observer {
+ public:
+  mutable std::string last_message;
+
+  template <typename T>
+  void on_data(T&& data) const override {
+    std::ostringstream stream;
+    stream << data;
+    last_message = stream.str();
+  }
+};
+
+TEST(SubjectTest, NotifyObservers) {
+  // Create a subject
+  subject my_subject;
+
+  // Create a few observers
+  auto observer1 = std::make_shared<TestObserver>();
+  auto observer2 = std::make_shared<TestObserver>();
+  auto observer3 = std::make_shared<TestObserver>();
+
+  // Subscribe the observers to the subject
+  my_subject.subscribe(observer1);
+  my_subject.subscribe(observer2);
+  my_subject.subscribe(observer3);
+
+  // The data to be sent to the observers
+  int notification_data = 42;
+
+  // Notify the observers
+  my_subject.notify(notification_data);
+
+  // Verify that each observer received the data
+  EXPECT_EQ(observer1->last_message, "42");
+  EXPECT_EQ(observer2->last_message, "42");
+  EXPECT_EQ(observer3->last_message, "42");
+}
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
+
+In the above test:
+
+    TestObserver stores the last message it received.
+    The notify method is called on the subject with test data.
+    Each TestObserver's last_message is checked to confirm it received the notification.
+
+By following this approach, you're focusing on the effect of the notify method: did it do what it was supposed to do from an external perspective? This can be a more robust way to test, as it doesn't rely on the internal implementation of the observer, allowing that to change without breaking your tests as long as the external behavior remains correct.
+User
+is gtest usable with c as well as with c++?
+ChatGPT
+
+Google Test (also known as gtest) is a testing framework specifically designed for C++. It makes use of C++ features such as classes, templates, and exceptions to provide its functionality, which are not available in C.
+
+If you're working on a C project and looking for a testing framework, you might want to consider other frameworks that are designed with C in mind, such as:
+
+    Check: A unit testing framework for C.
+    Unity: A simple and portable test framework for C.
+    CUnit: A unit testing framework for the C language.
+    CMocka: A test framework for C with support for mock objects.
+
+These frameworks provide functionality similar to gtest but are tailored to the constraints and conventions of C. They don't require C++ features and integrate well with pure C codebases.
+User
+what other ways do i have to test this code? why is it not easily testable? is it because i do not program to interfaces?
+ChatGPT
+
+Your observation is correct. One of the core principles of writing testable code is to program to an interface rather than an implementation. This principle comes from the idea that the code should depend upon abstractions, not concrete details, which makes it easier to swap out specific implementations without changing the code that depends on these abstractions.
+
+Here's how the principle applies to your observer pattern example and what can make it more testable:
+
+    Interface for Observers:
+        Define an interface (or an abstract class in C++) that outlines the methods that an observer should implement.
+        Make your observer classes implement this interface.
+
+    Dependency Injection:
+        Pass dependencies (like observers) into your subject class rather than having the subject class create them directly. This way, you can pass in mock observers that record information about the notifications they receive.
+
+    Decoupling:
+        Avoid tight coupling between classes. The subject class should not need to know about the concrete implementation of the observer. It should only call methods defined in the observer interface.
+
+    Test Doubles:
+        Use mocks, stubs, or fake objects that implement the observer interface for testing. They can track calls to their methods and the data passed to them, which you can then assert in your tests.
+
+Here's an example of what a more testable version of your observer pattern might look like:
+
+cpp
+
+// Observer interface
+class IObserver {
+public:
+    virtual void on_data(int data) = 0;
+    virtual ~IObserver() = default;
+};
+
+// Concrete observer implementing the interface
+class ConcreteObserver : public IObserver {
+public:
+    void on_data(int data) override {
+        // Implementation details
+    }
+};
+
+// Subject class that depends on the observer interface
+class Subject {
+private:
+    std::vector<std::weak_ptr<IObserver>> observers;
+
+public:
+    void subscribe(std::shared_ptr<IObserver> observer) {
+        observers.push_back(observer);
+    }
+
+    void notify(int data) {
+        for (auto& wp : observers) {
+            if (auto sp = wp.lock()) {
+                sp->on_data(data);
+            }
+        }
+    }
+};
+
+With this setup, your tests can create mock objects that implement IObserver and record any interactions, which can then be asserted. By using an interface, you also gain the flexibility to change the underlying implementation of the observer without needing to change the subject or the tests.
+
+It's not that your current code is inherently untestable, but rather that it's not optimized for testability. By introducing interfaces and dependency injection, you can make the code more modular, more flexible, and easier to test.
+User
+  class IObserver {
+    public:
+      template<typename T>
+      virtual void on_data(T&& p_data) = 0;
+  };
+
+this is illegal, how the hell am i supposed to use generalized parameter here?
+ChatGPT
+
+You're correct that virtual functions in C++ cannot be templated. This is because virtual functions rely on the vtable — a table of function pointers that the compiler generates for each class — to resolve to the correct function at runtime. Since templates are a compile-time mechanism and they can generate a potentially infinite number of instantiations, they can't have a fixed entry in the vtable.
+
+To work around this limitation and still achieve type-general behavior in a type-safe way, you typically need to use one of the following approaches:
+
+    Type Erasure:
+    You define the function parameter as a type that can hold any value, such as std::any (from C++17 onwards), and then use type-safe access inside the function.
+
+    cpp
+
+class IObserver {
+public:
+    virtual void on_data(const std::any& data) = 0;
+    virtual ~IObserver() = default;
+};
+
+Base Wrapper:
+Create a non-templated base class that your templated data can inherit from, and then use a pointer or reference to the base class as the parameter.
+
+cpp
+
+class IData {
+public:
+    virtual ~IData() = default;
+    // Potentially common interface methods for all data types
+};
+
+template<typename T>
+class DataWrapper : public IData {
+    T data;
+public:
+    DataWrapper(T data) : data(data) {}
+    // Methods to interact with the wrapped data
+};
+
+class IObserver {
+public:
+    virtual void on_data(const std::shared_ptr<IData>& data) = 0;
+    virtual ~IObserver() = default;
+};
+
+Visitor Pattern:
+Use a variant and visitation. The std::variant (also from C++17) allows you to store one of several types, and you can then visit it with a visitor that handles all the potential types.
+
+cpp
+
+using DataVariant = std::variant<int, float, std::string>; // Example types
+
+class IObserver {
+public:
+    virtual void on_data(const DataVariant& data) = 0;
+    virtual ~IObserver() = default;
+};
+
+Non-Virtual Templated Function:
+Keep the templated function non-virtual and call a virtual function from within it. This virtual function can handle the data in a type-erased way.
+
+cpp
+
+    class IObserver {
+    public:
+        template<typename T>
+        void on_data(T&& data) {
+            handle_data_internal(std::forward<T>(data));
+        }
+
+    private:
+        virtual void handle_data_internal(const std::any& data) = 0; // Type-erased internal handler
+    };
+
+Each of these methods has its own trade-offs, and the best one to use will depend on your specific requirements and constraints. The type erasure approach is often the simplest and most general but requires careful management of types at runtime. The base wrapper and visitor patterns can be more type-safe but are more complex and may require more boilerplate code. The templated non-virtual function approach can be a good middle ground but still requires some runtime type management.
+User
+whichever path i choose there are more problems i have never even seen before lmao jesus christ
+ChatGPT
+
+It can indeed be overwhelming when you first encounter these advanced C++ concepts and design patterns, especially if you're coming from a different programming background or if you're used to a language that handles these scenarios differently, like JavaScript with Jest for testing.
+
+The key is to take it step by step and to remember that each of these strategies is solving a particular type of problem. Once you understand the problem it solves, you can better understand why and when you would use that strategy.
+
+For instance:
+
+    Type Erasure: This is used when you want to write code that can handle any type without knowing what that type is at compile time. It's like saying, "I don't care what type of data this is; just hold onto it for me, and I'll figure out what to do with it later."
+
+    Base Wrapper: This approach is used to create a common interface for a set of types that share some behavior. It's useful when you have a family of related types that you want to work with polymorphically without templating.
+
+    Visitor Pattern: This is often used when you have a set of types and operations that need to be performed on those types, and you want to separate the operations from the types themselves. It's a bit like having a separate set of functions that know how to handle each specific type of data you might give it.
+
+    Templated Non-Virtual Function: This is a way to get around the fact that you can't have templated virtual functions. You use the template to handle any type at compile time, and then you use a non-templated virtual function to handle the specifics at runtime.
+
+Each of these patterns and techniques has a learning curve, and it's normal to find them challenging at first. The complexity they introduce is often necessary for C++ because it's a statically typed language with a strong emphasis on performance and type safety. JavaScript, on the other hand, is dynamically typed and doesn't have these same concerns, so testing can often be done more straightforwardly.
+
+If you're working on becoming proficient in C++ and its testing paradigms, it might help to focus on one concept at a time. Write simple programs that use type erasure, base wrappers, or the visitor pattern, and see how they work in isolation before trying to apply them to your more complex observer pattern code. Over time, with practice, these concepts will become more familiar and easier to use.
+User
+what is the easiest way to test observers getting notified?
+ChatGPT
+
+To test that observers are getting notified properly, you need to check whether the on_data method (or your equivalent notification method) of your observers has been called with the correct data when the notify method of the subject is called. Here's how you might approach this:
+
+    Use Mock Objects: This is a common approach in unit testing. You can use a mocking framework (like Google Mock) to create mock objects for your observers. These mock objects can keep track of how many times methods are called and with what parameters.
+
+    Implement Test Observers: If you're not using a mocking framework, you can manually create a test observer class that inherits from the observer interface and overrides the notification method to record the calls.
+
+Here's a simplified example of how you might implement a test observer:
+
+cpp
+
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+#include <vector>
+
+class IObserver {
+public:
+    virtual void on_data(int data) = 0;
+    virtual ~IObserver() = default;
+};
+
+class Subject {
+    std::vector<std::weak_ptr<IObserver>> observers_;
+
+public:
+    void subscribe(std::shared_ptr<IObserver> observer) {
+        observers_.push_back(observer);
+    }
+
+    void notify(int data) {
+        for (auto& weak_observer : observers_) {
+            if (auto observer = weak_observer.lock()) {
+                observer->on_data(data);
+            }
+        }
+    }
+};
+
+class MockObserver : public IObserver {
+public:
+    MOCK_METHOD(void, on_data, (int data), (override));
+};
+
+TEST(ObserverTest, NotifiesObservers) {
+    // Arrange
+    auto subject = std::make_unique<Subject>();
+    auto observer1 = std::make_shared<MockObserver>();
+    auto observer2 = std::make_shared<MockObserver>();
+
+    subject->subscribe(observer1);
+    subject->subscribe(observer2);
+
+    const int testData = 42;
+
+    // Expect that each observer's on_data method will be called once with testData.
+    EXPECT_CALL(*observer1, on_data(testData)).Times(1);
+    EXPECT_CALL(*observer2, on_data(testData)).Times(1);
+
+    // Act
+    subject->notify(testData);
+
+    // The expectations set above are checked at the end of the test
+    // when the mock objects are destroyed.
+}
+
+In the test above, we are using Google Mock to set expectations on our mock objects. The EXPECT_CALL macro specifies that we expect on_data to be called with a specific value (testData) exactly once for each observer. When subject->notify(testData) is called, it triggers the notification on the observers, and Google Mock will verify that the expectations were met.
+
+If you are not using Google Mock, you would have to manually implement a test observer class to track the calls, which might involve creating a counter or some sort of container to hold the received data. Then, after calling notify, you would write assertions to check that the counters or containers have the expected values.
+User
+is it common for interface to inherit from enable_shared_from_this and declare static method?
+ChatGPT
+
+The std::enable_shared_from_this class template is a utility that's often used to ensure that you can create std::shared_ptr instances from this when you are inside a method of the class that is already managed by a std::shared_ptr. However, there are a couple of things to consider when deciding whether to inherit from std::enable_shared_from_this in an interface:
+
+    Interface Purity: Interfaces (often represented by pure abstract classes in C++) are typically designed to be as clean as possible, with a focus solely on the methods that derived classes need to implement. Inheriting from std::enable_shared_from_this in an interface could be seen as adding implementation detail to what should be a pure interface.
+
+    Memory Management: Memory management is often considered an implementation detail, and you may not want to enforce the use of std::shared_ptr on all implementers of an interface. The choice of whether a class is managed by std::shared_ptr should ideally be left to the implementer of the interface, not dictated by the interface itself.
+
+    Static Factory Methods: It's not common for interfaces to declare static methods because static methods can't be overridden by derived classes. Interfaces are about defining a contract for instance methods. That said, static factory methods are often provided in concrete classes, not in interfaces, and they are used to encapsulate the creation logic for a class instance, which may include using std::shared_ptr.
+
+If you find that you have a good reason to combine std::enable_shared_from_this with an interface, you might be addressing a very specific design scenario. It's more typical to see std::enable_shared_from_this used in a concrete class that knows it will be managed by std::shared_ptr. For instance, it's common in the implementation of the observer pattern where observers need to pass this to some function but need to ensure the lifetime is managed correctly.
+
+Here's a quick example:
+
+cpp
+
+class Observer : public std::enable_shared_from_this<Observer> {
+public:
+    virtual void update() = 0;
+    std::shared_ptr<Observer> getptr() {
+        return shared_from_this();
+    }
+    virtual ~Observer() {}
+};
+
+In this example, a concrete observer class might inherit from Observer and thus from std::enable_shared_from_this. This allows the concrete class to use shared_from_this() safely.
+
+It is important to note that if you use std::enable_shared_from_this, the first instance of std::shared_ptr that owns the object must be constructed before calling shared_from_this; otherwise, shared_from_this will throw an exception (specifically std::bad_weak_ptr in C++17 and later).
