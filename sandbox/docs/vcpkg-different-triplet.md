@@ -25,3 +25,9 @@ set(VCPKG_POLICY_DLLS_WITHOUT_LIBS enabled)
 For me, when I used `x64-mingw-dynamic` triplet, compilation worked!
 
 It is possibly a compiler missmatch, but I didn't test whether `x64-windows` works with `msvc` compiler using visual studio.
+
+After inspecting the `config-x64-windows-out.log` file, I found that it builds it using microsoft compiler. That makes sense why `clang` and `g++` compilers can't link against library built using windows triplet.
+
+```txt
+C:\src\vcpkg\buildtrees\gtest\config-x64-windows-out.log
+```

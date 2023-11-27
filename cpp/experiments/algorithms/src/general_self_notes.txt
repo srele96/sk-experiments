@@ -1,0 +1,1044 @@
+i wanted to do computer graphics since university
+in august 2023 i started with C++, i liked the complexity, started with The C++ Programming Language 4th Edition, Bjarne
+over the past year i was trying to chose where next to work, i didn't want javascript any more
+i prepared for interviews and didn't have time i wanted to study computer graphics, i did my best to use the free time i had
+i talked to Microsoft hiring manager after interview that i didn't pass on how to prepare better
+after that i had to rethink whether i would have opportunity to work with vulkan or other graphics API at Microsoft if I continue to pursue it...
+i'd love the opportunity to have full time at my hands to learn about graphics APIs and from awesome colleagues in the field
+
+
+
+
+--------------------------------------------------------------
+
+i feel the power when i know programming, writing algorithms, c++ template
+metaprogramming, etc... i feel the power knowing stuff and having ability to
+type it and it works
+the machine runs what i wrote, it works, it's incredible, the feeling,
+empowering, how did i get here?
+
+so disapointed in the company, i feel i can not learn anything from people there
+that is so sadening when i feel i can not learn from anyone there
+
+
+
+--------------------------------------------------------------
+
+
+
+how my desire to do the work died (my manager killed it)
+
+  ( before this work i didn't know what i want
+    after this job i know what i do not want )
+
+- my manager made me completely change how i work
+- made me monitor hours spent on a task 24/7
+- made me use hours instead of story points
+- made me test only the happy path
+- quality assurance here only tests the happy path
+- no creativity to break the functionality implemented by programmers
+- programmers are discouraged to think about what can go wrong
+- only if something on the first sight might go wrong then we handle it
+
+
+
+--------------------------------------------------------------
+
+
+
+i changed it because he told me to and now it does not work
+  (never say that as a programmer)
+
+
+
+--------------------------------------------------------------
+
+
+
+record my study sessions, i don't need to talk, i don't need to bind myself to some widely accepted (i must talk in video)
+simply talk to chatgpt and drill through the exercise that i'm trying to perform and record a video of it
+then publish the raw video on youtube
+it should get me started just like it got me started with my repository and led me to learn computer graphics
+  - get lost in details :D
+  - encourage to do what you do and don't let other idiots tell you that you are wrong as long as it only concerns yourself
+    - it is on my damage if i have problems at work or elsewhere cus losing in details, not learning for exam, failing exam, etc...
+    - do it, if it's harmless for others, don't constrain yourself
+    - concern oneself with only oneself, nothing else, none else
+
+--------------------------------------------------------------
+
+
+diversity comes to push us when we are ready and need to progress, but don't make the move ourself
+
+--------------------------------------------------------------
+
+traverse vertices in a linear way, recursively, so i can use backtracking
+
+i am trying to make the problem sound like something familiar so i can solve it
+in that way and then translate the solution to a solution i do not know
+
+does the backtracking on dfs even make a problem, i simply want to for each color on the current node
+push it, then go to next node, once i have valid solution or can not proceed any more i can terminate
+nodes exploration, otherwise i continue exploring the nodes
+
+the things that i know on the stack are the current node and available colors on the node
+backtracking takes place once i have all the colors and i go back to the first available call
+
+the backtracking takes place once... in linear time i can fill the stack with nodes and then i can
+iterate over the stack
+
+imagine the stack has all N nodes, now i can say that first node can pick [r,g,b] and the following pick
+
+take 1, for each color on the first node
+  push the color
+  repeat for the next node on stack, provide the other two colors,
+  doesnt know if next node is child of the current node... why is that a problem?
+  is this a valid approach? how can i verify is this is valid approach? any approach
+  is valid approach, the question is how many subproblems there will be...
+
+any solution that i come up with, has many subproblems, and because of those subproblems like
+the one i encountered just now, makes me believe that the solution approach is incorrect
+and that i need a new solution approach, then the new solution approach also has a subproblem
+and i feel like i can't solve that subproblem, and then try to find an alternative solution
+so i end up having 10 or more ideas for a difficult problem, each of them leading to more
+subproblems, which make me think that approach is invalid, entering the infinite recursion myself
+
+
+--------------------------------------------------------------
+
+
+
+explain the things that i learned as if i were explaining them to a baby
+
+
+
+--------------------------------------------------------------
+
+
+
+
+ii talked with my mom and as i explained to her what i did with shared library in c++ and as i explain the concept
+
+```
+give me one real life analogy for shared library that even my mother can understand
+
+---
+
+Imagine a shared library as a communal kitchen in an apartment complex. Each resident (program) doesn't need to have their own set of kitchen appliances and utensils (code); they can all share the same kitchen. Just like you don't have to lug all the kitchen items to your own room to cook (embed code in every program), you simply go to the communal kitchen when you need to cook (run the program).
+
+When the kitchen gets an upgrade, like a new oven (an update to the shared library), everyone benefits without having to change anything in their own apartments (programs).
+```
+
+she tells me "i only know you talked about kitchen, and what does it mean? what will it do?"
+
+i realized that there's no real purpose, meaning, i just thought how it's exciting to build a shared library and had to figure it out...
+
+i should reconsider purpose and why i do stuff, make real value, contribute...
+
+i realized, it doesn't mean anything, lmao
+
+the work should yield some result, fruits of labor, plant a seed to grow a flower
+
+---
+
+
+
+
+--------------------------------------------------------------
+
+
+
+
+for all vertices
+for all edges
+
+for each vertex
+  go through each edge
+    ...
+
+change the perspective how i see the graph
+
+
+
+i am so stuck into how i iterate through graph using programming language
+
+unbind myself from it somehow... observe the graph in terms of edges and vertices
+
+how i implement it is irelevant...
+
+declare graphs as inputs and expected output of a graph
+  1. figure out an algorithm for it
+  2. implement the code
+
+
+
+
+explore the idea to research, collect, think, about peoples pain points
+in games, in software, etc... collect them, collect the wishes
+create awesome software that i wanna be my own first user
+
+
+
+
+
+
+
+
+--------------------------------------------------------------
+
+
+
+
+
+
+find quotes and reflect on them, memorize them, live by them, breathe them, sheer amount of time, get into it, it takes months to improve, a few hours, a day, make no difference
+
+memorize scores of russian *something that i forgot*
+
+after memorization! every semester, felt, lived, breathed those quotes
+
+--
+
+memorize + understand
+
+--
+
+proud tradition!
+  - when memorization diverges from actions it is useless
+
+repetition is mother of all
+
+respect of commander for soldiers
+
+think algorithms
+breathe algorithms
+think ads problems
+breathe ads problems
+
+survivalists succeed
+development model
+
+focus up! breathe! think! live! absorb! use! reflect! use them! become algorithmic problems!
+
+https://www.techinterviewhandbook.org/coding-interview-study-plan/
+
+store learning resources in a more organized way
+  mathematics
+  algorithms and data structures
+create a website from documentation that i create for my repository
+
+----
+
+
+
+
+
+
+--------------------------------------------------------------
+
+
+
+
+
+
+
+
+i created a nasty habit that's doing me more damage than good when programming
+
+i believe that i should be able to delete and rewrite the whole solution for a problem
+
+i practiced a lot to delete the whole code when something didn't work in it and start writing it over again
+
+that habit led me to delete my whole solution to an algorithmic problem and made me enter an infinite loop
+
+because frequently i did not have a complete solution and there was some bug or a case that i did not handle and i thought that my whole approach was wrong
+
+today i pushed through the desire to delete the whole solution and rewrite it, instead i started to debug my solution to see where the error was
+
+that made me realize that the bug was subtle and that my habit was awful when it came to problem solving, even when there is a bug or a problem within the code, if i figure out how it currently works and why it does not work, i can figure out a solution to fix it, that solution should work alongside the rest of the code
+
+with the new approach i could preserve longer and retain my sanity while solving these problems, or even while solving other problems, simply push through, figure it out, perserve
+
+is it even possible to assert what is the fastest available solution to a given problem?
+
+my problem is that i always get stuck on thinking about what is the fastest possible solution, so i get lost trying to find one, while i do not even have a slow solution
+
+my problem is that i don't even implement a slow solution when i have it so i end up without any solution to the problem... thankfully i noticed that yesterday thanks to my self analysis
+
+-------------------------------------------------------------------------------
+BEGIN - PLATEAU OF ORDINARY EXERCISE
+-------------------------------------------------------------------------------
+why does initially the sheer amount of practice and problem solved matter, but eventually that kind of practice reaches plateau and does not yield any further improvements?
+
+--
+
+The phenomenon you're describing is related to the principles of deliberate practice and the learning curve in general.
+
+Initial Rapid Improvement: When you first start practicing a new skill, such as problem-solving in programming, you're often starting with a limited understanding of the subject. In this phase, almost any practice will result in improvement because you're filling in large gaps in knowledge and skills. You're learning the fundamentals, building basic competence, and developing an understanding of key concepts.
+
+Diminishing Returns and Plateau: As you become more skilled and knowledgeable, the same practice methods that worked initially may become less effective. This is because you've already mastered the basic concepts, and simple repetition may no longer challenge you or push you to improve further. You may reach a plateau where you're competent but not continuing to improve significantly.
+
+Transition to Deliberate Practice: To break through this plateau and continue improving, you need to engage in more targeted and deliberate practice. This involves carefully identifying your specific weaknesses or areas where you can still improve, setting clear goals, and practicing in a focused and intentional way. You'll likely need more complex problems and challenges that push you beyond your comfort zone. This requires more effort and can be more difficult, but it's essential for continued growth.
+
+Expertise Requires Specialized Training: As you reach higher levels of skill, the nuances and complexities of the subject require specialized training and focus. At this stage, working with a mentor or coach who can provide expert feedback and guidance may become critical. The "one-size-fits-all" approach to practice becomes less effective, and personalized, focused training becomes more important.
+
+Physical and Cognitive Limitations: Finally, it's essential to recognize that there are physical and cognitive limitations to improvement. There's a limit to how much information the brain can process and how finely motor skills can be tuned. You can continue to improve, but the rate of improvement may slow down as you approach these natural limitations.
+
+So, the transition from broad practice to more focused and deliberate practice reflects the nature of learning and skill development. Initially, you're building a foundation, but as you become more skilled, you need more targeted and sophisticated methods to continue improving. This aligns with the principles of deliberate practice described by Anders Ericsson, where continued growth requires a focus on specific weaknesses, immediate feedback, and pushing beyond the comfort zone.
+-------------------------------------------------------------------------------
+END - PLATEAU OF ORDINARY EXERCISE
+-------------------------------------------------------------------------------
+
+
+
+
+
+
+--------------------------------------------------------------
+
+
+
+
+
+
+
+[0, 1]
+[0, 2]
+[0, 3]
+[1, 4]
+[1, 5]
+[4, 6]
+[2, 7]
+
+        0
+   /    |    \
+  1     2     3
+ / \   /
+4   5  7
+ \
+  6
+
+
+0: [1, 2, 3]
+1: [4, 5]
+2: [7]
+3: []
+4: [6]
+
+
+[
+  /* 0 */  [1, 2, 3],
+  /* 1 */  [4, 5],
+  /* 2 */  [7],
+  /* 3 */  [],
+  /* 4 */  [6]
+]
+
+
+...
+
+what i was doing in that one year, reversing the problem solving process
+i wasn't figuring out solutions to problems, i was thinking about components and how they play together
+i reversed the problem solving process of programming where i was programming the solution i already knew
+which means that to practice c++ and what i can do with it, i could using pseudo-code go algorithmically
+  through behavior that i want and write some thousands of pseudo code which then i can translate to run
+  using purely C++ without any libraries
+
+  what it would allow is to have a lot of code that's already implemented and i only have to rewrite it
+  or rather figure out how to rewrite it using c++, i should avoid constructs such as first class functions
+  where they are treated like variables
+i can use the same concept of reversing the process by drawing a graph, tree, or some other data structure
+and start figuring out various kinds of behavior, movement, etc, through that data structure
+  * the data structure may be recursive by nature and i could do many recursive patterns using it...
+what it would allow me is to practice some more of c++ and from different angle approach algorithmic design...
+  i wouldn't figure out solutions to problems whose solutions i don't know, i would go through some state
+  for example a graph of a city, a tree describing something, a trie containing various data, etc...
+  figure out a behavior i would like to have in that tree, that way i don't have a problem i figure out a
+  solution in a painless way and practice various activities over data structures which should allow me
+  to increase familiarity, so when a problem comes which may be mapped to my solution,
+also that process would be somewhat easier than cognitive creation of solutions to various problems
+
+question: how do i come up with these ideas? is it talent? these ideas have worked for me
+  - they yielded me great success learning c++ in painless manner
+  - they yielded me great skill using reactjs
+  - they allowed me to figure out a way to learn math and other natural sciences
+  - they allowed me to think of unique ways to do studying which often felt tedious
+  -
+
+-----------------------------------------
+
+* think about one thing i can take out of this book, speach, etc... to improve
+* have i lived it? no, then i don't understand and should apply it to understand
+  * understand before rejecting an idea with an explanation of why it won't work
+
+
+
+
+
+
+
+
+--------------------------------------------------------------
+
+
+
+
+
+
+
+
+to become good at solving problems in a time period, i need to be solving them within that time period
+learning without a time period is fine, however solving problems should be limited because thats what the test expects of me
+whenever im doing leetcode problems ill be doing them within a time period of 30 minutes and once the time is up, i can look up a solution
+i am not used to solving problems within time frame so maybe i should start doing competitions on leetcode or codeforces?
+i tend to seek perfection, starting new wow hero i must know all i know on dk to start it, starting new programming language, i must know
+  c++ smoothly like javascript to start it, learning algorithms and data structures, i must have perfect time and space complexity... for
+  chsrist sake, just start and practice plenty, you can improvel ater on things you want to...
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+Didn't ask enough questions at the interview.
+Grill them on their shit
+
+I think ploud mentioned a few weeks back - ask them for a sample of code which they consider well made and good practice. It can be quite revealing what they send you
+
+Talk through their development positions, their standards, the patterns and methods they use
+
+And if they don't have an answer assume the worst
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+Take pride in your code, know where it's bad, and aspire to fix it.
+
+Then learn where you went wrong for next time.
+
+Be it a code matter or a human factor.
+
+
+There's never going to be a time when you're a master of C++. That doesn't happen. The corollary is that you will always be learning new things, and it follows therefore that every C++ opportunity is a learning opportunity
+
+Nobody expects you to magically know everything and write  perfect code 100% of the time. That doesn't happen. But you need to be savvy enough to be able to identify and fix the problems which come up, either for this time or for next time.
+
+
+There's more to good code than knowing the syntax and producing something which works.
+For almost all situations, if you're code isn't written clearly enough for other people to understand its logic, that's a defect.
+
+"Does it work?" will probably be the first question you ask when reviewing code; but it definitely should not be the last.
+
+Believe me, current company falls into the pitfall of using "does it work" as the singular criterion for good code, and they've produced an unmanageable mess.
+
+Write every project as though in 5 years time a complete stranger will have to come along and modify it without your help.
+
+Because they probably will.
+
+Making code unclear and undocumented wastes so much more time in that situation than asking the dev to spend an hour making his shit clear.
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+i don't want to do programs in c++ before i learn c++
+i have to learn web dev before i make website with mousemove effect
+i have to learn to make game engine before i make a game
+i have to learn opengl and c++ before using either of them to build something
+i have to get a job as programmer before i start doing youtube
+
+i have to ___do something i don't want___ before i ___do something i want___
+
+i continually set up myself for failure from the start
+
+the more i think about patterns i do more i realize there is more than i can ever change...
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+practice
+  - graph
+  - tree
+    preffix
+    suffix
+  - recursive data structure
+    - dfs
+    - bfs
+
+
+practice implementing recursive solutions iteratively...
+
+timer makes my thoughts time aware, sharper, efficient
+
+DO NOT DISCARD SOLUTIONS TOO FAST SIMPLY BECAUSE IT FEELS DIFFICULT OR NOT RIGHT
+
+
+to a problem i dont know a solution what kinds of input can i get, how much does it vary
+why am i not able to come up with a solution when inputs are so many and i don't know a technique that can solve it
+cases i have to handle overwhelm me while for problems i am aware of technique i can use to solve them i focus on looking for a
+  pattern or i already know a solution and im translating it to code
+looking for a solution is different...
+
+
+
+
+
+difficult? solving problems is difficult? why? it is difficult to start solving? it becomes difficult after some time?
+
+once it becomes difficult it feels heavy to continue
+
+it starts feeling like bumping in the wall. Like i see cake and someone is making me trip. Stop focusing on the cake and focus not to get tripped.
+
+i dislike feeling of searching for a solution if i don't know it on top of my mind.
+
+to get to a point where i can figure out a solution on top of my mind i have to do what? if i can not figure it out and don't know it immediately then ask chatgpt and learn solution and move on to the next one!
+
+cause i don't want to feel what i dislike. Looking for a solution is a process of laying out hmmm...
+
+finding solution is one thing.
+
+second is to find patterns in the solution to transfer it to the code.
+
+both of those suck. how can i reduce the amount i do them for?
+
+i noticed that after studying things i did from javascript and web concepts i could come up with solutions people at my job could not. maybe cause i was exposed to different ways to do one thing in js?
+
+why else has it happened? how can i make my mind more efficient?
+
+perhaps the practice i did yield that skill, maybe i could use it to enhance my dsa skills? there are areas to improve - two pointers - why do those techniques even work??? those problems are so complicated?
+
+
+
+
+-----------------------
+-----------------------
+-----------------------
+
+
+visited_node
+previous_node
+current_node = root
+
+while current_node is not null
+  if(!visited_node.has(current_node))
+    print(current_node)
+  visited_node.add(current_node)
+
+  if current_node has left_child and !visited_node[current_node->left_child]
+    previous_node[curre_node -> left_child] = current_node
+    current_node = current_node -> left_child
+  elif current_node has right_child and !visited_node[current_node->right_child]
+    previous_node[current_node -> right_child] = current_node
+    current_node = current_node -> right_child
+  else
+    current_node = previous_node[current_node]
+
+
+ 2
+1 3
+
+previous_node = nul
+current_node = 2
+
+previous_node = 2
+current_node = 1
+
+print(current_node) -> 1
+visited_node[current_node] = true -> 1
+
+current_node = previous_node -> 2
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+mathematics
+make money without sallary
+allow myself to make money doing what i want in a way i want
+
+
+read various mathematics books and practice various mathematics topics
+wherever im going read mathematics books
+ask chatgpt to decompose the problem to smaller ones so i can learn each of them and combine them
+
+
+Algebra:
+
+    "Algebra: Structure and Method, Book 1" by Richard G. Brown, Mary P. Dolciani, et al.
+        A well-regarded high school algebra textbook that introduces students to foundational concepts.
+
+    "Algebra and Trigonometry" by Michael Sullivan
+        Comprehensive coverage of algebra with an introduction to trigonometry.
+
+    "College Algebra" by Robert F. Blitzer
+        Engaging and often recommended for its real-world applications and clear explanations.
+
+Geometry:
+
+    "Geometry" by Ray C. Jurgensen, Richard G. Brown, and John W. Jurgensen
+        A classic high school geometry textbook that's been trusted for years.
+
+    "Geometry For Dummies" by Mark Ryan
+        Accessible introduction to geometry, especially good for self-study.
+
+    "Euclidean and Non-Euclidean Geometries: Development and History" by Marvin J. Greenberg
+        Offers a deeper look into the historical development and broader aspects of geometry.
+
+Trigonometry:
+
+    "Trigonometry" by Lial, Hornsby, and Schneider
+        Comprehensive coverage of trigonometry with clear explanations and exercises.
+
+    "Trigonometry For Dummies" by Mary Jane Sterling
+        A great starting point for beginners, breaking down complex topics into easy-to-understand explanations.
+
+    "Plane and Spherical Trigonometry" by Paul Rider
+        A classic text with in-depth explanations suitable for those looking for a rigorous approach.
+
+Pre-Calculus/Advanced Algebra:
+
+    "Precalculus: Mathematics for Calculus" by James Stewart, Lothar Redlin, and Saleem Watson
+        Widely used and provides a solid foundation for moving into calculus.
+
+    "Precalculus" by Michael Sullivan
+        Another favorite in the educational community, comprehensive and well-structured.
+
+    "Advanced Algebra" by Anthony W. Knapp
+        A more advanced book that delves deep into algebraic concepts, suitable for advanced undergraduate or graduate students.
+
+Linear Algebra:
+
+    "Linear Algebra Done Right" by Sheldon Axler
+        A modern approach to linear algebra without heavily relying on determinants.
+
+    "Linear Algebra and Its Applications" by Gilbert Strang
+        Clear, application-focused, and intuitive. Strang's MIT lectures available online complement this book well.
+
+    "Introduction to Linear Algebra" by Serge Lang
+        A rigorous approach suitable for students who want a deep understanding of the subject.
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+Ah, very nice. So, second step would be to check rendering. There are two systems. The GLES, found in drivers/gles, and the Vulkan, found in servers/rendering and servers/rendering/renderer_rd
+The usual course of action is to implement things on Vulkan, then backport to GLES, but given the nature of the feature, the other way around might work as well
+Files called
+texture_storage.cpp
+will probably be relevant to this
+And maybe
+shader_compiler.cpp
+Also, creating a test project, and at least going through a tutorial of using shaders and/or viewports to understand the basic building blocks you're trying to extend.
+Nothing to complex. Just on the level of being able to assert "Okay, I used this feature in the engine, and it works"
+Once you get a bit of bearings, you can go to #rendering to ask more specific questions
+
+
+---------------------------------
+
+To quote an old fable, it's "short yet very long". I don't expect the final PR for it to be a lot of code. Probably in the 3-digit LoC. But it would involve reading and understanding around 10kLoC+ in order to make it work.
+Then again, that's life for a programmer. Read thousands of lines of code, spend weeks running multiple tests, in order to create a bugfix that's a single character.
+
+
+
+* become a user and understand what a user wants to do
+* use the feature like a user and understand the implementation
+
+----------------------------
+
+"Blitting" basically means drawing a texture on another texture. For the use of Navier-Stokes, this requires the application of a shader. That's why I suggested learning shaders from a user perspective first (with creating a checkerboard pattern being a good first exercise)
+
+A shader lets you run a function on every pixel that is drawn, using the drawing coordinates and/or a texture and a few other parameters as input, and providing the color as output. So a checkboard pattern, for example is simply taking the X and Y coordinates, and dividing them and rounding down to get the coordinates of a "square" on the board, then summing and doing modulu 1 to check if it's black or white, then outputting the appropriate color.
+
+But you can also use a more complex formula to create something like, e.g. Mandelbrot.
+
+Navier-Stokes, however, is notable in that it is iterative. That is, you create the value for the next step based on the value in the previous step. A simpler example (and one you could try to implement as a test case) would be Conway's Game of Life. The result of every step depends on the previous.
+
+This means the requirement is not just to use a formula and draw something, but also read back what you've drawn, and use it to draw something else. Hence - blitting. You draw into a texture, then you use this texture to draw into another texture, then you use this texture to draw into another texture, rinse-repeat.
+
+As an exercise, you can try implementing a single step of Conway's Game of Life as a GDShader. Then implementing the feature is simply answering the question: "How do I run the second step?"
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+I READ AND PRACTICE EVERYTHING I SEE
+
+first apply, then finish the game engine
+create github repository for the game engine and link it in the resume
+specify my deadline for it and specify that i wanted to apply asap because i don't know
+when the application will close
+
+... i want to work with anime pictures using opengl and c++ ...
+... to start with mathematics do a quadratic equation a day ...
+... to start with anything do one thing a day or one thing whenever ...
+
+first apply, then finish the game engine
+create github repository for the game engine and link it in the resume
+specify my deadline for it and specify that i wanted to apply asap because i don't know
+when the application will close
+
+
+when i get intelectually interested through thinking i start doing it
+i read that blizzard opened position for engine system developer and it
+hyped me out and made me think how i want to make demo game engine that
+follows some design of existing game engine and i remembered that babylon
+implements an engine through programmatical api... i reserached why they
+have an api like they do and what interactions their engine has... then
+that made me curious even more and i researched on how to do that...
+if i think more about that i have been talking about that last summer with
+my friend...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+f(n):
+  if n == 0 return
+  f(n - 1)
+
+
+
+f(n):
+  if n == 0 return
+  f(n - 1)
+  f(n - 1)
+
+
+
+                    n
+         n-1                   n-1
+    n-1       n-1        n-1        n-1
+n-1   n-1  n-1  n-1   n-1   n-1  n-1   n-1
+
+
+count calls on each level
+
+
+f(n)    1
+f(n-1)  2
+f(n-2)  4
+f(n-3)  8
+
+
+
+f(n):
+  if n == 0 return
+
+  f(n - 1)
+  f(n - 1)
+  f(n - 1)
+
+
+                                                n
+
+      n - 1                                   n - 1                             n - 1
+
+n - 1      n - 1      n - 1        n - 1      n - 1      n - 1       n - 1      n - 1      n - 1
+
+count calls on each level
+
+f(n)       1
+f(n-1)     3
+f(n-2)     9
+f(n-3)     27
+f(n-4)     81
+f(n-5)     242
+
+current level has 3 * calls of previous level
+so for n = 1, we have 1
+for n = 2, we have 3 * 1 calls, equal 3
+for n = 3, we have 3 * (3 * 1) calls, equal 9
+for n = 4, we have 3 * (3 * (3 * 1)), equal 27
+for n = 5, we have 3 * (3 * (3 * (3 * 1))), equal 81
+
+from that we can observe that for each level we have the number of calls for
+one function which is 3, is repeated n-1 times,
+for level 2, we have number 3 appear 1 time
+for level 3, we have number 3 appear 2 times
+for level 4, we have number 3 appear 3 times
+for level 5, we have number 3 appear 4 times
+
+therefore for level n, we have number 3 appear n-1 times
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+sk-learning
+
+mark the repository as focus on the learning process because that is what i am doing
+crete separate repository and use it as a submodule of the current to mark it as focus of subproject
+one solution to change the impression of my repository
+the problem is still that there are so many topics and it gives impression of lack of focus
+maybe that is not a problem at all
+i like that it shows that i do stuff just because, that is true that i do them just because i want to
+i believe that gives impression of high quality due to sheer ammount of topics i cover on my own
+why do i focus so much on what others think of my work? i should focus on what i want to do
+i should not focus on the external impressions at the moment, but i can keep them in consideration
+a lot people won't do what i do and only some invest themself that much
+i am not sure, i will remember what feedback i got from the people, i like that what i do they find unusual
+but i am sure i can use it to my advantange
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+there are too many problems that i have never ever solved before and each
+of them takes considerable toll on my mind to solve them and put them together
+which is why it requires practice of leetcode problems to actually be able
+to solve these problems with ease because through practice i will have solved
+many leetcode problems and be able to solve them all efficiently because i have
+practiced for so much time
+
+
+
+
+
+
+
+
+abcabcbb
+bbbbb
+pwwkew
+AaBbCcDdEe
+AbG2 3a
+@bB3 2
+A B C d2 3
+
+letters, digits, symbols, spaces
+
+
+- Understand the question, read it 2-3 times.
+- Take an estimate of the required complexity.
+- find, edge cases based on the constraints.
+- find a brute-force solution. ensure it will pass.
+- Optimize code, ensure, and repeat this step.
+- Dry-run your solution(pen& paper) on the test cases and edge cases.
+-
+-
+Do you need to separate out some modules or parts from the problem?
+
+
+
+
+
+
+
+
+
+---------------
+after talk on discord
+---------------
+
+
+
+
+but for skillset i mean, the tools, like you said you code in any language write anything, use any tools, some jobs require you have be good in say Qt framework only and they dont care about others, and it depends on what job you are applying for
+
+the diary part kinda, if you want to express your throught you can use a online diary platform and then mention that in your github so that people can learn about your thoughts at a different place in a organized manner
+
+and you can include this diary writing as a skill in your resume which might give you a plus point
+
+like just write, writing is a good thing
+
+but whatever you write, be neutral, dont get biased on anything
+
+you can stick with your unbiased opinion, just in the end include, "its just my opinion, i dont mean to offend anyone nor i practice anything such"
+
+
+
+--------------
+
+find company that does what i want to work with
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+on every branch, commit, what else? in another repository, write to a file...
+a time and a commit message, structure each commit in a tree? build relationships
+between branches, commits, etc, there? path to the changed files? why, what do i get from it?
+
+
+i want to have a nice representation of the activity in my main repository -> figure out
+what does it mean to have a nice representation of the activity, what is activity? the
+activity is a commit, branch, everything that git adds and pushes is an activity, it could
+also be an issue or something else too? an activity of what i do with git could be great
+somehow use a graph or a tree since git uses a tree to show representations and branches
+i could somehow show a tree using a file... i could write to file structure in another
+repository simply for fun? where each file will contain commits for it, that's quite a
+complex problem because there are many subproblems... can i reduce it's complexity to
+something manageable
+
+build something simple, small -> proof of concept -> use the proof of concept and then
+note down any issues that arise, add then back to the problem and solve the problem...
+keep rebuilding prototype until it covers everything it needs, then rebuild it as a full
+fledged solution...
+
+
+
+each (problem)/(solution to that problem) poses a different set of challenges for
+another (problem)/(solution to that problem) therefore it makes sense to declare
+entities where each entity is reponsible for a piece of work and in the end integrate
+them together
