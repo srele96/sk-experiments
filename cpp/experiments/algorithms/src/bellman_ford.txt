@@ -1,0 +1,453 @@
+
+---
+
+User
+
+it looks like the core of the bellman ford algorithm is the relaxation of edges where we v-1 times iterate through all edges and for every edge if the distance between two vertices is smaller than the stored distance, we store it
+
+aside from that, it looks like bellman ford also detects the cycles, it looks like detection is not necessary, but it's runtime is smaller or equivalent than the relaxation part, so it looks like we don't need to store predecessor nodes, but... predecessors seem to always store the predecessor so we can traverse the shortest path? and it also saves distances to each of the edges?
+
+---
+
+ChatGPT
+
+Let's break down your understanding and questions regarding the Bellman-Ford algorithm:
+
+    Core of Bellman-Ford Algorithm: You are correct. The core of the Bellman-Ford algorithm is the relaxation step. The algorithm iterates V−1V−1 times (where VV is the number of vertices) and during each iteration, it goes through all the edges. For each edge (u,v)(u,v), if the distance to vertex uu plus the weight of the edge (u,v)(u,v) is less than the current known distance to vertex vv, it updates the distance to vertex vv.
+
+    Detecting Negative Cycles: The algorithm can also detect negative weight cycles in the graph. After the V−1V−1 iterations, if the algorithm can still relax any edge, it means that there's a negative weight cycle. Note that this step is separate from the main relaxation process and is an additional loop over all edges. While it might seem that this step is not necessary for just shortest path computations, it's crucial because if there's a negative cycle in the graph, the shortest path to some vertices might not be well-defined (i.e., you can keep traversing the negative cycle to decrease the cost indefinitely).
+
+    Storing Predecessors: While it's true that storing predecessor nodes is not strictly necessary for computing the shortest path lengths, they are essential if you want to reconstruct the shortest paths themselves. By keeping track of the predecessor of each vertex, you can effectively trace back from a target vertex to the source to reconstruct the shortest path.
+
+    Saving Distances: Yes, during the algorithm's execution, you maintain an array of distances which stores the shortest known distance from the source vertex to each other vertex. This array is continuously updated during the relaxation process.
+
+In summary:
+
+    The relaxation process, iterating V−1V−1 times and relaxing each edge, finds the shortest path lengths.
+    An extra iteration over all edges is used to detect negative weight cycles.
+    Predecessor nodes are stored so you can reconstruct the shortest paths, not just know their lengths.
+    Distances are saved for every vertex and are updated as the algorithm progresses.
+
+
+---
+
+User
+
+give me a weighted directed graph with a negative cycle, smallest possible, give me vertices in form
+
+from to weight
+
+---
+
+ChatGPT
+
+Certainly! The smallest possible weighted directed graph with a negative cycle consists of 3 vertices and 3 edges forming a triangle. Here's one such graph:
+
+1 2 1
+2 3 1
+3 1 -3
+
+In this graph:
+
+    The edge from vertex 1 to vertex 2 has weight 1.
+    The edge from vertex 2 to vertex 3 has weight 1.
+    The edge from vertex 3 back to vertex 1 has weight -3.
+
+The total weight of the cycle 1 → 2 → 3 → 1 is 1+1−3=−11+1−3=−1, which is negative.
+
+---
+
+User
+
+why does the relaxation work in bellman ford?
+
+---
+
+ChatGPT
+
+The relaxation step in Bellman-Ford aims to ensure that if there's a shorter path to a vertex vv that goes through a vertex uu, we update the shortest path estimate for vv.
+
+To understand why relaxation works, let's break it down:
+
+    Initialization: At the start, the distance to the starting vertex is set to 0 (because the distance from a node to itself is 0), and the distance to all other vertices is set to infinity (as we don't know any paths to them yet).
+
+    Iterative Process: We iterate over all the edges V−1V−1 times (where VV is the number of vertices). Why V−1V−1 times? In the worst case, the shortest path to a vertex may involve all other vertices. This ensures that even in cases where the shortest path uses all vertices, the algorithm will have made enough passes over the edges to find the shortest path.
+
+    Relaxation: For each edge (u,v)(u,v) with weight ww:
+        If the shortest known distance to uu plus the weight of the edge ww (i.e., distance[u] + w) is less than the current known distance to vv (i.e., distance[v]), then we've found a shorter path to vv that goes through uu. So, we update distance[v] to this new shorter distance.
+
+    This effectively "relaxes" the edge, ensuring that if there's a shorter path to vv that goes through uu, it will be taken into account.
+
+    Capturing Shortest Paths Over Multiple Edges: Relaxing the edges once will only give us shortest paths that consist of a single edge. But, as we repeat this process V−1V−1 times, the algorithm captures paths made of 2 edges, then 3 edges, and so on, until paths made of V−1V−1 edges are considered.
+
+    Negative Cycles: If after V−1V−1 iterations, we can still relax any edge, it indicates the presence of a negative cycle.
+
+In essence, the reason why the relaxation step in Bellman-Ford works is that it systematically checks every possible path to each vertex through all other vertices. By repeatedly iterating over all edges and "relaxing" them, the algorithm ensures that the shortest path (if it exists and does not involve negative cycles) to each vertex is found.
+
+---
+
+User
+
+what is the guarantee that v-1 iterations over E edges is going to provide the shortest path to each of the vertices?
+
+---
+
+ChatGPT
+
+The reasoning behind the V−1V−1 iterations in Bellman-Ford lies in the properties of paths and the nature of how the relaxation works. Let's break this down:
+
+    Path Length: In a graph with VV vertices, the longest simple (no repeated vertices) path that you can have from a source vertex to any other vertex is V−1V−1 edges long. This is because, in the worst case, the path might have to go through every other vertex once before reaching the destination.
+
+    Progressive Relaxation: Each time you iterate over all the edges and perform relaxation, you are effectively considering paths that are one edge longer:
+        After the first iteration, you've considered all paths of length 1.
+        After the second iteration, you've considered all paths of length 2.
+        ...
+        After the V−1V−1 iteration, you've considered all paths of length V−1V−1.
+
+    Guarantee of Shortest Path: Here's a thought experiment: Suppose there's a shortest path from the source to vertex xx that is kk edges long. After the kkth iteration, we've guaranteed that we have considered and relaxed all paths of length kk or shorter. Thus, the shortest path to vertex xx will be correctly recorded in our distance array.
+
+    Why Not More Than V−1V−1?: If there's a path with VV or more edges, then at least one vertex is visited more than once, which indicates a cycle. If the cycle has a non-negative weight, then we don't need to go through it because it won't provide a shorter path. If the cycle has a negative weight, then the path length can be indefinitely reduced by going around the cycle, which the Bellman-Ford algorithm will detect in the next iteration (after V−1V−1 iterations).
+
+So, in essence, by iterating V−1V−1 times over all edges, we guarantee that we have relaxed all possible simple paths (paths without cycles) from the source to every other vertex in the graph, ensuring we have found the shortest path to each vertex. If any edge can still be relaxed after V−1V−1 iterations, it indicates a negative cycle.
+
+---
+
+User
+
+i just dont get it why is that named relaxation? it sound like a simple algorithm to me... it's iteratively improving distances, sure, it considers paths of length 1, 2, to v-1, sure, i got it
+
+---
+
+ChatGPT
+
+The term "relaxation" in the context of algorithms, especially the Bellman-Ford algorithm and Dijkstra's algorithm, refers to the process of "relaxing" or "loosening" the constraint on a potential solution to a problem. When we say "relaxing an edge", we mean that we're checking if the current known shortest path to a vertex can be "loosened" or "improved" by considering a different path.
+
+Here's a way to think about it:
+
+Imagine you're trying to stretch a rubber band between two points, and the rubber band is initially very tense (an initial estimate). If you find a way to stretch the rubber band such that it's less tense (a shorter or more optimal path), then you've "relaxed" the rubber band.
+
+In Bellman-Ford, the initial state of the "rubber band" (the distance) between two vertices is set to infinity (very tense). But as we iterate through the vertices and edges, we try to find if there's a less "tense" (shorter) way to connect them. If we find such a path, we "relax" the edge by updating the distance.
+
+The name "relaxation" might seem a bit abstract, but it captures the idea of iteratively improving or "loosening" our current best estimate for the shortest path. The terminology is just a way to describe the process, and it's been traditionally used in the literature. Sometimes, understanding the historical or semantic origins of terminology can help, but at other times, it's enough to grasp the underlying concept, as you've noted.
+
+---
+
+User
+
+well that is kind of brute forcing it that way, it is less efficient than dijkstra's algorithm, or am i wrong?
+
+---
+
+ChatGPT
+
+You're right in observing that, for many cases, Bellman-Ford can be less efficient than Dijkstra's algorithm. Let's break down the comparison:
+
+    Time Complexity:
+        Bellman-Ford: The time complexity is O(V×E)O(V×E) where VV is the number of vertices and EE is the number of edges. In the worst-case scenario, such as a dense graph, this can be O(V2)O(V2).
+        Dijkstra's Algorithm (with a priority queue): The time complexity is O(E+Vlog⁡V)O(E+VlogV). With a Fibonacci heap, it can be reduced to O(E+Vlog⁡V)O(E+VlogV). For dense graphs, this can be as bad as O(V2log⁡V)O(V2logV), but with the right data structures, it's usually much faster in practice than Bellman-Ford.
+
+    Negative Weights:
+        Bellman-Ford: Can handle graphs with negative weight edges as long as there are no negative weight cycles. In fact, it can even detect negative weight cycles.
+        Dijkstra's Algorithm: Assumes that all edge weights are non-negative. If there are negative weight edges, Dijkstra's algorithm might not work correctly.
+
+    Use Cases:
+        Bellman-Ford: Useful when there are negative weights, and we want to ensure the shortest path despite them (or detect negative cycles). It's also simpler in its implementation, making it preferable in situations where the graph isn't too large and ease of implementation is a priority.
+        Dijkstra's Algorithm: More efficient for graphs with non-negative edge weights, especially with a priority queue-based implementation. It's usually the go-to for many shortest-path problems where the graph is large, and edge weights are guaranteed to be non-negative.
+
+In summary, while Dijkstra's algorithm is generally more efficient for graphs with non-negative edge weights, Bellman-Ford has its advantages in its capability to handle negative weights and its simplicity. The choice of algorithm often depends on the specifics of the problem at hand.
+
+---
+
+User
+
+what exactly are we loosening here?
+
+---
+
+ChatGPT
+
+The term "relaxation" in the context of the Bellman-Ford algorithm (and similar algorithms) is metaphorical. When we "relax" an edge, we're checking if our current best estimate for the shortest path to a destination can be "improved" or "loosened" by considering an alternative route.
+
+To break it down further:
+
+    Initial State: When the algorithm starts, the distance to the source vertex is 0, and the distances to all other vertices are set to infinity. This is akin to saying, "I believe it's impossible to reach any other node except through a path of infinite length."
+
+    Checking a New Path: As the algorithm progresses, for each edge (u,v)(u,v) with weight ww, we check: "Is the path to vv through uu shorter than the currently known path to vv?" If the answer is yes, then the estimate for the path to vv is "too tight" and needs to be "loosened" or "relaxed" to this shorter value.
+
+    Loosening the Constraint: If the distance to uu plus the weight of the edge ww is less than the current known distance to vv, then our previous estimate for the distance to vv was "too strict" or "too tight." By updating the distance to this new value, we're effectively "loosening" or "relaxing" our estimate.
+
+The metaphor is akin to having a tight string or rubber band between two points. If you find a way to make the string or rubber band more slack (shorter path), then you've "relaxed" it. In the algorithm, by iteratively considering each edge and potentially updating the distances, we're trying to "relax" or "loosen" our estimates for the shortest paths until we can't improve (relax) them any further.
+
+The term is a way to describe the process of iteratively improving a solution until it can't be improved further.
+
+---
+
+User
+
+i see, however which property of relaxation guarantees that by iterating over edges will give shortest path to the vertex? there must be some properties which guarantee that it will yield always the shortest path, it feels like greedy step that always if path on edge E(U,V) , if DISTANCES[U] + WEIGHTS[U][V] < DISTSTANCES[V] then: save new shortest path
+
+---
+
+ChatGPT
+
+You're right in your intuition that the relaxation step in the Bellman-Ford algorithm has a greedy aspect. The algorithm continuously seeks local improvements in the hope of obtaining a global optimum. The guarantee that after V−1V−1 iterations the distances are the shortest paths stems from the properties of paths and the way the relaxation process works.
+
+Here are the key properties that ensure this:
+
+    Bounding the Path Length: The longest simple path (i.e., one without cycles) between two nodes in a graph with VV vertices will have V−1V−1 edges. That's the worst case where you'd traverse through all vertices once.
+
+    Progression of Relaxation: Each iteration of relaxation over all edges ensures the correctness of shortest paths up to a certain path length:
+        After 1 iteration, we've accurately found shortest paths of length 1 edge.
+        After 2 iterations, we've accurately found shortest paths of up to 2 edges.
+        ...
+        After V−1V−1 iterations, we've accurately found shortest paths of up to V−1V−1 edges.
+
+    Correctness Through Iteration: Suppose there's an optimal path from source to vertex xx that uses kk edges. By the kthkth iteration, Bellman-Ford will have correctly computed the shortest path distance to xx since it has considered paths of length up to kk. This guarantee comes from the principle that if we have the shortest path to uu correctly computed, then after the next round of relaxations, we will have the shortest path to any direct neighbor vv of uu correctly computed.
+
+    Overwriting Non-Optimal Paths: The process of relaxation effectively overwrites longer paths with shorter ones as they're discovered. Since each iteration guarantees the shortest path for increasingly longer paths, older non-optimal path lengths get overwritten by newer, shorter path lengths.
+
+    Greedy Nature: The algorithm indeed has a greedy step, as you pointed out. It always updates the path if a shorter one is found. This greedy nature, combined with the thoroughness of V−1V−1 iterations, ensures that the final recorded distances are the shortest paths.
+
+    Negative Cycles: If, after V−1V−1 iterations, a shorter path is still being found, then that's an indicator of a negative cycle, as the only way paths can keep getting shorter beyond V−1V−1 edges is if they're traversing a negative cycle. This is a separate issue but showcases the comprehensiveness of the algorithm.
+
+In essence, the Bellman-Ford algorithm's strategy of repetitively applying the relaxation process ensures that after V−1V−1 iterations, the shortest paths to all vertices (that aren't part of or affected by a negative cycle) are correctly computed.
+
+---
+
+User
+
+does bellman ford give correct result if there is negative cycle?
+
+---
+
+ChatGPT
+
+The Bellman-Ford algorithm can detect negative cycles, but if a negative cycle is reachable from the source vertex, then the concept of the "shortest path" to any vertex that is reachable through this negative cycle becomes ill-defined. This is because, theoretically, by traversing the negative cycle repeatedly, the distance can be reduced indefinitely.
+
+Here's how Bellman-Ford handles negative cycles:
+
+    Detection: After V−1V−1 iterations, if the Bellman-Ford algorithm can still relax any edge, it indicates the presence of a negative cycle that's reachable from the source. This is because any shortest paths that don't involve negative cycles will have been resolved within V−1V−1 iterations.
+
+    Correctness Outside the Cycle: For any vertex that is not reachable through a negative cycle, Bellman-Ford will still give the correct shortest path, even if there's a negative cycle elsewhere in the graph.
+
+    Undefined for Vertices within or reachable through the Cycle: For any vertex that is part of the negative cycle, or can be reached by traversing the negative cycle from the source, the shortest path is not well-defined because, as previously mentioned, one can keep looping through the negative cycle to get a shorter and shorter path.
+
+So, to answer your question: If there's a negative cycle that's reachable from the source, Bellman-Ford correctly detects it, but the shortest path values for vertices within or reachable through that cycle are not valid. For all other vertices, the algorithm provides the correct shortest paths.
+
+---
+
+User
+
+which problems frequently require negative edges in a graph? what kind of properties would negative edges represent?
+
+---
+
+ChatGPT
+
+Negative edges in graph algorithms can represent various real-world scenarios, depending on the context of the problem. Here are a few examples where negative edges might arise and the properties they might represent:
+
+    Economics and Profits:
+        A graph might represent financial transactions, where positive edges are costs and negative edges are profits or rebates.
+        In supply chain optimization, a negative edge might represent a scenario where you get a discount or benefit from combining certain processes.
+
+    Energy Systems:
+        In systems involving energy transfers or transformations, positive values might represent energy consumption, whereas negative values could represent energy generation or release.
+
+    Differential Corrections:
+        In some situations, such as map adjustments or data correction, negative weights might represent a correction in the form of subtraction or rollback to counteract a previously applied value.
+
+    Game Theory and Payoffs:
+        In games modeled as graphs, positive edges could represent gains or points earned, while negative edges could represent penalties or losses.
+
+    Thermodynamics:
+        Systems that involve heat exchange could use negative edges to represent endothermic processes and positive edges for exothermic processes.
+
+    Rewards and Penalties:
+        In a system of rewards and penalties, like in reinforcement learning models, positive values might represent rewards, and negative values could denote penalties.
+
+    Time Adjustments:
+        In scheduling problems or models involving time, negative edges might represent actions that allow you to save time or even rewind it.
+
+While negative weights can represent all these scenarios, it's important to note that having negative cycles (loops in the graph where the sum of the weights is negative) can complicate matters, especially in shortest path problems. This is because, as previously mentioned, if you can repeatedly traverse a negative cycle, you can keep decreasing the total path weight indefinitely. As such, it's crucial to detect and handle these negative cycles appropriately in the context of the problem being solved.
+
+---
+
+User
+
+what is optimal way to store graph in memory? i tried adjacency matrix however i dislike that iteration over edges is actually V^2 because of two dimensional grid
+
+---
+
+ChatGPT
+
+The optimal way to store a graph in memory largely depends on the characteristics of the graph and the operations you intend to perform on it frequently. Here are the most commonly used graph representations, along with their advantages and disadvantages:
+
+    Adjacency Matrix:
+        Structure: A two-dimensional array (or matrix) of size V×VV×V where VV is the number of vertices. matrix[i][j] is true (or contains the weight) if there is an edge from vertex i to vertex j.
+        Pros:
+            Constant-time access to determine if an edge exists between any two nodes.
+            Space efficient for dense graphs.
+            Simple to implement and understand.
+        Cons:
+            Uses O(V2)O(V2) space regardless of the number of edges.
+            Iterating over the neighbors of a vertex or all edges requires O(V)O(V) time, making it inefficient for sparse graphs.
+
+    Adjacency List:
+        Structure: An array of lists (or a dictionary/map). The size of the array is VV. Each index ii in the array has a list (or set) that contains the neighbors of vertex ii.
+        Pros:
+            Space efficient for sparse graphs. Uses O(V+E)O(V+E) space.
+            Iterating over the neighbors of a vertex is efficient.
+        Cons:
+            Slightly slower constant-time access to determine if an edge exists between two nodes, especially if a list (rather than a set) is used for neighbors.
+            Slightly more complex to implement compared to the adjacency matrix.
+
+    Edge List:
+        Structure: A list where each item represents an edge, typically as a tuple (like (u, v, weight)).
+        Pros:
+            Space efficient if you just need the set of edges and don't need fast access to neighbors.
+            Simple to implement.
+        Cons:
+            Not efficient for operations like finding all neighbors of a vertex.
+            Requires O(E)O(E) time to determine if a particular edge exists.
+
+    Incidence Matrix:
+        Structure: A two-dimensional V×EV×E matrix. Each column represents an edge, and each row represents a vertex. Values in the matrix indicate the relationship between vertices and edges.
+        Pros:
+            Useful for certain types of problems, like when dealing with multigraphs.
+        Cons:
+            Not commonly used for standard graph problems because of its space inefficiency compared to the adjacency list or matrix.
+
+In most practical scenarios, especially when dealing with large, sparse graphs, the adjacency list representation is preferred due to its space efficiency and the common operations one typically needs (like iterating over the neighbors of a vertex). If you find the adjacency matrix too space-consuming and its O(V2)O(V2) edge iteration problematic, the adjacency list is likely your best alternative.
+
+---
+
+User
+
+but without negative cycles and with negative edges, can bellman ford work? does if graph have negative edge mean that it also has a negative cycle? or it can have negative edge without negative cycle?
+
+---
+
+ChatGPT
+
+Yes, Bellman-Ford can work with graphs that have negative edges, as long as there are no negative cycles that are reachable from the source vertex.
+
+Having a negative edge does not necessarily mean that the graph also has a negative cycle. It's entirely possible for a graph to have one or more negative edges without having any negative cycles.
+
+For example, consider a simple directed graph with three vertices AA, BB, and CC:
+
+css
+
+A -> B (weight = -2)
+B -> C (weight = 1)
+
+Here, there's a negative edge from AA to BB, but there's no negative cycle.
+
+Bellman-Ford will work correctly on such graphs. It will also detect if there is a reachable negative cycle and alert you, but if there isn't, it will correctly compute the shortest paths from the source vertex to all other vertices, even in the presence of negative edges.
+
+---
+
+User
+
+what about bellman ford, how could i efficiently store it in memory?
+
+---
+
+ChatGPT
+
+For the Bellman-Ford algorithm, the most commonly used and efficient way to store the graph in memory is using an adjacency list. This is especially true when the graph is sparse (i.e., the number of edges, EE, is much less than V2V2, where VV is the number of vertices).
+
+Here's why the adjacency list is suitable for Bellman-Ford:
+
+    Iterating Over All Edges: A major step in Bellman-Ford involves iterating over all edges of the graph to perform the relaxation step. With an adjacency list, you can do this in O(V+E)O(V+E) time, which is efficient for sparse graphs.
+
+    Space Efficiency: An adjacency list is space-efficient for sparse graphs, requiring O(V+E)O(V+E) space.
+
+    Flexibility: It's easy to add, remove, or look up edges and vertices with an adjacency list.
+
+To store the graph in memory using an adjacency list:
+
+    List/Array Representation:
+        Use an array of size VV (number of vertices), where each index in the array corresponds to a vertex.
+        Each entry in the array is a list of pairs (or a custom structure/class). Each pair represents a neighboring vertex and the weight of the edge to that neighbor.
+
+    Dictionary/Map Representation (common in languages like Python):
+        The keys of the dictionary are the vertices.
+        The value associated with each vertex key is a list (or another dictionary) of neighboring vertices and their edge weights.
+
+Example: Let's say you have a directed graph with edges A->B (weight 2), A->C (weight 3), and B->C (weight -1).
+
+Using the dictionary representation in Python:
+
+python
+
+graph = {
+    'A': [('B', 2), ('C', 3)],
+    'B': [('C', -1)],
+    'C': []
+}
+
+With this representation, the Bellman-Ford algorithm can efficiently iterate over the edges and perform the
+
+---
+
+User
+
+so the path is negative, but it is not  a cycle?
+
+---
+
+ChatGPT
+
+Yes, a graph can have negative-weight paths that are not cycles. A negative-weight path simply means that the sum of the edge weights along that path is negative. A negative-weight cycle means there's a closed path (cycle) where the sum of its edge weights is negative.
+
+Consider the following simple directed graph:
+
+scss
+
+A --(-2)--> B --(1)--> C
+
+In this graph:
+
+    There's a path from AA to CC with a total weight of (−2)+1=−1(−2)+1=−1, which is negative.
+    However, there is no negative-weight cycle.
+
+In general:
+
+    Having a negative edge in a graph doesn't necessarily mean there's a negative cycle.
+    Having a negative-weight path also doesn't necessarily mean there's a negative cycle.
+
+The presence of negative cycles is particularly concerning for shortest-path algorithms. For instance, if a negative cycle is reachable from the source in the Bellman-Ford algorithm, then the concept of a shortest path to certain vertices becomes ill-defined because you can keep traversing the negative cycle and reduce the path's total weight indefinitely. The Bellman-Ford algorithm can detect such cycles, which is one of its advantages over algorithms like Dijkstra's, which assume non-negative edge weights.
+
+---
+
+User
+
+does dijkstra also work with that? but without cycle handling?
+
+---
+
+ChatGPT
+
+Dijkstra's algorithm assumes that all edge weights in the graph are non-negative. This assumption is fundamental to the algorithm's correctness. The reason behind this is the "greedy" nature of the algorithm.
+
+Dijkstra's algorithm builds the shortest path in a greedy manner. At each step, it selects the "closest" vertex to the source that hasn't been processed yet. Once a vertex is processed and its shortest distance is determined, the algorithm never rechecks it. This works fine when all edge weights are non-negative because once a vertex is selected, no future path discovered can offer a shorter path to that vertex.
+
+However, if there are negative edge weights, this assumption breaks. After a vertex is processed, a subsequent path might be found that includes a negative edge weight, which can lead to a shorter path to that vertex. Since Dijkstra's algorithm doesn't recheck processed vertices, it can miss this shorter path, leading to incorrect results.
+
+Consider the following simple example:
+
+scss
+
+A --(4)--> B --(-3)--> C
+A --(2)--> C
+
+Using Dijkstra's algorithm, if we start at AA and find the shortest path to all other vertices:
+
+    Vertex AA has a distance of 0 (since it's the starting point).
+    Vertex CC is the closest with a distance of 2 via the direct edge from AA.
+    Vertex BB has a distance of 4 via the direct edge from AA.
+
+If we stop here (as Dijkstra's algorithm would), we'd conclude that the shortest path from AA to CC has a weight of 2. But in reality, the path AA to BB to CC has a total weight of 4−3=14−3=1, which is shorter.
+
+Without negative edge weights, Dijkstra's algorithm works correctly. But once negative edge weights are introduced, its fundamental assumptions are invalidated, and it can produce incorrect results. If negative weights are possible (but negative cycles are not), then Bellman-Ford or another appropriate algorithm should be used instead.
+
