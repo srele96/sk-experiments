@@ -1,0 +1,32 @@
+Reverse engineer thought process
+
+i realized that i can only understand what i can create... reverse engineering
+the thought process, how did he come up with that? how would i come up with
+that?
+
+for example, how would i come to the conclusion that single responsibility
+principle is good? how would i invent it? based on which problems would i see
+that it's suitable?
+
+one good idea is to find the exact problem that the solution is solving and
+figure out the thought process to figure out that solution to that problem
+
+i realized that only what i can create i can truly understand, only the
+problems that i can come up with a solution i understand, when i see someone's
+solution i really have to dig into the thought process that was behind the
+creation of that solution and figure out how would i solve it using that
+solution? what kind of thoughts would lead me to the solution that i already
+know? what kind of questions do i have to ask?
+
+inventing already invented solutions really help understanding, do not be a
+user be an inventor, creator, the person who understands it's ins and outs
+
+being a user only takes one so far, being an inventor takes one a long way
+ahead...
+
+even if i make a mistake and we have to make a change we will make a change but
+it is important that i complete the task in a reasonable amount of time and she
+is possibly right that i should focus on getting things done instead of getting
+it perfect hte first time, i can save som uch more time by simply getting it
+done fast and fixing the things that  come up after that eve faster than
+getting it right the first time, it is not simply possible

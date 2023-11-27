@@ -1,0 +1,7 @@
+To run queue on graphs program with sample inputs, run the following command:
+
+cat queue_on_graphs.in.txt | ./cp.bat queue_on_graph
+
+DO NOT MODIFY THE FILE IF YOU DO NOT KNOW HOW THE PROGRAM'S INPUT SHOULD BE FORMATTED.
+
+READ queue_on_graph.cpp COMMENTS TO LEARN WHAT INPUT FORMAT THE PROGRAM EXPECTS.
