@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* Make it obvious where is canvas */
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- make canvas grabbable by js using id -->
+    <!-- make canvas evenly sized and fit small screens -->
+    <canvas id="triangle" width="500" height="500"></canvas>
+    <div id="3d-app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/3.4.2/gl-matrix-min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- I used this file to draw on canvas using webgl to try and use
+      quaternion rotations -->
+
+    <script type="text/babel">
+      const id = 'triangle';
+      const canvas = document.getElementById(id);
+      const gl = canvas.getContext('webgl');
+
+      const quatRotationShader = `
+        attribute vec4 position;
+
+        varying lowp vec4 color;
+
+        uniform mat4 rotationMatrix;
+
+        void main() {
+          vec4 result = rotationMatrix * position;
+          gl_Position = result;
+          color = result;
+        }
+      `;
+
+      // I wrote it :D
+      const eulerRotationShader = `
+        attribute vec4 position;
+
+        varying lowp vec4 color;
+
+        uniform float angleX;
+        uniform float angleY;
+        uniform float angleZ;
+
+        // Use Euler's rotation matrices.
+
+        mat3 Rx(float angle) {
+          float rad = radians(angle);
+          float c = cos(rad);
+          float s = sin(rad);
+
+          return mat3(
+            1.0, 0.0, 0.0,
+            0.0, c, -s,
+            0.0, s, c
+          );
+        }
+
+        mat3 Ry(float angle) {
+          float rad = radians(angle);
+          float c = cos(rad);
+          float s = sin(rad);
+
+          return mat3(
+            c, 0.0, s,
+            0.0, 1.0, 0.0,
+            -s, 0.0, c
+          );
+        }
+
+        mat3 Rz(float angle) {
+          float rad = radians(angle);
+          float c = cos(rad);
+          float s = sin(rad);
+
+          return mat3(
+            c, -s, 0.0,
+            s, c, 0.0,
+            0.0, 0.0, 1.0
+          );
+        }
+
+        void main() {
+          // Create lightning to make edges clearly visible.
+          mat3 rotation = Rx(angleX) * Ry(angleY) * Rz(angleZ);
+          vec4 result = vec4(rotation * position.xyz, position.w);
+
+          gl_Position = result;
+          color = result;
+        }
+      `;
+
+      const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+      gl.shaderSource(vertexShader, quatRotationShader);
+      gl.compileShader(vertexShader);
+
+      if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+        console.error(
+          `Failed to compile shader: ${gl.getShaderInfoLog(vertexShader)}`
+        );
+      }
+
+      const fragmentShaderSource = `
+        varying lowp vec4 color;
+
+        void main() {
+          gl_FragColor = color;
+        }
+      `;
+      const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+      gl.shaderSource(fragmentShader, fragmentShaderSource);
+      gl.compileShader(fragmentShader);
+
+      if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+        console.error(
+          `Failed to compile shader: ${gl.getShaderInfoLog(fragmentShader)}`
+        );
+      }
+
+      const shaderProgram = gl.createProgram();
+      gl.attachShader(shaderProgram, vertexShader);
+      gl.attachShader(shaderProgram, fragmentShader);
+      gl.linkProgram(shaderProgram);
+
+      if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+        console.error(
+          `Failed to link the shader program: ${gl.getProgramInfoLog(
+            shaderProgram
+          )}`
+        );
+      }
+
+      const up = [0.0, 0.5, 0.0, 1.0];
+      const leftDownBack = [-0.5, -0.5, 0.5, 1.0];
+      const rightDownBack = [0.5, -0.5, 0.5, 1.0];
+      const downForward = [0.0, -0.5, -0.5, 1.0];
+      const triangle = new Float32Array([
+        ...up,
+        ...leftDownBack,
+        ...rightDownBack,
+        ...downForward,
+      ]);
+      const buffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(gl.ARRAY_BUFFER, triangle, gl.STATIC_DRAW);
+
+      const position = gl.getAttribLocation(shaderProgram, 'position');
+      gl.vertexAttribPointer(position, 4, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(position);
+
+      const indicesBuffer = gl.createBuffer();
+      const upIndex = 0;
+      const leftDownBackIndex = 1;
+      const rightDownBackIndex = 2;
+      const downForwardIndex = 3;
+      const backFace = [upIndex, leftDownBackIndex, rightDownBackIndex];
+      const leftFace = [upIndex, leftDownBackIndex, downForwardIndex];
+      const rightFace = [upIndex, rightDownBackIndex, downForwardIndex];
+      const bottomFace = [
+        leftDownBackIndex,
+        rightDownBackIndex,
+        downForwardIndex,
+      ];
+      const indices = new Uint16Array([
+        ...backFace,
+        ...leftFace,
+        ...rightFace,
+        ...bottomFace,
+      ]);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+
+      gl.useProgram(shaderProgram);
+
+      // Can only be set after we tell OpenGL which shader program to use
+      // only after gl.useProgram() because we otherwise get warning that
+      // we are setting uniform but we don't have program.
+      const rotationMatrixPosition = gl.getUniformLocation(
+        shaderProgram,
+        'rotationMatrix'
+      );
+
+      function draw(angleX = 0.0, angleY = 0.0, angleZ = 0.0) {
+        gl.enable(gl.DEPTH_TEST);
+        gl.depthFunc(gl.LEQUAL);
+        const rotationQuaternion = glMatrix.quat.create();
+        glMatrix.quat.fromEuler(rotationQuaternion, angleX, angleY, angleZ);
+        const rotationMatrix = glMatrix.mat4.create();
+        glMatrix.mat4.fromQuat(rotationMatrix, rotationQuaternion);
+        gl.uniformMatrix4fv(rotationMatrixPosition, false, rotationMatrix);
+
+        gl.clearColor(1.0, 1.0, 1.0, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+      }
+
+      draw();
+
+      function _3D_App() {
+        const initialAngle = 0;
+        const [angle, setAngle] = React.useState({
+          x: initialAngle,
+          y: initialAngle,
+          z: initialAngle,
+        });
+
+        React.useEffect(() => {
+          draw(angle.x, angle.y, angle.z);
+        }, [angle.x, angle.y, angle.z]);
+
+        function changeAngle(event) {
+          setAngle((previousAngle) => {
+            return {
+              ...previousAngle,
+              // Parse value to number because it's stored as a string even
+              // though input is of type number.
+              [event.target.name]: Number(event.target.value),
+            };
+          });
+        }
+
+        return (
+          <div>
+            {Object.keys(angle).map((key) => {
+              const id = `angle-${key}`;
+
+              return (
+                <div key={key}>
+                  <label htmlFor={id}>
+                    Angle {key.toUpperCase()}
+                    <input
+                      id={id}
+                      name={key}
+                      type="number"
+                      value={angle[key]}
+                      onChange={changeAngle}
+                    />
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        );
+      }
+
+      class Renderer {
+        constructor() {
+          function establishClassInvariant() {
+            const id = '3d-app';
+            const domRoot = document.getElementById(id);
+            if (domRoot) {
+              this._domRoot = domRoot;
+            } else {
+              throw new Error(`Unable to retrieve root ${id}`);
+            }
+          }
+          establishClassInvariant.apply(this);
+        }
+
+        Render(Component) {
+          const reactRoot = ReactDOM.createRoot(this._domRoot);
+          reactRoot.render(Component);
+        }
+      }
+
+      const renderer = new Renderer();
+      renderer.Render(<_3D_App />);
+    </script>
+  </body>
+</html>

@@ -1,8 +1,8 @@
 # Srecko Kostic - Experiments
 
-Srecko Kostic's collection of experiments and reading topic wishlist in form of issues. This repository puts it all together.
+Srecko Kostic's collection of learning, practice, and self-reflection.
 
-I start to like this repository. It serves as a history and a tool to reflect. I can see how much I've improved.
+My self-improvement history. I am generally curious.
 
 ## Experiments
 
@@ -10,9 +10,29 @@ I start to like this repository. It serves as a history and a tool to reflect. I
 - [C++](./cpp)
 - [Python](./python)
 - [PowerShell](./powershell)
+- [Docker](./docker)
+- [Sandbox](./sandbox)
+
+## Advices
+
+- [Data Structures and Algorithms advice](https://qr.ae/pylUlM)
+- [Data Structures and Algorithms usefulness](https://qr.ae/pylUuM)
+
+**_If you think something is stupid, ridiculous, makes no sense, or anything remotely similar, research and learn it extensively. It will make sense._**
+
+I used to think that unit tests are stupid, testers should test the software. I didn't know anything about unit tests.
+
+I used to think Data Structures and Algorithms are stupid and algorithmic problems are ridiculous waste of time. They are not real programming, they are not how you write real software. I didn't know anything about any of them.
+
+Every time I thought how something is stupid, ridiculous, makes no sense, or anything remotely similar, I did not agree with those opinions once I learned about it.
+
+## Algorithmic problems
+
+- [LeetCode - srele96](https://leetcode.com/srele96/)
+- [CodeForces - flexos96](https://codeforces.com/profile/flexos96)
 
 ## Motivation
 
-I started around three years ago to work on different topics. I did all the work in a directory on my pc, but it became unmanageable. The idea of doing something cool every day drove me. I realized I didn't share anything, and most of it is useless, forgotten, or abandoned. That is sad because I love some of those projects.
+I started around three years ago to work on different topics. I did all the work in a directory on my pc, but it became unmanageable. The idea of doing something cool every day drove me. I realized I didn't share anything, and because of that, most of it is useless, forgotten, or abandoned. That is sad because I love some of those projects.
 
-This repository started small and grew until it had a couple of projects, and each of them had node_modules or some weird setup.
+Working on this repository is among one the best decisions I made. I discovered so much thanks to it. I can never know the beast an initial idea will develop into.

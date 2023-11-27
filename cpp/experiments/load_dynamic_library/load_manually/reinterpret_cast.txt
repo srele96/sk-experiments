@@ -1,0 +1,11 @@
+The reinterpret_cast operator is used for conversions of a very low-level nature that yield a binary copy of the data without changing the bit pattern. Essentially, it tells the compiler to treat the sequence of bits (the actual data) of a pointer as if it were of a different type. The purpose and behavior of reinterpret_cast are to allow you to perform any conversion between pointer types, regardless of the types they point to.
+
+Here's why reinterpret_cast is commonly used in this context:
+
+    Low-Level Operations: When you're dealing with system-level APIs, like dynamic linking, you're operating at a level where type safety is your responsibility. The GetProcAddress function retrieves the address of an exported function in the DLL, but it returns this as a generic FARPROC, which is essentially a void*.
+
+    Exact Bit Pattern: reinterpret_cast doesn't change the bit pattern at all, it simply changes the type of the pointer. This is exactly what's needed when using GetProcAddress: the bit pattern is a memory address, and you know better than the compiler what that address is supposed to point to.
+
+    Explicit Intent: Using reinterpret_cast makes it explicit that you're doing something low-level that could be risky. It flags to the reader that caution is needed, which isn't as evident with a C-style cast.
+
+    No Checks: Unlike static_cast and dynamic_cast, which perform some kind of type checking or adjustment, reinterpret_cast performs no runtime checks, which is suitable here since you're certain about the nature of the conversion.

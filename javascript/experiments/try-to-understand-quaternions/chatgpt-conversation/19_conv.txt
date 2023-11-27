@@ -1,0 +1,109 @@
+const vector = [3, 3, 3]; // Input vector
+const angle = 53; // Rotation angle in degrees
+
+// Convert angle to radians
+const angleRad = angle * (Math.PI / 180);
+
+// Create the rotation quaternion
+const axis = [1, 0, 0]; // X-axis
+const halfAngle = angleRad / 2;
+const sinHalfAngle = Math.sin(halfAngle);
+const cosHalfAngle = Math.cos(halfAngle);
+
+const rotationQuaternion = [
+  cosHalfAngle,
+  axis[0] * sinHalfAngle,
+  axis[1] * sinHalfAngle,
+  axis[2] * sinHalfAngle
+];
+
+// Convert the input vector to a quaternion
+const vectorQuaternion = [0, vector[0], vector[1], vector[2]];
+
+// Quaternion multiplication helper function
+function multiplyQuaternions(q1, q2) {
+  const result = [];
+  result[0] = q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2] - q1[3] * q2[3];
+  result[1] = q1[0] * q2[1] + q1[1] * q2[0] + q1[2] * q2[3] - q1[3] * q2[2];
+  result[2] = q1[0] * q2[2] - q1[1] * q2[3] + q1[2] * q2[0] + q1[3] * q2[1];
+  result[3] = q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1] + q1[3] * q2[0];
+  return result;
+}
+
+// Perform the quaternion multiplication
+const rotatedQuaternion = multiplyQuaternions(
+  multiplyQuaternions(rotationQuaternion, vectorQuaternion),
+  [cosHalfAngle, -axis[0] * sinHalfAngle, -axis[1] * sinHalfAngle, -axis[2] * sinHalfAngle]
+);
+
+// Convert the rotated quaternion back to a vector
+const rotatedVector = [rotatedQuaternion[1], rotatedQuaternion[2], rotatedQuaternion[3]];
+
+console.log(rotatedVector);
+
+
+this code rotates vector using quaternion correctly, can you explain why does it need to perform multiplication twice? it first multiplies rotation with regular quaternion, then multiplies result of that with that array, pls help me understand why
+ChatGPT
+
+The code performs quaternion multiplication twice in order to rotate the input vector using a quaternion rotation.
+
+Quaternion multiplication is not commutative, which means that the order of multiplication matters. In this case, the rotationQuaternion is multiplied with the vectorQuaternion first, and then the result is multiplied with another quaternion that represents the inverse rotation.
+
+Let's break down the code to understand the steps:
+
+    Convert the angle from degrees to radians: The angle provided in degrees is converted to radians because trigonometric functions in JavaScript (e.g., Math.sin, Math.cos) expect angles in radians.
+
+    Create the rotation quaternion: A quaternion is a 4-dimensional vector that represents a rotation in 3D space. The rotationQuaternion is created using the provided angle and an axis (in this case, the X-axis). It consists of the cosine of half the angle as the first element, and the sine of half the angle multiplied by the components of the axis as the remaining elements.
+
+    Convert the input vector to a quaternion: The input vector is converted to a quaternion representation by adding a zero as the first element. This is necessary to perform quaternion multiplication.
+
+    Define the quaternion multiplication helper function: The multiplyQuaternions function takes two quaternions (q1 and q2) as input and performs quaternion multiplication according to the Hamilton product formula.
+
+    Perform quaternion multiplication: The quaternion rotation is applied to the input vector by first multiplying the rotationQuaternion with the vectorQuaternion. This step represents the rotation of the vector in 3D space.
+
+    Multiply the result with the inverse rotation: The result obtained from the previous step is multiplied with another quaternion that represents the inverse rotation. This step is necessary to "undo" the initial rotation and obtain the rotated vector.
+
+    Convert the rotated quaternion back to a vector: The rotatedQuaternion is converted back to a 3D vector by extracting its second, third, and fourth elements.
+
+So, the multiplication is performed twice to apply the rotation and then "undo" it, resulting in the rotated vector. Quaternion multiplication allows for efficient composition of rotations in 3D space, providing a compact and accurate representation of the transformation.
+User
+can you help me understand what do you mean by undoing initial rotation?
+ChatGPT
+
+Certainly! When we rotate a vector in 3D space using a quaternion, the resulting vector is obtained by applying the rotation transformation to the original vector. However, if we want to "undo" or reverse that rotation, we need to apply the inverse transformation.
+
+In the provided code, the initial rotation is performed by multiplying the rotationQuaternion with the vectorQuaternion:
+
+scss
+
+const rotatedQuaternion = multiplyQuaternions(
+  multiplyQuaternions(rotationQuaternion, vectorQuaternion),
+  [cosHalfAngle, -axis[0] * sinHalfAngle, -axis[1] * sinHalfAngle, -axis[2] * sinHalfAngle]
+);
+
+The second quaternion [cosHalfAngle, -axis[0] * sinHalfAngle, -axis[1] * sinHalfAngle, -axis[2] * sinHalfAngle] represents the inverse rotation. By multiplying the result of the initial rotation with this inverse quaternion, we effectively reverse the rotation and obtain the rotated vector.
+
+So, the process of "undoing" the initial rotation involves applying the inverse rotation quaternion to the result of the initial rotation. This ensures that the resulting vector corresponds to the original vector before the rotation was applied.
+User
+please help me understand when does the initial rotation occur?
+ChatGPT
+
+Apologies for the confusion in my previous response. Upon closer examination of the code, it appears there was an error in my explanation. The initial rotation does not occur before the second multiplication in the code provided.
+
+Let's go through the code again to understand when and how the rotation takes place:
+
+    Convert the angle from degrees to radians: This step simply converts the angle from degrees to radians for further calculations.
+
+    Create the rotation quaternion: The rotationQuaternion is created using the provided angle and the X-axis as the rotation axis. It represents the desired rotation in 3D space.
+
+    Convert the input vector to a quaternion: The input vector is converted to a quaternion representation by adding a zero as the first element.
+
+    Define the quaternion multiplication helper function: The multiplyQuaternions function is defined to perform quaternion multiplication.
+
+    Perform quaternion multiplication: The rotationQuaternion is multiplied with the vectorQuaternion, representing the rotation of the vector in 3D space.
+
+    Convert the result back to a vector: The rotatedQuaternion, obtained from the previous step, is converted back to a 3D vector by extracting its second, third, and fourth elements.
+
+In summary, the initial rotation occurs when the rotationQuaternion is multiplied with the vectorQuaternion. The result of this multiplication represents the rotated vector. There is no "undoing" of the rotation in the provided code.
+
+I apologize for the confusion caused by my previous responses. The code simply rotates the vector using quaternion multiplication without any subsequent inversion or reversal of the rotation.

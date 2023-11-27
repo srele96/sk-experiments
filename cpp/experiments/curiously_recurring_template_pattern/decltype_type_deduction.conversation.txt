@@ -1,0 +1,1409 @@
+what does decltype do in c++? give me various ways to use it
+ChatGPT
+
+In C++, decltype is a keyword introduced in C++11 that inspects the declared type of an expression. The result is the type itself, which can be used in various contexts, such as for declaring variables, function return types, template argument deduction, and more.
+
+Here are some ways to use decltype:
+
+    Basic Usage for Type Inspection:
+
+    cpp
+
+int x = 10;
+decltype(x) y = 20;  // y is of type int
+
+Using with Expressions:
+
+cpp
+
+int a = 5;
+double b = 5.5;
+decltype(a + b) result;  // result is of type double
+
+Function Return Type:
+This is especially useful in generic programming when the return type depends on template arguments.
+
+cpp
+
+template <typename T, typename U>
+auto add(T t, U u) -> decltype(t + u) {
+    return t + u;
+}
+
+Declaring Types in Templates:
+
+cpp
+
+template <typename T, typename U>
+void foo(const T& t, const U& u) {
+    decltype(t + u) sum = t + u;
+}
+
+Struct or Class Members:
+
+cpp
+
+struct S {
+    int x;
+    decltype(x) y;  // y is of type int
+};
+
+Using with auto for Type Deduction:
+decltype can be combined with auto to define a variable with the type deduced from an expression, but without evaluating the expression itself.
+
+cpp
+
+int arr[5];
+auto arr_type = arr;  // arr_type is an int*
+decltype(auto) arr_type2 = arr;  // arr_type2 is an int(&)[5], which is a reference to the array
+
+Using with decltype(auto) for Return Type Deduction:
+decltype(auto) is useful for deducing return types that might be references.
+
+cpp
+
+int x = 10;
+int& get_x() {
+    return x;
+}
+decltype(auto) y = get_x();  // y is int&, a reference to x
+
+Using in Conditional Expressions:
+
+cpp
+
+int i = 4;
+double d = 5.5;
+decltype(i == 1 ? i : d) val;  // Error, because types of i and d are different.
+
+Note: This scenario produces an error because the ternary conditional operator requires that the types of the second and third operands be the same, or that they can be converted to a common type. Using decltype here brings attention to the issue.
+
+Using with Lambdas:
+
+cpp
+
+    auto lambda = [](int x, double y) { return x + y; };
+    decltype(lambda) another_lambda = lambda;  // another_lambda has the type of the lambda
+
+These are just a few examples showcasing how decltype can be utilized. The power of decltype is more evident in template metaprogramming and generic programming where types might be complex or deduced based on certain conditions.
+User
+so it deduces a type of an expression? give me an idea where could type deduction from an expression be useful...
+ChatGPT
+
+Yes, decltype deduces the type of an expression. This ability to inspect and derive the type of an expression without actually evaluating it can be powerful in several scenarios, especially in generic and template-heavy code. Here are some use cases where type deduction from an expression is particularly useful:
+
+    Generic Programming: Often in template code, you may deal with types that you don't know ahead of time. By using decltype, you can infer the resulting type of operations involving these generic types.
+
+    cpp
+
+template <typename T, typename U>
+auto multiply(const T& t, const U& u) -> decltype(t * u) {
+    return t * u;
+}
+
+Here, the function can multiply two values of potentially different types, and the return type will be correctly deduced.
+
+Proxy Classes: In certain scenarios, like expression templates used in linear algebra libraries, you might define proxy classes that represent complex operations but don't compute them immediately. When finally computing the result of these operations, decltype helps in deducing the correct resulting type.
+
+Custom Containers and Algorithms: When implementing custom data structures or algorithms, you might want the flexibility to return references or other derived types based on the operations performed.
+
+cpp
+
+template <typename Container>
+auto front(Container& c) -> decltype(*begin(c)) {
+    return *begin(c);
+}
+
+This function returns a reference to the first element of any container, regardless of the underlying container type.
+
+SFINAE (Substitution Failure Is Not An Error): This is an advanced C++ technique where decltype is used to check the validity of an expression. If the expression is valid, you can use it to enable a particular template instantiation.
+
+cpp
+
+    template <typename T, typename U>
+    auto add(T t, U u) -> decltype(t + u, void(), std::string{}) {
+        return std::to_string(t + u);
+    }
+
+    Here, the add function will only be valid if t + u is a valid expression, thanks to the decltype.
+
+    Ensuring Consistent Types: In complex applications, you might refactor code, and the types of certain expressions may change. By using decltype in function return types or variable declarations, you ensure that the types remain consistent even if the underlying expression's type changes.
+
+    Adapting to Library Changes: When relying on third-party libraries, the types returned by library functions or the types of library data members might change across versions. By using decltype, your code can adapt more gracefully to these changes.
+
+    Type Traits and Metaprogramming: When creating custom type traits or doing other metaprogramming tasks, decltype allows you to infer types based on complex conditions or operations.
+
+In essence, decltype shines in situations where code needs to be flexible, adaptable, and generic. It provides a way to make code more resilient to changes and more adaptable to a wide range of types and scenarios.
+User
+why would i want to declare a type based on an expression, so let's say an expression of two types T and T, is it possible for such an expression to be a type other than T? what if we have types T and E and we declare the type of the two? what if we don't know the amount of types in an expression? is it even possible? what are all kinds of expressions we can have in c++ that we can use decltype from? who implements decltype, is it compiler?
+ChatGPT
+
+Let's address your questions step-by-step.
+
+    Why declare a type based on an expression?
+
+    Doing so allows you to write more generic and adaptable code. Often in template or generic programming, you're dealing with types that aren't known until compile time. decltype provides a mechanism to deduce the type of a combined expression without having to hard-code or explicitly know the type ahead of time.
+
+    Expression of two types T and T, can it be a type other than T?
+
+    Not usually. If you're operating on two values of type T, then the resultant type is often T. However, there can be exceptions due to user-defined operator overloads.
+
+    cpp
+
+    struct A {};
+    struct B {};
+
+    B operator+(const A&, const A&) { return B(); }
+
+    void example() {
+        A a1, a2;
+        decltype(a1 + a2) result;  // type of result is B, not A
+    }
+
+    Expression involving types T and E?
+
+    The resultant type can be T, E, or something else entirely, depending on the operation and any user-defined overloads. For example, when you concatenate a std::string and a const char*, the result is std::string.
+
+    Don't know the amount of types in an expression?
+
+    If you're referring to variadic templates or other situations with an arbitrary number of types, decltype can still be used, but often in conjunction with recursive template patterns or other advanced techniques.
+
+    All kinds of expressions for decltype?
+
+    You can use decltype with virtually any valid C++ expression, including:
+        Variable declarations
+        Function calls
+        Arithmetic operations
+        Member access operations
+        Ternary conditional expressions
+        ... and many more.
+
+    Who implements decltype?
+
+    decltype is a keyword in the C++ language and is implemented by the compiler. It's part of the language specification, so any compliant C++ compiler will support it (starting from C++11).
+
+In conclusion, decltype provides a way to deduce types based on expressions, making it easier to write generic code that adapts to different types and scenarios. This is particularly valuable in template programming, where types might not be known until compile time.
+User
+template <typename T, typename E>
+void typeinfo_of_decltype(std::ostream &ostream) {
+  std::ostream << typeinfo(decltype()).name() << "\n";
+}
+
+
+now im figuring out an expression, what are all kinds of x pressions that i can have?
+
+lambda that returns a type T should always return a type T, but is there any useful case to deduce the return type of ane expression? like expression of two results where each result is lambda?
+
+template<typename T, typename E>
+void deduce(T callback_one, T callback_two) {
+  decltype(callback_one() /* operator */ callback_two());
+}
+
+what else can i do with the callback_one and callback_two?
+
+blooody hell... it's so draining
+
+ok i see
+
+begin(c)
+
+we get begin iterator of the Container& c, pointer to the first, but if it is iterator of
+
+std::vector<T>, how can we extract the type of the *begin(c) and the type of begin(c)
+
+with
+
+decltype(*begin(c)) and decltype(begin(c))
+
+ok, i have to find the code to do that...
+
+return *begin(c)
+
+-> decltype(*begin(c))
+ChatGPT
+
+Alright, let's address your various questions step by step:
+
+    Expressions in decltype:
+
+    Almost any valid C++ expression can be placed inside decltype(). An expression is essentially a combination of one or more operands (variables, literals, function calls, etc.) and operators (arithmetic, logical, relational, etc.) that can be evaluated to produce a result. For instance, x + y, foo(), a && b, and obj.member are all expressions.
+
+    Lambda Return Type:
+
+    By default, the return type of a lambda is deduced based on its body. However, with decltype, you can create more complex scenarios where the return type might be the result of combining multiple lambda outputs.
+
+    cpp
+
+template<typename T, typename E>
+void deduce(T callback_one, E callback_two) {
+    using result_type = decltype(callback_one() + callback_two());
+    // Now you can use result_type in subsequent operations
+}
+
+In the above example, callback_one and callback_two are lambdas (or any callable objects), and we're determining the type when their return values are added together.
+
+What else with callback_one and callback_two?
+
+You can do a lot, depending on what you need:
+
+    Check if they are invokable with certain arguments using std::is_invocable.
+    Deduce the type of an operation involving their return types.
+    Combine their outputs in a variety of ways (e.g., arithmetic operations, function calls).
+
+Extracting the type of *begin(c) and begin(c):
+
+If c is a container like std::vector<T>, then:
+
+    begin(c) gives you an iterator, whose type can be deduced using decltype(begin(c)).
+    *begin(c) gives you a reference to the contained type, T&. Its type can be deduced using decltype(*begin(c)).
+
+cpp
+
+template <typename Container>
+void example(const Container& c) {
+    using iterator_type = decltype(begin(c));        // This is the iterator type
+    using value_type = decltype(*begin(c));          // This is the contained value type (e.g., T&)
+}
+
+The value_type deduced here would be a reference type (like T&). If you need the actual type without the reference, you can use std::remove_reference:
+
+cpp
+
+using actual_value_type = std::remove_reference_t<value_type>;
+
+return *begin(c) -> decltype(*begin(c)):
+
+This is correct syntax for specifying the return type of a function post its parameters. If a function's return type is based on its parameters, this trailing return type syntax can be used:
+
+cpp
+
+    template <typename Container>
+    auto first_element(const Container& c) -> decltype(*begin(c)) {
+        return *begin(c);
+    }
+
+I understand that the type system, especially in conjunction with templates, can be challenging in C++. If you have more questions, feel free to ask!
+User
+so decltype can take more than one argument? in which cases? i have spent last 1.5 years digging in reactjs, javascript and other programming concepts like this, what skill did it give me? evaluate my questions, evaluate my skill, evaluate me overall, give me a grade 1 to 10, what can you deduce from my questions? what areas would i be good at?
+ChatGPT
+
+    decltype with Multiple Arguments:
+
+    No, decltype itself takes only a single argument, which is an expression. It evaluates the type of the given expression. What might be confusing is that the expression itself can be complex and composed of multiple parts, but it's still a singular expression.
+
+    Skill Evaluation:
+
+    I'll provide an analysis based on the questions you've posed:
+
+        Depth of Inquiry: Your questions indicate a deeper dive into advanced features of C++ (like decltype, template programming). This suggests an advanced understanding of the language or at least a motivation to understand its intricacies.
+
+        Diverse Interests: The fact that you've spent time with ReactJS and JavaScript indicates a broad skill set. Front-end web development (ReactJS) is a different paradigm from low-level or system-level C++ programming.
+
+        Curiosity & Research Ability: You're not stopping at basic questions. You're digging deeper and seem to be trying to understand the "why" and "how" behind concepts, which is crucial for mastery.
+
+        Grade: It's not really fair or accurate for me to provide a numerical grade based on limited interaction, especially when assessing someone's skills or knowledge. However, given your questions and their depth, you are definitely above average in your inquiry and understanding. Let's say 8/10 for the purpose of giving a number, but remember, this is an approximation and shouldn't be taken as an absolute measure.
+
+    Areas of Strength:
+
+        Systems Programming: With your interest in C++ and its advanced features, you likely have strengths in systems or application-level programming.
+
+        Web Development: Your experience with ReactJS suggests competency in web development, especially in the modern web app domain.
+
+        Problem Solving: Your questions indicate a problem-solving mindset, trying to understand and tackle issues you come across.
+
+    General Deductions:
+
+    Your curiosity and the range of topics you've delved into suggest that you're a lifelong learner, always looking to expand your knowledge and understanding. You seem to be someone who doesn't shy away from challenges and is keen on understanding the underpinnings of the tools and languages you work with.
+
+Remember, though, this is a qualitative evaluation based on limited data. Everyone has areas of strength and areas where they can grow, and the most important thing is the journey of learning and the passion for the craft.
+User
+namespace use_decltype {
+
+struct result {
+  // Define the operators
+};
+
+struct callable_a {
+  auto operator()() -> result {
+    // Do something ...
+  }
+};
+
+struct callable_b {
+  auto operator()() -> result {
+    // Do something ...
+  }
+};
+
+template <typename T, typename E>
+void typeinfo_of_decltype(std::ostream &ostream, T &callback_a, E &callback_b) {
+  // - Can overload operators for these containers
+  // - The return type of callback_a and callback_b must be what to be able to
+  // do these operations?
+  using type_addition = decltype(callback_a() + callback_b());
+  using type_multiplication = decltype(callback_a() * callback_b());
+  using type_division = decltype(callback_a() / callback_b());
+
+  // Does typeinfo work on deduced type of an expression by decltype?
+  ostream << typeinfo(decltype()).name() << "\n";
+  ostream << typeinfo(type_addition).name() << "\n";
+  ostream << typeinfo(type_multiplication).name() << "\n";
+  ostream << typeinfo(type_division).name() << "\n";
+
+  // What is the result's type?
+  type_addition _ta;
+  type_multiplication _tm;
+  type_division _td;
+}
+
+void run() {
+  callable_a callback_a;
+  callable_b callback_b;
+
+  typeinfo_of_decltype(std::cout, callback_a, callback_b);
+}
+
+} // namespace use_decltype
+ChatGPT
+
+There are a few points to address in the code you've provided:
+
+    Overloading Operators:
+
+    If you want to support operations like addition, multiplication, etc., between the results of callable_a and callable_b, you'd have to overload these operators for the result type.
+
+    cpp
+
+struct result {
+    // ... other members ...
+
+    friend result operator+(const result& lhs, const result& rhs) {
+        result res;
+        // ... perform addition logic ...
+        return res;
+    }
+
+    // Similarly for other operators (*, /, etc.)
+};
+
+Using typeid:
+
+typeid is the correct keyword, not typeinfo. typeid is used with the <typeinfo> header to query runtime type information. So, you'll need to include this header at the beginning of your file.
+
+cpp
+
+#include <typeinfo>
+
+Then, the correct usage is:
+
+cpp
+
+    ostream << typeid(type_addition).name() << "\n";
+
+    Other Corrections:
+
+        You have an extraneous decltype in the typeinfo_of_decltype function: ostream << typeinfo(decltype()).name() << "\n";. I'm not sure what you intended with this line, but as it stands, it won't compile because decltype() expects an expression inside.
+
+        Also, callable_a and callable_b must return a value. You've specified a return type, but there's no return statement.
+
+Here's a revised version:
+
+cpp
+
+#include <iostream>
+#include <typeinfo>
+
+namespace use_decltype {
+
+struct result {
+    // Define the operators
+    friend result operator+(const result& lhs, const result& rhs) {
+        return result();  // For simplicity; you should define actual logic
+    }
+
+    friend result operator*(const result& lhs, const result& rhs) {
+        return result();
+    }
+
+    friend result operator/(const result& lhs, const result& rhs) {
+        return result();
+    }
+};
+
+struct callable_a {
+    result operator()() {
+        return result();
+    }
+};
+
+struct callable_b {
+    result operator()() {
+        return result();
+    }
+};
+
+template <typename T, typename E>
+void typeinfo_of_decltype(std::ostream &ostream, T &callback_a, E &callback_b) {
+    using type_addition = decltype(callback_a() + callback_b());
+    using type_multiplication = decltype(callback_a() * callback_b());
+    using type_division = decltype(callback_a() / callback_b());
+
+    ostream << typeid(type_addition).name() << "\n";
+    ostream << typeid(type_multiplication).name() << "\n";
+    ostream << typeid(type_division).name() << "\n";
+
+    // What is the result's type?
+    type_addition _ta;
+    type_multiplication _tm;
+    type_division _td;
+}
+
+void run() {
+    callable_a callback_a;
+    callable_b callback_b;
+
+    typeinfo_of_decltype(std::cout, callback_a, callback_b);
+}
+
+}  // namespace use_decltype
+
+int main() {
+    use_decltype::run();
+}
+
+This version should compile and run without errors. Remember, you need to define the actual logic for the overloaded operators to see meaningful results.
+User
+  ostream << typeinfo(decltype(callback_a() + callback_b())).name() << "\n";
+
+main.cpp:700:60: error: expected '(' for function-style cast or type construction
+  ostream << typeinfo(decltype(callback_a() + callback_b())).name() << "\n";
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+ChatGPT
+
+The error you're seeing is because you're using typeinfo when you should be using typeid.
+
+Change:
+
+cpp
+
+ostream << typeinfo(decltype(callback_a() + callback_b())).name() << "\n";
+
+To:
+
+cpp
+
+ostream << typeid(decltype(callback_a() + callback_b())).name() << "\n";
+
+Make sure you've included the <typeinfo> header at the top of your file to use typeid.
+
+cpp
+
+#include <typeinfo>
+
+Once you make that correction, the code should compile correctly. The typeid operator is used to query type information at runtime, and the .name() member function returns a string representing the name of the type.
+User
+what would be appropriate type for callback onresult
+
+template <typename T, typename E>
+void typeinfo_of_decltype(std::ostream& ostream, T& callback_a, E& callback_b, const std::function<void()>& on_result) {
+  // - Can overload operators for these containers
+  // - The return type of callback_a and callback_b must be what to be able to
+  // do these operations?
+  using type_addition = decltype(callback_a() + callback_b());
+  using type_multiplication = decltype(callback_a() * callback_b());
+  using type_division = decltype(callback_a() / callback_b());
+
+  // Does typeid work on deduced type of an expression by decltype?
+  ostream << typeid(decltype(callback_a() + callback_b())).name() << "\n";
+  ostream << typeid(type_addition).name() << "\n";
+  ostream << typeid(type_multiplication).name() << "\n";
+  ostream << typeid(type_division).name() << "\n";
+
+  // What is the result's type?
+  type_addition _ta;
+  on_result(_ta);
+  type_multiplication _tm;
+  on_result(_tm);
+  type_division _td;
+  on_result(_td);
+}
+
+
+do we have guarantee that it always take same type? do we have to let it know it can receive one of the three types?
+ChatGPT
+
+Based on the function typeinfo_of_decltype you provided, the type of the results of the operations (addition, multiplication, and division) for callback_a and callback_b are determined using decltype. If the results of these operations always return the same type, then you can confidently use that type with the on_result callback.
+
+However, if there's a chance that the result types might be different, then you might run into type safety concerns. It's not clear from the code you provided whether callback_a and callback_b always return results that have the same type or if the overloaded operations always return the same type.
+
+If you want to ensure type safety with the callback, here are a few options:
+
+    Use Overloads: Have multiple overloads of the callback function to handle each potential result type.
+
+    Use a Variant: Use std::variant from C++17 to allow the callback to accept a variant of possible types.
+
+    cpp
+
+using ResultType = std::variant<type_addition, type_multiplication, type_division>;
+
+Then, the callback signature would look like:
+
+cpp
+
+const std::function<void(const ResultType&)>& on_result
+
+And when calling the callback, you'd wrap the result in a ResultType:
+
+cpp
+
+    on_result(ResultType(_ta));
+
+    Template Callback: If the on_result callback's work is generic enough to handle any type and is known at compile time, you could potentially pass it as a template.
+
+Remember, when working with templates and type deduction, it's essential to be clear about your assumptions regarding the types you're working with. If there's any uncertainty, it's usually safer to use mechanisms that ensure type safety, such as std::variant.
+User
+template <typename T, typename E>
+void typeinfo_of_decltype(std::ostream& ostream, T& callback_a, E& callback_b, const std::function<void(
+
+std::variant<type_addition, type_multiplication, type_division>
+
+)>& on_result) {
+  // - Can overload operators for these containers
+  // - The return type of callback_a and callback_b must be what to be able to
+  // do these operations?
+  using type_addition = decltype(callback_a() + callback_b());
+  using type_multiplication = decltype(callback_a() * callback_b());
+  using type_division = decltype(callback_a() / callback_b());
+
+  // Does typeid work on deduced type of an expression by decltype?
+  ostream << typeid(decltype(callback_a() + callback_b())).name() << "\n";
+  ostream << typeid(type_addition).name() << "\n";
+  ostream << typeid(type_multiplication).name() << "\n";
+  ostream << typeid(type_division).name() << "\n";
+
+  // What is the result's type?
+  type_addition _ta;
+  on_result(_ta);
+  type_multiplication _tm;
+  on_result(_tm);
+  type_division _td;
+  on_result(_td);
+}
+
+
+i don't want to repeat these three decltype, how can i extract them so i can reuse types?
+ChatGPT
+
+One way to make your code more concise and reusable is to extract the type deductions into their own separate type traits or type aliases. Here's a potential refactoring of your function using type traits:
+
+cpp
+
+template <typename T, typename E>
+struct ResultTypes {
+    using addition = decltype(std::declval<T>() + std::declval<E>());
+    using multiplication = decltype(std::declval<T>() * std::declval<E>());
+    using division = decltype(std::declval<T>() / std::declval<E>());
+};
+
+template <typename T, typename E>
+void typeinfo_of_decltype(
+    std::ostream& ostream,
+    T& callback_a,
+    E& callback_b,
+    const std::function<void(std::variant<
+        typename ResultTypes<T, E>::addition,
+        typename ResultTypes<T, E>::multiplication,
+        typename ResultTypes<T, E>::division
+    >)>& on_result
+) {
+    // Using the types
+    using type_addition = typename ResultTypes<T, E>::addition;
+    using type_multiplication = typename ResultTypes<T, E>::multiplication;
+    using type_division = typename ResultTypes<T, E>::division;
+
+    ostream << typeid(type_addition).name() << "\n";
+    ostream << typeid(type_multiplication).name() << "\n";
+    ostream << typeid(type_division).name() << "\n";
+
+    type_addition _ta = callback_a() + callback_b();
+    on_result(_ta);
+    type_multiplication _tm = callback_a() * callback_b();
+    on_result(_tm);
+    type_division _td = callback_a() / callback_b();
+    on_result(_td);
+}
+
+A couple of notes:
+
+    std::declval is a template utility function that's used to generate an instance of its template type argument for type deduction purposes. It's especially useful when you don't have an actual instance of a type but want to deduce the type of a particular operation.
+
+    By using typename ResultTypes<T, E>::some_type, you are accessing the nested type aliases you've defined in the ResultTypes trait.
+
+    You now have a clear separation of concerns. If you ever need to change or add more types, you just modify the ResultTypes trait, and everything else automatically gets updated.
+
+User
+how does std::declval help me replace
+
+decltype(callback_a() + callback_b())
+ChatGPT
+
+std::declval is a utility that, at the type level (i.e., it's not meant to be called at runtime), lets you pretend you have an instance of a specific type without actually creating one. This can be invaluable when you're working with templates or trying to deduce types in situations where you don't have actual instances available.
+
+Let's break down how it works with your example:
+
+In your original code, you have:
+
+cpp
+
+decltype(callback_a() + callback_b())
+
+Here, you're deducing the type of the result of adding the return values of callback_a and callback_b.
+
+Now, if you don't have instances of the callable objects callback_a and callback_b at a certain point in your code, you can't directly use the expression above. This is where std::declval comes into play.
+
+With std::declval, you can produce "pretend" instances of types for the purpose of type deduction.
+
+So the equivalent expression using std::declval would be:
+
+cpp
+
+decltype(std::declval<T>() + std::declval<E>())
+
+Here's the breakdown:
+
+    std::declval<T>() "pretends" to produce an instance of type T.
+    std::declval<E>() "pretends" to produce an instance of type E.
+    decltype(...) deduces the type of the expression inside it, which is the type resulting from adding the "pretend" instances of T and E.
+
+The big advantage of this approach is that you don't need actual instances of T or E to deduce the result type of their addition. This can be especially useful in template metaprogramming or other contexts where you're working with types abstractly.
+User
+template <typename T, typename E>
+void typeinfo_of_decltype(
+    std::ostream& ostream, T& callback_a, E& callback_b,
+    const std::function<
+        void(const std::variant<decltype(callback_a() + callback_b()),
+                                decltype(callback_a() * callback_b()),
+                                decltype(callback_a() / callback_b())>&)>&
+        on_result) {
+  // - Can overload operators for these containers
+  // - The return type of callback_a and callback_b must be what to be able to
+  // do these operations?
+  using type_addition = decltype(callback_a() + callback_b());
+  using type_multiplication = decltype(callback_a() * callback_b());
+  using type_division = decltype(callback_a() / callback_b());
+
+  // Does typeid work on deduced type of an expression by decltype?
+  ostream << typeid(decltype(callback_a() + callback_b())).name() << "\n";
+  ostream << typeid(type_addition).name() << "\n";
+  ostream << typeid(type_multiplication).name() << "\n";
+  ostream << typeid(type_division).name() << "\n";
+
+  // What is the result's type?
+  type_addition _ta;
+  on_result(_ta);
+  type_multiplication _tm;
+  on_result(_tm);
+  type_division _td;
+  on_result(_td);
+}
+
+
+passed result to this function is not of std::variant, i think...
+ChatGPT
+
+You have indeed defined on_result to accept a const std::variant<...>&, which is a variant type containing three possible types deduced from the operations you've performed on the results of callback_a and callback_b.
+
+If you're getting an error, it's possible that when you're calling on_result(...), you're not passing a std::variant with the correct types.
+
+In your code:
+
+cpp
+
+type_addition _ta;
+on_result(_ta);
+type_multiplication _tm;
+on_result(_tm);
+type_division _td;
+on_result(_td);
+
+You're trying to pass individual types directly to on_result. Instead, you should pass them inside a std::variant:
+
+cpp
+
+std::variant<type_addition, type_multiplication, type_division> variantValue;
+
+// Assign the values to the variant and then call on_result
+variantValue = _ta;
+on_result(variantValue);
+
+variantValue = _tm;
+on_result(variantValue);
+
+variantValue = _td;
+on_result(variantValue);
+
+Remember, std::variant can hold a value of one of the specified types. In this case, your variant specifies it can hold a value of either type_addition, type_multiplication, or type_division. When you assign _ta, _tm, or _td to the variant, it holds that value and "knows" its type. Then, when you pass it to on_result, it can be processed accordingly.
+
+Another thing you might want to keep in mind is the error-prone nature of mixing direct usage of callback_a() and callback_b() with type deduction and std::variant. It's easier to make errors this way. Consider simplifying the design or isolating the type deduction logic away from the main function to reduce potential for mistakes.
+User
+how to insert _ta to variant without operator =
+ChatGPT
+
+If you want to insert _ta (or any other value) into the std::variant without using the assignment operator =, you can use the emplace member function.
+
+Here's how you can do it:
+
+cpp
+
+std::variant<type_addition, type_multiplication, type_division> variantValue;
+
+// Emplace the values into the variant and then call on_result
+variantValue.emplace<type_addition>(_ta);
+on_result(variantValue);
+
+variantValue.emplace<type_multiplication>(_tm);
+on_result(variantValue);
+
+variantValue.emplace<type_division>(_td);
+on_result(variantValue);
+
+The emplace<type>() member function constructs the specified type in-place within the variant, replacing the current active variant value.
+User
+main.cpp:721:10: error: use 'template' keyword to treat 'emplace' as a dependent template name
+  result.emplace<type_addition>(_ta);
+         ^
+         template
+ChatGPT
+
+Ah, this error occurs due to two-phase name lookup in C++ templates. The compiler doesn't know at the point of template definition if emplace is a template function or not, because it depends on the type of result.
+
+To resolve this issue, you can hint the compiler that emplace is a template by using the template keyword before emplace:
+
+cpp
+
+result.template emplace<type_addition>(_ta);
+
+This tells the compiler explicitly that emplace is a member template of the dependent type.
+
+You'll need to make similar changes for other emplace calls:
+
+cpp
+
+result.template emplace<type_multiplication>(_tm);
+result.template emplace<type_division>(_td);
+
+User
+how can i do it without template keyword?
+ChatGPT
+
+If you want to avoid using the template keyword for calling member templates of a dependent type, you can use a non-template approach. Here's a way to do that using overloading:
+
+    Define helper functions that construct the std::variant for you:
+
+cpp
+
+std::variant<type_addition, type_multiplication, type_division> make_variant(const type_addition& value) {
+    return value;
+}
+
+std::variant<type_addition, type_multiplication, type_division> make_variant(const type_multiplication& value) {
+    return value;
+}
+
+std::variant<type_addition, type_multiplication, type_division> make_variant(const type_division& value) {
+    return value;
+}
+
+    Now, in your main code, you can create the std::variant using the above helper functions:
+
+cpp
+
+auto variant_ta = make_variant(_ta);
+on_result(variant_ta);
+
+auto variant_tm = make_variant(_tm);
+on_result(variant_tm);
+
+auto variant_td = make_variant(_td);
+on_result(variant_td);
+
+This way, you avoid explicitly using the template keyword when dealing with the std::variant. Instead, you rely on function overloading to deduce the appropriate type.
+User
+main.cpp:721:19: error: call to deleted member function 'emplace'
+  result.template emplace<type_addition>(_ta);
+  ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+ChatGPT
+
+The error message you're seeing indicates that the emplace member function for the given type in std::variant is deleted. One reason this might be happening is if the type you're trying to emplace is not one of the alternative types of the std::variant.
+
+However, you're on the right track with trying to use emplace. It's just that std::variant doesn't have a member function named emplace like std::vector or other standard containers do. Instead, you should be using emplace<Type>().
+
+But remember, if your type has non-trivial constructors, emplace can throw std::bad_variant_access if the in-place construction throws.
+
+Here's a workaround:
+
+    Make sure the type you are trying to emplace is one of the alternative types of the std::variant.
+    Use std::get combined with direct construction:
+
+cpp
+
+std::get<type_addition>(result) = type_addition(_ta);
+
+    Alternatively, if you want to reset the std::variant to a new type:
+
+cpp
+
+result = type_addition(_ta);
+
+This will set the std::variant to hold an object of type_addition, constructed with _ta. If any constructor throws, the std::variant will be in the "valueless_by_exception" state.
+User
+template <typename T, typename E>
+void typeinfo_of_decltype(
+    std::ostream& ostream, T& callback_a, E& callback_b,
+    const std::function<
+        void(const std::variant<decltype(callback_a() + callback_b()),
+                                decltype(callback_a() * callback_b()),
+                                decltype(callback_a() / callback_b())>&)>&
+        on_result) {
+  // - Can overload operators for these containers
+  // - The return type of callback_a and callback_b must be what to be able to
+  // do these operations?
+  using type_addition = decltype(callback_a() + callback_b());
+  using type_multiplication = decltype(callback_a() * callback_b());
+  using type_division = decltype(callback_a() / callback_b());
+
+  // Does typeid work on deduced type of an expression by decltype?
+  ostream << typeid(decltype(callback_a() + callback_b())).name() << "\n";
+  ostream << typeid(type_addition).name() << "\n";
+  ostream << typeid(type_multiplication).name() << "\n";
+  ostream << typeid(type_division).name() << "\n";
+
+  std::variant<type_addition, type_multiplication, type_division> result;
+
+  // What is the result's type?
+  type_addition _ta;
+  result.template emplace<type_addition>(_ta);
+  // on_result(result);
+  type_multiplication _tm;
+  // on_result(_tm);
+  type_division _td;
+  // on_result(_td);
+}
+ChatGPT
+
+Okay, let's address the issue you're facing. The std::variant does not provide an emplace<Type>() function template directly, unlike some other standard library containers. Instead, std::variant provides overloads of the emplace member function template that are indexed by the index of the type in the variant's type list.
+
+Here's what you can do:
+
+    Instead of using emplace<Type>(), use the indexed overload of emplace, specifying the index of the type within the variant. In your case:
+
+    cpp
+
+result.emplace<0>(_ta); // for type_addition
+result.emplace<1>(_tm); // for type_multiplication
+result.emplace<2>(_td); // for type_division
+
+Or you can just assign the value directly, and the variant will deduce the correct type:
+
+cpp
+
+    result = _ta;
+
+Here's the revised code:
+
+cpp
+
+template <typename T, typename E>
+void typeinfo_of_decltype(
+    std::ostream& ostream, T& callback_a, E& callback_b,
+    const std::function<
+        void(const std::variant<decltype(callback_a() + callback_b()),
+                                decltype(callback_a() * callback_b()),
+                                decltype(callback_a() / callback_b())>&)>&
+        on_result) {
+  // - Can overload operators for these containers
+  // - The return type of callback_a and callback_b must be what to be able to
+  // do these operations?
+  using type_addition = decltype(callback_a() + callback_b());
+  using type_multiplication = decltype(callback_a() * callback_b());
+  using type_division = decltype(callback_a() / callback_b());
+
+  // Does typeid work on deduced type of an expression by decltype?
+  ostream << typeid(decltype(callback_a() + callback_b())).name() << "\n";
+  ostream << typeid(type_addition).name() << "\n";
+  ostream << typeid(type_multiplication).name() << "\n";
+  ostream << typeid(type_division).name() << "\n";
+
+  std::variant<type_addition, type_multiplication, type_division> result;
+
+  // What is the result's type?
+  type_addition _ta;
+  result = _ta;
+  on_result(result);
+
+  type_multiplication _tm;
+  result = _tm;
+  on_result(result);
+
+  type_division _td;
+  result = _td;
+  on_result(result);
+}
+
+Note that assigning to result will replace the currently held value in the variant. If you want to keep each result separately, you'd need separate variants or another data structure.
+User
+with assignment operator= it doesnt work, with emplace doesn't work
+
+main.cpp:721:19: error: call to deleted member function 'emplace'
+  result.template emplace<type_addition>(_ta);
+
+template <typename T, typename E>
+void typeinfo_of_decltype(
+    std::ostream& ostream, T& callback_a, E& callback_b,
+    const std::function<
+        void(const std::variant<decltype(callback_a() + callback_b()),
+                                decltype(callback_a() * callback_b()),
+                                decltype(callback_a() / callback_b())>&)>&
+        on_result) {
+  // - Can overload operators for these containers
+  // - The return type of callback_a and callback_b must be what to be able to
+  // do these operations?
+  using type_addition = decltype(callback_a() + callback_b());
+  using type_multiplication = decltype(callback_a() * callback_b());
+  using type_division = decltype(callback_a() / callback_b());
+
+  // Does typeid work on deduced type of an expression by decltype?
+  ostream << typeid(decltype(callback_a() + callback_b())).name() << "\n";
+  ostream << typeid(type_addition).name() << "\n";
+  ostream << typeid(type_multiplication).name() << "\n";
+  ostream << typeid(type_division).name() << "\n";
+
+  std::variant<type_addition, type_multiplication, type_division> result;
+
+  // What is the result's type?
+  type_addition _ta;
+  result.template emplace<type_addition>(_ta);
+  // on_result(result);
+  type_multiplication _tm;
+  // on_result(_tm);
+  type_division _td;
+  // on_result(_td);
+}
+
+why? how can i find out why?
+ChatGPT
+
+The problem you're experiencing is a little nuanced.
+
+When std::variant is constructed or assigned a type that is one of its alternatives, it internally attempts to construct or assign that type. If the assignment or construction can throw an exception, then std::variant requires its current state to be safely destructible. If this is not the case (i.e., the current state doesn't have a noexcept destructor), the assignment or emplacement will be deleted (not allowed).
+
+Given the information you've provided, my suspicion is that the types involved (i.e., type_addition, type_multiplication, and type_division) might either:
+
+    Have non-trivial destructors that could potentially throw exceptions.
+    Have copy/move constructors that might throw exceptions.
+
+To debug this:
+
+    Check the involved types: Make sure that any custom destructors are marked as noexcept. If you're not defining any custom destructors, this might not be the issue.
+
+    Exception specifications: Ensure that the move/copy constructors of your types don't throw exceptions.
+
+    Alternative approach: One way to sidestep this problem for now, for testing purposes, is to use std::shared_ptr:
+
+    cpp
+
+using result_variant = std::variant<std::shared_ptr<type_addition>,
+                                    std::shared_ptr<type_multiplication>,
+                                    std::shared_ptr<type_division>>;
+
+And then:
+
+cpp
+
+    type_addition _ta;
+    result = std::make_shared<type_addition>(_ta);
+
+    This might not be the most efficient way, but it's a way to isolate the problem and see if it's indeed related to the direct storage of those types in the variant.
+
+To answer the "how can I find out why?" part of your question: Understanding std::variant and its nuances can help. The error messages you get when you misuse std::variant can be confusing, but once you know about its requirements regarding exception safety, they make more sense. Reading the documentation and related discussions (on platforms like StackOverflow) can also provide valuable insights.
+User
+main.cpp:722:10: error: no viable overloaded '='
+  result = std::make_shared<type_addition>(_ta);
+ChatGPT
+
+I apologize for the confusion earlier. The suggestion to use std::shared_ptr was an incorrect approach in the context of your problem.
+
+Let's tackle this issue more directly.
+
+    First and foremost, let's simplify the situation. Start by creating a std::variant with simple types to ensure that the mechanics of the std::variant are clear and correct:
+
+cpp
+
+std::variant<int, double, char> simpleVariant;
+simpleVariant = 5;  // This should work, assigning an int
+
+If this works, it means that basic variant operations are functioning correctly.
+
+    Secondly, examine the types you're trying to place inside the variant. If type_addition, type_multiplication, and type_division are classes or structs, ensure that they:
+
+    Have accessible copy or move constructors.
+    Do not have any deleted or private copy/move constructors.
+    Do not have any non-trivial destructors that could potentially throw exceptions.
+
+    Check for ambiguity: If two types within a std::variant have a common type they can be converted to, assigning or emplacing can be ambiguous. To test, try storing each type separately in individual variants to ensure there's no ambiguity:
+
+cpp
+
+std::variant<type_addition> var1;
+var1 = _ta;
+
+std::variant<type_multiplication> var2;
+var2 = _tm;
+
+std::variant<type_division> var3;
+var3 = _td;
+
+    Emplacement: If direct assignment doesn't work, you can try emplacement, but be careful:
+
+cpp
+
+result.emplace<0>(_ta);  // Assuming type_addition is the first type in the variant
+
+Note: This method is index-based, meaning if you change the order of types inside the variant, you will need to change the index.
+
+If after these steps the problem persists, I would suggest breaking the code down further. Start with a minimal example using your custom types in a std::variant to understand if the problem is related to std::variant, your custom types, or the interaction between them.
+User
+does variant work correctly if all 3 variants are the same type? named differently?
+ChatGPT
+
+Yes, std::variant can hold multiple alternatives of the same type, but there's an important nuance to consider.
+
+If you have a std::variant with multiple instances of the same type, you'll have to use index-based access and emplacement, because the variant wouldn't be able to distinguish between them based on type alone.
+
+For example:
+
+cpp
+
+using type_one = int;
+using type_two = int;
+
+std::variant<type_one, type_two> var;
+
+In this case, both type_one and type_two are aliases for int. If you want to set or get the value based on the type, you'd run into ambiguity issues. However, you can use index-based operations:
+
+cpp
+
+var.emplace<0>(5); // Sets the value of the first int
+var.emplace<1>(10); // Sets the value of the second int
+
+Similarly, if you're trying to get the value, you'd use:
+
+cpp
+
+if (var.index() == 0) {
+    int value = std::get<0>(var);
+}
+
+However, if the underlying types are different but have similar structures (e.g., different struct types with the same members), then std::variant can distinguish between them without issues.
+
+Finally, it's worth questioning the design choice: if you have a variant with multiple instances of the same type, it might be an indication to reconsider the design or to use another type altogether. It can lead to confusion and makes the code harder to understand and maintain.
+User
+it works, now that we determined the issue is type ambiguity, can i use operator= to assign?
+ChatGPT
+
+Yes, once you've ensured that the types within the std::variant are unique, you can use the assignment operator (operator=) to assign a value to the variant, and the variant will hold the correct type based on the value you provide.
+
+For example:
+
+cpp
+
+std::variant<int, double, std::string> var;
+
+var = 5;          // int
+var = 3.14;       // double
+var = "hello";    // std::string
+
+In the case of your specific code, assuming type_addition, type_multiplication, and type_division are distinct types:
+
+cpp
+
+type_addition _ta;
+result = _ta;
+
+This will assign _ta to result, and result will hold a value of type type_addition. If at any point you tried to assign a value to result whose type isn't one of the types in the variant, you'd get a compile-time error.
+User
+my types are not unique, it may contain 3 of same type
+ChatGPT
+
+If all three types in the std::variant are the same, then std::variant loses its ability to discern between them. The whole point of std::variant is to hold one of several different types. If they're all the same, it has no way of determining which "variant" you intended.
+
+If you know that your types are not unique, then std::variant might not be the best choice for this use case. Instead, you might consider:
+
+    Using a single type: If all the operations (+, *, /) produce the same type, then you can simply use that type directly without the need for a variant.
+
+    Use Structs: If you want to distinguish between the results of each operation, you could wrap each result type in a distinct struct, even if the underlying type is the same.
+
+    cpp
+
+    struct AdditionResult {
+        YourType value;
+    };
+
+    struct MultiplicationResult {
+        YourType value;
+    };
+
+    struct DivisionResult {
+        YourType value;
+    };
+
+    std::variant<AdditionResult, MultiplicationResult, DivisionResult> result;
+
+    This way, even if YourType is the same for all three, the wrapping structs make them distinct types as far as std::variant is concerned.
+
+    Use Tags: Similar to structs, you can use tags to make a distinction. It's more of a conceptual difference than structs, but might be clearer in some situations.
+
+    Different Containers: If you don't really need them in a single std::variant, you might want to consider using different containers for each type of result.
+
+If you decide to go with the struct approach, then you can definitely use operator= to assign to the std::variant, since now each wrapped type is distinct.
+User
+the thing is i use this
+
+    std::ostream& ostream, T& callback_a, E& callback_b,
+    const std::function<
+        void(const std::variant<decltype(callback_a() + callback_b()),
+                                decltype(callback_a() * callback_b()),
+                                decltype(callback_a() / callback_b())>&)>&
+        on_result) {
+  // - Can overload operators for these containers
+  // - The return type of callback_a and callback_b must be what to be able to
+  // do these operations?
+  using type_addition = decltype(callback_a() + callback_b());
+  using type_multiplication = decltype(callback_a() * callback_b());
+  using type_division = decltype(callback_a() / callback_b());
+
+
+i deduce type of
+
+T callback_a
+E callback_b
+
+decltype(callback_a() + callback_b())
+
+do we have guarantee the result will always be same type?
+ChatGPT
+
+If T and E are fixed types and they're always the same for any instantiation of your template function, then the type deduced by decltype(callback_a() + callback_b()) will also always be the same for those specific T and E.
+
+However, if T or E can change between calls to your template function, then the type deduced can also change. The result type of an expression involving operator+ (or any operator, for that matter) depends on the types of the operands and how the operator is overloaded for those types.
+
+For instance:
+
+    If T is int and E is int, then decltype(callback_a() + callback_b()) will deduce to int.
+
+    If T is double and E is int, then decltype(callback_a() + callback_b()) will deduce to double (because of the usual arithmetic conversions in C++).
+
+    If T and E are user-defined types, then the result type of callback_a() + callback_b() will be whatever the operator+ for those types returns.
+
+You have a guarantee of a consistent result type only if you have a guarantee that T and E are always the same types and that any overloaded operators for those types always return the same type. Otherwise, the result type can vary.
+User
+  typeinfo_of_decltype(std::cout, callback_a, callback_b,
+                       [](const auto& result) {
+                         // Now I have a problem to explicitly declare the type
+                         // because I use decltype() to deduce type.
+
+                         //  Retrieve all variants
+                       });
+
+how can i retrieve all variants from result?
+ChatGPT
+
+If you want to retrieve and process all the possible types within a std::variant, you'll need to visit each type. The typical way to handle the values inside a std::variant is to use std::visit along with a generic lambda.
+
+For your use case:
+
+cpp
+
+std::visit([](const auto& val) {
+    // Handle the value inside the variant
+    // Here, `val` will be of the currently held type in the variant
+}, result);
+
+But, if you want to explicitly handle all possible types of the std::variant, you'd do something like:
+
+cpp
+
+std::visit([](const auto& val) {
+    if constexpr (std::is_same_v<decltype(val), type_addition>) {
+        // Handle type_addition
+    } else if constexpr (std::is_same_v<decltype(val), type_multiplication>) {
+        // Handle type_multiplication
+    } else if constexpr (std::is_same_v<decltype(val), type_division>) {
+        // Handle type_division
+    }
+}, result);
+
+This way, for whichever type is currently held in the result variant, the corresponding block of code will be executed. If none of the types match (which shouldn't happen if your variant only holds those three types), then none of the blocks will be executed.
+User
+  // What is the result's type?
+  // Use default constructor of each deduced type.
+  type_addition _ta;
+  result.template emplace<0>(_ta);
+  on_result(result);
+  type_multiplication _tm;
+  result.template emplace<1>(_tm);
+  on_result(result);
+  type_division _td;
+  result.template emplace<2>(_td);
+  on_result(result);
+
+what does this do on variant?
+ChatGPT
+
+Your code is using std::variant to hold one of three possible types (type_addition, type_multiplication, or type_division). These types are deduced from the provided callbacks callback_a and callback_b.
+
+Here's a breakdown of the code segment you provided:
+
+    Default Constructing the Types:
+
+    cpp
+
+type_addition _ta;  // Default constructs an instance of `type_addition`.
+type_multiplication _tm;  // Default constructs an instance of `type_multiplication`.
+type_division _td;  // Default constructs an instance of `type_division`.
+
+Emplacing into the Variant:
+With emplace, you're constructing one of the variant's types in-place. The integer argument determines which type of the variant is constructed:
+
+cpp
+
+result.template emplace<0>(_ta);  // Constructs a `type_addition` inside the variant with the value of `_ta`.
+
+The integer 0 means you're referring to the first type in the variant, which is type_addition. Similarly, 1 would refer to type_multiplication, and 2 would refer to type_division.
+
+Calling on_result:
+After each emplace, you're invoking the provided on_result function with the result variant. This means the variant is passed to a callback function (which you've defined elsewhere) three times: first holding a type_addition, then a type_multiplication, and finally a type_division.
+
+cpp
+
+    on_result(result);
+
+In summary, the code does the following:
+
+    Creates three different instances of the deduced types.
+    Places each instance inside the result variant (one at a time).
+    After placing each instance inside the result variant, it calls the on_result function with the variant as its argument.
+
+User
+how can i check how many are stored in the variant?
+ChatGPT
+
+std::variant is designed to hold exactly one of its alternative types at any given time. This means that at any moment, a std::variant will hold an instance of only one of its alternative types, and it cannot hold more than one simultaneously.
+
+You can't "check how many are stored" in the variant because the answer is always one (or none if it's in a valueless_by_exception state due to an exception being thrown during a type-changing operation).
+
+However, you can determine which type the variant currently holds using the std::holds_alternative function or check the index of the currently held alternative using std::variant::index():
+
+    Using std::holds_alternative:
+
+    cpp
+
+if (std::holds_alternative<type_addition>(result)) {
+    // The variant currently holds a type_addition
+}
+
+Using std::variant::index():
+
+cpp
+
+    switch (result.index()) {
+        case 0: // The variant holds the first type (type_addition)
+            break;
+        case 1: // The variant holds the second type (type_multiplication)
+            break;
+        case 2: // The variant holds the third type (type_division)
+            break;
+        default: // The variant is in a valueless_by_exception state
+            break;
+    }
+
+Remember, a std::variant cannot be "empty" in the traditional sense. If it doesn't contain one type, it contains another. The only exception is the aforementioned "valueless_by_exception" state, which can occur if an exception is thrown during an operation that changes the type the variant holds (e.g., during an assignment).
+User
+how can i print whats stored in variant?
+ChatGPT
+
+To print the value stored inside a std::variant, you can use std::visit. std::visit takes a visitor and a variant. The visitor is applied to the currently active member of the variant.
+
+Here's a way to print the value stored inside a std::variant:
+
+cpp
+
+std::visit([](const auto& value) {
+    std::cout << value << std::endl;
+}, result);
+
+For this simple use case, we use a generic lambda that accepts any type by constant reference. The lambda simply prints the value.
+
+Here's a more detailed example using your type_addition, type_multiplication, and type_division:
+
+cpp
+
+#include <iostream>
+#include <variant>
+
+int main() {
+    using type_addition = int;          // Just for demonstration
+    using type_multiplication = double; // Just for demonstration
+    using type_division = char;         // Just for demonstration
+
+    std::variant<type_addition, type_multiplication, type_division> result;
+
+    result = 42; // int
+
+    std::visit([](const auto& value) {
+        std::cout << value << std::endl;
+    }, result);
+
+    result = 3.14; // double
+
+    std::visit([](const auto& value) {
+        std::cout << value << std::endl;
+    }, result);
+
+    return 0;
+}
+
+This program will print:
+
+42
+3.14
+
+The lambda visitor works with any type stored inside the variant, making it a very flexible solution for handling and processing variant data.
+User
+since variant can store 3 different types and only one type at a time, how can i make sure i don't print empty ones? because i get 7 prints here
+ChatGPT
+
+A std::variant will always have one of its types active, so there's no concept of an "empty" variant in the way you might think of an "empty" optional. However, from the code you've shared earlier, it looks like you're calling on_result three times, and each time you do so, you're passing the variant to it with one of its types active. This is why you're seeing multiple prints.
+
+If you want to ensure you only print the variant when it holds a meaningful value, you'd have to design your system with some way to determine when the variant's content is meaningful versus when it's not. This might involve:
+
+    Checking the variant's current type against a known "default" or "meaningless" value for that type.
+    Wrapping each type in the variant in another type or structure that carries additional metadata about whether the contained value is meaningful.
+    Reconsidering the design to avoid this issue in the first place.
+
+For instance, if you know that a type_addition of -1 is an invalid or meaningless value, you could:
+
+cpp
+
+std::visit([](const auto& value) {
+    if constexpr (std::is_same_v<decltype(value), type_addition>) {
+        if (value != -1) std::cout << value << std::endl;
+    }
+    else {
+        std::cout << value << std::endl;
+    }
+}, result);
+
+This lambda will only print the type_addition value if it isn't -1. You could add more conditions for the other types if they have their own meaningless values.
+
+However, note that this design (having invalid or default states for types inside a variant) might be an indicator of a deeper design issue. It's generally best if all possible states of a variant are valid and meaningful to avoid confusion and potential errors. If possible, you might want to re-evaluate how and why you're using the variant and see if there's a clearer or safer way to represent your data.

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Example</title>
+  </head>
+  <body>
+    <div id="create-elements"></div>
+
+    <div id="rotate-main-element"></div>
+
+    <div>
+      <div id="before-modify"></div>
+      <div id="after-modify"></div>
+    </div>
+
+    <script src="../dist/flexos-generate-elements.umd.js"></script>
+
+    <script>
+      (() => {
+        const elements = FlexosGenerateElements.generateElements({
+          data: {
+            innerHTML: ['Title', 'First Paragraph', 'Second Paragraph'],
+            type: ['h1', 'p', 'p'],
+            'aria-label': ['Title', 'First Paragraph', 'Second Paragraph'],
+          },
+        });
+
+        Object.entries(elements).forEach(([key, value]) => {
+          const element = document.createElement(value.type);
+          element.innerHTML = value.innerHTML;
+          element.setAttribute('aria-label', value['aria-label']);
+
+          document.getElementById('create-elements').appendChild(element);
+        });
+      })();
+    </script>
+
+    <script>
+      (() => {
+        const YELLOW = 'yellow';
+        const RED = 'red';
+        const COLOR = { YELLOW, RED };
+
+        const elements = FlexosGenerateElements.generateElements({
+          data: {
+            angleDegree: [0, 15, 30],
+          },
+          // Set distinct color only for the specific key.
+          each: (key, value) => {
+            // Keys are always strings.
+            const FIRST_KEY = '0';
+
+            return {
+              key,
+              value: {
+                ...value,
+                color: key === FIRST_KEY ? COLOR.YELLOW : COLOR.RED,
+              },
+            };
+          },
+        });
+
+        Object.entries(elements).forEach(([key, value]) => {
+          const element = document.createElement('div');
+
+          element.style.display = 'inline-block';
+          element.style.width = '100px';
+          element.style.height = '100px';
+          element.style.backgroundColor = value.color;
+          element.style.transformOrigin = 'center bottom';
+          element.style.transform = `rotate(${value.angleDegree}deg)`;
+
+          document.getElementById('rotate-main-element').appendChild(element);
+        });
+      })();
+    </script>
+
+    <script>
+      (() => {
+        // Keys are treated as strings.
+        const FIRST_KEY = '0';
+        const SECOND_KEY = '1';
+
+        const beforeModify = FlexosGenerateElements.generateElements({
+          data: {
+            degree: [0, 15, 30],
+            xOffset: [0, 100, 200],
+          },
+        });
+
+        const afterModify = FlexosGenerateElements.generateElements({
+          data: {
+            degree: [0, 15, 30],
+            xOffset: [0, 100, 200],
+          },
+          modify: {
+            keyA: FIRST_KEY,
+            keyB: SECOND_KEY,
+            // May be used to swap values, modify keys, etc...
+            cb: (valA, valB) => {
+              // Swap degree of valA and valB.
+              return {
+                [FIRST_KEY]: {
+                  ...valA,
+                  degree: valB.degree,
+                },
+                [SECOND_KEY]: {
+                  ...valB,
+                  degree: valA.degree,
+                },
+              };
+            },
+          },
+        });
+
+        document.getElementById('before-modify').innerHTML = JSON.stringify(
+          beforeModify,
+          null,
+          2
+        );
+
+        document.getElementById('after-modify').innerHTML = JSON.stringify(
+          afterModify,
+          null,
+          2
+        );
+      })();
+    </script>
+  </body>
+</html>

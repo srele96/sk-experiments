@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "sandbox",
+  "version": "0.1.0",
+  "description": "A collection of module and sample units.",
+  "dependencies": [
+    {
+      "name": "boost-asio",
+      "version>=": "1.82.0"
+    },
+    {
+      "name": "boost-system",
+      "version>=": "1.82.0"
+    },
+    {
+      "name": "boost-program-options",
+      "version>=": "1.82.0"
+    },
+    {
+      "name": "mongo-cxx-driver",
+      "version>=": "3.8.0"
+    }
+  ],
+  "builtin-baseline": "da7048d0d95bab69c9ff8da3f34a1fbe160b0c0b"
+}

@@ -1,0 +1,130 @@
+look for a way to solve the problem using dynamic programming... how can i set the problem so it has an optimal overlapping substructure?
+
+...
+
+the cost to reach the current node is the cost to reach the previous node
+
+what is the recurrence relation to reach the current node based on the previous node?
+
+cost = calculate_cost(previous_node) + current_cost
+
+whats the cost to reach the next node? on each node, maybe i could reuse the formula...
+
+(people + seats - 1) / seats
+
+hmm... simply by formulating a solution to the problem differently allows me to have a different approach at solving it...
+
+      7
+   /     \
+  5       6
+ / \     /
+1   2   3
+ \
+  8
+
+calculate distance to the current node from which other node?
+
+from 7 to 5
+from 5 to 1
+from 1 to 8
+
+from 7 to 5
+from 5 to 2
+
+from 7 to 6
+from 6 to 3
+
+----
+
+from root to the leaf, when we reach a leaf we stop, need more data
+
+        7
+    /       \
+   5         6
+ /  \     /  |  \
+1    2   3   10  11
+ \   /    \
+  8 12     9
+
+7 to 5
+5 to 1
+1 to 8
+
+7 to 5
+5 to 2
+2 to 12
+
+7 to 6
+6 to 3
+3 to 9
+
+7 to 6
+6 to 10
+
+7 to 6
+6 to 11
+
+that's fine... how do i put that into the code?
+
+   4
+ / | \
+1  2  3
+
+4 to 1
+
+4 to 2
+
+4 to 3
+
+base cases?
+
+   4
+ / | \
+1  2  3
+      | \ \
+      5  6 7
+
+4 to 1
+
+4 to 2
+
+4 to 3
+3 to 5
+
+4 to 3
+3 to 6
+
+4 to 3
+3 to 7
+
+hmm... can also be solved using backtracking?
+
+-------------
+
+hmm it is not so intuitive how to translate that in the code, why? have i not done anything similar before? hmm...
+
+there is repetition, therefore we can say that we can solve it using dynamic programming, what properties does the solution exhibit that i can exploit?
+
+one thing is that we are always going to the leaf, also our solution looks like depth first search... how can formulate the solution?
+
+from root node calculate the path to each leaf
+
+sum of all paths from root to each leaf?
+
+sum of all paths from root to each leaf? so maybe a code should exhibit that we are summing the each path from root to the leaf
+
+how do we express that in the code?
+
+  - one problem is having a problem
+  - choosing a data structure
+  - choosing an algorithmic approach
+  - finding a solution to the problem
+  - translating that solution to the code
+
+that is a lot of problems and things that need to work together to assemble a working algorithm...
+
+
+
+
+
+

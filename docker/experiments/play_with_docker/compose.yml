@@ -1,0 +1,51 @@
+services:
+  redis:
+    image: "redis:alpine"
+  postgres:
+    image: "postgres:15.3"
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./data:/var/lib/postgresql/data"
+      - "./sql/init.sql:/docker-entrypoint-initdb.d/init.sql"
+      - "./sql/populate.sql:/docker-entrypoint-initdb.d/populate.sql"
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:?error}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
+      POSTGRES_DB: "${POSTGRES_DB:?error}"
+  one:
+    build: ./service/one
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - postgres
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:?error}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
+      POSTGRES_DB: "${POSTGRES_DB:?error}"
+  two:
+    build: ./service/two
+    ports:
+      - "4000:4000"
+    depends_on:
+      - one
+  three:
+    # There is weird behavior that I can't figure out. The mongoose server
+    # doesn't print anything to the console when build with docker compose.
+    # However, the server works fine. I also tried to use
+    # https://github.com/etr/libhttpserver and I thought that it doesn't work
+    # because there is no output in the terminal. Anyway, now it works.
+    # Removing mongoose or libhttpserver enabled std::cout to log output to the
+    # console within docker compose. Running the server manually displays the
+    # std::cout output. It could be an issue within docker after considering
+    # all of that.
+    build: ./service/three
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER:?error}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?error}"
+      POSTGRES_DB: "${POSTGRES_DB:?error}"
