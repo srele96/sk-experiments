@@ -23,4 +23,5 @@ target_include_directories(
 # Fix errors:
 #  - undefined reference to `__imp_WSAStartup'
 #  - undefined reference to `__imp_WSACleanup'
-target_link_libraries(${PROJECT_NAME} ws2_32.lib)
+# https://stackoverflow.com/questions/38770895/how-to-fix-undefined-reference-to-getacceptexsockaddrs-boost-asio-in-clion
+target_link_libraries(${PROJECT_NAME} ws2_32.lib wsock32)

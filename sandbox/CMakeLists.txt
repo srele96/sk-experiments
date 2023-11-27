@@ -10,7 +10,23 @@ project(sandbox)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Find Boost package installed by vcpkg.
-find_package(Boost REQUIRED)
+
+# The find_package(Boost REQUIRED) command in CMake is used to locate the Boost
+# installation in your system and set up the necessary variables for your project
+# to use Boost. However, when you use it without the COMPONENTS keyword, it's
+# primarily geared towards finding the header files for header-only libraries in
+# Boost, since Boost has many libraries that are implemented entirely as header
+# files without separate compiled binaries.
+
+# If you need to link against compiled Boost libraries (like program_options),
+# you need to specify them using the COMPONENTS keyword. This tells CMake
+# explicitly that you're looking for specific compiled libraries within the Boost
+# library collection, and it will set up the necessary variables for linking.
+find_package(Boost REQUIRED COMPONENTS program_options)
+
+# mongo-cxx-driver
+find_package(bsoncxx CONFIG REQUIRED)
+find_package(mongocxx CONFIG REQUIRED)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
