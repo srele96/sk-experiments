@@ -33,3 +33,4 @@ The root directory for C++ experiments.
 - [Load dynamic library](./experiments/load_dynamic_library/)
 - [Curiously Recurring Template Pattern](./experiments/curiously_recurring_template_pattern/)
 - [Template Metaprogramming](./experiments/template_metaprogramming/)
+- [Algorithms](./experiments/algorithms/)
