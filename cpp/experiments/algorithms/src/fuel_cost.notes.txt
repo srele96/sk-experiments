@@ -1,0 +1,200 @@
+car = 1
+seats = 2
+cost = 0
+
+car = 1
+seats = 1
+cost = 1
+
+car = 1
+seats = 0
+cost = 2
+
+---
+
+car = 1
+seats = 2
+cost = 2
+
+car = 1
+seats = 1
+cost = 3
+
+---
+
+
+car = 1
+seats = 2
+cost = 3
+
+car = 1
+seats = 1
+cost = 4
+
+car = 1
+seats = 0
+cost = 5
+
+car = 2
+seats = 1
+cost = 7
+
+---
+
+i obviously first need to know a data structure i will be working with to know how the algorithm is going to work...
+
+
+[
+[0, 4],
+[0, 3],
+[0, 1],
+[1, 2],
+[2, 5],
+[4, 6],
+]
+
+paths = [4, 3, 1]
+
+next = {
+  1: 2,
+  2: 5,
+  4: 6,
+}
+
+
+   0
+  /|\
+ 4 3 1
+ |   |
+ 6   2
+     |
+     5
+
+for road : roads
+  next[road[0]] = road[1]
+
+for p : paths:
+  n = next[p]
+  cars = 1
+  seats = _seats - 1
+  fuel = 1
+  while n exists:
+    n = next[p]
+    if seats > 0:
+      seats -= 1
+    else
+      seats = _seats - 1
+      ++cars
+    fuel += cars
+
+// how to express the solution recursively
+
+
+fuel = 0
+
+
+0 - 1 - 2 - 3
+
+seats = 1
+fuel = 1 + 2 + 3
+
+seats = 2
+fuel = 1 + 1 + 2
+
+seats = 3
+fuel = 1 + 1 + 1
+
+0 - 1 - 2 - 3 - 4 - 5 - 6
+
+seats = 1
+fuel = 1 + 2 + 3 + 4 + 5 + 6
+fuel = summation for first n numbers where
+  n = roads - 0 when seats = 1
+  n = roads - 1 when seats = 2
+  n = roads - 2 when seats = 3
+  n = roads - 3 when seats = 4
+  n = roads - 4 when seats = 5
+  n = roads - 5 when seats = 6
+
+roads = 5
+seats = 1
+n = 5 - 0
+seats = 2
+n = 5 - 1 - 1
+n = 5 - 3 - 1
+
+a = seats - 1
+n = roads - a
+n(n+1)/2 + a
+
+roads = 5
+seats = 5
+a = 4
+n = 5 - a = 1
+
+fuel = n(n+1)/2 + a = 1*2/2 + 4 = 1+4 = 5
+
+roads = 5
+seats = 4
+a = seats - 1 = 3
+n = roads - a = 5 - 3 = 2
+
+fuel = n(n+1)/2 + a = 2*3/2 + 3 = 6/2 + 3 = 3 + 3 = 6
+
+0 - 1 - 2 - 3 - 4 - 5
+
+find formula for the fuel based on the amount of roads and seats
+improve formula lookup
+
+
+seats = 2
+fuel = 1 + 1 + 2 + 3 + 4 + 5
+
+seats = 3
+fuel = 1 + 1 + 1 + 2 + 3 + 4
+
+seats = 4
+fuel = 1 + 1 + 1 + 1 + 2 + 3
+
+seats = 5
+fuel = 1 + 1 + 1 + 1 + 1 + 2
+
+seats = 6
+fuel = 1 + 1 + 1 + 1 + 1 + 1
+
+0 - 1
+people = 2
+seats = 1
+(2+1-1)/1 = 2
+
+people = 5
+seats = 2
+
+5 + 2 - 1 = 6
+6 / 2 = 3
+
+
+-----------------
+
+i got side tracked, my initial observation was correct
+the formula for the fuel from the current city to the next one
+i got way too side tracked because... why?
+next decision was to implement iterative solution using a map, which was incorrect because it wouldn't represent a graph properly, fore xample it wouldn't work on
+
+      4
+   /     \
+  3       5
+ / \
+1   2
+   / \
+  6   7
+
+because map assumed we would have only one linear road from the capital city
+after that i got lost constructing a graph and how to construct the graph using arrays - i have not done similar problems before
+after i constructed a graph i completely lost the initial thoughts on fuel calculation and i feel like every information i accumulated so far dissipated...
+
+at the end of the problem i thought about how a choice of data structure dictates a choice of an algorithm and how a choice of an algorithm dictates the choice of a data structure
+
+i also thought about how regardless of the format i receive data in, i can store the data differently and use different algorithm than "possibly" the most optimal or intended one...
+
+the choices were infinite...

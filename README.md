@@ -1,17 +1,8 @@
 # Srecko Kostic - Experiments
 
-Srecko Kostic's collection of experiments and reading topic wishlist in form of issues. This repository puts it all together.
+Srecko Kostic's collection of learning, practice, and self-reflection.
 
-I start to like this repository. It serves as a history and a tool to reflect. I can see how much I've improved.
-
-## Course
-
-[A reminder to work through - Harvard CS50 Course](https://learning.edx.org/course/course-v1:HarvardX+CS50+X/block-v1:HarvardX+CS50+X+type@sequential+block@a8730f85a9a94d41a784a58c4b6d8bdc/block-v1:HarvardX+CS50+X+type@vertical+block@31304400fd444ea9860a8833cce5c248)
-
-## Algorithmic problems
-
-- [LeetCode - srele96](https://leetcode.com/srele96/)
-- [CodeForces - flexos96](https://codeforces.com/profile/flexos96)
+My self-improvement history. I am generally curious.
 
 ## Experiments
 
@@ -22,17 +13,26 @@ I start to like this repository. It serves as a history and a tool to reflect. I
 - [Docker](./docker)
 - [Sandbox](./sandbox)
 
-## Motivation to learn as much as possible
+## Advices
 
-Lack of knowledge creates tech debt. We can create software with very little technical knowledge. For example, we can create a big server using only GET requests. That doesn't mean it is the correct way to do it. Another example is writing a program using C++ and using the keyword `new` everywhere. Even worse, we don't use `delete` to free the memory. However, there are other situations where we can implement the solution whichever way we need to. For example, from my previous research, adding required C++ libraries for a project seems difficult. From my **CURRENT UNDERSTANDING** _(which may be wrong)_ we can split solutions in two categories:
+- [Data Structures and Algorithms advice](https://qr.ae/pylUlM)
+- [Data Structures and Algorithms usefulness](https://qr.ae/pylUuM)
 
-- There is a standard way to do it and best practices to follow. For example, we should use `unique_ptr` instead of `new` and `delete`.
-- There is no standard way to do it. For example, how to add a C++ library to a project.
+**_If you think something is stupid, ridiculous, makes no sense, or anything remotely similar, research and learn it extensively. It will make sense._**
 
-However, a project may have decided on its strategy of adding a library. Therefore in the outside world, there is no best practice for adding a C++ library, but a project has a set of guidelines for how they do it.
+I used to think that unit tests are stupid, testers should test the software. I didn't know anything about unit tests.
+
+I used to think Data Structures and Algorithms are stupid and algorithmic problems are ridiculous waste of time. They are not real programming, they are not how you write real software. I didn't know anything about any of them.
+
+Every time I thought how something is stupid, ridiculous, makes no sense, or anything remotely similar, I did not agree with those opinions once I learned about it.
+
+## Algorithmic problems
+
+- [LeetCode - srele96](https://leetcode.com/srele96/)
+- [CodeForces - flexos96](https://codeforces.com/profile/flexos96)
 
 ## Motivation
 
-I started around three years ago to work on different topics. I did all the work in a directory on my pc, but it became unmanageable. The idea of doing something cool every day drove me. I realized I didn't share anything, and most of it is useless, forgotten, or abandoned. That is sad because I love some of those projects.
+I started around three years ago to work on different topics. I did all the work in a directory on my pc, but it became unmanageable. The idea of doing something cool every day drove me. I realized I didn't share anything, and because of that, most of it is useless, forgotten, or abandoned. That is sad because I love some of those projects.
 
-This repository started small and grew until it had a couple of projects, and each of them had node_modules or some weird setup.
+Working on this repository is among one the best decisions I made. I discovered so much thanks to it. I can never know the beast an initial idea will develop into.
