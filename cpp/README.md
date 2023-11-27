@@ -4,8 +4,8 @@ The root directory for C++ experiments.
 
 ## Experiments
 
-- [C++ build and use the static library on windows](./experiments/build-static-library/)
-- [Build with CMake](./experiments/build-with-cmake/)
+- [C++ build and use the static library on windows](./experiments/build_static_library/)
+- [Build with CMake](./experiments/build_with_cmake/)
 - [runner](./experiments/runner/)
 - [Combinations of four that matches sum](./experiments/sum_combinations_of_four/)
 - [Employee Factory](./experiments/employee_factory/)
@@ -25,7 +25,7 @@ The root directory for C++ experiments.
 - [Learn nuances](./experiments/learn_nuances/)
 - [Play with Mongoose C/C++](./experiments/play_with_mongoose_c_cpp/)
 - [Observe lambda capture behavior](./experiments/observe_lambda_capture_behavior/)
-- [Design iterator](./experiments/design-iterator/)
+- [Design iterator](./experiments/design_iterator/)
 - [Static and Dynamic library](./experiments/static_and_dynamic_library/)
 - [Try boost::asio](./experiments/try_boost_asio/)
 - [Initialization types](./experiments/initialization_types/)
@@ -35,3 +35,8 @@ The root directory for C++ experiments.
 - [Template Metaprogramming](./experiments/template_metaprogramming/)
 - [Algorithms](./experiments/algorithms/)
 - [Raw memory](./experiments/raw_memory/)
+- [Observer Design Pattern](./experiments/observer_design_pattern/)
+- [Random Iterable](./experiments/random_iterable/)
+- [Random Stuff](./experiments/random_stuff/)
+- [sk_engine](./experiments/sk_engine/)
+- [Try CMake](./experiments/try_cmake/)
