@@ -92,6 +92,21 @@ struct b {
   }
 };
 
+namespace sk {
+
+class foo_t {
+ public:
+  template <typename T>
+  foo_t& operator<<(T&& p_t) {
+    std::cout << std::forward<T>(p_t);
+    return *this;
+  }
+};
+
+foo_t foo;
+
+}  // namespace sk
+
 int main() {
   a<int> a_int1{};
   a<int> a_int2{};
@@ -124,6 +139,10 @@ int main() {
 
   std::cout << "  - use more than or equal operator\n";
   a_b1 >= a_b2;
+
+  std::cout << "----\ntest the operator overloads\n----\n";
+  sk::foo << "hello world\n";
+  sk::foo << a_b1;
 
   return 0;
 }
