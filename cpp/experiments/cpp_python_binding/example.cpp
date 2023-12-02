@@ -1,7 +1,7 @@
 #include <functional>
+#include <iostream>
 #include <thread>
 #include <vector>
-#include <iostream>
 
 #include "pybind11/functional.h"
 #include "pybind11/pybind11.h"
