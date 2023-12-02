@@ -1,6 +1,7 @@
 #include <functional>
 #include <thread>
 #include <vector>
+#include <iostream>
 
 #include "pybind11/functional.h"
 #include "pybind11/pybind11.h"
@@ -38,10 +39,13 @@ void each_async(std::vector<int> data, std::function<void(int)> callback) {
   }
 }
 
-PYBIND11_MODULE(example, m) {
-  m.doc() = "pybind11 example plugin";  // optional module docstring
+void use_object(const pybind11::object& object) {
+  std::cout << "object: " << pybind11::str(object) << "\n";
+}
 
+PYBIND11_MODULE(example, m) {
   m.def("add", &add);
   m.def("threaded_operation", &threaded_operation);
   m.def("each_async", &each_async);
+  m.def("use_object", &use_object);
 }

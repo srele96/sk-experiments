@@ -20,12 +20,18 @@ ctypes.CDLL(os.path.join(os.path.dirname(__file__), 'build', 'example.pyd'))
 
 import example
 
-print(example.add(1, 2))
-print(example.threaded_operation([1, 2, 3, 4, 5]))
-example.each_async([1, 2, 3, 4, 5], lambda x: print(x))
-
 try:
     # Doesn't support non integer values, should throw.
     example.each_async([1.25, 2.25, 3.35], lambda x: print(x))
 except TypeError as e:
     print(e)
+
+example.use_object({'a': 1, 'b': 2})
+example.use_object({'a': 1, 'c': { 'd': "hello world"}})
+
+print(example.add(1, 2))
+
+# Do the asynchronous operations last to avoid waiting a few seconds every time
+# i run the example.
+print(example.threaded_operation([1, 2, 3, 4, 5]))
+example.each_async([1, 2, 3, 4, 5], lambda x: print(x))

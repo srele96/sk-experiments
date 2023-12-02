@@ -1,6 +1,10 @@
 # C++ Python binding
 
-Absolutely make sure you have only one python on your system otherwise there might be a problem.
+A C++ to Python binding sample that does whatever the f\*ck it wants.
+
+# WARNING! USING PYTHON VIRTUAL ENVIRONMENT WILL MAKE CMAKE FIND THE PYTHON FROM THE VIRTUAL ENVIRONMENT. WHICH MIGHT RESULT IN BUILT LIBRARY `.PYD` REQUIRE INCORRECT PYTHON DLL.
+
+# Absolutely make sure you have only one python on your system otherwise there might be a problem.
 
 ## Run
 
