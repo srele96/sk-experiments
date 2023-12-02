@@ -1,0 +1,68 @@
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> python something.py
+Traceback (most recent call last):
+  File "C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding\something.py", line 17, in <module>
+    import example
+ImportError: dynamic module does not define module export function (PyInit_example)
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> python something.py
+Traceback (most recent call last):
+  File "C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding\something.py", line 17, in <module>
+    import example
+ImportError: dynamic module does not define module export function (PyInit_example)
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+[2/2] Linking CXX shared module example.pyd
+The system cannot find the path specified.
+make: [C:\Users\Srecko\AppData\Local\Temp\ccsjq4Ct.mk:3: C:\Users\Srecko\AppData\Local\Temp\ccABJayC.ltrans0.ltrans.o] Error 1 (ignored)
+Traceback (most recent call last):
+  File "C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding\something.py", line 17, in <module>
+    import example
+ImportError: dynamic module does not define module export function (PyInit_example)
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+[2/2] Linking CXX shared module example.pyd
+The system cannot find the path specified.
+make: [C:\Users\Srecko\AppData\Local\Temp\ccwVneRp.mk:3: C:\Users\Srecko\AppData\Local\Temp\ccKfJ7Ec.ltrans0.ltrans.o] Error 1 (ignored)
+Traceback (most recent call last):
+  File "C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding\something.py", line 17, in <module>
+    import example
+ImportError: dynamic module does not define module export function (PyInit_example)
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+ninja: no work to do.
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+ninja: no work to do.
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+ninja: no work to do.
+Traceback (most recent call last):
+  File "C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding\something.py", line 17, in <module>
+    import example
+ImportError: dynamic module does not define module export function (PyInit_example)
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+[2/2] Linking CXX shared module example.pyd
+The system cannot find the path specified.
+make: [C:\Users\Srecko\AppData\Local\Temp\ccOeE0Op.mk:3: C:\Users\Srecko\AppData\Local\Temp\ccCawrcD.ltrans0.ltrans.o] Error 1 (ignored)
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+ninja: no work to do.
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+ninja: no work to do.
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+ninja: no work to do.
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+[2/2] Linking CXX shared module example.pyd
+The system cannot find the path specified.
+make: [C:\Users\Srecko\AppData\Local\Temp\ccJ738W8.mk:3: C:\Users\Srecko\AppData\Local\Temp\cc0wR4m6.ltrans0.ltrans.o] Error 1 (ignored)
+Traceback (most recent call last):
+  File "C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding\something.py", line 17, in <module>
+    import example
+ImportError: dynamic module does not define module export function (PyInit_example)
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+[2/2] Linking CXX shared module example.pyd
+The system cannot find the path specified.
+make: [C:\Users\Srecko\AppData\Local\Temp\cciQvzhk.mk:3: C:\Users\Srecko\AppData\Local\Temp\ccERSO6q.ltrans0.ltrans.o] Error 1 (ignored)
+<module 'example' from 'C:\\Users\\Srecko\\Documents\\MyProjects\\Private\\container-sk-experiments\\sk-experiments\\cpp\\experiments\\cpp_python_binding\\build\\example.pyd'>
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+ninja: no work to do.
+<module 'example' from 'C:\\Users\\Srecko\\Documents\\MyProjects\\Private\\container-sk-experiments\\sk-experiments\\cpp\\experiments\\cpp_python_binding\\build\\example.pyd'>
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+ninja: no work to do.
+<module 'example' from 'C:\\Users\\Srecko\\Documents\\MyProjects\\Private\\container-sk-experiments\\sk-experiments\\cpp\\experiments\\cpp_python_binding\\build\\example.pyd'>
+PS C:\Users\Srecko\Documents\MyProjects\Private\container-sk-experiments\sk-experiments\cpp\experiments\cpp_python_binding> cmake --build build; python something.py
+ninja: no work to do.
+3
