@@ -1,0 +1,7 @@
+https://stackoverflow.com/questions/40549702/dependency-walker-hangs
+
+https://www.dependencywalker.com/
+
+https://github.com/pybind/pybind11/issues/2479
+
+https://pybind11.readthedocs.io/en/latest/basics.html
