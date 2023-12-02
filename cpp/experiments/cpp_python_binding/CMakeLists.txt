@@ -13,8 +13,8 @@ find_package(pybind11 CONFIG)
 # cmake was using the python from the virtual environment hence it depended on the python 3.11 and my machine had python 3.10
 message(STATUS "Found Python: ${Python_EXECUTABLE} (version ${Python_VERSION})")
 
-# No clue what this section represents. Copied from:
-# https://vcpkg.link/ports/pybind11
+# No clue what this section represents. -- BEGIN
+# Copied from: https://vcpkg.link/ports/pybind11
 Python_add_library(example example.cpp)
 target_link_libraries(example PRIVATE pybind11::headers)
 set_target_properties(example PROPERTIES
@@ -22,3 +22,4 @@ set_target_properties(example PROPERTIES
     CXX_VISIBILITY_PRESET "default"
     VISIBILITY_INLINES_HIDDEN ON
 )
+# No clue what this section represents. -- END
