@@ -28,10 +28,6 @@ I used to think Data Structures and Algorithms are stupid and algorithmic proble
 
 Every time I thought how something is stupid, ridiculous, makes no sense, or anything remotely similar, I did not agree with those opinions once I learned about it.
 
-## Course
-
-[A reminder to work through - Harvard CS50 Course](https://learning.edx.org/course/course-v1:HarvardX+CS50+X/block-v1:HarvardX+CS50+X+type@sequential+block@a8730f85a9a94d41a784a58c4b6d8bdc/block-v1:HarvardX+CS50+X+type@vertical+block@31304400fd444ea9860a8833cce5c248)
-
 ## Algorithmic problems
 
 - [LeetCode - srele96](https://leetcode.com/srele96/)

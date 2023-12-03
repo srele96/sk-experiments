@@ -6,4 +6,5 @@
 add_subdirectory(print_aswell)
 add_subdirectory(print_something)
 add_subdirectory(use_boost_asio)
+add_subdirectory(mycli)
 add_subdirectory(use_wxwidgets)

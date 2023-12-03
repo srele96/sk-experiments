@@ -40,7 +40,9 @@ Make sure you are in `sk-experiments/sandbox` directory.
 
 Generate build directory and use `vcpkg` to install dependencies. The `-B` flag specifies generation location. The `-S` flag specifies where is project CMakeLists.txt. The `-DCMAKE_TOOLCHAIN_FILE` is from the `vcpkg` documentation.
 
-Specify the triplet flag `-DVCPKG_TARGET_TRIPLET=x64-mingw-static` because I had linking errors when using windows triplet, as documented [here](./docs/unresolved-reference-errors.md). For some other reason, `wxwidgets` failed to build with `x64-mingw-dynamic` triplet.
+Linking doesn't work without `-DVCPKG_TARGET_TRIPLET=x64-mingw-static` flag, I assumed it is compiler mismatch issue, a better solution is to specify [custom triplet](https://learn.microsoft.com/en-us/vcpkg/users/triplets).
+
+It seems on Windows I have to use `mingw-static` to make [linking boost while using clang++ compiler](https://stackoverflow.com/questions/54155266/how-to-link-vcpkg-boost-with-mingw) work.
 
 ```powershell
 cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=C:\src\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static
@@ -57,6 +59,10 @@ Running the samples: _(If you managed to build, you should be able to run them. 
 Generated executables mimic path from `sandbox`, search for them inside `build` directory. _(Temporary solution until I find a better one.)_
 
 [How to diagnose **Unresolved Reference Errors**](./docs/unresolved-reference-errors.md)
+
+### Adding dependency with newer version
+
+If a newer version fails to build or can't be found, update vcpkg and `builtin-baseline` property. Alternative is to use an older version of the dependency.
 
 ## Note
 

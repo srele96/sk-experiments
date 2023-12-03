@@ -1,5 +1,11 @@
 # Python
 
+The root directory for Python experiments.
+
+## Experiments
+
+- [Algorithms](./experiments/algorithms/)
+
 ## Windows setup
 
 To start working with the python code run:
