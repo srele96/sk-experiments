@@ -36,82 +36,42 @@ struct foo {
   constexpr operator value_type() const noexcept { return value; }
 };
 
-// // NO CLUE --------------------------------------------
+struct cont_base {};
 
-// template <typename T, typename... List>
-// struct contains;
+template <typename T, typename... Rest>
+struct cont : public cont<Rest...> {
+ private:
+  T value;
 
-// template <typename T, typename... List>
-// struct contains<T, T, List...> : std::true_type {};
+ public:
+  void set(T v) { value = std::move(v); }
+  T get() const { return value; }
 
-// template <typename T, typename U, typename... List>
-// struct contains<T, U, List...> : contains<T, List...> {};
+  template <typename U>
+  void set(U v) {
+    cont<Rest...>::set(v);
+  }
 
-// template <typename T>
-// struct contains<T> : std::false_type {};
+  template <typename U>
+  U get() const {
+    return cont<Rest...>::template get();
+  }
+};
 
-// // NO CLUE --------------------------------------------
+template <typename T>
+struct cont<T> : public cont_base {
+ private:
+  T value;
 
-// struct cont_base {};
+ public:
+  void set(T t) { value = std::move(t); }
+  T get() const { return value; }
+};
 
-// template <typename T, typename... Rest>
-// struct cont : public cont<Rest...> {
-//  private:
-//   T value;
-
-//  public:
-//   void set(T v) { value = std::move(v); }
-//   T get() const { return value; }
-
-//   // NO CLUE --------------------------------------------
-
-//   // template <typename U>
-//   // void set(U v) {
-//   //   cont<Rest...>::set(v);
-//   // }
-
-//   // template <typename U>
-//   // U get() const {
-//   //   return cont<Rest...>::template get<U>();
-//   // }
-
-//   template <typename U>
-//   std::enable_if_t<std::is_same_v<T, U>, U> get() const {
-//     return value;
-//   }
-
-//   template <typename U>
-//   std::enable_if_t<!std::is_same_v<T, U>, U> get() const {
-//     return cont<Rest...>::template get<U>();
-//   }
-
-//   template <typename U>
-//   std::enable_if_t<std::is_same_v<T, U>> set(U v) {
-//     value = std::move(v);
-//   }
-
-//   template <typename U>
-//   std::enable_if_t<!std::is_same_v<T, U>> set(U v) {
-//     cont<Rest...>::template set<U>(v);
-//   }
-
-//   // NO CLUE --------------------------------------------
-// };
-
-// template <typename T>
-// struct cont<T> : public cont_base {
-//  private:
-//   T value;
-
-//  public:
-//   void set(T t) { value = std::move(t); }
-//   T get() const { return value; }
-// };
-
-// template <>
-// struct cont<void> : public cont_base {
-//   //
-// };
+template <>
+struct cont<void> : public cont_base {
+  //
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -187,18 +147,25 @@ int main() {
   //
   // std::cout << f2.value << ", " << f2 << "\n";
 
-  // cont<char, int, float> c;
+  std::cout << "-------------------\n";
+  std::cout << "Mine\n";
 
-  // c.set<int>(1);
-  // std::cout << c.get<int>() << "\n";
-  // c.set<int>(5);
-  // std::cout << c.get<int>() << "\n";
+  cont<char, int, float, char> c;
 
-  // c.set<float>(6.6f);
-  // std::cout << c.get<float>() << "\n";
+  c.set<int>(1);
+  std::cout << c.get<int>() << "\n";
+  c.set<int>(5);
+  std::cout << c.get<int>() << "\n";
 
-  // c.set<char>('a');
-  // std::cout << c.get<char>() << "\n";
+  c.set<float>(6.6f);
+  std::cout << c.get<float>() << "\n";
+
+  c.set<char>('b');
+  std::cout << c.get<char>() << "\n";
+
+  std::cout << c.get<int>() << "\n";
+
+  std::cout << "-------------------\n";
 
   Store<int, float, char> s;
   s.set<int>(1);
@@ -207,6 +174,8 @@ int main() {
   std::cout << s.get<float>() << "\n";
   s.set<char>('a');
   std::cout << s.get<char>() << "\n";
+
+  std::cout << "-------------------\n";
 
   _store<int, float, char> s2;
   s2.set<int>(55);
