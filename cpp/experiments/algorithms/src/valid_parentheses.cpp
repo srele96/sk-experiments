@@ -98,11 +98,7 @@ class Solution {
     //
     // Recursion does not terminate when string is not balanced. Both the flag
     // and the size are indicators that the string is balanced.
-    if (isBalanced && stq.size() == 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return isBalanced && stq.size() == 0;
   }
 };
 
