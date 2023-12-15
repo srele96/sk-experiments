@@ -16,8 +16,10 @@ class Solution {
    * is necessary against invalid combinations of two encoded digits.
    */
   bool canDecodeTwo(const string& encoded) {
-    return encoded[0] == '1' || (encoded[0] == '2' && encoded[1] != '7' &&
-                                 encoded[1] != '8' && encoded[1] != '9');
+    const char first{encoded[0]};
+    const char second{encoded[1]};
+    return first == '1' ||
+           (first == '2' && second != '7' && second != '8' && second != '9');
   }
 
   /**
