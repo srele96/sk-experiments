@@ -22,6 +22,14 @@ class Solution {
            (first == '2' && second != '7' && second != '8' && second != '9');
   }
 
+  string last(const string& str, const size_t n) {
+    return str.substr(str.size() - n);
+  }
+
+  string exceptLast(const string& str, const size_t n) {
+    return str.substr(0, str.size() - n);
+  }
+
   /**
    * The algorithm produces all valid decoded strings.
    *
@@ -62,18 +70,14 @@ class Solution {
       return decodedStrings;
     }
     vector<string> decodedStrings;
-    for (string decodedStart :
-         decodeAll(encoded.substr(0, encoded.size() - 1), decode)) {
-      if (canDecodeOne(encoded.substr(encoded.size() - 1))) {
-        decodedStrings.push_back(decodedStart +
-                                 decode.at(encoded.substr(encoded.size() - 1)));
+    for (string decodedStart : decodeAll(exceptLast(encoded, 1), decode)) {
+      if (canDecodeOne(last(encoded, 1))) {
+        decodedStrings.push_back(decodedStart + decode.at(last(encoded, 1)));
       }
     }
-    for (string decodedStart :
-         decodeAll(encoded.substr(0, encoded.size() - 2), decode)) {
-      if (canDecodeTwo(encoded.substr(encoded.size() - 2))) {
-        decodedStrings.push_back(decodedStart +
-                                 decode.at(encoded.substr(encoded.size() - 2)));
+    for (string decodedStart : decodeAll(exceptLast(encoded, 2), decode)) {
+      if (canDecodeTwo(last(encoded, 2))) {
+        decodedStrings.push_back(decodedStart + decode.at(last(encoded, 2)));
       }
     }
     return decodedStrings;
