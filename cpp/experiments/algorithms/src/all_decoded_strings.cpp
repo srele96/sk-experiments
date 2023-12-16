@@ -5,6 +5,8 @@ namespace a {
 
 class Solution {
  public:
+  unordered_map<string, vector<string>> cache;
+
   /**
    * Whether it's a leading zero or somewhere within the encoded string it's a
    * problem so we have to guard against it.
@@ -50,12 +52,15 @@ class Solution {
    */
   vector<string> decodeAll(const string& encoded,
                            const unordered_map<string, string>& decode) {
+    if (cache.find(encoded) != cache.end()) {
+      return cache.at(encoded);
+    }
     if (encoded.size() == 1) {
       vector<string> decodedStrings;
       if (canDecodeOne(encoded)) {
         decodedStrings.push_back(decode.at(encoded));
       }
-      return decodedStrings;
+      return cache[encoded] = decodedStrings;
     }
     if (encoded.size() == 2) {
       vector<string> decodedStrings;
@@ -67,7 +72,7 @@ class Solution {
       if (canDecodeTwo(encoded)) {
         decodedStrings.push_back(decode.at(encoded));
       }
-      return decodedStrings;
+      return cache[encoded] = decodedStrings;
     }
     vector<string> decodedStrings;
     for (string decodedStart : decodeAll(exceptLast(encoded, 1), decode)) {
@@ -80,7 +85,7 @@ class Solution {
         decodedStrings.push_back(decodedStart + decode.at(last(encoded, 2)));
       }
     }
-    return decodedStrings;
+    return cache[encoded] = decodedStrings;
   }
 
   int numDecodings(string s) {
