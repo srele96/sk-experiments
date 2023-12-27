@@ -108,6 +108,39 @@ class Solution {
 
 }  // namespace a
 
+namespace b {
+
+class Solution {
+ public:
+  int numDecodings(string s) {
+    /**
+     * The key idea is to store the amount of valid decodings by the index. An
+     * index represent a substring from 0 to that index inclusively.
+     */
+    unordered_map<int, int> cache;
+
+    function<int(int)> solve{[&](int i) {
+      if (cache.find(i) != cache.end()) return cache[i];
+      if (i == s.size()) return 1;
+      if (s[i] == '0') return 0;
+      cache[i] += solve(i + 1);
+      if (i < s.size() - 1 &&
+          (s[i] == '1' || (s[i] == '2' && s[i + 1] < '7'))) {
+        cache[i] += solve(i + 2);
+      }
+      return cache[i];
+    }};
+
+    /**
+     * Doesn't matter that we start from 0, the cache still works as the
+     * function keeps trying to decode same substrings repeatedly.
+     */
+    return solve(0);
+  }
+};
+
+}  // namespace b
+
 int main() {
   unordered_map<string, string> decode{[] {
     unordered_map<string, string> decode;
