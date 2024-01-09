@@ -2,6 +2,10 @@
 
 This experiment groups the C++ implementation of various algorithms.
 
+## 30.12.2023 - 01.14.2024 Solve algorithmic problems and ride a bike
+
+I ride a bike to improve blood circulation to improve my problem-solving performance. While riding a bike I think about algorithmic problems and how to solve them.
+
 ## Books
 
 - ["Algorithmic Problem Solving" by Roland Backhouse](https://books.google.rs/books?id=84VZLWMnKrQC&printsec=frontcover&redir_esc=y#v=onepage&q&f=false)

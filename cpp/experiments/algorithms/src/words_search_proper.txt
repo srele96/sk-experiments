@@ -1,0 +1,87 @@
+one misspelled character wasted me good 20 minutes debugging.... FUCK!!!!
+
+the solution was generally on the right track, there were some issues
+
+i messed up condition, instead of j i wrote i
+
+```
+for(int i = 0; i < grid.size(); ++i)
+  for(int j = 0; i < grid[i].size(); ++j) // note the i <
+```
+
+i spent 20 minutes searching for a cause of the problem, i received runtime error because
+i accessed vector out of bounds, damn it
+
+i also missed parentheses, mostly parentheses, now that i think about it
+
+after that i thought that my logic for selecting the words was wrong, i thougth that
+my check if the character of the current cell exists in the trie's path was wrong
+
+however after maybe 10 minutes i realized that maybe it's ok, i realized that
+if the current character is incorrect, the algorithm backtracks
+and before i remove the current character, i have the correct word
+however the problem was that now i'm backtracking until next valid path occurs
+i realized that as i backtrack that i can encounter other correct words that i have
+already added and that i end up with duplicates
+i saw that we get unique words, so i used a set which i transformed to a vector
+in O(n) time
+
+i am thinking about an alternative solution where i don't use a set, how would i
+know that am at current word? basically i wouldn't want to add a word when i backtrack
+also, more than one word may be on the path, which when i go forward i can detect
+however i don't know how to not add words again as i backtrack, maybe i need to think
+about algorithm conceptually? instead of thinking of it from the code
+
+also, another realization is that i do much better when i think about the algorithms
+conceptually than from the code, when the code doesn't work i feel like it is either
+a bug or my logic is wrong, if it is a bug, then i have to debug and see where is the
+wrong value comming from, why, then fix it
+
+if the algorithm doesn't have a bug, but the logic is flawed, it is pointless to think
+about the code, i have to go back and think if i have expressed my recursive logic correctly
+i have to think about the algorithm conceptually
+in case of wrong logic i do not want to spend any moment thinking about the code that
+i wrote because it won't get me anywhere, it won't give me answers
+
+however i also prefer to run the code in my mind rather than by running the executable
+i feel like it is much more reliable if i am able to run the code in my mind than
+actually on the computer, it gives me much more safety and guarantees that it works
+correctly, especially because i can visualize the whole flow of data
+
+hmmmmm, that is another interesting and hopefully challenging and creative exercise
+i can think of various algorithms and run them in my mind, write code for the algorithm
+then run it in my mind until i am sure that it will work, then verify my assumptions by
+runnig it on the computer...
+
+
+chatgpt ideas on how to improve using deliberate practice
+
+-----------
+
+It sounds like you've made some valuable insights into your debugging process and algorithmic thinking. Deliberate practice is a great way to continue improving your programming skills. Here are some ideas for deliberate practice:
+
+    Code Katas: These are short, repeatable exercises that focus on specific programming concepts or techniques. They're great for practicing and honing specific skills.
+
+    Algorithm Challenges: Websites like LeetCode, HackerRank, and Codewars offer a wide range of algorithmic challenges. Start with easy ones and gradually move to more difficult ones.
+
+    Debugging Exercises: Create intentionally buggy code and practice debugging it. This will help you become more adept at identifying and fixing errors.
+
+    Refactor Code: Take your existing code and refactor it to make it more efficient, readable, and maintainable. This helps develop your skills in code optimization and design.
+
+    Implement Data Structures and Algorithms from Scratch: Try to implement common data structures (like linked lists, trees, graphs) and algorithms (sorting, searching) without looking at any references.
+
+    Design Patterns: Learn and implement different design patterns in your projects. Understand when and how to apply them.
+
+    Code Reviews: Review code written by others (or even your own older code) and provide constructive feedback. This will help you develop a critical eye for code quality.
+
+    Exploration of New Technologies or Languages: Pick up a new programming language or a technology you're unfamiliar with and build a small project with it.
+
+    Write Tests: Practice writing unit tests for your code. This helps ensure the correctness of your implementations.
+
+    Work on Larger Projects: Take on a larger project that interests you. This could be a personal project or an open-source contribution. This will help you develop skills related to project organization, collaboration, and more.
+
+    Practice Problem-Solving Without a Computer: As you mentioned, run through algorithms and solutions in your mind without actually writing the code. This can be a powerful way to reinforce your understanding.
+
+    Pair Programming: Collaborate with someone else on a coding task. This can expose you to different perspectives and approaches.
+
+Remember, the key to deliberate practice is to focus on specific areas you want to improve and work on them consistently. It's also important to reflect on what went well and what could be improved after each practice session. This self-reflection will help guide your future practice sessions.

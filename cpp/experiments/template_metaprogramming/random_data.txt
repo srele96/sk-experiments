@@ -1,0 +1,50 @@
+Problem: Mixed Data Processing
+
+Problem Description:
+
+You are given a sequence of operations to perform on a list of mixed data types. The data types can include integers, strings, and floating-point numbers. Each operation will specify the type of data it should be applied to and a specific action to perform. Your task is to process these operations efficiently using type erasure in C++.
+
+Operations:
+
+    Add Data: Adds a new element of a specified type (int, string, or float) to the list.
+    Process Data: Applies a specified action to all elements of a particular type in the list. Actions can include:
+        For integers: Add a specified value to each integer.
+        For strings: Append a specified substring to each string.
+        For floats: Multiply each float by a specified value.
+
+Input:
+
+    The first line contains an integer NN (1 ≤ NN ≤ 10^5), the number of operations.
+    The next NN lines describe the operations. Each line starts with an operation type ("Add" or "Process"), followed by the data type ("int", "string", "float"), and then the operation-specific data.
+
+Output:
+
+    After processing all operations, output the final list of elements in the order they were added, one element per line.
+
+Example:
+
+Input:
+
+
+6
+Add int 5
+Add string hello
+Add float 3.5
+Process int 2
+Process string world
+Process float 1.5
+
+Output:
+
+7
+helloworld
+5.25
+
+Explanation:
+
+    The first three operations add an integer (5), a string ("hello"), and a float (3.5) to the list.
+    The fourth operation adds 2 to the integer, making it 7.
+    The fifth operation appends "world" to the string, making it "helloworld".
+    The sixth operation multiplies the float by 1.5, making it 5.25.
+
+This problem will test your ability to implement type erasure in C++ to handle different data types in a single list and perform type-specific operations without resorting to explicit casting or type checking at runtime.

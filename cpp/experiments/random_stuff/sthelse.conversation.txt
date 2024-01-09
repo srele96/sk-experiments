@@ -1,0 +1,791 @@
+ChatGPT 4
+User
+why does this inheritance syntax work?
+
+struct _store : public _store_item<Args>...
+ChatGPT
+
+The inheritance syntax you're referring to is a feature of C++ known as variadic template inheritance. This syntax is used to define a class (or struct, which in C++ is essentially a class where members are public by default) that inherits from multiple base classes. Let's break it down:
+
+    struct _store: This defines a new structure named _store.
+
+    : public _store_item<Args>...: This is where the magic of variadic templates comes into play.
+
+        Variadic Templates: Introduced in C++11, variadic templates allow a template to accept an arbitrary number of template arguments. This is very useful for creating classes or functions that can work with a varying number of types.
+
+        _store_item<Args>...: Here, _store_item is a template and Args is a template parameter pack. The ... (ellipsis) is used to indicate that _store_item is a variadic template. Essentially, this means that _store can inherit from multiple _store_item instances, each instantiated with a different type from the Args pack.
+
+For example, if you instantiate _store<int, double, string>, it will inherit from _store_item<int>, _store_item<double>, and _store_item<string>.
+
+This kind of inheritance is particularly useful for creating tuples, type lists, or combining behaviors from a set of components. Each instantiation of _store_item with a different type can provide specific functionality for that type, and _store will aggregate all these functionalities.
+
+This is a powerful feature of C++ templates and is used extensively in template metaprogramming and generic programming.
+User
+
+template <typename... Rest>
+struct __store {};
+
+template <typename T, typename... Rest>
+struct __store<T, Rest...> : public __store<Rest...> {
+  T value;
+
+  template <typename U>
+  void set(U v) {
+    if constexpr (std::is_same_v<T, U>) {
+      value = std::move(v);
+    } else {
+      __store<Rest...>::template set<U>(v);
+    }
+  }
+
+  template <typename U>
+  U get() const {
+    if constexpr (std::is_same_v<T, U>) {
+      return value;
+    } else {
+      return __store<Rest...>::template get<U>();
+    }
+  }
+};
+
+
+explain to me the specialization and inheritance combined in this case, i don't understand why does it require to specialize for <T, Rest...> and also inherit from itself with <Rest...>, can you show me the code that it would generate?
+ChatGPT
+
+The code you've provided is a great example of advanced template programming in C++. It uses template specialization and recursive inheritance to create a type-safe heterogeneous container, which can store and retrieve values of different types. Let's break it down:
+Template Specialization and Inheritance
+
+    Primary Template (__store<Rest...>): This is an empty struct and serves as the base case for the recursive inheritance. When the list of types (Rest...) becomes empty, this version of the template is used, ending the recursion.
+
+    Partial Specialization (__store<T, Rest...>): This is a specialization of the __store template for at least one type (T) and potentially more (Rest...). It inherits from __store<Rest...>, which is an instantiation of the __store template with one fewer type in the template argument list.
+
+Recursive Inheritance
+
+The inheritance from __store<Rest...> is what creates the recursive structure. Each instantiation of __store contains a value of a different type and inherits from another __store instantiation with one fewer type. This chain continues until the base case (the primary template) is reached.
+Example Code Generation
+
+Suppose you instantiate __store<int, double, string>. Here's how the compiler generates the classes:
+
+    __store<int, double, string>:
+        Inherits from __store<double, string>
+        Contains a value of type int
+        set<U>() and get<U>() methods work with int or delegate to the base class
+
+    __store<double, string>:
+        Inherits from __store<string>
+        Contains a value of type double
+        set<U>() and get<U>() methods work with double or delegate to the base class
+
+    __store<string>:
+        Inherits from __store<> (the primary template)
+        Contains a value of type string
+        set<U>() and get<U>() methods work with string
+
+    __store<>:
+        Base case, an empty struct
+
+Why Specialization and Inheritance Together?
+
+This combination allows each instantiation of __store to handle a specific type while also having the capability to forward requests to its base class for types it doesn't handle. This is a form of compile-time polymorphism, where the correct method is chosen based on the type at compile time, rather than runtime.
+Code Execution Flow
+
+When you call set<U>(v) or get<U>():
+
+    The template checks if U is the same as T (the type it directly handles).
+    If it's the same, it performs the operation.
+    If not, it forwards the call to its base class, which does the same check with its own type.
+    This continues until the matching type is found or the primary template (__store<>) is reached.
+
+This design pattern is highly efficient for certain types of operations where compile-time type safety and resolution are important. It's a sophisticated use of C++ templates that showcases the language's power for metaprogramming and type manipulation.
+User
+// Write code the compiler would generate by myself
+template<typename... Rest>
+struct __store {};
+
+template<typename T, typename... Rest>
+struct __store<T, Rest...> : public __store<Rest...> {
+  T value;
+
+  template<typename U>
+  void set(U v) {
+    if constexpr (std::is_same_v<T, U>) {
+      value = std::move(v);
+    } else {
+      __store<Rest...>::template set<U>(v);
+    }
+  }
+
+  template<typename U>
+  U get() const {
+    if constexpr (std::is_same_v<T, U>) {
+      return value;
+    } else {
+      return __store<Rest...>::template get<U>();
+    }
+  }
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Generated code
+///////////////////////////////////////////////////////////////////////////////
+
+template<int, float, char>
+struct __store {};
+
+template<int, float, char> // Rest = float, char
+struct __store<int, float, char> : public __store<float, char> {
+  int value;
+
+  template<typename U>
+  void set() {}
+
+  template<typename U>
+  U get() const {}
+};
+
+///////////////////////////////////////////////////////////////////////////////
+
+int main() {
+  __store<int, float, char> store;
+  store.set<int>(5);
+  store.get<int>();
+  store.set<char>('a');
+  store.get<char>();
+
+  return 0;
+}
+
+
+how does this get expanded?
+
+template<typename T, typename... Rest>
+struct __store<T, Rest...> : public __store<Rest...> {
+  // ...
+ChatGPT
+
+When the compiler expands the __store template for specific types, it recursively generates a series of classes, each inheriting from another instantiation of __store with one fewer template argument. Let's see how the compiler would expand your example for __store<int, float, char>.
+The Initial Template
+
+The template you provided is:
+
+cpp
+
+template<typename T, typename... Rest>
+struct __store<T, Rest...> : public __store<Rest...> {
+  T value;
+
+  // set and get methods
+};
+
+Expansion for __store<int, float, char>
+
+Let's break down the expansion:
+
+    First Level: __store<int, float, char>
+        Inherits from __store<float, char>
+        Manages a value of type int
+        Implements set<U>(U) and get<U>() methods for type int or forwards to the base class
+
+    cpp
+
+template<>
+struct __store<int, float, char> : public __store<float, char> {
+  int value;
+
+  // set and get methods for int or forward to __store<float, char>
+};
+
+Second Level: __store<float, char>
+
+    Inherits from __store<char>
+    Manages a value of type float
+    Implements set<U>(U) and get<U>() methods for type float or forwards to the base class
+
+cpp
+
+template<>
+struct __store<float, char> : public __store<char> {
+  float value;
+
+  // set and get methods for float or forward to __store<char>
+};
+
+Third Level: __store<char>
+
+    Inherits from __store<> (the primary template, which is empty)
+    Manages a value of type char
+    Implements set<U>(U) and get<U>() methods for type char
+
+cpp
+
+template<>
+struct __store<char> : public __store<> {
+  char value;
+
+  // set and get methods for char
+};
+
+Base Case: __store<>
+
+    An empty struct, ending the recursive inheritance
+
+cpp
+
+    template<>
+    struct __store<> {
+      // Empty base case
+    };
+
+Using the Expanded Classes
+
+In your main function, when you call set or get on an instance of __store<int, float, char>, the compiler uses these generated classes to handle the operations:
+
+    If you call store.set<int>(5), it's handled by __store<int, float, char>.
+    If you call store.set<float>(3.14), it's forwarded to __store<float, char>.
+    If you call store.set<char>('a'), it's forwarded down the chain to __store<char>.
+
+Each class only handles operations for its type (T) and forwards any other types to its base class, creating a type-safe chain of responsibility. This is a powerful feature of C++ templates for creating type-safe and efficient code.
+User
+can you write the generated code for this recursive inheritance?
+ChatGPT
+
+Certainly! Let's write the expanded code for the __store<int, float, char> specialization based on the template you provided. This expansion will illustrate how the compiler generates a series of classes for each type in the template parameter list, each inheriting from a version of __store with one fewer type.
+Expanded Code for __store<int, float, char>
+
+    Expansion for __store<char>:
+
+    This is the most derived class in the inheritance chain and will handle char type.
+
+    cpp
+
+template<>
+struct __store<char> {
+    char value;
+
+    template<typename U>
+    void set(U v) {
+        if constexpr (std::is_same_v<char, U>) {
+            value = std::move(v);
+        } else {
+            // No further class to delegate to
+            static_assert(std::is_same_v<char, U>, "Type mismatch");
+        }
+    }
+
+    template<typename U>
+    U get() const {
+        if constexpr (std::is_same_v<char, U>) {
+            return value;
+        } else {
+            // No further class to delegate to
+            static_assert(std::is_same_v<char, U>, "Type mismatch");
+            return U{}; // Dummy return to satisfy compiler
+        }
+    }
+};
+
+Expansion for __store<float, char>:
+
+This class handles float and delegates to __store<char> for other types.
+
+cpp
+
+template<>
+struct __store<float, char> : public __store<char> {
+    float value;
+
+    template<typename U>
+    void set(U v) {
+        if constexpr (std::is_same_v<float, U>) {
+            value = std::move(v);
+        } else {
+            __store<char>::template set<U>(v);
+        }
+    }
+
+    template<typename U>
+    U get() const {
+        if constexpr (std::is_same_v<float, U>) {
+            return value;
+        } else {
+            return __store<char>::template get<U>();
+        }
+    }
+};
+
+Expansion for __store<int, float, char>:
+
+This is the top-level class handling int and delegating to __store<float, char> for other types.
+
+cpp
+
+    template<>
+    struct __store<int, float, char> : public __store<float, char> {
+        int value;
+
+        template<typename U>
+        void set(U v) {
+            if constexpr (std::is_same_v<int, U>) {
+                value = std::move(v);
+            } else {
+                __store<float, char>::template set<U>(v);
+            }
+        }
+
+        template<typename U>
+        U get() const {
+            if constexpr (std::is_same_v<int, U>) {
+                return value;
+            } else {
+                return __store<float, char>::template get<U>();
+            }
+        }
+    };
+
+How It Works
+
+    __store<int, float, char>: Manages an int and delegates to __store<float, char> for float and char.
+    __store<float, char>: Manages a float and delegates to __store<char> for char.
+    __store<char>: Manages a char and does not delegate further.
+
+Each class in this inheritance chain can set or get a value of its own type (T) and delegates to its base class for other types. This design allows for a compile-time checked, type-safe way of storing and retrieving different types of data.
+User
+does it mean it generates the inheritance for each type T? specializes for the type T and generates the next ones? so we end up specializing for each type in variadic arguments? what is the purpose of inheritance in that case?
+ChatGPT
+
+Yes, you've grasped the essence of the pattern. In the provided template, the compiler generates a specialized class for each type T in the variadic argument list. Each of these classes inherits from another instantiation of __store with one fewer type in the argument list. This pattern continues until the base case (an empty __store specialization) is reached. Let's delve deeper into the specifics:
+How the Specialization and Inheritance Work Together
+
+    Specialization for Each Type T:
+        For each type T in the variadic arguments (Rest...), a specialized version of __store is generated.
+        This specialization handles operations (like set and get) specific to its type T.
+
+    Recursive Inheritance:
+        Each specialized __store<T, Rest...> inherits from __store<Rest...>.
+        This inheritance chain creates a hierarchy where each class can delegate operations to its parent class if the operation does not pertain to its own type T.
+
+Example
+
+Given __store<int, float, char>, the compiler generates:
+
+    __store<int, float, char>: Handles int, inherits from __store<float, char>.
+    __store<float, char>: Handles float, inherits from __store<char>.
+    __store<char>: Handles char, inherits from __store<> (the base case).
+
+Purpose of Inheritance
+
+The inheritance structure serves several purposes:
+
+    Type-Safe Operations:
+        Each class in the chain is responsible for operations on a specific type. This ensures type safety at compile time.
+
+    Delegation of Responsibility:
+        If a class cannot handle an operation (because the type does not match), it delegates the operation to its parent class. This is a form of the Chain of Responsibility design pattern, where a request is passed along a chain of handlers until one can handle it.
+
+    Code Reuse:
+        Inheritance allows shared functionality (like the set and get method templates) to be written once in a generic way and used by all the specialized classes.
+
+    Compile-Time Efficiency:
+        This pattern allows many operations to be resolved at compile time rather than runtime, which can lead to more efficient code.
+
+In summary, the use of template specialization and recursive inheritance in your __store class template allows for creating a type-safe, efficient, and flexible system for storing and retrieving values of different types, with each type being handled by its respective specialized class. This approach leverages the power of C++ templates for metaprogramming and compile-time polymorphism.
+User
+is the specialized version nested or placed outside?
+ChatGPT
+
+In the context of the __store template you've provided, the specialized versions of the template are not nested inside one another; rather, they are separate classes that are placed outside of each other. Each specialized version inherits from another instantiation of __store with a different (usually smaller) set of template parameters. This creates a chain of inheritance where each class is a distinct entity in the inheritance hierarchy.
+
+Here's a visualization of how the classes are structured in the inheritance hierarchy, using __store<int, float, char> as an example:
+
+    Top-Level Specialization:
+        __store<int, float, char> is the most derived class in this example. It is not nested within any other class but is a standalone class.
+
+    Inheritance Chain:
+        __store<int, float, char> inherits from __store<float, char>.
+        __store<float, char> inherits from __store<char>.
+        __store<char> inherits from the base case __store<>, which is an empty struct.
+
+    Separate Entities:
+        Each of these specializations (__store<int, float, char>, __store<float, char>, __store<char>) is a separate, non-nested class. They are related through inheritance but exist independently in the class hierarchy.
+
+    No Nested Classes:
+        There are no nested classes in this structure. Each specialization is a standalone class that simply inherits from another __store instantiation with fewer template arguments.
+
+This structure allows each class to handle operations specific to its type and delegate to its base class for other types. This is a common pattern in template metaprogramming, where recursive template instantiation is used to create a series of related but distinct types.
+User
+can i see the code generated by the compiler? show me how does the delegation work, is the delegation achieved through calling specialization, if that specialization has the correct type, it stops delegation, otherwise it propagates up the inheritance chain?
+ChatGPT
+
+The code generated by the compiler for a template like __store<int, float, char> creates a series of class specializations, each inheriting from another with one fewer type in its template argument list. This structure allows for a delegation mechanism where each class can handle operations for its own type and delegate to its base class for other types. Here's a simplified illustration of how the compiler might expand the code and how the delegation works:
+Generated Specializations
+
+    Base Case (__store<>): An empty struct, the end of the inheritance chain.
+
+    cpp
+
+template<>
+struct __store<> {
+    // Empty base case
+};
+
+Specialization for char (__store<char>): Handles operations for char.
+
+cpp
+
+template<>
+struct __store<char> : public __store<> {
+    char value;
+
+    template<typename U>
+    void set(U v) {
+        if constexpr (std::is_same_v<char, U>) {
+            value = std::move(v);
+        } else {
+            // No further class to delegate to
+            static_assert(std::is_same_v<char, U>, "Type mismatch");
+        }
+    }
+
+    template<typename U>
+    U get() const {
+        if constexpr (std::is_same_v<char, U>) {
+            return value;
+        } else {
+            // No further class to delegate to
+            static_assert(std::is_same_v<char, U>, "Type mismatch");
+            return U{}; // Dummy return to satisfy compiler
+        }
+    }
+};
+
+Specialization for float and char (__store<float, char>): Handles float, delegates to __store<char> for char.
+
+cpp
+
+template<>
+struct __store<float, char> : public __store<char> {
+    float value;
+
+    template<typename U>
+    void set(U v) {
+        if constexpr (std::is_same_v<float, U>) {
+            value = std::move(v);
+        } else {
+            __store<char>::template set<U>(v);
+        }
+    }
+
+    template<typename U>
+    U get() const {
+        if constexpr (std::is_same_v<float, U>) {
+            return value;
+        } else {
+            return __store<char>::template get<U>();
+        }
+    }
+};
+
+Specialization for int, float, and char (__store<int, float, char>): Handles int, delegates to __store<float, char> for float and char.
+
+cpp
+
+    template<>
+    struct __store<int, float, char> : public __store<float, char> {
+        int value;
+
+        template<typename U>
+        void set(U v) {
+            if constexpr (std::is_same_v<int, U>) {
+                value = std::move(v);
+            } else {
+                __store<float, char>::template set<U>(v);
+            }
+        }
+
+        template<typename U>
+        U get() const {
+            if constexpr (std::is_same_v<int, U>) {
+                return value;
+            } else {
+                return __store<float, char>::template get<U>();
+            }
+        }
+    };
+
+How Delegation Works
+
+    Delegation in set and get Methods:
+        Each set<U>(U) and get<U>() method first checks if the type U matches its own T. If it does, it performs the operation.
+        If U doesn't match T, the method delegates the operation to its base class using __store<Rest...>::template set<U>(v) or __store<Rest...>::template get<U>().
+
+    Stopping the Delegation:
+        The delegation stops when a class specialization is found where T is the same as U. That specialization then handles the operation.
+
+    Reaching the Base Case:
+        If no matching type is found, the operation eventually reaches the base case (__store<>), where a static assertion or some form of error handling can be used to indicate a type mismatch.
+
+This pattern allows each class to specifically handle its associated type and pass along any other types up the inheritance chain until a matching handler is found or an error is flagged. This is a compile-time, type-safe way of managing a collection of different types in a single structure.
+User
+template<int, float, char>
+struct __store {};
+
+template<int, float, char> // Rest = {float, char}
+struct __store<int, float, char> : public __store<float, char> {
+  int value;
+
+  template<typename U>
+  void set(U v) {
+    // if type U is int, which is my responsibility
+    //   value = std::move(v)
+    // else
+    //   check __store<float, char>::template set<U>(v)
+    //   and pass on the type U
+  }
+
+  template<typename U>
+  U get() const {
+    // if type U is int, which is my responsibility
+    //   value = std::move(v)
+    // else
+    //   check __store<float, char>::template get<U>()
+  }
+
+  // For each ::get<U> and ::set<U>, the code is generated
+  // For example, for ::get<double>
+
+  template<double>
+  double get() const {
+    // if double and int are same
+    //   return value
+    // else
+    //   __store<float, char>::template get<double>() // pass on the type
+  }
+};
+
+template<float, char> // Rest = {char}
+struct __store<float, char> : public __store<char> {
+  float value;
+
+  template<typename U>
+  void set(U v) {
+
+  }
+
+  template<typename U>
+  U get() const {}
+
+  // checking further if double exists in the inheritance chain
+  template<double>
+  double get() const {
+    // if double and float are same
+    //   return value
+    // else
+    //   __store<char>::template get<double>() // pass on the type
+  }
+};
+
+template<char> // Rest = {}
+struct __store<char> : public __store<> {
+  char value;
+
+  template<typename U>
+  void set(U v) {}
+
+  template<typename U>
+  U get() const {}
+
+  // checking further if double exists in the inheritance chain
+  template<double>
+  double get() const {
+    // if double and char are same
+    //   return value
+    // else
+    //   __store<>::template get<double>() // pass on the type
+  }
+};
+
+
+for example, where is the base class that may take empty variadic arguments? is it this?
+
+template<typename... Rest>
+struct __store {}; // May take empty?
+
+template<typename T, typename... Rest>
+struct __store<T, Rest...> : public __store<Rest...> {
+  T value;
+
+  template<typename U>
+  void set(U v) {
+    if constexpr (std::is_same_v<T, U>) {
+      value = std::move(v);
+    } else {
+      __store<Rest...>::template set<U>(v);
+    }
+  }
+
+  template<typename U>
+  U get() const {
+    if constexpr (std::is_same_v<T, U>) {
+      return value;
+    } else {
+      return __store<Rest...>::template get<U>();
+    }
+  }
+};
+ChatGPT
+
+Yes, you are correct. In your __store template, the base class for the recursive inheritance chain is indeed the primary template that can take empty variadic arguments:
+
+cpp
+
+template<typename... Rest>
+struct __store {}; // This can indeed be instantiated with empty variadic arguments
+
+This primary template acts as the terminal point of the recursive inheritance. When the list of template arguments (Rest...) is exhausted, the compiler uses this empty specialization as the base class. This is an essential part of the design, as it provides a stopping condition for the recursive inheritance.
+Explanation
+
+    Primary Template (__store<>):
+        This is a generic template that can take any number of template arguments (including none).
+        When instantiated with no arguments, it becomes an empty struct, serving as the end of the inheritance chain.
+
+    Specialized Template (__store<T, Rest...>):
+        This is a partial specialization of the primary template.
+        It is designed to handle a specific type T and then delegate to __store<Rest...>, which is another instantiation of __store with one fewer type in the argument list.
+        The specialization for a single type (e.g., __store<int>, __store<float>) will ultimately inherit from __store<> because Rest... becomes empty at that point.
+
+Example Expansion
+
+For __store<int, float, char>, the inheritance chain would be:
+
+    __store<int, float, char> inherits from __store<float, char>.
+    __store<float, char> inherits from __store<char>.
+    __store<char> inherits from __store<>, the primary template with no arguments.
+
+Each of these classes handles operations for its specific type and delegates to its base class for other types. When the chain reaches __store<>, there are no more types to handle, and this empty struct serves as a base case, effectively terminating the delegation chain.
+
+This structure is a powerful demonstration of template metaprogramming in C++, where recursive templates and inheritance are used to create flexible and type-safe data structures.
+User
+which part generates all these classes? the inheritance or the specialization here?
+
+template<typename T, typename... Rest>
+struct __store<T, Rest...> : public __store<Rest...> {
+  // ...
+ChatGPT
+
+The generation of all these classes in your __store template is driven by both the specialization and the inheritance, working together. Let's break down how each part contributes:
+1. Template Specialization
+
+    Definition: The template specialization template<typename T, typename... Rest> struct __store<T, Rest...> is a partial specialization of the primary template template<typename... Rest> struct __store. It's "partial" because it's still a template with at least one type parameter (T) and potentially more (Rest...).
+
+    Role in Class Generation:
+        This specialization is instantiated for each unique combination of types provided in the template argument list.
+        For example, __store<int, float, char> is a different instantiation from __store<float, int>.
+        Each instantiation of this specialization handles a specific type T and uses Rest... for the rest of the types.
+
+2. Recursive Inheritance
+
+    Definition: The inheritance : public __store<Rest...> in the specialization creates a recursive structure. Here, each specialized class inherits from another instantiation of __store with one fewer type in the template argument list.
+
+    Role in Class Generation:
+        The inheritance mechanism creates a chain where each class is responsible for one type and delegates to its base class for the others.
+        It leads to a cascading effect: when you instantiate __store<int, float, char>, it automatically requires the instantiation of __store<float, char>, which in turn requires __store<char>, and so on, until the base case (__store<>) is reached.
+
+Combined Effect
+
+    The combined effect of specialization and recursive inheritance generates a hierarchy of classes, each responsible for handling operations for a specific type.
+    The specialization part ensures that each class knows which type it's responsible for, while the inheritance part builds the chain of delegation, allowing types to be handled at the appropriate level in the hierarchy.
+
+Example with __store<int, float, char>
+
+    Instantiating __store<int, float, char> triggers the instantiation of its base class __store<float, char>.
+    __store<float, char> then triggers the instantiation of its base class __store<char>.
+    Finally, __store<char> inherits from the base case __store<>, completing the chain.
+
+Each of these instantiations is a separate class, specialized for handling a particular type, and inheriting the ability to delegate to a class handling fewer types. This elegant combination of C++ template specialization and inheritance is a powerful tool in template metaprogramming, allowing for sophisticated type manipulations and generic programming techniques.
+User
+can i have some useful error message when the function from the base class is called?
+
+template <typename... Rest>
+struct __store {
+  template <typename U>
+  void set(U v) {}
+
+  template <typename U>
+  U get() const {}
+};
+
+
+how the type requested doesn't exist
+ChatGPT
+
+Yes, you can modify your __store template to include a more informative error message when an attempt is made to set or get a type that does not exist in the template parameter list. One common way to achieve this in C++ is by using static_assert, a compile-time assertion that can display a custom error message if a certain condition is not met.
+
+Here's how you can modify the base __store template to include a useful error message:
+
+cpp
+
+#include <type_traits>  // For std::false_type
+
+template <typename... Rest>
+struct __store {
+  template <typename U>
+  void set(U v) {
+    static_assert(std::false_type::value, "Error: Type not found in __store.");
+  }
+
+  template <typename U>
+  U get() const {
+    static_assert(std::false_type::value, "Error: Type not found in __store.");
+    return U{};  // Return statement to satisfy the compiler
+  }
+};
+
+Explanation
+
+    static_assert: This is used to enforce a compile-time check. If the condition inside static_assert is false, the compilation will fail, and the provided error message will be displayed.
+
+    std::false_type::value: This is always false, so the static assertion will always fail if these methods are called. This is intended, as calling set or get on the base __store template (which should be empty) indicates a type mismatch or that the requested type does not exist in the __store.
+
+Usage
+
+When you use __store<int, float, char> and try to set or get a type not in the list (like double), the compiler will eventually reach the base __store and trigger the static assertion, resulting in a compile-time error with your custom message.
+
+This modification enhances the type safety of your template and provides clearer feedback during development, making it easier to diagnose issues related to type mismatches or incorrect usage of the __store template.
+User
+that static assert for some reason fails whether that method is called or not, maybe I'm making a mistake? should it fail if the method is never called? its compile time asertion not runtime assertion?
+ChatGPT
+
+You are correct that static_assert is a compile-time assertion and should not trigger unless the function in which it is used is actually called. If you're experiencing a failure from static_assert even when the method is not called, it could be due to the way template code is instantiated and compiled in C++.
+
+To ensure that static_assert only triggers when a function is called with an unsupported type, you should use a technique that delays the evaluation of the static assertion until the function template is instantiated. One common approach is to tie the static_assert to a template parameter, so it only gets evaluated when the function is instantiated.
+
+Here's how you can modify the __store template to achieve this:
+
+cpp
+
+template <typename... Rest>
+struct __store {
+  template <typename U>
+  void set(U v) {
+    static_assert(DependentFalse<U>::value, "Error: Type not found in __store.");
+  }
+
+  template <typename U>
+  U get() const {
+    static_assert(DependentFalse<U>::value, "Error: Type not found in __store.");
+    return U{};  // Return statement to satisfy the compiler
+  }
+
+private:
+  template <typename>
+  struct DependentFalse : std::false_type {};
+};
+
+Explanation
+
+    DependentFalse<U>: This is a template struct that inherits from std::false_type. The key here is that DependentFalse<U>::value is dependent on the template parameter U. This dependency ensures that the static_assert is only evaluated when the set or get method is instantiated with a specific type.
+
+    Private Helper Struct: DependentFalse is defined as a private helper struct within __store. This struct template is only used for triggering static_assert based on the type U.
+
+With this modification, static_assert will only fail if and when the set<U>(U) or get<U>() method is called with a type U that is not supported by the __store specialization chain. This resolves the issue of the assertion being triggered prematurely during compilation.
+
