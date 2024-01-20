@@ -2,6 +2,16 @@
 
 This experiment groups the C++ implementation of various algorithms.
 
+## Total recall all techniques
+
+- Does input repeat? Print the input in recursive functions [happy number - use set](./src/happy_number.cpp)
+- BFS from start and destination (both ways)
+- ...
+
+## Coding patterns
+
+[Several Coding Patterns for Solving Data Structures and Algorithms Problems during Interviews](https://github.com/Chanda-Abdul/Several-Coding-Patterns-for-Solving-Data-Structures-and-Algorithms-Problems-during-Interviews/tree/main)
+
 ## 30.12.2023 - 01.14.2024 Solve algorithmic problems and ride a bike
 
 I ride a bike to improve blood circulation to improve my problem-solving performance. While riding a bike I think about algorithmic problems and how to solve them.
