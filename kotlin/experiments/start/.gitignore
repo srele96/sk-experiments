@@ -6,3 +6,6 @@ build
 
 # Docker container data directory
 mongodb_data
+
+# Generated output 
+*.log

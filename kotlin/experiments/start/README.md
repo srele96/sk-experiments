@@ -15,3 +15,7 @@ Run the app
 ```terminal
 ./gradlew run --args="--name='john cena' --count 3"
 ```
+
+## Nvim
+
+[Nvim supports .editorconfig by default from version 0.9.0.](https://github.com/neovim/neovim/pull/21633)
