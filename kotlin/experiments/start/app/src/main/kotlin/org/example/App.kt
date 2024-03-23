@@ -44,6 +44,11 @@ val callme =
 data class User(val userId: String, val user: String, val db: String)
 
 fun main(args: Array<String>) = runBlocking {
+    // Run some coroutine... It has been a long time since i had to figure out how do javascript
+    // promises work.
+    // Actually i don't remember using promises that much lately. Actually it feels like at work we
+    // were doing administrative work more than programming. Fuck!
+
     launch {
         delay(1000L)
         println("written at the end...")
@@ -62,6 +67,7 @@ fun main(args: Array<String>) = runBlocking {
     }
     println(oopsie("something", { something -> something + " last" })("final"))
 
+    // The passwords are embeded within a docker-compose.yml file.
     // val uri = "mongodb://rootuser:rootpass@localhost:27017/"
     // val uri = "mongodb://service:servicepass@localhost:27017/"
     val uri = "mongodb://serviceowner:serviceownerpass@localhost:27017/"

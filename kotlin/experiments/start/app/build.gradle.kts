@@ -66,13 +66,173 @@ tasks.named<Test>("test") {
 }
 
 tasks.register("listPlugins") {
-    // find a way to use project specific indentation config while using nvim
     doLast {
         plugins.forEach {
-	    println("Plugin: ${it}")
-	}
+            println("Plugin: ${it}")
+        }
     }
 }
+
+// Tasks -- Begin
+
+// https://docs.gradle.org/current/dsl/org.gradle.api.Task.html
+
+// Each of the chain tasks can run independently.
+// Invoking a task that depends on others will invoke dependants.
+tasks.register("chainA") {
+    doFirst {
+        println("chain-a - the doFirst part of the task")
+    }
+    doLast { // Figure out what's `doLast`
+        println("chainA")
+    }
+}
+
+tasks.register("chainB") {
+    dependsOn("chainA")
+    doLast {
+        println("chainB")
+    }
+}
+
+tasks.register("chainC") {
+    dependsOn("chainB")
+    doLast {
+        println("chainC")
+    }
+}
+
+tasks.register("printTasks") {
+    dependsOn("chainB")
+    dependsOn("chainC")
+    doLast {
+        println("Tasks: ${tasks}")
+        println("printTasks depends on")
+        taskDependencies.getDependencies(this).forEach {
+            println(" - ${it.name}")
+        }
+    }
+}
+
+// Difference between tasks.register and tasks.create
+//
+// https://stackoverflow.com/questions/53654190/what-is-the-difference-between-registering-and-creating-in-gradle-kotlin-dsl
+// https://docs.gradle.org/current/userguide/task_configuration_avoidance.html
+
+tasks.register("tryToGetTasks") {
+    // tasks.create()
+    // Project.getTasks()
+    println("Are equal?; ${project.getTasks()}; ${tasks}")
+}
+
+// Is the same (i guess?) as tasks.register()
+project.getTasks().register("isTheSame") {
+    doLast {
+        println("isTheSame - project.getTasks().register()")
+    }
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// See how does the `tasks.register` implementation
+
+class MyConfiguration {
+    fun propertyOne(configure: PropertyOne.(String) -> Unit) {
+        val propertyOne = PropertyOne()
+        propertyOne.configure("oopsie") // Where does .configure method come from?
+    }
+}
+
+class PropertyOne {
+    fun doSomething(action: () -> Unit) {
+        action()
+    }
+}
+
+class Foo {
+    private val configurations = mutableMapOf<String, MyConfiguration>()
+
+    fun add(name: String, configure: MyConfiguration.() -> Unit) {
+        configurations[name] = MyConfiguration().apply(configure)
+    }
+
+    fun hm(configure: () -> Unit) {
+        configure()
+    }
+
+    fun hmm(h__: () -> Unit) {
+        h__()
+    }
+}
+
+class Geezer {
+    fun spit() {
+        println("spit")
+    }
+    fun spit(cb: () -> Unit) {
+        cb()
+    }
+}
+
+fun withGeezer(geezer: Geezer.() -> Unit) {
+    //geezer()
+    //geezer.spit()
+    Geezer().apply(geezer)
+}
+
+// Interesting, methods are callable here. Makes sense because tasks.register
+// is a method.
+// println("Something god")
+
+// A class consumer of Kotlin behaviors to explore.
+tasks.register("insteadOfMain") {
+    doLast() {
+        val foo = Foo()
+        foo.add("something") {
+            propertyOne {
+                doSomething {
+                    println("Doing something")
+                }
+            }
+        }
+
+        foo.add("somethingElse") {
+            propertyOne { data ->
+                println("let's see what happens here... ${data}")
+            }
+        }
+
+        foo.hm {
+            println("Hmmm...")
+        }
+
+        foo.hmm {
+            println("does it work...")
+        }
+
+        // Takes in a ... something which calls println
+        // It has access to geezer class methods.
+        // It also calls? spit(h: () -> Unit) and provides it a callback.
+        // Which effectively means `spit {}` is a method or function call which
+        // takes in a callback or whatever kotlin deems it to be. The whatever
+        // has access to methods of the type code defined it to have.
+        withGeezer {
+            println("with geezer inside")
+            // Aha!
+            spit() // Works
+            spit {
+                println("with geezer spit")
+            }
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+// Tasks -- End
 
 // simple task
 

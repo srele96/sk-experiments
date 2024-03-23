@@ -2,6 +2,10 @@
 
 Get used to various kotlin features through unconventional usage.
 
+## Useful links
+
+- [Maven Central](https://central.sonatype.com/)
+
 ## Documentation
 
 Start docker containers
@@ -15,6 +19,12 @@ Run the app
 ```terminal
 ./gradlew run --args="--name='john cena' --count 3"
 ```
+
+## Java Loggers
+
+An interesting concept used by java loggers. Libraries depend on SLF4J - Simple Logging Facade for Java. An abstraction that libraries depend on. Users can depend on any logging library that supports SLF4J. The SLF4J sits between the library and the users application and the benefit is that users aren't locked in to one logging library. A possible downside is dependency on SLF4J - I did not give much thought to that, so I am not sure.
+
+Definitely an interesting concept, I admit!
 
 ## Nvim
 
