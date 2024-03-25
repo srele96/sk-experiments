@@ -8,8 +8,13 @@
 plugins {
     // Apply the foojay-resolver plugin to allow automatic download of JDKs
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+
+
+    // I guess i am not supposed to setup the kotlin plugin here?
+    // kotlin("jvm") version "1.9.23"
+    //  alias(libs.plugins.jvm) // what does this represent?
 }
 
 rootProject.name = "start"
-include("app")
+include("app", "foo")
 
