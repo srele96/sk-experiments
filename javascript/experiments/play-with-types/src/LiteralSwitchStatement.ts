@@ -398,3 +398,76 @@
   type O = Baz[keyof Baz];
   type P = Bar[keyof Bar];
 }
+
+{
+  interface A {
+    foo: 'A';
+    bar: string;
+  }
+
+  interface B {
+    foo: 'B';
+    baz: number;
+  }
+
+  const a: A = { foo: 'A', bar: 'hello' };
+  const b: B = { foo: 'B', baz: 1 };
+
+  // Aha... type guard is cool to assert the type of a whole object based on
+  // a few runtime checks that we guarantee... That we implement...
+
+  function isA_WRONG(a: A | B): a is A {
+    return a.foo === 'B';
+  }
+
+  function isA_GOOD(a: A | B): a is A {
+    return a.foo === 'A';
+  }
+
+  // But I thought typescript would let me be wrong here... Because I guarantee
+  // for the type through an implementation?
+  if (isA_WRONG(b)) {
+    b.bar;
+  }
+
+  if (isA_GOOD(a)) {
+    a.bar;
+  }
+
+  // I think I understand... even the a is of a union type, both guarantee foo
+  // access, but the second property is not guaranteed... Why?
+
+  // I see... makes sense... a function that takes a union is useful to narrow
+  // down the type based on a common property...
+  function accept(a: A | B) {
+    a.foo; // Ok, why?
+
+    if (typeof a.foo === 'string') {
+      // There is no guarantee about other properties on `a`
+      a.bar; // Not OK
+    }
+
+    if (a.foo === 'A') {
+      a.bar; // Ok
+    }
+
+    if (a.foo === 'B') {
+      a.baz; // Ok
+    }
+
+    switch (a.foo) {
+      case 'A': {
+        a.bar; // Ok
+        break; // Fixes the issue of control flow falling through
+      }
+      case 'B': {
+        a.baz; // Not OK because the control flow falls through
+        break;
+      }
+    }
+  }
+
+  // a function that takes different types and can not narrow down based on a
+  // common property... actually... let me think...
+  function acceptTwo(a: A | B) {}
+}
