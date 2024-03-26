@@ -29,6 +29,8 @@ function isA_GOOD(a: A | B): a is A {
 // the type guard fail? Since even though it's of type B, the type guard can
 // take B and assert wrongly that it's A...
 if (isA_WRONG(b)) {
+  // Use the @ts-ignore because I hate the file being red in vscode
+  // @ts-ignore
   console.log(b.bar);
 }
 
@@ -59,12 +61,20 @@ function wrong(take: A | B): take is B {
 if (wrong(a)) {
   // Is there a way to check if the `a` is of type `A` or `B`?
   if ('baz' in a) {
+    // Use the @ts-ignore because I hate the file being red in vscode
+    // @ts-ignore
     a.baz;
   }
   if ('bar' in a) {
+    // Use the @ts-ignore because I hate the file being red in vscode
+    // @ts-ignore
     a.bar;
   }
+  // Use the @ts-ignore because I hate the file being red in vscode
+  // @ts-ignore
   a.baz;
+  // Use the @ts-ignore because I hate the file being red in vscode
+  // @ts-ignore
   a.bar;
   // The typescript reduced the type to `never` and we can go to hell in this
   // block...
