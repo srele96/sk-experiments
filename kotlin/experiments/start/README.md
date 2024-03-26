@@ -5,6 +5,12 @@ Get used to various kotlin features through unconventional usage.
 ## Useful links
 
 - [Maven Central](https://central.sonatype.com/)
+- [Get started with kotlin](https://kotlinlang.org/docs/getting-started.html#create-your-powerful-application-with-kotlin)
+- [Generate spring boot project with kotlin/java/etc...](https://start.spring.io/)
+- [Spring Boot Kotlin guides](https://spring.io/guides/tutorials/spring-boot-kotlin)
+- [Spring Boot docs](https://docs.spring.io/spring-boot/docs/2.0.x/reference/html/boot-features-kotlin.html)
+- [`kotlin.test` api - library](https://kotlinlang.org/api/latest/kotlin.test/)
+- [kotlin-stdlib maven repository](https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib)
 
 ## Documentation
 
