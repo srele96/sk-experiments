@@ -6,6 +6,8 @@
  */
 
 plugins {
+    // Commented out because plugin support was moved to the root project in:
+    // 7156f3e143455bc03ee4681ed4af2079daf5a35a
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     // alias(libs.plugins.jvm)
 

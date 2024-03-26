@@ -1,6 +1,6 @@
 # Resources
 
-- https://github.com/software-mansion/react-native-gesture-handler/issues/2307 
+- https://github.com/software-mansion/react-native-gesture-handler/issues/2307
 - https://stackoverflow.com/questions/52562735/plugin-id-org-jetbrains-kotlin-jvm-version-1-2-71-was-not-found-in-any
 - https://stackoverflow.com/questions/69261015/how-to-properly-add-gradle-plugin-to-multiproject
 - https://docs.gradle.org/current/userguide/application_plugin.html
