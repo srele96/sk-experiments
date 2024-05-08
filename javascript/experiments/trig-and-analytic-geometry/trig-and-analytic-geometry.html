@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      .line {
+        width: 500px;
+        height: 1px;
+        background-color: black;
+      }
+
+      .point {
+        width: 5px;
+        height: 5px;
+        background-color: black;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .pivot {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+      }
+
+      .red {
+        background-color: red;
+      }
+
+      .purple {
+        background-color: purple;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pivot" class="pivot point">
+      <div id="1" class="point"></div>
+      <div id="2" class="point"></div>
+      <div id="3" class="point red"></div>
+      <div id="4" class="point red"></div>
+    </div>
+
+    <div class="line"></div>
+
+    <script>
+      // at the cosine position draw up a sine length line
+
+      // 2*Math.PI - Math.PI/6
+
+      // from the 0,0 to (cos, sin) point a vector
+      // ... ... ... ... ... ... ... ... ... ...
+
+      const one = document.getElementById("1");
+      const units = 50;
+
+      let ang = 0;
+      const inc = Math.PI / 180;
+
+      one.style.transform = `translate(${units * Math.cos(ang)}px, ${
+        units * Math.sin(ang)
+      }px)`;
+
+      function line(slope, p, x) {
+        // y - y_p = k (x - x_p)
+        // y = k(x - x_p) + y_p
+        return slope * (x - p.x) + p.y;
+      }
+
+      setInterval(() => {
+        if (ang <= 2 * Math.PI) {
+          ang += inc;
+        } else {
+          ang = 0;
+        }
+        const x = units * Math.cos(ang);
+        const y = units * Math.sin(ang);
+        const slope = y / x;
+
+        const two = document.getElementById("2");
+        // draw points
+        for (let i = -5; i <= 5; ++i) {
+          two.style.transform = `translate(${units * i}px, ${
+            units * line(slope, { x, y }, i)
+          }px)`;
+        }
+
+        one.style.transform = `translate(${x}px, ${y}px)`;
+      }, 10);
+
+      const three = document.getElementById("3");
+      const four = document.getElementById("4");
+
+      {
+        const angle = 2 * Math.PI - (Math.PI / 2 + Math.PI / 6);
+        const x = units * Math.cos(angle);
+        const y = units * Math.sin(angle);
+        const slope = y / x;
+        four.style.transform = `translate(${x}px, ${y}px)`;
+
+        const pivot = document.getElementById("pivot");
+
+        for (let xpos = -5; xpos <= 5; xpos += 2) {
+          const _point = document.createElement("div");
+          _point.classList.add("point", "purple");
+          pivot.appendChild(_point);
+          _point.style.transform = `translate(${(units / 5) * xpos}px, ${
+            (units / 5) * line(slope, { x, y }, xpos)
+          }px)`;
+        }
+      }
+    </script>
+  </body>
+</html>
