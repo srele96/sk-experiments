@@ -1,0 +1,54 @@
+{
+  "name": "sth",
+  "description": "'A Stupid Javascript Tool' built using webpack.",
+  "version": "0.1.0",
+  "author": "Kostic Srecko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srele96/sk-experiments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/srele96/sk-experiments/issues"
+  },
+  "homepage": "https://github.com/srele96/sk-experiments#readme",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/generator": "^7.24.7",
+    "@babel/parser": "^7.24.7",
+    "@babel/traverse": "^7.24.7",
+    "@babel/types": "^7.24.7",
+    "acorn": "^8.12.0",
+    "acorn-walk": "^8.3.3",
+    "astring": "^1.8.6",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "prettier": "^3.3.2",
+    "serialize-javascript": "^6.0.2",
+    "webpack": "^5.92.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0",
+    "webpack-sources": "^3.2.3"
+  },
+  "scripts": {
+    "build": "webpack --mode=development",
+    "b-default": "cross-env TENANT=default yarn build",
+    "b-one": "cross-env TENANT=one yarn build",
+    "b-two": "cross-env TENANT=two yarn build",
+    "b-three": "cross-env TENANT=three yarn build",
+    "build-all": "concurrently \"yarn run b-*\"",
+    "format": "prettier --write .",
+    "r-loader-default": "node ./dist/loader/build.js",
+    "r-loader-one": "cross-env RUNTIME_TENANT=one node ./dist/loader/build.js",
+    "r-loader-two": "cross-env RUNTIME_TENANT=two node ./dist/loader/build.js",
+    "r-loader-three": "cross-env RUNTIME_TENANT=three node ./dist/loader/build.js",
+    "r-plugin-default": "node ./dist/plugin/default/build.js",
+    "r-plugin-one": "node ./dist/plugin/one/build.js",
+    "r-plugin-two": "node ./dist/plugin/two/build.js",
+    "r-plugin-three": "node ./dist/plugin/three/build.js",
+    "run-all-loader": "concurrently \"yarn run r-loader-*\"",
+    "run-all-plugin": "concurrently \"yarn run r-plugin-*\"",
+    "run-all": "concurrently \"yarn run run-all-*\""
+  }
+}
