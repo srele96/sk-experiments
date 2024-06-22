@@ -38,7 +38,7 @@ Perhaps I should not be looking for alternative solutions, but rather an underst
 
 ## The problem has been reshaping as I was learning
 
-I had to adjust my thinking process. Initial idea was to replace a `require('./src/mod')` by ``import(`./src/tenant/${tenant}/mod`).then( /* ... */ )``. Once I managed to inject such code into a desired module, a new set of problems occured.
+I had to adjust my thinking process. Initial idea was to replace a `require('./src/mod')` by `` import(`./src/tenant/${tenant}/mod`).then( /* ... */ ) ``. Once I managed to inject such code into a desired module, a new set of problems occured.
 
 - How do I hand over a control to the user?
 - How does user receive a module?
