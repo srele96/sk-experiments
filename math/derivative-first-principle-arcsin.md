@@ -1,4 +1,4 @@
-# Derivative of $\`frac{d}{dx}\arcsin{x}\`$ by the first principle
+# Derivative of $`frac{d}{dx}\arcsin{x}`$ by the first principle
 
 Start by using the limit definition:
 
