@@ -2,20 +2,20 @@
 
 Start by using the limit definition:
 
-$$
+```math
 \frac{d}{dx} \arcsin{x} =
 \lim\_{h \to 0} \frac{\arcsin(x+h) - \arcsin{x}}{h}
-$$
+```
 
-Derive the identity for \(\arcsin{x}-\arcsin{y}\):
+Derive the identity for $`\arcsin{x}-\arcsin{y}`$:
 
-$$
+```math
 \sin(\alpha-\beta)=\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta}
 \\
 \arcsin(\sin(\alpha-\beta))=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
 \\
 \alpha-\beta=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
-$$
+```
 
 By substitution:
 
