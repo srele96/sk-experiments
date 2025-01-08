@@ -30,8 +30,6 @@ $$
 \beta &=\arcsin{y} \implies \sin{\beta}=y \quad
 -\pi/2\leq\beta\leq\pi/2 \quad
 \text{and} \quad -1 \leq y \leq 1
-\end{align}
-\begin{align}
 \\
 \text{Bounds on } \alpha \text{ result in choice of the positive square root.}
 \\
