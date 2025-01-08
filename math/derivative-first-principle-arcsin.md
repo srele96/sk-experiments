@@ -11,25 +11,27 @@ Derive the identity for $\arcsin{x}-\arcsin{y}$:
 
 $$
 \begin{align}
-\sin(\alpha-\beta)=\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta}
+\sin(\alpha-\beta) &=\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta}
 \\
-\arcsin(\sin(\alpha-\beta))=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
+\arcsin(\sin(\alpha-\beta)) &=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
 \\
-\alpha-\beta=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
+\alpha-\beta &=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
 \end{align}
 $$
 
 By substitution:
 
 $$
-\begin{aligned}
-\alpha=\arcsin{x} \implies \sin{\alpha}=x \quad
+\begin{align}
+\alpha &=\arcsin{x} \implies \sin{\alpha}=x \quad
 -\pi/2\leq\alpha\leq\pi/2 \quad
 \text{and} \quad -1 \leq x \leq 1
 \\
-\beta=\arcsin{y} \implies \sin{\beta}=y \quad
+\beta &=\arcsin{y} \implies \sin{\beta}=y \quad
 -\pi/2\leq\beta\leq\pi/2 \quad
 \text{and} \quad -1 \leq y \leq 1
+\end{align}
+\begin{align}
 \\
 \text{Bounds on } \alpha \text{ result in choice of the positive square root.}
 \\
@@ -38,7 +40,7 @@ $$
 \text{Bounds on } \beta \text{ result in choice of the positive square root.}
 \\
 \cos{\beta} = \sqrt{1 - sin^2{\beta}} = \sqrt{1 - y^2}
-\end{aligned}
+\end{align}
 $$
 
 Therefore:
