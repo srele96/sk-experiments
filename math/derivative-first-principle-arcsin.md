@@ -23,21 +23,28 @@ By substitution:
 
 $$
 \begin{align}
-\alpha &=\arcsin{x} \implies \sin{\alpha}=x \quad
+\alpha =\arcsin{x} \implies \sin{\alpha}=x \quad
 -\pi/2\leq\alpha\leq\pi/2 \quad
 \text{and} \quad -1 \leq x \leq 1
 \\
-\beta &=\arcsin{y} \implies \sin{\beta}=y \quad
+\beta =\arcsin{y} \implies \sin{\beta}=y \quad
 -\pi/2\leq\beta\leq\pi/2 \quad
 \text{and} \quad -1 \leq y \leq 1
+\end{align}
+$$
+
+By identity:
+
+$$
+\begin{align}
 \\
-\text{Bounds on } \alpha \text{ result in choice of the positive square root.}
+&\text{Bounds on } \alpha \text{ make positive square root.}
 \\
-\cos{\alpha} = \sqrt{1 - \sin^2{\alpha}} = \sqrt{1 - x^2}
+&\cos{\alpha} = \sqrt{1 - \sin^2{\alpha}} = \sqrt{1 - x^2}
 \\
-\text{Bounds on } \beta \text{ result in choice of the positive square root.}
+&\text{Bounds on } \beta \text{ make positive square root.}
 \\
-\cos{\beta} = \sqrt{1 - sin^2{\beta}} = \sqrt{1 - y^2}
+&\cos{\beta} = \sqrt{1 - sin^2{\beta}} = \sqrt{1 - y^2}
 \end{align}
 $$
 
