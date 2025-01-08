@@ -23,11 +23,11 @@ By substitution:
 
 $$
 \begin{align}
-&  \alpha =\arcsin{x} \implies \sin{\alpha}=x \quad
--\pi/2\leq\alpha\leq\pi/2 \quad
+&  \alpha =\arcsin{x} \implies \sin{\alpha}=x, \quad
+-\frac{\pi}{2}\leq\alpha\leq\frac{\pi}{2} \quad
 \text{and} \quad -1 \leq x \leq 1 \\
-&  \beta =\arcsin{y} \implies \sin{\beta}=y \quad
--\pi/2\leq\beta\leq\pi/2 \quad
+&  \beta =\arcsin{y} \implies \sin{\beta}=y, \quad
+-\frac{\pi}{2}\leq\beta\leq\frac{\pi}{2} \quad
 \text{and} \quad -1 \leq y \leq 1
 \end{align}
 $$
