@@ -88,7 +88,7 @@ $$
 &  (x+h)^2(1 - x^2) + x^2(x+h)^2 - 2(x+h)\sqrt{1 - x^2}\sin{t} + \sin^2{t} - x^2 = 0 \\
 &  (x+h)^2(1 - x^2 + x^2) - 2(x+h)\sqrt{1 - x^2}\sin{t} + \sin^2{t} - x^2 = 0 \\
 &  (x+h)^2 - 2(x+h)\sqrt{1 - x^2}\sin{t} + \sin^2{t} - x^2 = 0 \\
-&  [1](x+h)^2 - [2\sqrt{1 - x^2}\sin{t}](x+h) + [\sin^2{t} - x^2] = 0
+&  (x+h)^2 - [2\sqrt{1 - x^2}\sin{t}](x+h) + [\sin^2{t} - x^2] = 0
 \end{align}
 $$
 
