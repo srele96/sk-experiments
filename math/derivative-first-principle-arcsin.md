@@ -13,9 +13,9 @@ Derive the identity for $\arcsin{x}-\arcsin{y}$:
 
 $$
 \begin{align}
-&  \sin(\alpha-\beta) &=\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta} \\
-&  \arcsin(\sin(\alpha-\beta)) &=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta}) \\
-&  \alpha-\beta &=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
+&  \sin(\alpha-\beta) = \sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta} \\
+&  \arcsin(\sin(\alpha-\beta)) = \arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta}) \\
+&  \alpha-\beta = \arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
 \end{align}
 $$
 
@@ -23,10 +23,10 @@ By substitution:
 
 $$
 \begin{align}
-&  \alpha =\arcsin{x} \implies \sin{\alpha}=x, \quad
+&  \alpha = \arcsin{x} \implies \sin{\alpha} = x, \quad
 -\frac{\pi}{2}\leq\alpha\leq\frac{\pi}{2} \quad
 \text{and} \quad -1 \leq x \leq 1 \\
-&  \beta =\arcsin{y} \implies \sin{\beta}=y, \quad
+&  \beta =\arcsin{y} \implies \sin{\beta} = y, \quad
 -\frac{\pi}{2}\leq\beta\leq\frac{\pi}{2} \quad
 \text{and} \quad -1 \leq y \leq 1
 \end{align}
@@ -121,7 +121,7 @@ $$
 Here we notice that the square root is a $\cos{t}$:
 
 $$
-\cos{t}=\pm\sqrt{1 - sin^2{t}}
+\cos{t} = \pm\sqrt{1 - sin^2{t}}
 $$
 
 _(I might be wrong here. I don't know how to handle the absolute value of x.)._ And in the context of the limit and substitution:
