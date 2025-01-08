@@ -1,21 +1,22 @@
-# Derivative of $\frac{d}{dx}\arcsin{x}$ by the first principle
+# $\frac{d}{dx}\arcsin{x}$ by the first principle
 
 Start by using the limit definition:
 
 $$
 \frac{d}{dx}  \arcsin{x} =
-\\
-\lim\_{h \to  0}  \frac{\arcsin(x+h)  -  \arcsin{x}}{h}
+\lim_{h \to  0}  \frac{\arcsin(x+h)  -  \arcsin{x}}{h}
 $$
 
 Derive the identity for $\arcsin{x}-\arcsin{y}$:
 
 $$
+\begin{align}
 \sin(\alpha-\beta)=\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta}
 \\
 \arcsin(\sin(\alpha-\beta))=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
 \\
 \alpha-\beta=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
+\end{align}
 $$
 
 By substitution:
