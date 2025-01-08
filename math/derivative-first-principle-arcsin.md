@@ -77,7 +77,7 @@ $$
 \end{align}
 $$
 
-_(I am possibly wrong here. This is another substitution and I might not be able to rely on restrictions of x and y.)_ Because of restrictions $-1 \leq x \leq 1$ and $-1 \leq y \leq 1$ in identity $\arcsin{x} - \arcsin{y} = \arcsin(x\sqrt{1-y^2} - y\sqrt{1-x^2})$ we know that the two expressions $1-x^2 > 0$ and $1 - y^2 > 0$ are positive. Therefore we can use the positive definition of the absolute value.
+_(I am possibly wrong here. This is **the second** substitution and I might not be able to rely on restrictions of x and y.)_ Because of restrictions $-1 \leq x \leq 1$ and $-1 \leq y \leq 1$ in identity $\arcsin{x} - \arcsin{y} = \arcsin(x\sqrt{1-y^2} - y\sqrt{1-x^2})$ we know that the two expressions $1-x^2 > 0$ and $1 - y^2 > 0$ are positive. Therefore we can use the positive definition of the absolute value.
 
 Therefore:
 
