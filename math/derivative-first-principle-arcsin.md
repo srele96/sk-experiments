@@ -10,13 +10,13 @@ $$
 Derive the identity for $\arcsin{x}-\arcsin{y}$:
 
 $$
-\begin{aligned}
+\begin{align}
 \sin(\alpha-\beta)=\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta}
 \\
 \arcsin(\sin(\alpha-\beta))=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
 \\
 \alpha-\beta=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
-\end{aligned}
+\end{align}
 $$
 
 By substitution:
