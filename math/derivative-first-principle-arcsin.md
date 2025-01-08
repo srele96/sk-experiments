@@ -134,8 +134,8 @@ Since the absolute value of a constant is always positive value, we proceed as f
 
 $$
 \begin{align}
+&  h \to 0 \implies t \to 0, \text{ because:} \\
 &  h = \sqrt{1 - x^2}\sin{t} + x\cos{t} - x \\
-&  h \to 0 \implies t \to 0 \\
 &  \sqrt{1 - x^2}\sin{t} + x\cos{t} - x = 0 \\
 &  0 + x - x = 0 \\
 &  0 = 0
