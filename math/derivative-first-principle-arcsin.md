@@ -10,18 +10,19 @@ $$
 Derive the identity for $\arcsin{x}-\arcsin{y}$:
 
 $$
-\begin{align*}
+\begin{aligned}
 \sin(\alpha-\beta)=\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta}
 \\
 \arcsin(\sin(\alpha-\beta))=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
 \\
 \alpha-\beta=\arcsin(\sin{\alpha}\cos{\beta}-\cos{\alpha}\sin{\beta})
-\end{align*}
+\end{aligned}
 $$
 
 By substitution:
 
 $$
+\begin{aligned}
 \alpha=\arcsin{x} \implies \sin{\alpha}=x \quad
 -\pi/2\leq\alpha\leq\pi/2 \quad
 \text{and} \quad -1 \leq x \leq 1
@@ -37,6 +38,7 @@ $$
 \text{Bounds on } \beta \text{ result in choice of the positive square root.}
 \\
 \cos{\beta} = \sqrt{1 - sin^2{\beta}} = \sqrt{1 - y^2}
+\end{aligned}
 $$
 
 Therefore:
