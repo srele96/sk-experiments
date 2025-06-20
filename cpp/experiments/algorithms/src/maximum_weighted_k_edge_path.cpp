@@ -1,6 +1,8 @@
 #include <functional>
 #include <iostream>
+#include <queue>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 using namespace std;
@@ -205,3 +207,120 @@ class Solution {
 };
 
 }  // namespace cacheOnlyByVertexAndEdge_SOLUTION_DOES_NOT_WORK
+
+namespace topologicallySortedNodesAfterMuchEffort {
+/*
+
+I think after yesterday's analysis of the topologically sorted array of vertices
+and analysis of algorithms execution, i came up with a great idea today.
+
+I think the idea was not mine, but i saw it on the LeetCode briefly.
+
+The idea of runtime of the algorithm being O(N*K*C).
+
+The solution was to add in the for loop, iteration over all costs to reach the
+given: dp[node][edges]
+
+So the algorithm loop looks like:
+
+for (int node : topologicallySortedNodes) {
+  for(int edges = 0; edges < k; ++edges) {
+    for(int cost : dp[node][edges]) {
+
+      for(const auto& [child, weight] : graph[node][edges]) {
+
+      }
+
+    }
+  }
+}
+
+I believe the idea is not mine because as I was skimming through the solutions
+section I saw a nested loop with 3 for loops.
+
+The problem i was encountering is that at dp[nodes] you have to be re-evaluating
+the cost of edges because what is optimal choice now, may not be an optimal
+choice later.
+
+Also yesterday exercise of visualization of how the algorithm works, and being
+able to describe each section of an algorithm for example;
+
+for each node:
+  for each edgeCount from 0 to k:
+    for each parentWeight in dp[node][edgeCount]:
+      for each [child, weight]:
+        childSum = weight + parentWeight
+        if childSum < t:
+          dp[child][edgeCount + 1] = childSum
+
+And really being able to see the meaning of how it works over each edge and
+being able to describe it as: at each node, go to its child, the path to child
+is 1 edge more than to reach the parent, do it for edges from 0 to k
+
+We do edges from 0 to k because for the next node, we have to start over, and
+initially for any child, since we traverse in topological order, the child may
+not have computed the sum for dp[child][1], so we have to start there.
+
+And really being able to visualize the algorithm execution on a whim really
+helped because the idea "what if i can iterate over all costs for curent
+dp[node][edges]" really did strike me and it felt like that was it...
+
+I also kinda learned the topological sort algorithm because i had to figure out
+and understand how does this god damn thing work.
+
+*/
+
+class Solution {
+ public:
+  int maxWeight(int n, vector<vector<int>>& edges, int k, int t) {
+    vector<int> indeg(n);
+    vector<vector<pair<int, int>>> graph(n);
+    for (auto& edge : edges) {
+      int u = edge[0], v = edge[1], w = edge[2];
+      ++indeg[v];
+      graph[u].emplace_back(v, w);  // Bug, u instead of v
+    }
+    queue<int> q;
+    vector<vector<unordered_set<int>>> dp(n, vector<unordered_set<int>>(k + 1));
+    for (int i = 0; i < n; ++i) {
+      // Bug, was inside if (indeg[i] == 0), should be outside
+      dp[i][0].insert(0);
+      if (indeg[i] == 0) {
+        q.push(i);
+      }
+    }
+    vector<int> topo;
+    while (!q.empty()) {
+      int u = q.front();
+      q.pop();
+      topo.emplace_back(u);
+      for (auto& [v, w] : graph[u]) {
+        if (--indeg[v] == 0) {
+          q.push(v);
+        }
+      }
+    }
+    for (int u : topo) {
+      for (int e = 0; e < k; ++e) {
+        for (int c : dp[u][e]) {
+          for (auto& [v, w] : graph[u]) {
+            int r = c + w;
+            if (r < t) {
+              // Bug, used [u][e]
+              dp[v][e + 1].insert(r);
+            }
+          }
+        }
+      }
+    }
+    int r = -1;
+    for (int u : topo) {
+      for (int c : dp[u][k]) {
+        r = max(r, c);
+      }
+    }
+    return r;
+  }
+};
+
+}  // namespace topologicallySortedNodesAfterMuchEffort
