@@ -324,3 +324,48 @@ class Solution {
 };
 
 }  // namespace topologicallySortedNodesAfterMuchEffort
+
+namespace dfsCacheByKeysAfterManyAttemptsToUnderstand {
+class Solution {
+ public:
+  int maxWeight(int n, vector<vector<int>>& edges, int k, int t) {
+    vector<vector<pair<int, int>>> graph(n);
+    for (auto& e : edges) {
+      int u = e[0], v = e[1], w = e[2];
+      graph[u].emplace_back(v, w);
+    }
+    vector<vector<unordered_set<int>>> dp(n, vector<unordered_set<int>>(k + 1));
+    function<void(int, int, int)> dfs{[&](int n, int e, int s) {
+      if (e > k) return;
+      if (dp[n][e].contains(s)) return;
+
+      if (s < t) {
+        dp[n][e].insert(s);
+      }
+      for (auto& [v, w] : graph[n]) {
+        dfs(v, e + 1, s + w);
+      }
+    }};
+    int r = -1;
+    for (int i = 0; i < n; ++i) {
+      dfs(i, 0, 0);
+      for (int s : dp[i][k]) {
+        r = max(r, s);
+      }
+    }
+    // for(int i = 0; i < n; ++i) {
+    //   for(int e = 0; e <= k; ++e) {
+    //     cout << "dp[" << i << "][" << e << "] = ";
+    //     for(int c : dp[i][e]) {
+    //       cout << c << ", ";
+    //     }
+    //     cout << "\n";
+    //   }
+    // }
+    return r;
+    // No topo sorting, why would it work?
+    // I suppose dfs wouldn't obey topo sorting? Or would it? So that's why?
+  }
+};
+
+}  // namespace dfsCacheByKeysAfterManyAttemptsToUnderstand
