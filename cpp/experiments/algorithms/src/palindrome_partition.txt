@@ -1,0 +1,230 @@
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+PREVIOUS THOUGHTS
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+```
+131. Palindrome Partitioning
+Medium
+Topics
+premium lock iconCompanies
+
+Given a string s, partition s such that every
+of the partition is a
+
+. Return all possible palindrome partitioning of s.
+
+
+
+Example 1:
+
+Input: s = "aab"
+Output: [["a","a","b"],["aa","b"]]
+
+Example 2:
+
+Input: s = "a"
+Output: [["a"]]
+
+
+
+Constraints:
+
+    1 <= s.length <= 16
+    s contains only lowercase English letters.
+
+```
+
+for this problem, the expected output is
+
+
+```
+[["a","a","b"],["aa","b"]]
+```
+
+and if i udnerstand partitioning correctly, these are valid partitions
+
+```
+a, a, b,
+a, a,
+a, ab,
+a,
+aa, b,
+aa,
+aab,
+
+
+```
+
+and out of these valid aprtitions, i would expect the output to be
+
+
+```
+a, a, b,
+a, <- from a, ab,
+aa, b,
+```
+
+but for some reason the partitions
+
+a, ab
+
+are skipped even though 'a' is there? man i judt don't understand the expected output of this god damn problem
+
+I expected the partitions to be like this
+
+
+
+```
+abcd
+4 <- split string at 4 [abcd]
+3 <- split string after 3rd char [abc,d]
+3, 4 <- split string after 3rd and 4th char [abc, d]
+2 <- split string after 2nd char [ab,cd]
+2, 4 <- [ab,cd]
+2, 3 <- [ab,c,d]
+2, 3, 4 <- [ab,c,d]
+```
+
+Now... i only now see the outputs repeat when theres 4 at the end... thats my for trusting chatgpt
+
+nevermind, i got the correct output this time:
+
+
+```
+a, a, b,
+a, ab,
+aa, b,
+aab,
+
+```
+
+but expected is
+
+
+```
+[["a","a","b"],
+["aa","b"]]
+```
+
+however, look at it, why does the final output miss the lines [a,ab],
+it should include at least 'a' from that row???? i dont get it
+
+lmao, this sh!t beats 5% in runtime and memory lmao, i suppose it is
+exponential backtracking without memoization and without dp optimal
+solutions lmao, but it works, ok now its time to find that dynamic
+programming solution and find a way to sacrifice memory to solve this
+problem in an optimal way, the solution was to simply choose n-1
+substrings instead of n as i initially did in the for loop instead
+of `<= s.size()` i changed it to `< s.size()` and that's what got
+me the working solution... yahoooooo
+
+
+```
+class Solution {
+public:
+  vector<vector<string>> partition(string s) {
+    function<bool(const string&)> isPalindrome = [&](const string& str) {
+      bool r = true;
+      int i = 0, j = str.size() - 1;
+      while (i < j) {
+        if (str.at(i) != str.at(j)) {
+          r = false;
+        }
+        ++i;
+        --j;
+      }
+      return r;
+    };
+
+    function<vector<vector<string>>(const vector<int>&)> f = [&](auto splits) -> vector<vector<string>> {
+      vector<vector<string>> r;
+
+      int next = splits.size() == 0 ? 0 : splits[splits.size() - 1];
+      for(int i = ++next; i < s.size(); ++i) {
+        vector<int> p = splits; //
+        p.push_back(i);
+        for(auto row : f(p)) {
+          r.push_back(row);
+        }
+      }
+
+      vector<string> strings;
+      bool allPalindromes = true;
+      int prevIdx = 0;
+      for(auto i : splits) {
+        const string str = s.substr(prevIdx, i - prevIdx);
+        if (!isPalindrome(str)) allPalindromes = false;
+        strings.emplace_back(str);
+        // cout << i << ", ";
+        // cout << s.substr(prevIdx, i - prevIdx) << ", ";
+        prevIdx = i;
+      }
+      const string str = s.substr(prevIdx, s.size() - prevIdx);
+      if (!isPalindrome(str)) allPalindromes = false;
+      strings.emplace_back(str);
+
+      // cout << allPalindromes << ", ";
+      // for(auto v : strings) {
+      //   cout << v << ", ";
+      // }
+
+      // cout << "\n";
+
+      if (allPalindromes) r.emplace_back(strings);
+
+      return r;
+    };
+
+    // for(auto r : f({})) {
+    //   for(auto s : r) {
+    //     cout << s << ", ";
+    //   }
+    //   cout << "\n";
+    // }
+
+    return f({});
+  }
+};
+
+```
+
+this is only for me to copy it on my home computer, don't give me back any code,
+just even in explanation don't give me code, i just need to figure out a way to use
+those states i wrote before, and restructure them in such a way that i can write a
+DP code, or well, overlapping states, cus currently, every function call uses
+different parameters, it stores a vector of string cuts in the parameters lolz and
+the recursion itself acts as backtracking solution in such a way that the parameters
+of a function carry the thing that needs to be done at that point of function call,
+which is OK, but it can be better using DP and i want to figure out a way to get
+these solution structure, this tree, as a dp tree where states are recomputed and
+the keys used to compute those states are reused (i guess they need to be reused???)
+to be able to use dp and caching states...
+
