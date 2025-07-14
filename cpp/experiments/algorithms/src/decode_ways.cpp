@@ -28,3 +28,23 @@ class Solution {
     return dp[s.size()];
   }
 };
+
+namespace suggestedByChatGpt {
+
+// No idea how does it work. Save to analyze later.
+// Supposedly is DP solution. Unlike others I've seen and am familiar with.
+
+int numDecodings(string s) {
+  int a = 1, b = s[0] != '0' ? 1 : 0;
+  for (int i = 1; i < s.size(); ++i) {
+    int c = 0;
+    if (s[i] != '0') c += b;
+    int x = (s[i - 1] - '0') * 10 + (s[i] - '0');
+    if (x >= 10 && x <= 26) c += a;
+    a = b;
+    b = c;
+  }
+  return b;
+}
+
+}  // namespace suggestedByChatGpt
