@@ -85,6 +85,41 @@ class Solution {
 
 }  // namespace bottomUp_howDoesItEvenWork
 
+namespace bottomUpStoreSegmentsCount {
+
+class Solution {
+ public:
+  vector<string> restoreIpAddresses(string s) {
+    vector<vector<pair<string, int>>> dp(s.size() + 1);
+    dp[0] = {{"", 0}};
+    for (int i = 1; i <= s.size(); ++i) {
+      for (int j = i - 3 > 0 ? i - 3 : 0; j < i; ++j) {
+        const string str = s.substr(j, i - j);
+
+        int v = stoi(str);
+        bool strLeadZero = str.size() > 1 && str[0] == '0';
+        if (!strLeadZero && v <= 255) {
+          for (const auto& prev : dp[j]) {
+            if (prev.second == 0) {
+              dp[i].emplace_back(str, 1);
+            }
+            if (prev.second > 0 && prev.second < 4) {
+              dp[i].emplace_back(prev.first + "." + str, prev.second + 1);
+            }
+          }
+        }
+      }
+    }
+    vector<string> r;
+    for (const auto& [str, segs] : dp[s.size()]) {
+      if (segs == 4) r.emplace_back(str);
+    }
+    return r;
+  }
+};
+
+}  // namespace bottomUpStoreSegmentsCount
+
 namespace skeleton {
 
 class Solution {
