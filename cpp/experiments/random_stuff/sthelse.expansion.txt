@@ -1,0 +1,120 @@
+// Write code the compiler would generate by myself
+template<typename... Rest>
+struct __store {};
+
+template<typename T, typename... Rest>
+struct __store<T, Rest...> : public __store<Rest...> {
+  T value;
+
+  template<typename U>
+  void set(U v) {
+    if constexpr (std::is_same_v<T, U>) {
+      value = std::move(v);
+    } else {
+      __store<Rest...>::template set<U>(v);
+    }
+  }
+
+  template<typename U>
+  U get() const {
+    if constexpr (std::is_same_v<T, U>) {
+      return value;
+    } else {
+      return __store<Rest...>::template get<U>();
+    }
+  }
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Generated code
+///////////////////////////////////////////////////////////////////////////////
+
+template<int, float, char>
+struct __store {};
+
+template<int, float, char> // Rest = {float, char}
+struct __store<int, float, char> : public __store<float, char> {
+  int value;
+
+  template<typename U>
+  void set(U v) {
+    // if type U is int, which is my responsibility
+    //   value = std::move(v)
+    // else
+    //   check __store<float, char>::template set<U>(v)
+    //   and pass on the type U
+  }
+
+  template<typename U>
+  U get() const {
+    // if type U is int, which is my responsibility
+    //   value = std::move(v)
+    // else
+    //   check __store<float, char>::template get<U>()
+  }
+
+  // For each ::get<U> and ::set<U>, the code is generated
+  // For example, for ::get<double>
+
+  template<double>
+  double get() const {
+    // if double and int are same
+    //   return value
+    // else
+    //   __store<float, char>::template get<double>() // pass on the type
+  }
+};
+
+template<float, char> // Rest = {char}
+struct __store<float, char> : public __store<char> {
+  float value;
+
+  template<typename U>
+  void set(U v) {
+
+  }
+
+  template<typename U>
+  U get() const {}
+
+  // checking further if double exists in the inheritance chain
+  template<double>
+  double get() const {
+    // if double and float are same
+    //   return value
+    // else
+    //   __store<char>::template get<double>() // pass on the type
+  }
+};
+
+template<char> // Rest = {}
+struct __store<char> : public __store<> {
+  char value;
+
+  template<typename U>
+  void set(U v) {}
+
+  template<typename U>
+  U get() const {}
+
+  // checking further if double exists in the inheritance chain
+  template<double>
+  double get() const {
+    // if double and char are same
+    //   return value
+    // else
+    //   __store<>::template get<double>() // pass on the type
+  }
+};
+
+///////////////////////////////////////////////////////////////////////////////
+
+int main() {
+  __store<int, float, char> store;
+  store.set<int>(5);
+  store.get<int>();
+  store.set<char>('a');
+  store.get<char>();
+
+  return 0;
+}

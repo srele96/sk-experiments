@@ -1,0 +1,6 @@
+# Disable clang-tidy for the whole directory because i get really angry at
+# errors reported by static checker such as one letter variables. I don't care
+# about good practices when practicing algorithms. Not at the time of writing
+# this...
+#
+# Looks like empty .clang-tidy silences the errors in visual studio code, neat.
