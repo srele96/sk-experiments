@@ -1,6 +1,50 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+namespace bottomUpDP {
+
+class Solution {
+ public:
+  vector<string> generateParenthesis(int n) {
+    vector<vector<tuple<string, int, int>>> dp(n * 2 + 1);
+    vector<string> r;
+    dp[0] = {{"", 0, n}};
+    for (int i = 1; i <= n * 2; ++i) {
+      for (const auto& [s, o, p] : dp[i - 1]) {
+        if (o < p) {
+          dp[i].emplace_back(s + "(", o + 1, p);
+          if (i == n * 2) {
+            r.emplace_back(s + "(");
+          }
+        }
+        if (o > 0) {
+          dp[i].emplace_back(s + ")", o - 1, p - 1);
+          if (i == n * 2) {
+            r.emplace_back(s + ")");
+          }
+        }
+      }
+    }
+    return r;
+  }
+};
+
+/*
+"("
+  "()"
+      "()("
+            "()()"
+            "()(("
+  "(("
+      "((("
+            "(((("
+            "((()"
+      "(()"
+            ""
+*/
+
+}  // namespace bottomUpDP
+
 namespace iterativeBacktrackingYay {
 
 // Yay... mostly my solution... the GPT told me to use tuple...
