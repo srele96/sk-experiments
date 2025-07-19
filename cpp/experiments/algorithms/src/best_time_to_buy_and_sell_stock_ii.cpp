@@ -4,7 +4,8 @@ using namespace std;
 /*
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-so the more i think about it the more itmakes no sense but also it makes sense cus we have this
+so the more i think about it the more itmakes no sense but also it makes sense
+cus we have this
 
 (cell, holds) jumps to (cell + 1, holds) OR (cell + 1, doesnt hold)
 
@@ -17,13 +18,17 @@ here
 
 cell, holds = max ([prev cell, holds], [prev cell, doesnt hold] - today price)
 
-here today price is related to the cell today, and it affects the previous cell which could jump to the today when we purchase the stock, cus yesterday we didn't purchase the stock
+here today price is related to the cell today, and it affects the previous cell
+which could jump to the today when we purchase the stock, cus yesterday we
+didn't purchase the stock
 
 and
 
-today, no stock = max( (yesterday, no stock), (yesterday, had stock) - today price )
+today, no stock = max( (yesterday, no stock), (yesterday, had stock) - today
+price )
 
-but if yesterday he had stock, why would we substract todays value from the return of yesterdays no stock value?
+but if yesterday he had stock, why would we substract todays value from the
+return of yesterdays no stock value?
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 

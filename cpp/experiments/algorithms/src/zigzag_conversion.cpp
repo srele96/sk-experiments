@@ -171,7 +171,7 @@ class Solution {
         // algorithmic problem if I didn't check the state on the paper.
         if (i == 0) zig = true;
         if (i == numRows - 1) zig = false;
-        if (zig && i < numRows -1) ++i;
+        if (zig && i < numRows - 1) ++i;
         if (!zig && i > 0) --i;
       }
       ++c;
@@ -184,21 +184,16 @@ class Solution {
 }  // namespace b
 
 namespace c {
-  // After a first glance at the image from the link below, I saw an arrow, and
-  // realized we can have a directed graph or some kind of graph here. Because
-  // as we iterate I believe we can build connections and stuff like that, maybe
-  // not initially, but maybe we can build a graph as we go zig-zag and not
-  // initially from the state as the initial state is a linear string. Graph is
-  // a data structure that displays connections... relationships. We could
-  // observe an array as a graph where each element points to the left and right
-  // one, but it's not any more complex than that. Maybe... Always maybe...
-  // https://leetcode.com/problems/zigzag-conversion/discuss/5338874/A-revolutionary-solution-that-you-haven't-seen-before
-  class Solution {
-    string convert(string s, int numRows) {
-    }
-  };
-}
-
-
-
-
+// After a first glance at the image from the link below, I saw an arrow, and
+// realized we can have a directed graph or some kind of graph here. Because
+// as we iterate I believe we can build connections and stuff like that, maybe
+// not initially, but maybe we can build a graph as we go zig-zag and not
+// initially from the state as the initial state is a linear string. Graph is
+// a data structure that displays connections... relationships. We could
+// observe an array as a graph where each element points to the left and right
+// one, but it's not any more complex than that. Maybe... Always maybe...
+// https://leetcode.com/problems/zigzag-conversion/discuss/5338874/A-revolutionary-solution-that-you-haven't-seen-before
+class Solution {
+  string convert(string s, int numRows) {}
+};
+}  // namespace c
