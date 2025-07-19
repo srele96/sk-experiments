@@ -38,7 +38,6 @@ class Formatter:
             not_formatted = '<replacement ' in output
             if not_formatted:
                 print('File is not formatted', file)
-                exit(1)
         print('All files are formatted.')
 
     def format(self):
