@@ -1,0 +1,31 @@
+https://leetcode.com/problems/word-ladder/
+
+hit -> cog
+hot, dog, lot, log, cog
+
+.ot: [hot]
+h.t: [hot]
+ho.: [hot]
+
+.og: [dog]
+d.g: [dog]
+do.: [dog]
+
+.ot: [hot, lot]
+l.t: [lot]
+lo.: [lot]
+
+.og: [dog, log]
+l.g: [log]
+lo.: [lot, log]
+
+.og: [dog, log, cog]
+c.g: [cog]
+co.: [cog]
+
+
+
+
+.it
+h.t
+hi.
