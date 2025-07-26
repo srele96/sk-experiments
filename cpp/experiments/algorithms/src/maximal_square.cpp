@@ -3,6 +3,144 @@ using namespace std;
 
 // https://leetcode.com/problems/maximal-square/description/?envType=problem-list-v2&envId=dynamic-programming
 
+namespace myIdeaButUsesIdeaFromBamboozledSolutionOfSides {
+
+/*
+Yay, this is awesome.
+While, my idea works, even tho its different than the other one of overlapping
+squares. And also, no more checking, if size zero or if valid or if valid then
+sum up otherwise no, bla bla bla, all the ideas that can be noticed in the other
+algorithm implementations of this one.
+*/
+static constexpr int L = 300;
+static int box[L][L];
+static int top[L][L];
+static int l[L][L];
+
+class Solution {
+ public:
+  template <size_t R, size_t C>
+  void init(int (&arr)[R][C], int val = 0) {
+    for (size_t i = 0; i < R; ++i)
+      for (size_t j = 0; j < C; ++j) arr[i][j] = val;
+  }
+  int maximalSquare(vector<vector<char>>& m) {
+    init(box);
+    init(top);
+    init(l);
+    int r = 0;
+    for (int i = 0; i < m.size(); ++i) {
+      int v = m[i][0] - '0';
+      box[i][0] = v;
+      l[i][0] = v;
+      top[i][0] = v;
+      r = max(r, v);
+    }
+    for (int i = 0; i < m[0].size(); ++i) {
+      int v = m[0][i] - '0';
+      box[0][i] = v;
+      top[0][i] = v;
+      l[0][i] = v;
+      r = max(r, v);
+    }
+    for (int i = 1; i < m.size(); ++i) {
+      for (int j = 1; j < m[0].size(); ++j) {
+        if (m[i][j] != '0') {
+          int v = 1 + min({box[i - 1][j - 1], top[i - 1][j], l[i][j - 1]});
+          box[i][j] = v;
+          l[i][j] = v;
+          top[i][j] = v;
+          r = max(r, box[i][j]);
+        }
+      }
+    }
+
+    return r * r;
+  }
+};
+
+}  // namespace myIdeaButUsesIdeaFromBamboozledSolutionOfSides
+
+namespace bamboozledWhyDoesItWork {
+/*
+Honestly, this solution beats all reason. Somehow i keep seing a pattern where
+DP solutions do not consider all cases **SOMEHOW** ...
+
+I asked chatgpt to discuss, and he showed me this recurrence relation
+And I was like... Bamboozled... Like, what the fuck?
+
+dp[i][j] = 1 + min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1])
+
+Observe... Why does this even work? It simply just DOES cover this case... Just
+look!
+
+1 1 1 1
+1 1 1 1
+1 1 1 1
+
+00 01 02 03
+10 11 12 13
+20 21 22 23
+30 31 32 33
+
+00 -> 1
+01 -> 1
+02 -> 1
+03 -> 1
+10 -> 1
+
+11 = 2 -
+       - 00 = 1
+       - 10 = 1
+       - 01 = 1
+12 = 2  -
+       - 11 = 2
+       - 01 = 1
+       - 02 = 1
+
+Where, number 2 represent the side 1s
+Why does it work?
+Not combinatorial?
+Somehow this unintuitive numbering covers all the cases
+
+*/
+static constexpr int L = 300;
+static int dp[L][L];
+class Solution {
+ public:
+  int maximalSquare(vector<vector<char>>& m) {
+    for (int i = 0; i < L; ++i) {
+      for (int j = 0; j < L; ++j) {
+        dp[i][j] = 0;
+      }
+    }
+
+    int r = 0;
+
+    for (int i = 0; i < m[0].size(); ++i) {
+      dp[0][i] = m[0][i] - '0';
+      r = max(r, dp[0][i]);
+    }
+    for (int i = 0; i < m.size(); ++i) {
+      dp[i][0] = m[i][0] - '0';
+      r = max(r, dp[i][0]);
+    }
+
+    for (int i = 1; i < m.size(); ++i) {
+      for (int j = 1; j < m[0].size(); ++j) {
+        if (m[i][j] == '1') {
+          dp[i][j] = 1 + min({dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]});
+          r = max(r, dp[i][j]);
+        }
+      }
+    }
+
+    return r * r;
+  }
+};
+
+}  // namespace bamboozledWhyDoesItWork
+
 /*
 
 3 - 6
@@ -40,10 +178,9 @@ namespace topDownNMKK_TLE {
 
 static const int LEN = 300;
 static int dp[LEN][LEN][LEN];
-// Still not good enough because of the loop inside making the algorithm O(n*m*k*k)
-// Gotta try again
-// If bottom up model of this didn't work
-// Why did i even think a top down would lol
+// Still not good enough because of the loop inside making the algorithm
+// O(n*m*k*k) Gotta try again If bottom up model of this didn't work Why did i
+// even think a top down would lol
 class Solution {
  public:
   vector<vector<char>> m;
