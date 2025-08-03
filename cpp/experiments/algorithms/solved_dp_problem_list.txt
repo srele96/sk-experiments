@@ -16,6 +16,8 @@
 - Best Time to Buy and Sell Stock IV
 - House Robber II
 - Maximal Square
+- Maximal Rectangle (*)
+- Remove Boxes (*)
 - Minimum Falling Path Sum
 - Minimum Path Cost in a Grid
 - Maximum Weighted K-Edge Path
