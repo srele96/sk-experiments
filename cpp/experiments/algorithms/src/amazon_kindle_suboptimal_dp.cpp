@@ -168,8 +168,7 @@ class TestRunner {
     cout << "Passed: " << testsPassed << "/" << totalTests << " tests" << endl;
 
     if (testsPassed == totalTests) {
-      cout << "🎉 ALL TESTS PASSED! Your solution is working correctly!"
-           << endl;
+      cout << "🎉 ALL TESTS PASSED! Your solution is working correctly!" << endl;
       cout << "💡 Ready for submission to HackerRank!" << endl;
     } else {
       cout << "❌ SOME TESTS FAILED" << endl;
