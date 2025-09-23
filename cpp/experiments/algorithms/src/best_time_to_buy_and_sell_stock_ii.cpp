@@ -2,6 +2,79 @@
 using namespace std;
 
 /*
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+so the more i think about it the more itmakes no sense but also it makes sense
+cus we have this
+
+(cell, holds) jumps to (cell + 1, holds) OR (cell + 1, doesnt hold)
+
+if we jump to cell which doesnt hold, then (cell + 1, doesnt hold) + p[i]
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+ah so the - p[i] is
+
+here
+
+cell, holds = max ([prev cell, holds], [prev cell, doesnt hold] - today price)
+
+here today price is related to the cell today, and it affects the previous cell
+which could jump to the today when we purchase the stock, cus yesterday we
+didn't purchase the stock
+
+and
+
+today, no stock = max( (yesterday, no stock), (yesterday, had stock) - today
+price )
+
+but if yesterday he had stock, why would we substract todays value from the
+return of yesterdays no stock value?
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+
+(1, false) = max(
+  (0, false),
+  (0, true) - p[i]
+)
+
+today, hold = max ( kep holding, buy today )
+today, dont hold = max ( keep no stock, sell stock )
+
+????
+
+cus yday we either
+
+today, stock true
+  max:
+    - yesterday, stock true
+    - (yesterday, stock false) + buy stock
+
+today, stock false
+  max
+    yesterday, stock false
+    (yesterday, stock true) + sell stock
+
+explanation:
+today, stock true
+- come from day with stock true, do nothing
+- come from day with stock false, buy stock
+today, stock false
+- come from day with stock false, do nothing
+- come from day with stock true, sell stock
+
+cus if:
+today, stock true
+->yesterday, stock true
+->yesterday, stock false
+then we don't need to come to today from 2 same states
+to keep computation correct, we buy stock if we arrive from day with no stock
+and stay as is if we come from the day where we purchased stock
+
+
+*/
+
+/*
 Interestingly, i haven't even thought about greedy approach here. Why? Don't
 know. 18 months ago, 1.5 years ago, i solved the problem version I using greedy
 approach. Did I get help from AI? No idea. I think back then I didn't get any AI

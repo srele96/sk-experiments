@@ -1,0 +1,77 @@
+if i memorize titles and details about problems i have solved, when i reach 50 problems
+what will happen?
+so far i remember these
+
+    remove boxes
+        a interval dp problem where we had to do solve(i + 1, m - 1, 0) + solve(m, j, k + 1)
+        where the 0 marked that we dont connect current i-th solve that but with next and we want to attempt to remove boxes between
+        i think we try all possible ways to remove boxes and connect and just use the best result after we compute all
+    maximal rectangle
+        ah, histogram, god damn histogram, learned what a histogram is, on this problem, lol
+        however the thing was - increased height & decreased height
+        when height increases, we store the length cut of it (which references height in histogram) and when height decreases - when we want to insert current height being smaller than ones stored so far
+        we then eject previous heigher heights and we compute their rectangles
+        surprisingly those rectangles are all we need if we want to compute the maximal rectangle
+    maximal square
+        ah yes so here we had 1 + min(solve(i-1,j), solve(i,j-1), solve(i-1,j-1)) because for some reason this constructed a square at each i-th place and for some reason the each number in each cubicle marked the sides of a square lolz
+        i also got llm to tell me this trick but thankfully i remember it :pray:
+    guess higher or lower number I
+        an easy problem, binary search, i was messing it up for solid 30 minutes lol
+        i couldn't get thos lefts, rights, mids, correct lol
+    guess higher or lower number II
+        this one was where i discovered that binary search wasn't enough and that i had to do pairing again just like in --- longest increasing subsequence problem!
+        i had to check sums BUT there was that adversary thing and i only got it thanks to LLM and i remember it (for now) ...
+    buy or sell stock with cooldown
+        hm this one was same like other buy/sell stock problems so i had it working very very fast and i didn't flinch much, felt the same like others
+        surprisingly i struggled at one of the stock problems for a few days, (a few weeks ago) but this time it was a breeze
+    house robber 3
+        ah, a tree structure house robber
+        i messed up because i had wrong key and i was supposed to use a TreeNode* as a key which was my first to see it but yeah ok whatever
+        and it was pretty much like the house robber problem that i had solved but just on tree
+        i had a paramether whether the house was robbable or not
+        i think LLM gave me an idea without parameter but i said F-it because i didn't want to learn a new trick and decided to proceed with whatever the F i am doing
+    ways to insert parentheses
+        um we were supposed to insert parentheses and return all results
+        we would get a string like "2+33-45"
+        and we were supposed to compute the all possible results when we insert parentheses
+        and i found out that it's interval cut type of DP problem and that we can solve it by performing cuts like
+        0+n
+        1+n-1
+        2+n-3
+        3+n-4
+        where we have recursion which performs these cuts and each cut for example n-3 will get cut futher
+        where each cut was a parenthesis
+        however i also had to do string parsing and to apply operation based on the amount of operations i had to work with, a nice problem, surprisingly i remember it the most cleanly considering it's the first one i solved like 48 hr ago
+    longest increasing subsequence
+        this problem required maximal as in (longest) subsequence of non adjacent elements
+        the problem was which subsequence do we pick, because maybe we want subsequence that starts with some i-th element and it picks arbitrary j-th element which is k-th places ahead because it provides the most optimal subsequence
+        the solution i think was to attempt to connect each i-th elemnt with each j-th element if el[i] < el[j] and get the max
+    number of operations
+        this one i did today so i remember it well
+        we get a number n and we are supposed to play a game
+        even element means n/2 and odd element means we either do n+1 or n-1
+        the solution was to in case of odd, we try both and just get minimum value
+        1 + min(solve(n+1), solve(n+1))
+    amount of numbers with unique digits up to n
+        this one i also did today and i remember it quite well
+        i discovered that when we try to assemble these digits that we initially have 0...9 and numbers with more than 1 digit start with 1...9
+        i discovered that initially we have 9 digits and next are 9 digits to, but when we start working with 3 digits we have exhausted the first digit and 0s, so we have 8, then 4 digit numbers can use only 7 numbers to be append to each of the previously we assembled, etc...
+        and from there i found a formula
+        9*9 of 2 digit numbers
+        998 of 3 digits numbers
+        988*7 of 4 digit numbers
+        ... etc
+        and i used it to compute and summarize the amount of digits, bingo
+
+ok, yeah, thats summary of all 11 problems i am trying to keep on my mind since yesterday...
+i struggled to get these 6, but after 15 minutes i remembered them and i grouped them
+
+guessing higher or lower I & II
+
+stock with cooldown and tree house robber
+
+insert parentheses & longest increasing subsequence
+
+and the rectangle, square & remove boxes (was on my mind already for a while ... )
+
+also i remember the partitioning, subsequencing, eh yeah,,, you get the drill...

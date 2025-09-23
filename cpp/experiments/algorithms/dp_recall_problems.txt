@@ -1,0 +1,26 @@
+6
+  ways to arrange parentheses
+  house robber III
+  guess higher or lower number I
+  guess higher or lower number II
+  buy and sell stock with cooldown
+  longest increasing subsequence
+4
+  equal subset sum
+  replace integer
+  non overlapping intervals
+  count unique digit integers
+3
+  remove boxes
+  maximal rectangle
+  maximal square
+6
+  wiggle subsequence
+  diagonal traverse
+  longest palindromic substring
+  ???
+    - (has structure like `count unique digit integers`)
+    - can't remember the title of the problem
+    - ( CAN I WIN ??? )
+  target sum
+  largest plus sign

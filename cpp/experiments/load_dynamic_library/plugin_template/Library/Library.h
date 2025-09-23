@@ -48,8 +48,8 @@ class Library : public LibraryInterface {
   Library& operator=(Library&&) = delete;
   ~Library() override;
 
-  auto RegisterPlugin(const char* key, const LibraryPlugin* plugin)
-      -> void override;
+  auto RegisterPlugin(const char* key,
+                      const LibraryPlugin* plugin) -> void override;
   auto UnregisterPlugin(const char* key) -> void override;
 
   auto Test() -> const char* override;

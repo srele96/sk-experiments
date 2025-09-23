@@ -23,6 +23,7 @@ class Formatter:
                     self.files.append(os.path.join(root, filename))
 
     def check(self):
+        unformatted_files = []
         print('Searching for unformatted files...')
         for file in self.files:
             # Use --output-replacements-xml to get a list of replacements that
@@ -37,9 +38,15 @@ class Formatter:
 
             not_formatted = '<replacement ' in output
             if not_formatted:
-                print('File is not formatted', file)
-                exit(1)
-        print('All files are formatted.')
+                unformatted_files.append(file)
+        if unformatted_files:
+            print('The following files are not formatted:')
+            for file in unformatted_files:
+                print(file)
+            print('Please format them using `python format.py`.')
+            sys.exit(1)
+        else:
+            print('All files are formatted.')
 
     def format(self):
         for file in self.files:
