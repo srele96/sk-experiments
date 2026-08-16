@@ -1,0 +1,26 @@
+{
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development tsx --watch dev.mts"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tsx": "^4.23.12"
+  },
+  "devDependencies": {
+    "@rspack/cli": "^2.1.10",
+    "@rspack/core": "^2.1.10",
+    "@rspack/dev-server": "^2.2.0",
+    "@rspack/plugin-react-refresh": "^2.0.2",
+    "@types/express": "^5.0.6",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@types/webpack-env": "^1.18.8",
+    "@types/webpack-node-externals": "^3.0.4",
+    "cross-env": "^10.1.0",
+    "run-script-webpack-plugin": "^0.2.3",
+    "webpack-node-externals": "^3.0.0"
+  }
+}
